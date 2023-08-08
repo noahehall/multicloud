@@ -1,6 +1,6 @@
 # multicloud
 
-- 99% AWS docs and courses
+- 99% AWS docs and courses, hashicorp docs and blogs, books, etc
 
 ## links
 
