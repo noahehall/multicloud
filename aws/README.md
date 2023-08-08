@@ -1,6 +1,6 @@
 # AWS exam guides
 
-- one stop shop for ramping up on AWS with a focus on obtaining AWS certifications
+- one stop shop for speed-running AWS certifications
 
 ## links
 
