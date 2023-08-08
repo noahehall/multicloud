@@ -464,7 +464,7 @@
 
 - in AWS
   - S3: different storage classes or tiers to match your price, access, and availability requirements
-  - s3 glacier
+  - s3 glacier specifically for archival data
 
 ### Network Attached Storage (NAS)
 
@@ -524,16 +524,19 @@
 
 #### file transfer
 
+- file transfers directly into and out of Amazon S3 or Amazon EFS
 - in AWS
   - AWS Transfer: file transfers in/out of S3/EFS using SFTP, FTPS, FTP
 
 #### data synchronization & online transfer
 
+- moving data between on-premises storage systems and AWS Storage services and between AWS Storage services
 - in AWS
   - AWS DataSync: online data transfer service moving data between on-premises storage systems and AWS and between AWS services
 
 #### offline data transfer & migration
 
+- run operations in austere, non-datacenter environments, and in locations where there’s lack of consistent network connectivity.
 - in AWS
   - AWS Snow: offers several physical devices and capacity points, most with built-in computing capabilities
 
@@ -554,6 +557,11 @@
 
 #### Snapshots
 
+- built in to most services, check the docs for the storage service you're using
+- generally always end up in a protected part of Amazon S3 as part of the managed service
+
 #### Replication
+
+- built into most services, check the docs for the storage service you're using
 
 #### Disaster Recovery Services

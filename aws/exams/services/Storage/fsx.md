@@ -1,7 +1,7 @@
-# FSx
+# File System X (FSx)
 
 - native compatibility with third party file systems that uses NFS access protocol.
-- NetApp ONTAP, OpenZFS, Windows File Server and Lustre
+- applications need to access shared files and require a file system
 
 ## my thoughts
 
@@ -14,9 +14,6 @@
 ### anti patterns
 
 ## features
-
-- AWS swagger jacked a bunch of open source filesystems and are selling it to you
-- research each filesystem type
 
 ### pricing
 
