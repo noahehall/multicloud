@@ -29,11 +29,13 @@
 
 ### Lustre file system
 
+- parallel file system
 - designed for high performance computing (HPC) and machine learning (ML) workloads. FSx for Lustre uses the Lustre client's POSIX-compliant access protocol.
 
 ### Windows File Server
 
-- The access protocol is Server Message Block (SMB) and designed for your Microsoft applications and Windows workloads.
+- file system for Windows environments
+- supports the Server Message Block (SMB) protocol.
 
 ### NetApp ONTAP
 
@@ -42,7 +44,7 @@
 ### OpenZFS
 
 - fully managed shared file storage
-- migrate your on-premises OpenZFS storage to AWS with minimal effort. You can use the same access protocols now in the AWS Cloud.
+- supports NFS and SMB protocols for a wide range of application implementations.
 
 ## considerations
 

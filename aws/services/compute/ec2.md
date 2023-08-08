@@ -173,15 +173,19 @@
 
 ### Instance Store
 
-- storage used as an internal, directly attached ephemeral data volume; e.g. a laptops internal harddrive
-  - see storage/elasticblockstore.md for persistent ec2 storage
+- consists of one or more instance store volumes exposed as block devices
+- ephemeral storage used as an internal, directly attached ephemeral data volume with submillisecond latencies; e.g. a laptops internal harddrive
 - positives
   - i/o is faster than attaching an ebs volume due to the close proximity of the physical storage to the physical ec2 server
   - applications that replicate data across ec2 instances, e.g. anything in a cluster
     - you need the fastest i/o for replication
   - temporary storage for frequently changed data: buffers, caches, scratch data, etc
 - negatives
+  - only certain instance types support instance stores
   - its lifecycle is tied to the lifecycle of the ec2 instance; once the ec2 is down, the data on the instance store is lost
+  - not replicated or spread across multiple devices to improve durability and availability
+- lifecycle
+  - persists on ec2 reboot, destroyed in all other events
 
 ### launch templates
 

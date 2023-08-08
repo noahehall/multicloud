@@ -285,3 +285,8 @@
 
 - common metrics
   - iteratorAge: when it increases (lambda consumer) likely means you need to reshard
+
+### EBS
+
+- common metrics
+  - bandwidth, throughput, latency, and average queue length

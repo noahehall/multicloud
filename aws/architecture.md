@@ -1,8 +1,7 @@
 # Common AWS Architecture
 
 - TODOs
-  - theres bunches of stuff in here that should be in goodstuff.md
-    - which should then go into some other NON aws specific file
+  - theres bunches of stuff in here that should be in multicloud.md
 
 ## links
 
@@ -446,7 +445,9 @@
 - dedicated, low-latency storage for each host; analogous to direct-attached storage (DAS) or a Storage Area Network (SAN)
 - provisioned with each virtual server and offer the ultra low latency required for high-performance workloads.
 - in AWS
-  - EBS
+  - EBS (peristent, networked)
+  - ec2 instance storage (ephemeral, direct attached)
+  - FSx for NetApp ONTAP also offers block storage services over an iSCSI access protocol.
 
 #### file storage
 
@@ -458,7 +459,7 @@
     - FSx for Windows File Server: Microsoft applications and Windows workloads.
     - FSx for NetApp ONTAP: provide both NetApp block and file storage
     - FSx for OpenZFS:
-  - create self-managed files shares using EC2 instances with attached EBS volumes.
+  - EC2 + EBS: create high-performance block storage for network file system
 
 #### object storage
 

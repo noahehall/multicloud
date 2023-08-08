@@ -787,6 +787,8 @@
 
 - Network File System: FNS; generally linux based systems
 - Server Message Block: SMB; generally windows
+- SAN: storage area networks
+- IOPS: input/output operations per second
 - R/W patterns
   - Worm: write once, read many: for data with heavy reads
 
@@ -800,7 +802,7 @@
   - Frequency of access (online, offline, archival)
   - Frequency of update (WORM, dynamic)
   - Availability and durability constraints
-- optimization: identify constraints service options for improvement
+- optimization: identify constraints & service options for improvement
   - understand the performance profile for each of your workloads
   - performance analysis to measure input/output operations per second (IOPS), throughput, and other variables
   - metrics improvement strategies as part of a data-driven approach, benchmarkin/load testing

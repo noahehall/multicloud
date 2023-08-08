@@ -24,11 +24,6 @@
   - you can keep app state on the EBS and server state on the EC2 instance store
   - the EBS life cycle isnt related to the EC2/instance store lifecycle
 - ensure your taking regular snapshots, and removing old snapshots
-- use cases
-  - operating systems: boot and root volumes can be used to store an OS
-  - databases: the storage layer fo a DB running on EC2 that will scaled with performance needs
-  - enterprise applications: EBS provides high availability and durability for mission critical applicatins
-  - big data analytics engines: data persistence, dynamic performance adjustments, and the ability to de/reatch volumes when resizing clusters
 
 ### anti patterns
 
@@ -41,10 +36,15 @@
 - runtime flexible: modify volume type/size, IOPS configuration, resize clusters for big data analytics engines
 - data persists and is not attached to EC2 lifecycle
 - opt-in data encryption for all volume types
+- use cases
+  - operating systems: boot and root volumes can be used to store an OS
+  - databases: the storage layer fo a DB running on EC2 that will scaled with performance needs
+  - enterprise applications: EBS provides high availability and durability for mission critical applicatins
+  - big data analytics engines: data persistence, dynamic performance adjustments, and the ability to de/reatch volumes when resizing clusters
 
 ### pricing
 
-- depends on the volume type
+- volume type, provisioned volume size, and the provisioned IOPS and throughput performance
   - general purpose ssd: storage, iops, throughput, or regular volumes
   - provisioned IOPS ssd: storage, iops, or regular volumes
   - throughput optimized hdd: volumes
@@ -59,11 +59,6 @@
 - theres additional costs for other operations
   - fast snapshot restore
   - direct apis
-
-## terms
-
-- SAN: storage area networks
-- IOPS: input/output operations per second
 
 ## basics
 
@@ -81,7 +76,8 @@
 - redundantly stored incremental backups:
   - new snapshots only track the blocks on the volume that have changed since the previous snapshot
   - backups are stored redundantly in multiple AZs using S3
-- snapshots can be used to create new volumes in any AZ
+- snapshots can be used to create new volumes in any AZ and use multiple AWS Regions for geographical expansion, data center migration, and disaster recovery.
+- point-in-time snapshots: are persisted to Amazon S3
 
 ### volume types
 
@@ -106,14 +102,21 @@
 - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
 - increase volume size: a provisioned EBS volume size can be increased via settings
 - attach multiple volumes: during/after EC2 instance creation you can attach multiple EBS volumes
+  -Elastic Volumes feature: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
+
+### Security
+
+#### Encryption
+
+- can create your EBS volumes as encrypted volumes
+- data stored at rest on the volume, disk I/O, and snapshots that were created from the volume are all encrypted
+- encryption occurs on the servers that host EC2 instances, providing encryption of data in transit from EC2 instances to EBS storage.
 
 ## considerations
 
 - volume type: SSD vs HDD
 
 ## integrations
-
-- EBS can only be attached to EC2, so integrations will be limited
 
 ### AMI
 
@@ -139,3 +142,7 @@
   - requires explicit permissions to access the AWS apis
     - you need to attach an IAM policy with the correct role attached to the CSI driver service account
       - you can do this via `eksctl`
+
+### Backup
+
+- centralize and automate data protection across multiple Amazon EBS volumes
