@@ -28,6 +28,8 @@
 
 ## basics
 
+- the smallest member of the AWS Snow Family of edge computing, edge storage, and data transfer devices,
+
 ## considerations
 
 ## integrations
