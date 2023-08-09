@@ -26,23 +26,23 @@
 
 #### Instant Retrieval
 
+- reads: immediate
 - for archiving data that is rarely access and requires millisecond retrieval
   - cost savings up 68% off standard-IA storage class
   - same latency and throughput performance of standard-IA
 
 #### Flexible Retrieval
 
+- reads: 1-5 minutes (paid) to 5-12 hours (free)
 - data that does not require immediate access but needs the flexibility to retrieve large sets of data at no cost
-- retrieval in minutes or free bulk retrievals in 5-12 hours
-  - data can be retrieved between 1-5 minutes for a cost
 - low cost storage for archived data that is accessed 1 or 2 times per year
   - backup, disaster recovery
 
 #### Deep Archive
 
+- reads: up to 12 hours
 - the lowest cost storage class for long-term retention (7 or more years) and digital preservation of data access 1-2 times per year
   - for meeting regulations/laws/compliance/financial/healthcare/public/etc
-- data can be retrieved in about 12 hours
 
 ## considerations
 

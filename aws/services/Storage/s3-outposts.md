@@ -1,6 +1,6 @@
 # S3 on Outposts
 
-- Object storage in your on-premises environments
+- on-premises hybrid data storage and satisfying data residency requirements.
 
 ## my thoughts
 
