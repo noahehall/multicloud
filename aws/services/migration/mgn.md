@@ -2,6 +2,7 @@
 
 - simplifies, expedites, and reduces the cost of migrating applications to the AWS Cloud, AWS GovCloud (US), and AWS Outposts.
 - highly automated lift-and-shift (rehost) solution
+- [fka CloudEndure](https://www.cloudendure.com/)
 
 ## my thoughts
 
@@ -29,3 +30,16 @@
 ## considerations
 
 ## integrations
+
+### MGN Applicatin Migration
+
+- migrate workloads onto AWS Outposts from physical, virtual, or cloud-based sources.
+- simplifies and expedites migrating workloads from on-premises locations, AWS Regions, and other clouds to Outposts.
+
+### DRS Elastic Disaster Recovery
+
+- replicate and recover from any of the following:
+  - On-premises to Outposts
+  - From AWS Regions onto Outposts
+  - From Outposts into AWS Regions
+  - Between two Outposts.

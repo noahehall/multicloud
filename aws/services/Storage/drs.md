@@ -1,6 +1,7 @@
 # Elastic Disaster Recovery (DRS)
 
 - Scalable, cost-effective application recovery to AWS
+- [fka CloudEndure](https://www.cloudendure.com/)
 
 ## my thoughts
 

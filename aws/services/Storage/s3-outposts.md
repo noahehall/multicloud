@@ -1,6 +1,6 @@
 # S3 on Outposts
 
-- on-premises hybrid data storage and satisfying data residency requirements.
+- on-premises hybrid data storage via S3 APIs
 
 ## my thoughts
 
@@ -14,6 +14,8 @@
 
 ## features
 
+- object storage to your on-premises AWS Outposts environment
+
 ### pricing
 
 - Outposts rack capacity for a 3-year term
@@ -26,6 +28,12 @@
   - s3 outposts service
 
 ## basics
+
+### S3 Outposts Storage Class
+
+- designed to store data durably and redundantly across multiple devices and servers on your Outposts.
+- storage capacity: 26 TB, 48 TB, or 96 TB
+- bucket limits: create up to 100 buckets on each Outpost.
 
 ## considerations
 
