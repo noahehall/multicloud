@@ -10,6 +10,7 @@
 ## links
 
 - [landing page](https://aws.amazon.com/snow/?did=ap_card&trk=ap_card)
+- [OpsHub GUI](https://docs.aws.amazon.com/snowball/latest/developer-guide/aws-opshub.html)
 
 ## best practices
 
@@ -35,6 +36,9 @@
 
 ### Job Types
 
+- the device (snowball vs snowcone), device configuration and job type determines feature matrix
+  - you need to check the docs and walkthrough the decision tree
+
 #### Import to Amazon S3
 
 - shorter duration use cases where you also want the data imported into Amazon S3
@@ -51,6 +55,11 @@
 - longer duration edge compute and storage use cases,
 - perform compute and storage workloads on the device without any data transferred into AWS when returned
 - AWS erases all data on the device securely.
+
+### OpsHub
+
+- downloadable tool for managing snow devices
+- takes all the existing operations available in the Snowball API and presents them as a graphical user interface.
 
 ## considerations
 
