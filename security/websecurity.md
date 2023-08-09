@@ -35,13 +35,13 @@
 
 ### best practices
 
-- these are part of ever mitigation strategy
-- test code in a dedicated and isolated test environment that resembles prod as close as possible
-- have reliable, reproducible, and revertible release processes.
-- after each release, execute penetration testing to identify vulnerabilities before their exploited
-- logging, monitoring & error reporting in your runtime environment
-- stay ahead of security advisories for any third-party code
-- dont rely on any type of header validation
+- mitigation strategy
+  - test code in a dedicated and isolated test environment that resembles prod as close as possible
+  - have reliable, reproducible, and revertible release processes.
+  - after each release, execute penetration testing to identify vulnerabilities before their exploited
+  - logging, monitoring & error reporting in your runtime environment
+  - stay ahead of security advisories for any third-party code
+  - dont rely on any type of header validation
 - dont use microsoft windows servers (haha IMO!)
   - or just dont use microsoft windows!
 - defense in depth: secure your application with redundancies
@@ -70,10 +70,10 @@
 - attack vectors: the methods that adversaries use to breach or infiltrate your network
 - attack surface: the sum of the different points (for "attack vectors")
 - checksum: a small-sized block of data derived from another block of digital data for the purpose of detecting errors that may have been introduced during its transmission or storage. By themselves, checksums are often used to verify data integrity but are not relied upon to verify data authenticity.
-  - digital fingerprints that are calculated when a resource is created, and can be reused to recalculate checksum upon download to ensure the uploaded version matches the downloaded version
 - subresource integrity checks: checksums for the browser
 - security through obscurity: relying on an attacker being unable to guess something; i.e. relying on an attackers ignorance/obscurity of the system
 - embargo resources: enable access to sensitive resources only at a certain point in time, e.g. financial reports are often embargoed
+- digital fingerprints (checksums) that are calculated when a resource is created, and can be reused to recalculate checksum upon download to ensure the uploaded version matches the downloaded version
 - digital signature: acts as a unique fingerprint for some input data; that can be easily recalculated as long as they have the signing key originally used to generate the signature
 - hash: the output of a one-way encryption algorithm that makes it easy to generate a unique fingerprint for a set of input data (really difficult to take the output and revert it to the input data)
   - should be quick to calculate (but not too quick)
@@ -175,7 +175,6 @@
 ##### Application Layer Protocols
 
 - TLS: transport layer security
-
   - arguable what fkn layer this is actually in (some say its not the application layer, but a lower layer)
     - makes sense it would be in the transport layer, (because of the name)
   - method of encryption that provides both privacy and data integrity
@@ -183,8 +182,7 @@
     - privacy: packets intercepted by a third party cant be decrypted without the appropriate encryption keys
     - data integrity: any attempt to tamper with the packets will be detectable
   - workflow
-    - HTTP conversations using TLS are called HTTP secure
-    - HTTPS requires the client & server to perform a TLS handshake
+    - HTTPS (http secure) requires the client & server to perform a TLS handshake
       - both parties agree on an encyption method (cipher) and exchange encryption keys
     - any subsequent data packets (request & responses) will be opaque to outsiders
   - TLS Handshake: consists of assymetric and symmetric encryption, and Message Authentication Codes for fingerprinting (see cipher suites)
@@ -221,7 +219,7 @@
       - domain verification is what protects against DNS spoofing attacks; an attacker cnanot apply for a cerificate unless they also have DNS access rights to that domain
       - Extended validation (EV) certificates: require the certificate authority to collect and verify information about hte legal entity applying for a certificate; popular with large organizations because the name of the org is often displayed alongside the padlock in the browser url
       - certificates have a finite lifespan (years/months) and can be voluntarily revoked by the owner
-    - general process: is all about having the certificate authority verify ownership of a particular domain, and then giving you a certificate you canbe used to decrypt traffic sent to thta domain,
+    - general process: is all about having the certificate authority verify ownership of a particular domain, and then giving you a certificate that can be used to decrypt traffic sent to that domain,
       - generate a key pair: digital file containing randomly generated public and private encryption keys
       - use the key pair to generate a Certificate Signing Request (CSR) that contains the pulic key and domain your requesting the certificate for
       - upload the CSR to the certificate authority, and the cert authority will then require you to validate ownership by making some DNS change with values they specify
@@ -229,7 +227,6 @@
   - HTTP Strict Transport Security: HSTS; policy that ensures sensitive data (e.g. cookies) will not be sent during any initial connection over HTTP, and must wait for the TLS handshake to be completed
     - when a user agent visits a site it has seen previously, it will automatically send back any cookies the website previously supplied in the Cookie header
     - if the initial connection was insecure, then the cookies will be sent back insecurely, even if subseqent requests were handled over HTTPS
-
 - SMTP: simple mail transport protocol
   - for sending emails
 - XMPP: extensible messaging and presence protocol
@@ -431,8 +428,8 @@
 
 ### sessions
 
-- session: HTTP conversation in which the browser sends a series of HTTP requests corresponding to a specific user, and the web server recognizes them as corresponding to the same user; the initial request is usually tagged with an ID, and that ID is sent back in the response
-- session ID: typically a large, randomly generated number: the minimal information the browser needs to transmit with each subsequen tHTTP request so the server can continue the HTTP conversation from the previous request
+- session: HTTP conversation in which the browser sends a series of HTTP requests corresponding to a specific entity (e.g. a user), and the web server recognizes them as corresponding to the same entity; the initial request is usually tagged with an ID, and that ID is sent back in the response
+- session ID: typically a large, randomly generated number: the minimal information the browser needs to transmit with each subsequent HTTP request so the server can continue the HTTP conversation from the previous request
   - remember, these are generally just random integers
   - can be transmittd via URL, http header, body of requests
   - but best practice is to send as a session cookie via the `Set-Cookie` header of the http response
@@ -445,8 +442,8 @@
 
 ### access control
 
-- authentication: correctly identifying a user when they return to th site
-- authorization: deciding which actions a user should and shouldnt be able to perform after they've identified themselves
+- authentication: authN; correctly identifying a user when they return to th site
+- authorization: authZ; deciding which actions a user should and shouldnt be able to perform after they've identified themselves
 - permission checking: evaluating authorization at the point in time when a user attmpts to perform an action
 - a good access control strategy consists of three stages
   - designing an authorization model
@@ -474,7 +471,7 @@
   - testing the access control
     - test authorization via properly vetted identity data in your system
     - unit tests should make assertions about who can and CANT access every resource type in your system
-    - penetration testing: probin for missing/errneous access control rules that can be abused
+    - penetration testing: probing for missing/errneous access control rules that can be abused
 
 ## People & their prcoesses
 
@@ -547,9 +544,9 @@
 
 ### injection attacks
 
-- when the attacker injects external cpde into an application in an effort to take control of the application or read sensitive data
-- server-side code has no reliable way of telling whether a crit or a browser generated an http request
-  - waste of time checking the `User-Agent` header
+- when the attacker injects external code into an application in an effort to take control of the application or read sensitive data
+- server-side code has no reliable way of telling whether a script or a browser generated an http request
+  - waste of time checking the `User-Agent` header for security purposes
 
 #### SQL Injection attacks
 
@@ -557,9 +554,7 @@
   - i.e. code that doesnt security construct SQL strings when communication with a SQL database
 - allowing an HTTP request to pass data into sql queries that cause the db driver to perform arbitrary actions
 - i.e. use control characters that have special meaning in SQL statements to jump out of context and change the whole semantics of the SQL statement
-
 - exposure
-
   - any SQL statement that permits SQL control characters in variables used as parameters in db queries
     - `'` single quote closes the statement
     - `--` comment causes db driver to ignore any subsequent text
@@ -573,19 +568,13 @@
   - nonblind sql injection: when your application leaks sensitive information; the attacker gets immediate feedback while probing
     - `password is incorrect`
     - `email already exists`
-
 - fallout
-
   - generally a crafty person can run arbitrary queries against your db
   - bypass authentication; read, donwload and delet data at will
   - inject malicious JS (especially if you use db data in HTML templates)
-
 - mitigation
-
   - parameterized statments & bind parameters: placeholder characters that the db driver will safely replace
-
     - bind parameters will automatically prefix control characters with escape characters that causes the db driver to treat the control characters as INPUT to the SQL statement, rather than PART of the sql statement
-
   - use an ORM: object-relational mapping
     - all ORMS (or any that you would ever think about using) abstract away the explicit construction of SQL statements
     - instead you use database access objects for queries
@@ -594,18 +583,13 @@
 #### Command Injection Attacks
 
 - attackers exploit an application that makes insecure command line calls to the underlying operating system
-
 - exposure
-
   - if command line calls are executed with external input that hasnt been sanitized
   - http requests to the server that interact with the OS
     - `GET/poop.com?expectedThing=expectedValue%3Becho%20%22gothacked%22`
     - `server.getExpectedThing(queryString) -> doThisCli && echo "got hacked`
-
 - fallout
-
   - attakers execute arbitrary OS commands and seize contorl of your runtime
-
 - mitigation
   - properly escpaing inputs from HTTP requests, especially sensitive control chars like `&`
 
@@ -613,20 +597,14 @@
 
 - attackers inject malicious code to be executed in the language of the application itself (e.g. a web servers native language)
 - when an application has a vulnerability that permits external parties to execute internal runtime commands as if they were coming from within the application itself
-
   - exploit scripts incorporate malicious code in the body of an HTTP request, encoded in a such a way that the server will read and execute the code when the request is handled
-
 - exposure
-
   - not staying up to date on appliation (especially web server) dependencies
     - e.g. using an old version of express/nodejs
   - using executing code during deserialization of http requests bodies & headers
   - invalid web server configuration
-
 - fallout
-
   - trick your application (e.g. web server) into executing arbitrary code by injecting malicioius code directly into your applications's runtime process
-
 - mitigation
   - disable code execution during deserialization
     - complete the deserialization process first, then sanitze the resulting code for control characters
@@ -635,15 +613,12 @@
 #### File Upload Exploits
 
 - vulnerabilities in file upload fns, e.g.
-
   - letting users add images to their profile/posts
   - adding attachments to messages
   - submitting paperwork
   - sharing documents with other users
   - etc
-
 - exposure
-
   - relying on the default browser upload functionality/client side validation of file contents
     - browsers dont run (if) any checks on the file contents
     - attackers can go around client side validation checks by posting directly to the backend endpoints
@@ -652,12 +627,9 @@
     - e.g. letting a user upload image.php as an image, when the file contents is clearly a web shell
       - now they can request their image from your server, `site.com/image.php?cmd=cat+/etc/passwd` and your server will execute image.php if it has a php runtime installed
       - ^ php files are typically treated as executables by OS, which is key to making this attack work
-
 - fallout
-
   - giving attackers a backdoor for executing arbitrary code on your webserver
   - the attacker would have the same access to your OS as they would with a command injection attack
-
 - mitigation
   - ensure any uploaded files cant be executed as code
     - files should be treated as inert rather than as executable objects
@@ -670,7 +642,6 @@
 ### cross-site scripting attacks
 
 - malicious code is injected into webpages while the user is on the site
-
 - fallout
   - read credit card details/credentials
   - add script tags that inject even more malicious code
@@ -679,22 +650,15 @@
 #### stored cross-site scripting attacks
 
 - exposure
-
   - any page content rendering javascript stored in a database;
     - the js is stored in the db, but rendered in the browser
     - e.g. via any end-user controlled content / SQL injections
   - not escaping injected scripts when rendering HTML
-
 - fallout
-
   - see above
-
 - mitigation
-
   - escaping HTML control characters e.g. `" & ' < >`tags with their entity coding
-
     - this includes when inserting raw HTML to bypass templating languages, e.g. react
-
   - implement a content security policy via HTTP response headers
     - specify limitations of javascript execution
     - ^ especially inline script tags (i.e. via `<script>`)
