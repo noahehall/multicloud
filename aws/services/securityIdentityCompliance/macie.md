@@ -57,4 +57,6 @@
 
 - discovering relevant data fields collected by Macie and turning those fields into custom alerts.
 
-## eventbridge
+### eventbridge
+
+- As security findings are generated, they are pushed out to Amazon EventBridge

@@ -8,7 +8,7 @@
 
 ## my thoughts
 
-- think short quick i/o; else prefer ecs or straight up ec2
+- think short quick i/o; else prefer ecs
 - is the primary mechanism for integrating AWS services usually paired with:
   - cloudwatch for events/triggers
   - SNS/SQS for messaging
@@ -16,51 +16,52 @@
 
 ## links
 
-- [faqs](https://aws.amazon.com/lambda/faqs/?da=sec&sec=prep)
 - [AAAAA best practices](https://docs.aws.amazon.com/lambda/latest/dg/best-practices.html)
 - [cloudwatch logs for lambda](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-functions-logs.html?icmpid=docs_lambda_help)
 - [creating and sharing layers](https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)
 - [developer guide intro](http://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+- [developer guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 - [env vars](https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html)
+- [env vars](https://docs.aws.amazon.com/lambda/latest/dg/env_variables.html)
 - [execution environment](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-context.html)
+- [extensions](https://aws.amazon.com/blogs/aws/getting-started-with-using-your-favorite-operational-tools-on-aws-lambda-extensions-are-now-generally-available/)
+- [faqs](https://aws.amazon.com/lambda/faqs/?da=sec&sec=prep)
 - [function aliases](https://docs.aws.amazon.com/lambda/latest/dg/configuration-aliases.html)
 - [function urls](https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html?icmpid=docs_lambda_help)
 - [function versions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-versions.html)
+- [iam: Lambda resource access permissions](https://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html)
 - [integrating with efs](https://docs.aws.amazon.com/lambda/latest/dg/services-efs.html)
+- [invocation scaling](https://docs.aws.amazon.com/lambda/latest/dg/invocation-scaling.html)
 - [invocation: async + dead letter queues](https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html)
 - [invocation: event source mapping](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html)
 - [invocation: sync](https://docs.aws.amazon.com/lambda/latest/dg/invocation-sync.html)
+- [lambda error handling for kinesis and dynamodb](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-lambda-supports-failure-handling-features-for-kinesis-and-dynamodb-event-sources/)
 - [logging](https://docs.aws.amazon.com/lambda/latest/dg/python-logging.html)
+- [managing lambda reserved concurrency](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html)
 - [monitoring and troubleshooting](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-functions.html?icmpid=docs_lambda_help)
 - [monitoring and troubleshooting](https://docs.aws.amazon.com/lambda/latest/dg/troubleshooting.html)
 - [object: context](https://docs.aws.amazon.com/whitepapers/latest/serverless-architectures-lambda/the-context-object.html)
 - [object: event](https://docs.aws.amazon.com/whitepapers/latest/serverless-architectures-lambda/the-event-object.html)
+- [operator guide](https://docs.aws.amazon.com/lambda/latest/operatorguide/intro.html)
+- [parallelizing kinesis & dynamodb](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-lambda-supports-parallelization-factor-for-kinesis-and-dynamodb-event-sources/)
 - [permissions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-permissions.html)
+- [retry on errors](https://docs.aws.amazon.com/lambda/latest/dg/retries-on-errors.html)
 - [runtimes: custom](https://docs.aws.amazon.com/lambda/latest/dg/runtimes-custom.html)
 - [runtimes: provided](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html)
 - [s3 event triggers (tut)](https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html)
+- [s3: object lambdas](https://docs.aws.amazon.com/lambda/latest/dg/services-s3-object-lambda.html)
 - [scaling and (provisioned) concurrency](https://docs.aws.amazon.com/lambda/latest/operatorguide/scaling-concurrency.html)
-- [snapstart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html)
-- [testing lambda functions in the console](https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html?icmpid=docs_lambda_help)
-- [using lambda insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Lambda-Insights.html?icmpid=docs_lambda_help)
-- [x-ray: integration with lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html?icmpid=docs_lambda_help)
-- [invocation scaling](https://docs.aws.amazon.com/lambda/latest/dg/invocation-scaling.html)
-- [operator guide](https://docs.aws.amazon.com/lambda/latest/operatorguide/intro.html)
-- [developer guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+- [scaling kinesis & dynamodb streams](https://aws.amazon.com/blogs/compute/new-aws-lambda-scaling-controls-for-kinesis-and-dynamodb-event-sources/)
 - [security overview (PDF)](https://docs.aws.amazon.com/whitepapers/latest/security-overview-aws-lambda/security-overview-aws-lambda.pdf)
+- [security overview whitepaper](https://docs.aws.amazon.com/whitepapers/latest/security-overview-aws-lambda/security-overview-aws-lambda.html)
+- [snapstart](https://docs.aws.amazon.com/lambda/latest/dg/snapstart.html)
 - [sqs: integration](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html)
 - [sqs: tutorial](https://aws.amazon.com/serverless/use-sqs-as-an-event-source-for-lambda-tutorial/)
-- [retry on errors](https://docs.aws.amazon.com/lambda/latest/dg/retries-on-errors.html)
-- [managing lambda reserved concurrency](https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html)
-- [scaling kinesis & dynamodb streams](https://aws.amazon.com/blogs/compute/new-aws-lambda-scaling-controls-for-kinesis-and-dynamodb-event-sources/)
-- [lambda error handling for kinesis and dynamodb](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-lambda-supports-failure-handling-features-for-kinesis-and-dynamodb-event-sources/)
-- [parallelizing kinesis & dynamodb](https://aws.amazon.com/about-aws/whats-new/2019/11/aws-lambda-supports-parallelization-factor-for-kinesis-and-dynamodb-event-sources/)
-- [env vars](https://docs.aws.amazon.com/lambda/latest/dg/env_variables.html)
-- [versioning intro](https://docs.aws.amazon.com/lambda/latest/dg/versioning-intro.html)
+- [testing lambda functions in the console](https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html?icmpid=docs_lambda_help)
 - [traffing shifting using aliaes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-traffic-shifting-using-aliases.html)
-- [security overview whitepaper](https://docs.aws.amazon.com/whitepapers/latest/security-overview-aws-lambda/security-overview-aws-lambda.html)
-- [extensions](https://aws.amazon.com/blogs/aws/getting-started-with-using-your-favorite-operational-tools-on-aws-lambda-extensions-are-now-generally-available/)
-- [iam: Lambda resource access permissions](https://docs.aws.amazon.com/lambda/latest/dg/intro-permission-model.html)
+- [using lambda insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Lambda-Insights.html?icmpid=docs_lambda_help)
+- [versioning intro](https://docs.aws.amazon.com/lambda/latest/dg/versioning-intro.html)
+- [x-ray: integration with lambda](https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html?icmpid=docs_lambda_help)
 
 ### tools
 
@@ -460,6 +461,8 @@
 
 ### s3
 
+- configure a Lambda function and attach it to an S3 Object Lambda Access Point.
+- S3 will automatically invoke the Lambda function and return its response
 - event types
   - all object create events
 
