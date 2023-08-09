@@ -71,7 +71,11 @@
 
 #### serverless
 
-- serverless: opposite of server based
+- serverless: opposite of server based (lol)
+- key characteristics: seriously tho any cloud providers fully managed service can be part of a serverless architecture
+  - high availability
+  - horizontaly scales
+  - redundant and fault-tolerant
 - use cases/considerations
   - purpose driven architectures and application flexibility
   - quick to market
@@ -92,6 +96,10 @@
   - As complexity is added into the system, layers are introduced. There may be multiple layers of RESTful components.
   - Follows a code-on-demand pattern, where code can be downloaded on the fly (in our case implemented in Lambda) and changed without having to update clients.
 - API-First strategy: where each service within their stack is first and always released as an API
+
+### GraphQL
+
+### gRPC
 
 ## high availability
 
@@ -782,6 +790,23 @@
 - gateways vs routers: are usually separate devices, but modern routers can function as gateways
   - gateways connect networkers
   - router deliver data within a network
+
+### Edge
+
+- infrastructure and software that moves data processing and analysis as close as necessary to where data is created.
+- used to deliver intelligent, real-time responsiveness, and streamline the amount of data transferred.
+- includes services for caching, storage, databases, compute, etc
+- Edge locations: are remote locations outside of a normal cloud/on-premises data center.
+  - often lack connectivity or have intermittent connectivity to the cloud.
+  - require real-time or low-latency data collection and processing
+
+### Hybrid
+
+- blending of cloud resources with on-premises resources.
+- use cases include applications requiring low-latency connectivity to on-premises systems and data residency requirements.
+- implemented via a combination of
+  - gateways to connect standard on-premises resources to resources in the cloud
+  - hardware that moves cloud-native technology to the on-premises location.
 
 ## Storage
 

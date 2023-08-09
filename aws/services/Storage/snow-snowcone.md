@@ -1,6 +1,7 @@
 # Snowcone
 
 - Deploy ultra-portable data transfer and edge computing devices anywhere
+- The smallest member of the AWS Snow Family
 
 ## my thoughts
 
@@ -28,8 +29,10 @@
 
 ## basics
 
-- the smallest member of the AWS Snow Family of edge computing, edge storage, and data transfer devices,
-
 ## considerations
 
 ## integrations
+
+### GreenGrass
+
+### EC2

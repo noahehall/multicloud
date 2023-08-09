@@ -51,6 +51,7 @@
 - [databases](https://aws.amazon.com/products/databases/)
 - [frontend and mobile](https://aws.amazon.com/products/frontend-web-mobile/)
 - [hpc: high performance computing](https://aws.amazon.com/hpc/)
+- [iot](https://aws.amazon.com/iot/)
 - [machine learning](https://aws.amazon.com/machine-learning/)
 - [management and governance](https://aws.amazon.com/products/management-and-governance/)
 - [migration & transfer](https://aws.amazon.com/products/migration-and-transfer/)
@@ -486,6 +487,12 @@
 - Edge compute and storage solutions
   - remote or disconnected locations
   - hybrid solutions to connect on-premises to storage services in the AWS.
+- in AWS
+  - edge
+    - Snow
+  - hybrid
+    - Outposts
+    - Storage Gateway
 
 #### Edge: Local compute and storage
 
