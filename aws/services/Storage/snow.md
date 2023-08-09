@@ -1,9 +1,10 @@
 # Snow
 
 - physical edge computing & storage devices for running operations in harsh, non-data center environments and in locations with inconsistent network connectivity
-- [snowcone](./snow-snowcone.md)
-- [snowball](./snow-snowball.md)
-- [snowmobile](./snow-snowmobile.md)
+- stuff in this file generally applies to all snow family devices
+  - [snowcone](./snow-snowcone.md)
+  - [snowball](./snow-snowball.md)
+  - [snowmobile](./snow-snowmobile.md)
 
 ## my thoughts
 
@@ -23,6 +24,11 @@
 - for space- or weight-constrained environments, portability, and flexible networking options.
 
 ### pricing
+
+- rental fee for the duration of the device
+- ondemand: for shorter-term rentals
+  - includes service fee per job
+- committed: for longer-term rentals
 
 ## basics
 
@@ -60,6 +66,19 @@
 
 - downloadable tool for managing snow devices
 - takes all the existing operations available in the Snowball API and presents them as a graphical user interface.
+
+### Data Transfer
+
+- you ship the device back to a specific AWS region
+  - bunch of tracking options are available
+- S3 buckets where data will be imported are set up before you order the device.
+
+### Security
+
+- Trusted Platform Module: TPM; provides a hardware root of trust.
+  - interface to the trusted software stack during the measurements and verification of the boot environment integrity.
+  - Verification is performed after the power is switched on and before the Snowball Edge device is ready to be used.
+- data erasure after transfer completion and device returned follows the National Institute of Standards and Technology (NIST) guidelines for media sanitization.
 
 ## considerations
 

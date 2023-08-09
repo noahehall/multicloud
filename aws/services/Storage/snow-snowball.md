@@ -74,11 +74,6 @@
 
 ### Security
 
-- Trusted Platform Module: TPM; provides a hardware root of trust.
-  - interface to the trusted software stack during the measurements and verification of the boot environment integrity.
-  - Verification is performed after the power is switched on and before the Snowball Edge device is ready to be used.
-- data erasure after transfer completion and device returned follows the National Institute of Standards and Technology (NIST) guidelines for media sanitization.
-
 #### Encryption
 
 - encrypted with 256-bit encryption keys that KMS manages.
