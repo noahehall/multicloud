@@ -14,10 +14,11 @@
 
 ## features
 
-- manage file transfers workflows using your existing authentication systems.
-- Store information in S3 or EFS, manage workflows, and trigger automated, event-driven tasks with a fully-managed, low-code service.
+- manage & migrate file transfer workflows to S3/EFS and integrate existing authentication systems, and providing DNS routing with Route 53
+- Store information in S3 or EFS, manage workflows, and trigger automated, event-driven tasks
 - Support thousands of concurrent users with access controls
 - security requirements with data encryption, VPC and FIPS endpoints, compliance certifications, PGP, and more.
+- your existing SFTP/FTPS/FTP applications and clients do not change, only the storage endpoint to Amazon S3 or Amazon EFS.
 
 ### pricing
 
@@ -31,9 +32,42 @@
 
 ## basics
 
+- general workflow
+  - select one/more protocols
+  - configure s3 buckets or EFS file systems
+  - setup authnz
+    - import your existing user credentials
+    - integrate an identity provider such as Microsoft ADor LDAP.
+
+### architecture
+
+- external clients: connect over the public internet and access data via SFTP/FTPS
+- internal clients: connect over the public (VPN/PrivateLink) or private (DirectConnect) using SFTP/FTPS or FTP (since its a private connection )
+- VPC: connected clients access resources in AWS via an Internet/Private gateway
+- setup authnz
+  - IAM
+  - Microsoft AD
+  - LDAP
+- setup Storage services
+  - S3
+  - EFS
+
+### Servers
+
+- AWS transparently operates and manages all the compute, storage, and other infrastructure necessary to maintain high availability and performance for your server endpoints
+  - servers autoscale to match demand
+  - redundancy across multiple Availability Zones within an AWS Region.
+- endpoint provides a URL that provides direct logical connectivity to a service in an AWS Region
+
+#### SFTP Enabled
+
+#### FTPS Enabled
+
+#### FTP enabled
+
 ### Endpoints for file sharing
 
-- migrate, automate, and monitor your file transfer workflows into and out of S3/EFS using the SFTP, FTPS, and FTP protocols.
+- supported protocols: SFTP, FTPS, FTP
 
 #### SFTP Connectors
 
@@ -48,3 +82,20 @@
 ## considerations
 
 ## integrations
+
+- data in S3 and EFS preserves relevant file metadata
+- once data is AWS you can integrate as normal
+
+### Route 53
+
+### S3
+
+### EFS
+
+### Cloudwatch
+
+### IAM
+
+### KMS
+
+### Cloudtrail
