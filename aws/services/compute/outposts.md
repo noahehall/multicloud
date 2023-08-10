@@ -22,6 +22,14 @@
 
 ### pricing
 
+- the form factor: 1/2U rack or the 42U server
+- Outpost configurations: what installed locally?
+- delivery, installation, and maintenance of the Outpost equipment
+- payment plans:
+  - All Upfront
+  - Partial Upfront
+  - No Upfront.
+
 ## basics
 
 - a pool of AWS compute and storage capacity deployed at a site
@@ -54,7 +62,20 @@
 
 #### Form Factor
 
-- 1/2/4-2U rack that can scale from 1 rack to 96 racks to create pools of compute and storage capacity
+- outposts rack: 42U
+  - 80 inches tall, 24 inches wide, and 48 inches deep. Inside are hosts, switches, a network patch panel, a power shelf, and blank panels.
+  - installation: assembled and installed by AWS, you just plug it in
+  - locally available services: about double whats available in the 1/2U form
+  - remotely available services: everything thats regionally available
+- outposts server: 1U, 2U
+  - rack-mountable servers fit inside 19" width, EIA-310 cabinets.
+    - 1U high server is 24” deep, and uses AWS Graviton2 processors.
+    - 2U high server is 30” deep and uses 3rd generation Intel Xeon Scalable processors.
+  - installation: AWS ships it to you, can be installed by you or third party
+    - AWS remotely provisions compute and storage resources
+  - locally available services: about half of whats available with the 42U form factor
+  - remotely available services: everything thats available in the region
+- scale from 1 rack to 96 racks to create pools of compute and storage capacity
 - installation
   - AWS installs your Outpost at your customer-managed physical buildingsq
   - meet the facility, networking, and power requirements

@@ -23,6 +23,13 @@
 
 ## basics
 
+- a virtual tape library (VTL) to your backup application using storage open standard iSCSI protocol.
+  - consists of virtual tape drives and a virtual media changer.
+  - immediate or frequent access to data
+    - stored in service-managed S3 buckets, and creates new virtual tapes automatically
+  - long term storage
+    - archive tier that sits on top of S3 Glacier Flexible Retrieval or S3 Glacier Deep Archive
+
 ### Standard Tape Gateway
 
 - Back up and archive on-premises data to virtual tapes on AWS using your network.

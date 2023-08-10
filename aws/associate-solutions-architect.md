@@ -4,7 +4,8 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Edge and Hybrid Storage Solutions > Hybrid Storage Solutions: AWS Outposts > Pricing
+    - Getting Started with AWS Storage
+      - Transferring Your Data to the AWS Cloud
     - AWS Systems Manager: skip this course and just read the fkn docs
       - no video transcript, nor playback speed on the video
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
