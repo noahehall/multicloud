@@ -1,6 +1,6 @@
 # DataSync
 
-- secure data migrations
+- secure online data migrations/synchronization between on-premises storage systems and AWS or between AWS Storage services.
 
 ## my thoughts
 
@@ -32,6 +32,36 @@
 
 ## basics
 
+- migrate data between
+  - Network File System (NFS) shares
+  - Server Message Block (SMB) shares
+  - Self-managed object storage
+  - Snowcone
+  - S3 buckets
+  - EFS file systems
+  - FSx for Windows File Server file systems
+- network optimizations
+  - incremental transfers
+  - in-line compression
+  - sparse file detection
+  - in-line data validation and encryption.
+
+### Datasync Agent
+
+- Connections between the local agent and AWS are multi-threaded
+-
+
+### Security
+
+- data integrity verification in transit and at rest
+
+#### Encryption
+
+- at rest
+- in transit
+
 ## considerations
 
 ## integrations
+
+### Cloudwatch

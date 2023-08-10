@@ -5,7 +5,7 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - Getting Started with AWS Storage
-      - Transferring Your Data to the AWS Cloud > AWS DataSync
+      - Transferring Your Data to the AWS Cloud > AWS Application Migration Service
     - AWS Systems Manager: skip this course and just read the fkn docs
       - no video transcript, nor playback speed on the video
   - LAB: Deep dive: VPC peering > deep dive 2.pdf

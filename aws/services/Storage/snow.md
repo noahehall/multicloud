@@ -1,6 +1,6 @@
 # Snow
 
-- physical edge computing & storage devices for running operations in harsh, non-data center environments and in locations with inconsistent network connectivity
+- physical edge computing & storage devices for running operations in harsh, non-data center environments, locations with inconsistent network connectivity, or transporting exabytes of data into and out of AWS
 - stuff in this file generally applies to all snow family devices
   - [snowcone](./snow-snowcone.md)
   - [snowball](./snow-snowball.md)
@@ -50,17 +50,36 @@
 - shorter duration use cases where you also want the data imported into Amazon S3
 - ship an empty Snowball Edge device to you
 - return the device and your data is uploaded to your Amazon S3 bucket selected during job creation
+- Snow service
+  - Snowball Edge only as a single device. Clustering the device is not permitted for import jobs.
+    - storage Optimized without compute
+      - use the device only for transferring data
+    - Storage Optimized with compute and Compute Optimized devices
+      - edge data collection and data processing
+      - ability import the data into Amazon S3 when the device is returned to AWS.
+  - Snowcone
+    - pre-formatted as mostly NFS storage
+    - additional space is available for Amazon EBS volumes to support the onboard Amazon EC2 instances.
+    - DataSync client is not preloaded with import to Amazon S3 jobs.
 
 #### Export from Amazon S3
 
 - AWS loads data from your Amazon S3 bucket on the device and ships it to you.
 - copy data from your device to your local storage. then ship the device back
+- Snow Service
+  - Snowball/Snowcone storage optimized without compute
+    - export your data from your chosen Amazon S3 bucket.
+    - only allows for exporting your data to your on-premises storage location
 
 #### Local compute and storage
 
 - longer duration edge compute and storage use cases,
+- no data is imported into Amazon S3 when the device is returned to AWS.
 - perform compute and storage workloads on the device without any data transferred into AWS when returned
 - AWS erases all data on the device securely.
+- Snow service
+  - Snowcone
+  - use the preloaded DataSync client to import the data into your AWS storage services.
 
 ### OpsHub
 

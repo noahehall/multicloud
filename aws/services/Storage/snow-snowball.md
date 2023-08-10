@@ -1,4 +1,4 @@
-# Snowball
+# Snowball Edge
 
 - edge computing, data migration, and rugged edge storage device
 - move offline/remote data to the cloud
@@ -39,13 +39,17 @@
 
 ### Storage Optimized
 
-- highest storage capacity
-  - 24 vCPUs of compute capacity
-  - 80 terabytes (TB) of usable block or S3-compatible object storage.
-- use cases
-  - local storage
-  - large-scale data transfers.
-  - data transfer-only jobs, without compute capacity enabled, at a reduced cost.
+- Storage Optimized without compute
+  - 80 TB of S3 compatible storage without available vCPUs or Amazon EBS storage.
+  - use cases
+    - data transfer-only jobs at a reduced cost.
+- Storage Optimized with compute
+  - highest storage capacity
+    - 24 vCPUs of compute capacity
+    - 80 terabytes (TB) of usable block or S3-compatible object storage.
+  - use cases
+    - local storage
+    - large-scale data transfers.
 
 ### Compute Optimized
 
