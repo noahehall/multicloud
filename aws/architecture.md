@@ -92,46 +92,6 @@
   - understand your component timeouts, e.g. api gateway and lambda have different hard limits
 - amazon has a database engine for every occasion, choose wisely
 
-## service & product categories
-
-### compute
-
-- VMs: ec2s
-- containers: ECS (ec2 launch type) + ECR
-- serverless: lambda or ECS (fargate launchtype) + ECR
-
-### security
-
-- flow of traffic: VPC, NACLs, route tables, security groups
-- authnz: IAM policies, resource policies
-
-### storage
-
-- objects: s3
-- compute-persistence: ebs
-- compute-ephemeral: ec2 instance store
-- file system: EFS, FSx
-- cache: file cache
-- data migration: datasync, snow family
-- hybrid cloud storage and edge computing: storage gateway, snow family
-- file transfer: transfoer family
-- disaster recovery and backup: Elastic Disaster Recover, Backup
-
-### databases
-
-- relational: aurora, rds, redshift
-- key-value: dynamodb
-- in-memory: elasticache, memorydb for redis
-- document: documentdb with mongodb compatibility, dynamodb
-- wide column: keyspaces
-- graph: neptune
-- time series: timestream
-- ledger: ledger database services (QLBD)
-
-### cost management
-
-- expenses and usage: AWS Cost Explorer, the AWS Billing and Management Console, AWS Budgets, AWS Trusted Advisor(opens in a new tab)
-
 ## Serverless
 
 - abstracting away the compute infrastructure to the point you have no responsibilties for servers on which your code runs
@@ -538,7 +498,7 @@
 
 #### data synchronization & online transfer
 
-- moving data between on-premises storage systems and AWS Storage services and between AWS Storage services
+- moving data between on-premises AWS and between AWS Storage services
 - in AWS
   - AWS DataSync: online data transfer service moving data between on-premises storage systems and AWS and between AWS services
 
@@ -552,7 +512,7 @@
 
 - in AWS
   - Application Migration Service: MGN; migrating applications to the AWS Cloud, AWS GovCloud (US), and AWS Outposts.
-  - CloudEndure Migration: is a highly automated lift-and-shift (rehost) solution
+    - fka CloudEndure
 
 ### Data protection
 
@@ -573,3 +533,13 @@
 - built into most services, check the docs for the storage service you're using
 
 #### Disaster Recovery Services
+
+## Analytics
+
+### Tags
+
+- tagging resources is foundational to all analytical services
+
+### cost management
+
+- expenses and usage: AWS Cost Explorer, the AWS Billing and Management Console, AWS Budgets, AWS Trusted Advisor
