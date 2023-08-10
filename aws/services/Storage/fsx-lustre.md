@@ -64,6 +64,10 @@
 
 - data imported into FSx for Lustre is encrypted
 
+### Snapshots
+
+- create manual/ automatic daily backups of persistent file systems that are not linked to S3
+
 ## considerations
 
 ## integrations

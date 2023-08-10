@@ -833,6 +833,19 @@
   - metrics improvement strategies as part of a data-driven approach, benchmarkin/load testing
     - Define your storage performance requirements
     - Identify your workload’s most important storage performance metrics
+- Q/A
+  - storage-data-application workflow
+    - New/Existing
+    - requirements: interopability with other systems, configuration, retention, compliance, business, access patterns
+    - Use case: high performance computing, databases, static content, backup/retrieval heavy, read vs write heavy, authnz/data sharing
+  - Storage
+    - location: remote, edge, hybrid, regional
+    - type: block/file/object/combination
+    - performance: iops/throughput/latency/transactions
+  - Data
+    - access protocols: rest/protobuff/nfs/ftp/smb
+    - transfer performance: over the wire/physical/between services/redundancy
+    - protection: backups, retention, compliance, longterm archival, point-in-time snapshots
 
 ### storage types
 
@@ -877,6 +890,22 @@
   - Snapshots can consume more space than your actual data
   - systems require additional space for operation overhead, especially for write operations.
 - actual: business requirements + allocated:
+
+### Data Protection
+
+- designed to restore/preserve a copy of data from a desired point in time
+- goals
+  - Restore data in a timeframe meeting Recovery Objectives
+  - recovery: protect it in case of a disaster, accident, or malicious action.
+  - compliance: theres bunches of regulations depending on the industry and type of data stored
+- Recovery Point Objectives: RPO; recovering to a specific point in time, usually measured in milliseconds
+- Recovery Time Objectives: RTO; time it takes to recover, usually measured in minutes
+- backups: creating efficient and cost-effective data copies
+  - incremental
+  - frequency of backups
+  - capacity limits
+  - expiration
+- disaster recovery drills
 
 ## analytics
 

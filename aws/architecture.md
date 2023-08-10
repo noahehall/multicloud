@@ -517,6 +517,10 @@
 ### Data protection
 
 - optional services to meet your data redundancy and disaster requirement needs
+- in AWS
+  - Backup
+  - Snapshots (native to many services)
+  - DRS Disaster Recovery Service
 
 #### Backup & Archive
 
