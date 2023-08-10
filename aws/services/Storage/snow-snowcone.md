@@ -45,6 +45,7 @@
 ### File-based storage
 
 - 8 TB of usable storage accessible as an NFS mountpoint
+- Snowcone comes in an 8TB HDD version and an 14TB SSD version
 
 ### Security
 
