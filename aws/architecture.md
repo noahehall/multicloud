@@ -1,7 +1,7 @@
 # Common AWS Architecture
 
 - TODOs
-  - theres bunches of stuff in here that should be in multicloud.md
+  - theres bunches of stuff in here that should be non-AWS specific files
 
 ## links
 
@@ -220,8 +220,8 @@
 #### scale in demand
 
 - both compute + data
-- organic
-- merger and acquitision: increased dramatically within a short period
+- organic demand
+- merger and acquisition: increases dramatically within a short period
 
 #### scale in complexity
 
