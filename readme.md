@@ -2,7 +2,7 @@
 
 ## Links
 
-- [AAA: getting started](./multicloud.md)
+- [getting started](./multicloud.md)
 
 ### Providers
 
