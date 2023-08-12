@@ -518,6 +518,12 @@
 ## networking
 
 - CSMA: carrier-sense multiple access
+- Software Defined Networks (SDN)
+  - an approach to networking that uses software based controllers/APIs to communicate with underlying infrastructure and direct traffic
+  - a group of software services working together to create a network construct
+- Network design documents
+  - documents and diagrams visualize the components of a network, including routers, firewalls, and devices
+  - show how those components interaca
 
 ### Protocols
 
@@ -771,27 +777,19 @@
   - SMTP
   - SNMP
 
-### Software Defined Networks (SDN)
+### Networking Components
 
-- an approach to networking that uses software based controllers/APIs to communicate with underlying infrastructure and direct traffic
-- a group of software services working together to create a network construct
-
-### Network design documents
-
-- documents and diagrams visualize the components of a network, including routers, firewalls, and devices
-- show how those components interaca
--
+- gateways vs routers: are usually separate devices, but modern routers can function as gateways
+  - gateways connect networkers
+  - router deliver data within a network
 
 #### network gateways
 
 - network gateway: device or node that connects networks with different transmission protocols and performs protocol conversions to translate communications
 - has a network interface card with inputs, outputs, and software for this translation of network protocols.
 - serve as an entry and exit point for a network
-- gateways vs routers: are usually separate devices, but modern routers can function as gateways
-  - gateways connect networkers
-  - router deliver data within a network
 
-### Edge
+### Edge Networking
 
 - infrastructure and software that moves data processing and analysis as close as necessary to where data is created.
 - used to deliver intelligent, real-time responsiveness, and streamline the amount of data transferred.
@@ -800,7 +798,7 @@
   - often lack connectivity or have intermittent connectivity to the cloud.
   - require real-time or low-latency data collection and processing
 
-### Hybrid
+### Hybrid Networking
 
 - blending of cloud resources with on-premises resources.
 - use cases include applications requiring low-latency connectivity to on-premises systems and data residency requirements.
