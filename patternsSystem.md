@@ -1,35 +1,43 @@
-# microservices
-
-- microservice patterns from the edge to the datastore
+# System Patterns
 
 ## links
 
-- [acid transactions](https://databricks.com/glossary/acid-transactions)
 - [the action pattern](https://ponyfoo.com/articles/action-pattern-clean-obvious-testable-code)
 - [circuit breaker pattern](https://www.martinfowler.com/bliki/CircuitBreaker.html)
 - [Selina Liu: microservices @ airbnb](https://www.youtube.com/watch?v=PIw1WF1UXNc)
+- [grpc](https://grpc.io/)
+- [protobuf](https://protobuf.dev/)
+- [http decision diagram](https://github.com/for-GET/http-decision-diagram)
+- [network protocols](https://en.wikipedia.org/wiki/Lists_of_network_protocols)
+- [network topoligies](https://en.wikipedia.org/wiki/Network_topology)
+- [Network Address Translation](https://en.wikipedia.org/wiki/Network_address_translation)
+- [aws architecture center](https://aws.amazon.com/architecture/)
+- [azure architecture center](https://docs.microsoft.com/en-us/azure/architecture/)
+- [GCP patterns for scalablee and resilient apps](https://cloud.google.com/architecture/scalable-and-resilient-apps)
+- [AWS leadership principles](https://www.amazon.jobs/en/principles?ref=wellarchitected-wp)
+- [list of software architecture styles and patterns](https://en.wikipedia.org/wiki/List_of_software_architecture_styles_and_patterns)
+- [IBM: the GOAT of documentation](https://www.ibm.com/docs/en)
+- [github architectural decision records](https://adr.github.io/)
+- [TOGAF capability framework](https://pubs.opengroup.org/architecture/togaf9-doc/arch/?ref=wellarchitected-wp)
+- [zachman framework](https://www.zachman.com/about-the-zachman-framework?ref=wellarchitected-wp)
 
 ## best practices
 
 - focus on reducing a services blast radius
   - if service A fails, how many other services will be disrupted?
-- whether you describe your architecture in terms of Tiers, there will always be tierrs
+- whether or not you describe your architecture in terms of Tiers, there will always be tiers
   - lower tiered services generally have a bigger blast radius; require the most stability and resilience
-    - never let lower tiered services call higher tiered services which may have reduce stability
+  - never let lower tiered services call higher tiered services which may have reduce stability
 
-## basics
+### Antipatterns
 
 - abstraction for the sake of abstraction increase complexity & cost for no value
 
-### terms
+## basics
 
+- cascading failure pattern: where a failure at one integration point, cascades to cause failures/disruptions throughtout the application stack in a layered architecture
 - architectural style: way of designing processes & building systems to facilitate an end goal, e.g cloud native is an architectural style
 - dependency graph:
-- call patterns
-- cloud native: designed to facilitate operating in the cloud
-  - externalizing configuration
-  - focusing on portable (global) and scalability (in & out)
-  - making your apps start fast, and handle shutdowns gracefully
 - service types:
   - data service: connects to a data source within a system
   - business service: builds on top of data services; business domains that aggregate multiple data services to meet business objectives
@@ -46,27 +54,125 @@
   - data collectors: services geared toward retrieving data from a single data source, serializing and storing the raw data (e.g. in s3)
   - data convertors: convert raw serialized data into a common serialization format, with a defined interface and storing the new formatted data (e.g. back into s3)
   - data processors: take the converted data, and process it for storing into the final db (e.g. a knowledge graph)
+- scalability
+  - vertical: scale up/down: whatever you have now, but optimized for multi-core, multi-cpu, and high capacity storage devices, usually on the fly
+  - horizontal: scale in/out: whatever you have now, but more of it; usually on the fly
+- availability
+  - low latency and remain highly accesible even in the event of hardware/system/network failures
+- fault tolerance: the degree to which a system operates in the presense of failing components
+  - load balancing
+  - state management
+  - redundancy
 
-## infrastructure
+## Networking
 
-- focus early on distinguishing between services requering common vs specific infrastructure
+### peer-to-peer networking
 
-### shared infrastructure examples
+- no server exists
+- each client is connected to mulitple other clients
 
-- api framework: e.g. using [apache thrift](https://thrift.apache.org/) and
-- messaging framework: e.g. [apache kafka](https://kafka.apache.org/)
-- api explorer: e.g. using swagger aka [openapi](https://openapi.tools/) for finding and testing APIs
-- CI/CD: artifact repositories, deployment tools should be consistent across all services
-- orchestration and service governance
-- observability and metrics
+### client-server model
 
-### specific examples
+- a single server to which all clients connect
 
-- business logic: implementation details left to the developer
+### Circuit Breaker
 
-## layers
+- a service that watches for failures through systems boundaries, and reroutes requests upon detection
 
-- depending on the sources of data and clients of your services could involve any / or different layers
+## Storage
+
+- cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
+- consistency: every read receives the most recent write/error
+- availability: every request receives a (non-error) response, without the guarantee that it contains the most recent write
+  - can be overcome via active replication: in the event of failure just switch to the redundant system
+- partition tolerance: the system continues to operate despite an arbitrary number of messages being dropped/delayed by the network between nodes
+- network partition failure: forces you to either cancel the operation & decrease availabilty but ensure consistency, or proceed with the operation and thus provide availability but risk consistency
+- garbage collection
+- compaction
+- node: generally a unit of storage, e.g. a single db instance including all the software running on the hardware
+- cluster: a group of nodes that work together; e.g. a 3 node cluster is the minimum for high availability
+- replication: the process of replicating data across nodes ina cluster
+- replication factor: The total number of replica Nodes across a given Cluster; the number of copies of a set of data, e.g. RF of 1, means theres 1 copy, RF 2 means there 2 identical copies, etc, generally you want 3
+- consistency level: how many nodes must validate a READ/WRITE before the request is considered successful
+  - e.g. at least 2 nodes must acknowledge an operation/query/whatever for it to be considered 200
+- big data: generally the dataset is so huge it cant be contained in a single node, thus a cluster of nodes are required
+
+### data fabric
+
+### data mesh
+
+- enables collection, integration and analysis of data from disparate systems concurrently in a single location
+
+### data lake
+
+- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
+  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
+
+### data warehouse
+
+- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
+  - i.e. you push filtered data into a warehouse, for later analysis
+
+### Databases
+
+#### Relational
+
+- relational, structured
+- best for online analytical processing
+
+#### NewSql
+
+#### nosql
+
+- hierarchical, unstructured
+- best for online transaction processing at scale
+- scales out
+- main distinctions are data model driven: e.g. rdbms vs nosql vs wide-column etc
+- secondary distinctions is according to the cap thereom: usually a choice between C and A, as all are susceptible to P (failures)
+  - consistency: will every read receive the most recent write
+  - availability: will ever request receive a non-error response (but doesnt have to be the most recent write)
+  - partition tolerance: will the system operate in the face of network failures/msg loss
+
+##### key /val
+
+- data model
+  - key value pairs: each key has only one value
+  - fast queries, no need for a query language
+
+##### document store
+
+- data model
+  - data stored in documents of tagged elements (like a row in rdbms)
+
+##### column (oriented)
+
+- long list
+- data model
+- characteristics
+  - wheres SQL stores record by record (row by row), column oriented dbs store column by column
+  - improves storage and retrieval performance
+
+##### wide column store
+
+- long list
+- data model
+  - store data in columns
+  - related columns are grouped into tables (column families)
+- characteristics
+  - supports large numbers of dynamic columns:
+  - aka 2 dimensional key value stores
+
+##### graph
+
+- long list
+- data model
+  - use nodes & edges to store data
+
+##### multi-model
+
+- go for the native multi models, and not the ones enhanced with extensions/plugins/etc (timescale is dope tho)
+
+## Microservices
 
 ### Presentation Services
 
@@ -319,3 +425,159 @@
 - mechanism for provider services to be found by consuming services in a dynamic runtime where service identifiers/locations/etc can and do change in response to system activity
 - a central location should should exist that can be queried to find what services exist to acocmplish each task in the system,
   - as services boot, they should advertise themselves to this datastore, describing their location and what services they offer
+
+## monolith
+
+- all services in a system are within a single compile, yield and runtime environment
+
+## N-tier
+
+- substacks services based on the flow of data, each stack/tier/layer exists at a different level of abstraction and is responsibile for a specific
+  - tier: abstracts services by what they are, instead of what they do, so still some duplication exists over service-oriented architectures
+    - the bottom tier(s) generally closer to the data and provides services to the tier above it
+    - increase the number of tiers depending on the complexity of the model & types of requests & optmizations required
+  - data flows down from the requester until it reaches a lower tier that can respond to the request
+  - a common theme being the hierarchical and layered flow of data, generally unidirectional but in some patterns biderirectional (e.g. server sent events)
+  - each tier can have its own HECCYA description
+- common to think of N-Tier architectures through
+  - presentation: UI and pure UI logic; usually the presentation of the business logic solution to external users
+  - business: the logic of the problem domain, what does the application do?
+  - data: database related stuff
+
+### layered
+
+- type of n-tier in which communication between tiers are forced to flow in a single direction, from top to bottom
+  - presentation: UI
+  - application: abstracts away implemnetation details to interact wiht the business layer
+  - business: business logic
+  - persistence: abstracts away the implementation details to interact with the database
+  - data: database
+
+### microkernel / plugin
+
+- core logic that can be extended via plugins (sidecars), and defines the interface of each plugin
+- each plugin/sidecar then implements the contract
+
+### MVC
+
+- extends the multi-tier pattern: divides an application into 3 tiers
+  - model: manages application data and data related functionality
+    - the central component of the pattern
+    - the dynamic data structure of the software application
+    - controls the data and logic of the applications
+  - view: displays application data and interacts with the user
+    - accesses the data in the model and presents it to the user
+  - controller: manages the interaction between the model & view layers
+    - handles input from the use rand mediates between the model and view
+    - listens to external inputs from the view/user and creates appropriate outputs
+    - interacts with the model by calling methods to generate appropriate responses
+  - communication: the messaging channel connecting the model, view and controller
+    - e.g. an event/callback notification system
+    - contain state information that is passed between the 3 tiers
+      - e.g. an external event from the user may be transmitted to the controller to update the view
+- key concepts:
+- advantages:
+- disadvantages:
+- examples:
+
+#### MVP model view presenter
+
+- evolution of MVC
+- model: see MVC
+- view: see MVC
+- presenter: 2 types
+  - passive view: all UI logic is in the presenter layer
+    - presenter responsible for dynamically creating a static view of the current state of the model
+    - and the view is responsible for rendering the static content given to it by the presenter
+  - supervising controller: rendering logic is in within the UI, but data transformation logic is within the presenter
+
+#### MVVM: model view view model
+
+- model: business logic & data
+- view model: interacts with the model
+- view: interacts with the view model
+  - two-way databinding between the view data, and the model data
+
+### client-server
+
+- extends the multi-tier pattern: two main components taking roles of service requester (client) and service provider (server)
+  - client: initiates & sends service requests to the server
+    - the client provides ports for each services it needs
+  - server: responds to request from the client potentially fulfilling the request/reasons why it cant
+    - the server provides ports for each service it provides
+  - communication: generally linked request/reply connectors from client/server M:1
+- key concepts
+- advantages:
+  - central computing of data: generally all files are stored in the central location for the network
+- disadvantages:
+  - generally need a lot of compute power for the server to handle many requests
+- examples:
+  - the internet operates on a client-server pattern
+
+### Controller-Responder (master-slave|primary-replica)
+
+- extends the multi-tier pattern consisting of two components the controller and responser(s)
+  - controller: distributes work and copies of work-data among identical responders for processing
+    - aggregates the responses into a single composite value
+    - responsible for writing/storage of data & results from work
+    - manages how work is distirbuted among responders
+  - responders: processes & returns a slice of work given to it by the controller
+    - responsible for processing work and reading data
+  - communication:
+- key concepts:
+- advantages:
+  - analytic applications can be read from the responder component without changing the data content of the controller component
+  - responders can be taken offline and synced back without data loss
+- disadvantages:
+  - single point of failure if the controller fails
+    - responders can be promoted to controller, but technical deficits exist in the time it takes to transition
+- examples:
+
+## service oriented
+
+- beyond tiers, which group by fn (what it is), this groups services by activity (what it does)
+- heavily dependent on interface design & contracts and communication architecture patterns
+- enterprise service bus: the controller responsible for orchestrating communication between services
+
+### Gateway
+
+- e.g. an API gateway
+
+### microservices
+
+- the extreme in service oriented architectures, with the removal of the enterprise service bus
+- each service should be single purpose, stateless, independenty scalable and composable
+- involves creating multiple applications (i.e. micro services) that work interdependently
+  - although each service can be developed and deployed independently, its functionality is interwove with other microservices
+  - each application is free to take on another architecture pattern if complex enough, or use a design pattern
+  - messaging:
+  - service discovery:
+- key concepts
+  - separate CI/CD of each service: creates a streamlined delivery pipeline that increases scalability
+  - callable via APIs/Events
+    - apis: asyncrhonous/synchronous and typically over HTTP
+    - events: always asynchronous: useful to think of events as messages
+- advantages:
+- disadvantages:
+- examples
+
+### serverless
+
+- not as extreme (implementation wise) as microservices
+- currently restricted by the available cloud technology for advanced use-cases
+- backend as a service: abstracts security (e.g. authnz), operational (e.g. logging), and database (e.g. RDS) implementation details away for the core application
+- function as a service: simple utilities callable over a network
+
+## decentralized
+
+### Peer-to-Peer
+
+- extends the the client-server architecture, utilizing a decenralized system in which peers communicate with each other directly
+  - abstraction X...
+  - communication:
+    - clients can connect to each other for services and connect to the server generally to retrieve the list of available clients
+- key concepts:
+  - clients are `peers` and share work + responsibilities
+- advantages:
+- disadvantages:
+- examples:

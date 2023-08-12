@@ -32,7 +32,6 @@
     - branch based: has long running branches, e.g. a dev vs master branch
   - never allow flaky tests: fkn fix or fkn remove
   - every build outputs a status, a log and an artifact for deployment
-- continuous integration
   - always start with a clean env; each build should start with a clean state
   - keep builds fast
   - never commit new code to broken builds, leave the build broken, or remove tests that fail without first troubleshooting
@@ -55,12 +54,7 @@
 
 ## basics
 
-### terms
-
 - composability: services tend to rely on multiple components, packaging components into artifacts enables dependency management at component level
-- cascading failure pattern: where a failure at one integration point, cascades to cause failures/disruptions throughtout the application stack in a layered architecture
-- circuit breaker pattern: a service that watches for failures through systems boundaries, and reroutes requests upon detection
-- design: theory & thoughtful planning
 - devops: developer operations; the entire service lifecycle, from design > dev > production support
   - a partnership of all the team members involved in software development and operations.
   - The main reason to deploy DevOps in the cloud is to allow infrastructures to be controlled by APIs.
@@ -90,8 +84,6 @@
   - continued learning
   - patches & upgrades
   - etc
-- chat-ops: using your chat client (e.g. slack) as part of your operational system
-  - push notifications from your systems & process automation cycles into your chat client
 - shadow IT: teams deliberately bypassing processes & formalities just to get shit done
 - conways law: melvin conway: organizations which design systems, are constrained to produce designs which are copies of the communication structures of these organizations
   - i.e. systems align themselves to communication boundaries; sales systems, ops systems, dev systems, biz systems, etc.
@@ -106,7 +98,7 @@
     - service design
     - service transition
     - service operation
-- data warehouse: inventory of all IT assets, and the relationships between them
+- data warehouse: inventory of all data, and the relationships between them
 - data lake: a centralized repository that allows you to store all your structured and unstructured data at any scale; a system or repository of data stored in its natural/raw format, usually object blobs or files
 - cycle: the full commit pipeline, from commit to deploy
 - cycle time: the time it takes for a change to be committed to be deployed
@@ -293,6 +285,7 @@
   - test
   - artifact repository
   - deployment
+- self serve infrastructure: instead a of a global operations team managing the entire infrastructure, each specific team are responsibile for their devstack via tools provided by the central operations team; key to devops
 - empowering teams: the CI/CD pipeline should be a self-service & transparent system
   - changes team dynamics and collaboration to ensure high fidelity is maintained
 - reduced cycle times: the duration from code commit to release to production
@@ -418,3 +411,8 @@
     - change introduces new forms of failure
     - systems contain changing mixtures of failures latent within them
     - all systems are always running in degraded mode
+
+## Chatops
+
+- using your chat client (e.g. slack) as part of your operational system
+- push notifications from your systems & process automation cycles into your chat client

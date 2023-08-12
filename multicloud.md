@@ -7,17 +7,20 @@
 - [api: fan out/in integration pattern](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
 - [api: rest](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
 - [api: restful api best practices](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
+- [cap theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+- [database transactions](https://en.wikipedia.org/wiki/Database_transaction)
+- [learning domain driven design](https://dddcommunity.org/learning-ddd/)
 - [microservice architecture patterns and best practices](http://microservices.io/index.html)
-- [noisy neighbor antipattern](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor)
-- [serverless framework](https://github.com/serverless/serverless)
-- [state of devops 2021 (PDF)](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf)
+- [networking: Address Allocation for Private Internets](http://www.faqs.org/rfcs/rfc1918.html)
 - [networking: intro](https://web.stanford.edu/class/cs101/network-1-introduction.html)
 - [networking: ip address & cidr range visualizer](https://cidr.xyz/)
-- [learning domain driven design](https://dddcommunity.org/learning-ddd/)
-- [TCO: serverless vs traditional clouds](https://pages.awscloud.com/NAMER-field-GC-Deloitte-TCO-whitepaper-2019-learn.html)
-- [OWASP quick reference](https://www.owasp.org/images/0/08/OWASP_SCP_Quick_Reference_Guide_v2.pdf)
-- [networking: Address Allocation for Private Internets](http://www.faqs.org/rfcs/rfc1918.html)
 - [networking: understanding ip addressing](https://www.ripe.net/about-us/press-centre/understanding-ip-addressing)
+- [noisy neighbor antipattern](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor)
+- [OWASP quick reference](https://www.owasp.org/images/0/08/OWASP_SCP_Quick_Reference_Guide_v2.pdf)
+- [serverless framework](https://github.com/serverless/serverless)
+- [shared nothing architecture](https://en.wikipedia.org/wiki/Shared-nothing_architecture)
+- [state of devops 2021 (PDF)](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf)
+- [TCO: serverless vs traditional clouds](https://pages.awscloud.com/NAMER-field-GC-Deloitte-TCO-whitepaper-2019-learn.html)
 
 ### ISO standards
 
@@ -71,8 +74,8 @@
 
 #### serverless
 
-- serverless: opposite of server based (lol)
-- key characteristics: seriously tho any cloud providers fully managed service can be part of a serverless architecture
+- key characteristics: any cloud providers fully managed service can be part of a serverless architecture
+  - infrastructure externally managed
   - high availability
   - horizontaly scales
   - redundant and fault-tolerant

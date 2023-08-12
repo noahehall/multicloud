@@ -1,0 +1,352 @@
+# Human Capital
+
+## links
+
+- [16PF questionnaire](https://en.wikipedia.org/wiki/16PF_Questionnaire)
+- [21st century skills](https://en.wikipedia.org/wiki/21st_century_skills)
+- [action plan](https://en.wikipedia.org/wiki/Action_plan)
+- [career assessment](https://en.wikipedia.org/wiki/Career_assessment)
+- [career clusters](https://en.wikipedia.org/wiki/Career_Clusters)
+- [career positioning](https://en.wikipedia.org/wiki/Career_positioning)
+- [chikckerings theory of oidentity development](https://en.wikipedia.org/wiki/Chickering%27s_theory_of_identity_development)
+- [cto, vp, chief artchitect](https://www.bowdoingroup.com/insights-news/blog/cto-vp-engineering-chief-architect-differences/)
+- [cto](https://austinstartups.com/what-is-a-cto-d7810db3b1a1)
+- [curriculum vitae](https://en.wikipedia.org/wiki/Curriculum_vitae)
+- [first principles](https://fs.blog/2018/04/first-principles/)
+- [fractional CTO](https://medium.com/voltage-control/maybe-you-need-a-fractional-cto-a64202025693)
+- [holland codes](https://en.wikipedia.org/wiki/Holland_Codes)
+- [lifestyle](<https://en.wikipedia.org/wiki/Lifestyle_(sociology)>)
+- [lifestyles](<https://en.wikipedia.org/wiki/Lifestyle_(sociology)#History_of_lifestyles_studies>)
+- [list of skillz](https://en.wikipedia.org/wiki/Category:Skills)
+- [myers-briggs type indicator](https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator)
+- [myers-brigs type indicator](https://en.wikipedia.org/wiki/Myers%E2%80%93Briggs_Type_Indicator)
+- [personal development planning](https://en.wikipedia.org/wiki/Personal_development_planning)
+- [personal development](https://en.wikipedia.org/wiki/Personal_development)
+- [personality types](https://en.wikipedia.org/wiki/Personality_type)
+- [persoonality traits](https://en.wikipedia.org/wiki/Trait_theory)
+- [self help](https://en.wikipedia.org/wiki/Self-help)
+- [skill](https://en.wikipedia.org/wiki/Skill)
+- [slef-report study](https://en.wikipedia.org/wiki/Self-report_study)
+- [strong interest inventory](https://en.wikipedia.org/wiki/Strong_Interest_Inventory)
+- [time management](https://en.wikipedia.org/wiki/Time_management)
+
+## Skill Assessment
+
+### personal development
+
+- takes place over the course of a person's entire life
+- involves formal and informal activities for developing others in roles such as teacher, guide, counselor, manager, life coach or mentor.
+- activities that
+  - improve awareness and identity,
+  - develop talents and potential,
+  - build human capital and facilitate employability,
+  - enhance the quality of life
+  - contribute to the realization of dreams and aspirations.
+  - Improving self-awareness
+  - Improving self-knowledge
+  - Improving skills and/or learning new ones
+  - Building or renewing identity/self-esteem
+  - Developing strengths or talents
+  - Improving a career
+  - Identifying or improving potential
+  - Building employability or (alternatively) human capital
+  - Enhancing lifestyle and/or the quality of life and time-management
+  - Improving health
+  - improving wealth or social status
+  - Fulfilling aspirations
+  - Initiating a life enterprise
+  - Defining and executing personal development plans (PDPs)
+  - Improving social relations or emotional intelligence
+  - spiritual identity development and recognition
+- When personal development takes place in the context of institutions,
+- it refers to the methods, programs, tools, techniques, and assessment systems that support human development at the individual level in organizations.
+- As a field of research,
+  - personal-development topics appear in psychology journals, education research, management journals and books, and human-development economics.
+  - draws on links to other academic disciplines
+    - education for questions of learning and assessment
+    - psychology for motivation and personality
+    - sociology for identity and social networks
+    - economics for human capital and economic value
+    - philosophy for ethics and self-reflection
+- as an industry
+  - business to consumer
+    - involves selling books, courses and techniques to individuals
+  - business to business
+    - generalist firms operating in the fields of human resources, recruitment and organizational strategy have entered what they perceive as a growing market,[6] not to mention smaller firms and self-employed professionals who provide consulting, training and coaching.
+  - consumer to business
+    - a business model in which consumers (individuals) create value and businesses consume that value
+    - when a consumer writes reviews or when a consumer gives a useful idea for new product development then that consumer is creating value for the business if the business adopts the input.
+  - consumer to consumer
+    - markets provide an innovative way to allow customers to interact with each other.
+    - the business facilitates an environment where customers can sell goods or services to each other
+    - Consumer to consumer (or citizen-to-citizen) electronic commerce involves the electronically facilitated transactions between consumers through some third party
+- Any sort of development — whether economic, political, biological, organisational or personal—requires a framework if one wishes to know whether a change has actually occurred.
+  - Goals or benchmarks that define the end-points
+  - Strategies or plans for reaching goals
+  - Measurement and assessment of progress, levels or stages that define milestones along a development path
+  - A feedback system to provide information on changes
+- Research on success in reaching goals, as undertaken by Albert Bandura (born 1925), suggested that self-efficacy[19] best explains why people with the same level of knowledge and skills get very different results
+  - According to Bandura self-confidence functions as a powerful predictor of success because:[20]
+    - it makes you expect to succeed
+    - it allows you take risks and set challenging goals
+    - it helps you keep trying if at first you don't succeed
+    - it helps you control emotions and fears when the going gets rough
+- Martin Seligman proposed a new focus: on healthy individuals[citation needed] rather than on pathology (he created the "positive psychology" current)
+  - a set of human strengths that are the most likely buffers against mental illness
+    - courage, optimism, interpersonal skill, work ethic, hope, honesty and perseverance
+- Arthur Chickering defined seven vectors of personal development[23] for young adults during their undergraduate years:
+  - developing competence
+  - managing emotions
+  - achieving autonomy and interdependence
+  - developing mature interpersonal relationships
+  - establishing identity
+  - developing purpose
+  - developing integrity
+- Steve Salerno
+  - uses the acronym SHAM: The Self-Help and Actualization Movement—not only as ineffective in achieving its goals but also as socially harmful
+  - Others similarly point out that with self-help books 'supply increases the demand...The more people read them, the more they think they need them...more like an addiction than an alliance
+
+### personal development planning
+
+- the process of creating an action plan based on awareness, values, reflection ,goal-setting and planning for personal devleopment within the context of a career, education, relationship or for self-improvement
+- types
+  - PDP personal development plan
+  - IDP individual development plan
+  - PEP personal enterprise plan
+- curriculum
+  - includes a statement of one's aspirations, strengths or competencies, education and training, and stages or steps to indicate how the plan is to be realized.
+  - include a portfolio containing evidence of the skills gathered over a particular timeframe.
+  - undertaking PDPs will assist in creating self-directed independent learners who are more likely to progress to higher levels of academic attainment.
+  - may also include a statement of one's career and lifestyle priorities, career positioning, analysis of opportunities and risks, and alternative plans (Plan B), and a curriculum vitae (CV).
+
+#### action plan
+
+- detailed plan outlining actions needed to reach one/more goals
+- sequence of steps that must be taken, or activities that must be performed well, for a strategy to succeed
+- goal
+- primary objective of an action plan
+- the possibility of your dreams and prospects being brought to life
+- creates motivatino and provides you with a certainty that the infal outcome will be worthwhile
+- achieved by being fully dedicated to the process and using the structured guide to accomplishing it
+  - process
+    - When creating action plans there are guided steps that need to be followed to ensure success, however the structure can be altered in the process.
+    - will need to outline what you want to achieve from the project, by doing this you set yourself targets.
+    - specific roles will need to be allocated ensuring sufficient amount of training, resources and issues have been considered to ensure solving any problems that may occur
+    - members of the group to analyse the progress by outlining milestones, solving any issues and making any necessary changes
+  - attributes [Mike Desjardins]
+    - Ownership:
+    - Metrics
+    - budget
+    - milestone date
+
+#### career assessments
+
+- designed to discover the skills, aptitude and talents of candidates.
+- are tools that are designed to help individuals understand how a variety of personal attributes (i.e., data values, preferences, motivations, aptitudes and skills), impact their potential success and satisfaction with different career options and work environments. [wiki]
+- types
+  - methodology
+    - quanititative
+      - precisely measure key attributes belived to influence an individuals potential success and satisfaction with a career
+    - **qualitative**
+      - exercises designed to help individuals clarify their goals and preferences
+  - measured attributes
+    - some focus on an individuals interaacts, aptitude
+    - others on skills/values
+    - KDIs
+      - key development indicators
+      - define measurements for specific types of careers and **match individual career aspirations with needs of companies**
+  - validity
+    - the degree to which interpretation of the results of the assessment/decisions made from the results are useful
+    - should be verified empiracally
+  - target customer profile
+    - some are designed to serve broad markets
+      - i.e. **virtually any individual choosing a perogram,career clusters, starting their career, considering a career change**
+
+#### self-assessment
+
+- useful in assessing the areas in which a candidate has strengths and limitations
+- useful in helping candidates to choose a career that is in tune with their goals and talents.
+- these types of assessments have been proven to introduce more career options, increase satisfaction in one’s career plan and increase the understanding of oneself (Prince et al., 2003).
+- Data as to how often people change careers are unavailable while there's a considerable mythology about it, no systematic studies have been undertaken
+- The biggest benefit of career assessment, therefore, is that it enables candidates to make the best career decisions to grow both personally and professionally.
+- types
+  - career interest tests
+    - strong interest inventory
+    - campbell interest and skill inventory
+  - self assessment
+    - what color is your parachute (book)
+- people unhappy with work-life balance
+  - reasons why
+  - Psychoanalytically-Informed Career Assessment
+    - also referred to as psychodynamic career assessment) developed in 2000 by Dr. Lynn Friedman,
+      - explores whether the conflicts seen in their careers or career counseling sessions are repeated elsewhere in their lives, for example in school, or with their parents.
+      - aims to understand the unconscious factors that create conflicts and identify ways to resolve these conflicts.[7]
+- Assessment of a skill should comply with the four principles of validity, reliability, fairness and flexibility. [wiki]
+  - validity
+    - primary requirement, if this is not met, others are irrelevant
+    - an assessment process effectively assesses what it is claimed and intended to assess
+  - reliability
+    - a realiable assessment is one where the evidence elicited and interpration of evidence is consistent with the skill required
+      - so that the assessment consistently produces outcomes that are compliant with the standard
+  - fairness
+    - the assessment process must be clearly understood by the candidates
+  - flexibility
+    - flexibility of assessment is desiralbe where reasonably predictable
+- types of assessments
+  - formative assessment
+    - provides feedbacck for remedial work and coaching
+    - in/formal tests, tasks, quizzes, discussions or observations
+  - summative assessment
+    - checks whether the competence has been achieved at hte end of training
+    - evaluate skills at/after the end of an instructional unit
+  - integrated assessment
+    - part of the learning and teaching process
+
+## key people & roles
+
+- you cant talk about system design without talking about the people involved
+- central IT: responsible for defining common infrastructure practices, enforcing policy across teams and maintaining shared services
+  - acts as an overlay to other product/feature teams to ensure everyone is following best practice
+- organization architect: define how global infrastructure is divided and delegated to the teams within the business unit
+  - enables connectivity between resources, applications, and workspaces by defining the APIs each one must expose, and sets organization-wide variables and policies
+- architecture roles
+  - data architect
+  - networking architect
+  - security architect
+  - technical architect (infrastructure focused)
+  - solutions architect (software focused) across a wide variety of business verticals and use cases
+  - principal engineers: review architecture designs and provide guidance on best practices
+- application, resource and workspace owners:
+  - responsibile for owning & managing each resource, e.g. the health/status, change lifecycle through dev, UAT, staging and production
+  - main approver of changes to production within their domain
+- contributor: submits changes to resources/applications/domains/etc by making updates to the underlying code/infrastructure
+  - usually dont have authority to make changes to production, but can to dev, UAT and staging
+  - can edit a subset of global application variables and/or apply personal variables to non-production environments for testing
+- cto
+  - one thing: current & future technology strategy aligns with the CEOs vision and CEOs goals;
+  - second thing: assist with testing and validating potential solutions, assessing the technology landscape to highlight risks and opportunities relevant to their business, creating their product roadmap, and determining the most cost-effective way to quickly make progress towards business goals
+  - traits
+    - innovators, visionaries, product evangalist
+    - business <> technology liaison
+    - translate business speak into technical terms
+    - understand technology landscape and technical communicator
+    - Proficient in building, motivating and inspiring talent
+  - focus
+    - knowledgeable about the market
+    - experts in modern development technologies
+    - product innovation and direction... what do we do next and why?
+    - ensures both the business and technology teams understand goals, business objetives,technology and the solutions to future problems
+    - identify how technology can be used strategically to accomplish the CEOs goals while mitigating risk
+    - figuring out the 20% of technology that provides 80% of throughput to give the company an unfair advantage
+    - foster strategic communication, prioritization, and alignment across the full organization in order to succeed
+    - promote end-to-end responsibility and shared ownership for all aspects of software delivery
+    - Security
+  - deliverables
+    - product strategy & roadmap
+    - auditing: current strategy strategy, competitive landscape, CEO objectives, customer discovery; technology options from a technical feasibility perspective in addition to cost benefit
+    - detailed ROI evaluation, build-vs-buy determinations, budgeting, and overall tech capital allocation
+    - researching technologies, pototyping ideas and evangalizing what the team is building and why its relevant ot hte long term vision; thorough analysis of the culture, technology, and security
+    - identify and manage development methodology. This includes all developer experience and related touch points from source control, build tooling, continuous integration, deployment machinery, DevOps, and release strategy.
+    - develops and implements organization-wide policies and processes for site availability, information security, and privacy as well as Disaster Recovery and Business Continuity Planning
+    - market validation
+    - product market fit
+    - architectural decisions
+    - review and negotiate all related contracts
+  - supports
+    - recruiting and hiring
+    - business objectives
+    - manage the steps necessary to identify, select, and integrate your software and IT vendors
+  - positioning
+    - in the market:
+      - explain to the rest of the world the value of the really hard technical problems their company has solved
+      - attend conferences & tradeshows to evangelize your product and technology
+      - strategists and evangelists
+        - product-market fit
+        - market trends
+        - product planning
+    - in the company:
+      - solve really hard technical problems
+      - chief scientists/primary innovators
+      - focus on building the initial invention
+    - Fractional CTO
+      - provide trusted advice and technical guidance you require at a fraction of the cost, freeing up budget for individual contributors who will execute efficiently and effectively under their leadership
+      - provide the same expertise and capability of a full-time CTO without the associated level of salary, benefits and overhead associated with adding a top level executive
+      - valuable in the early stages of a company or new product,
+    - Junior CTO
+      - will have gaps and must learn as she goes
+- vp of engineering
+  - one thing: engineering teams meet the CEOs mission and develop the CTOs strategy
+  - second thing: can get in the weeds of development when necessary
+  - traits
+    - methodical, process-oriented
+  - focus
+    - execution & meeting deadlines
+    - engineering Operations and meeting KPIs
+    - velocity and ensuring product quality
+  - deliverables
+    - building systems and processes for the engineering team as the company evolves
+    - grow and scale operations people and processes
+    - manage engineering teams
+    - process optimization
+  - supports
+    - recruiting and hiring
+- chief architect
+  - traits
+  - focus
+    - complex problem solving
+    - system design
+    - long term technical design making
+  - deliverables
+    - productize prototypes
+    - product design
+    - work with the CTO to discuss feasibilty of new ideas
+    - work with the VPE to determine execution of feasible ideas
+    - reduce the gap between the CTOs vision and the VPEs ability to execute
+
+## Product
+
+### main artifacts
+
+- problem definition
+  - understand the users problems and pain points
+- product vision
+  - vision
+  - specific problem trying to solve (out of the many that exist)
+  - who is it built for
+  - what is it suppose to do
+- product goals & success metrics
+  - what are you trying to achieve
+  - quantifiable KPIs and metrics tracked to measure your success at achieving it
+- business model
+  - how the product can & is going to create value
+  - business model/lean canvas
+- product roadmap
+  - a clear story of what the team is goig to build and when
+  - timeline
+  - order of build
+  - status of all features
+  - keep the backlog in the PRDs (as those stories are unplanned)
+
+### PRDs
+
+- accessibility
+- behaviour & interaction: which features are used the most & least
+- competition
+- customer journey map: visual storyline of every engagement the customer has with your service, brand or product
+  - meant for discovery & understanding how the user enters and exists your experience
+  - what are the pain points/opportunities?
+- user story map (MVP/user stories)
+  - meant for planning and implementation
+  - breaking down key pain points & opportunities (i.e. a specific item) from the user journey map into a step-by-step buildable feature
+- customer personas
+- define success
+- intended user
+- non goals
+- open questions
+- privacy
+- problem statement
+- product backlog
+- references
+- requirements
+- rollout/release plan
+- wireframes / designs

@@ -2,7 +2,7 @@
 
 - CFSSL and CA in generall
 - open source toolkit for everything TLS/SSL
-- used internally by cloudflare for budnling tls/ssl certificate chains, and internal certificate authority infrastructure
+- used internally by cloudflare for bundling tls/ssl certificate chains, and internal certificate authority infrastructure
 - used for all of their tls certificates
 
 ## links
