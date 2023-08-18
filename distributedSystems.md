@@ -2,7 +2,7 @@
 
 - by Roberto Vitillo
   - reading: done
-  - copying: paage 72 > raft leader election
+  - copying: 90 > chain replication
 - a group of nodes that cooperate by exchanging messages over communication links to achieve some task
 - the emergence of an application requiring high availability and resilience against single node failures
 
@@ -10,7 +10,13 @@
 
 - [law of leaky abstractions](https://www.joelonsoftware.com/2002/11/11/the-law-of-leaky-abstractions/)
 - [cubic TCP algorithm](https://en.wikipedia.org/wiki/CUBIC_TCP)
-- [grpc](https://grpc.io/)
+- [grpc](htTitleps://grpc.io/)
+- [building distirbuted locks with dynamodb](https://aws.amazon.com/blogs/database/building-distributed-locks-with-the-dynamodb-lock-client/)
+- [paxos whitepaper by microsoft PDF](https://www.microsoft.com/en-us/research/uploads/prod/2016/12/paxos-simple-Copy.pdf)
+- [raft consensus algorithm](https://raft.github.io/)
+- [finite state machines](https://en.wikipedia.org/wiki/Finite-state_machine)
+- [consensus algorithms](<https://en.wikipedia.org/wiki/Consensus_(computer_science)>)
+- [CAP thereom white paper PDF](https://groups.csail.mit.edu/tds/papers/Gilbert/Brewer2.pdf)
 
 ## basics
 
@@ -24,8 +30,9 @@
   - 4 nines; 8.64 seconds
   - 5 nines: 864 milliseconds
 - fault-tolerant data stores
-- linearizable
+- linearizable: aka stong consistency: the strongest consistency guarantee a system can provide for single object requests
 - compare-and-swap operation: atomically updates the value of a key if and only if the process attempting to update the value correctly identifies the current value
+- write-once register: WOR; a thread-safe and linearizable register that can onlyh be written once but can be read many times
 
 ## hallmarks of distributed systems
 
@@ -174,8 +181,132 @@
 - algorithm requirements
   - safety: only one leader at any given time
   - liveness: an election eventually completes even in the presence of failures
+- best practices
+  - minimize the amount of work the leader performs
+  - account for failed elections or instances when more than one leader exists
+  - the data store that tracks leases must be fault-tolerant
+- positives
+  - having a leader can simplify the design of a system as it eleminates concurrency
+- negatives
+  - scalability bottleneck if the number of operations performed by the leader increases tot he point where it can longer keep up
+  - the leader is a single point of failure with a large blast radius
+    - if the election process/leader node fails it can bring down the entire system
 
-#### Raft leader election
+### consensus
+
+- a group of processes has to decide a value so that
+  - every non-faulty process eventually agrees on a value
+  - the final decision of every non-faulty process is the same everywhere
+  - the value that has been agreed on has been proposed by a process
+
+## Replication
+
+- increases availability, scalability and performance by redundantly storing data and operating services across multiple nodes
+
+### State Machine Replication
+
+- the main idea is that a single process (the leader) broadcasts operations that changes it's state to other processes (the followers)
+- if each follower executes the same sequence of operations as the leader, then each follower will end up in the same state as the leader
+- a large part of state machine replication is didicated to fault-tolerance
+  - any process can fail at any time
+  - broadcast messages can be lost due to network failures
+- all operations must be deterministic so that all followers end up in the same state
+- goals
+  - a deterministic way to solve the problem of consensus
+
+### Chain Replication
+
+- deals with the coordination tax paid in leader-based replication by moving coordination operations off a systems critical path
+
+### consistency
+
+- the type of guarantee a distributed system provides to readers of distributed data that a read request matches the most recent write request
+- modeled on a spectrum
+  - strong consistency (linearizability)
+  - sequential consistency
+  - eventual consistency
+- the issue being
+  - a write request takes time to process and replicate to all other nodes
+  - a read request can be received by the node after a request request is sent, but before its committed and replicated to all other nodes
+  - while a write request will only go to the leader in a distributed system, a read request can go to:
+    - the leader
+    - any follower
+    - a combination of leader and follower nodes
+  - since a read request can be handled by any node
+    - observers of the system can have different views of the systems state causing inconsistent system behavior
+- when picking a consistency type you must decide between
+  - how consistent the observers views of the system are
+  - the systems performance and availability
+
+#### Strong Consistency
+
+- the only model providing real-time guarantees
+  - even tho it doesnt happen in real time
+- writes and reads appear to take place atomically at any specific point in time as if there was a single copy of data
+  - e.g. if clients sends writes & reads exclusively to the leader node
+- the side-effects of an operation are visible to all observers once its completes
+- before a request can be resolved, the service must confirm that its copy of the data is up to date with a quorom of nodes
+  - this confirmation step considerable increases the time required to serve a request
+
+#### Sequential Consistency
+
+- ensures operations occur in the same order for all observers but doesnt provide any real-time gurantees about when an operations side effects becomes visible
+- the lack of real-time guarantees is what differentiates this from strong consistency
+- all reads must go to followers and not leaders, and clients are pinned to specific followers
+  - considerably increases read throughput compared to strong consistency
+  - by pinning clients to specific followers, reduces availability in the event a follower goes down, then their clients lose access to the data store
+- examples
+  - pub/sub systems synchronized with a queue
+    - a producer writes items to the queue, which a consumer reads
+    - the producer and consumer see the items in the same order, but the consumer lags behind the producer
+
+#### Eventual Consistency
+
+- allows clients to read from any follower to increase availability but sacrifices consistency
+  - a client can send two reads that are resolved by different followers each having different views of the state
+- the only guarantee this provides is that all followers will eventual converge on the same state
+
+### CAP Theorem
+
+- a system can guarantee TWO of THREE
+  - C: strong Consistency
+  - A: Availability
+  - P: network Partition tolerenace
+- the idea that in the event of a network partition, whereby parts of a system become disconnected from each other, two choices are available
+  - remain available by allowing clients to query followers that are reachable but not consistent with each other
+  - guarantee strong consistency by failing reads that cant reach consistent nodes
+- FYI on the Availability in CAP
+  - requires that every request eventually receives a response
+  - this is impossible in the real world
+  - in fact, extgremely slow responses are entirely worthless
+- FYI on the P in CAP
+  - network partitions can happen, but are rare in data centers
+  - its better to think about this in terms of Latency/performance relative to strong consistency
+    - the more strongly consistent a system is, the more latency will be inherint
+
+#### PACELC Theorem
+
+- an extension to CAP
+- in general
+  - in case of networking partioning (P)
+    - the system must choose between availability (A) and consistency (C)
+  - else (E) even in the absense of partitions
+    - the system must choose between latency (L) and consistency (C)
+
+#### CAP vs PACELC
+
+- each represent consistency, availability and partitions as binary choices, but really its a spectrum
+- its really a choice between the amount of consistency and performance required by a system, relative to the required availability
+
+## Implementations
+
+### Paxos
+
+### Raft
+
+- leader-based replication
+
+#### leader election
 
 - implemented as a state machine in which any process is in one of three states
   - follower: the process recognizes another one as the leader
@@ -187,9 +318,27 @@
   - when the system starts up, all processes are in the follower state
   - if a follower does not receive a heartbeat from the leader the process presumes the leader is dead
   - the follower starts a new election by incrementing the current term and transitioning to the candidate state
-  - it votes for itself and sends a request to all processes in the system to vote for it, stamping tyhe request with the current term election
+  - it votes for itself and sends a request to all processes in the system to vote for it, stamping the request with the current term election
   - the process remains in the candidate state until
     - the candidate wins the election
     - another process wins the eletion
     - a period of time goes by with no winner
       - i.e. a split vote: the candidate state will eventually time out and start a new election and repeat until a process wins
+  - the idea is that each competing process tries to acquire a lease by creating a new key with compare-and-swap
+    - the first process to succeed becomes the leader and remains such until it stops renewing the lease
+
+#### Replication
+
+- uses state machine replication
+- general process
+  - when the system starts up, a leader is elected using Rafts leader election algorithm
+  - the leader is the only process that can change the rpelicated state
+    - it does so by storing the sequence of operations that alter the state into a local log, which it replicaes to the followers
+  - when the leader wants to change state
+    - it first appends a new entry for the operation to its log and NOT to the state
+    - it broadcasts the same AppendEntry operation to all followers who also appends it to their local log (and NOT to their local state)
+    - once the leader receives an acknowledgement response from a majority of followers it considers the AppendEntry log to be committed and executes the entry against its local state
+    - once the leaders local state is updated it sends another broadcast message to followers to update their state
+- impact on leader election
+  - a follower cant vote for a leader if the candidates log is less up-to-date than its own log
+    - this way only the most up to date candidate can become the leader
