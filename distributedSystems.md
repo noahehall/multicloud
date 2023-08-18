@@ -23,6 +23,9 @@
   - 3 nines: 99.9%; 1.44 minutes
   - 4 nines; 8.64 seconds
   - 5 nines: 864 milliseconds
+- fault-tolerant data stores
+- linearizable
+- compare-and-swap operation: atomically updates the value of a key if and only if the process attempting to update the value correctly identifies the current value
 
 ## hallmarks of distributed systems
 
@@ -173,3 +176,20 @@
   - liveness: an election eventually completes even in the presence of failures
 
 #### Raft leader election
+
+- implemented as a state machine in which any process is in one of three states
+  - follower: the process recognizes another one as the leader
+  - candidate: the process starts a new election proposing itself as a leader
+  - leader: the process is the leader
+- time: is divided into election terms of arbitrary length that are numbered in consecutive integers (i.e. logical timestamps)
+  - a term begins with a new election, during which one/more candidates attempt to become the leader
+- Process
+  - when the system starts up, all processes are in the follower state
+  - if a follower does not receive a heartbeat from the leader the process presumes the leader is dead
+  - the follower starts a new election by incrementing the current term and transitioning to the candidate state
+  - it votes for itself and sends a request to all processes in the system to vote for it, stamping tyhe request with the current term election
+  - the process remains in the candidate state until
+    - the candidate wins the election
+    - another process wins the eletion
+    - a period of time goes by with no winner
+      - i.e. a split vote: the candidate state will eventually time out and start a new election and repeat until a process wins
