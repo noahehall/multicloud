@@ -17,6 +17,11 @@ modeling languages and their syntax
 
 ### terminology
 
+- become one with the core UML diagrams in relation to application development
+  - Activity: actors & interactions
+  - Sequence: function invocations
+  - State: enums of asset states
+  - Class: databases schemas
 - model: partial abstract representation of a real-world system
   - analyze, communicate, test and document your understanding of a system
 - types
@@ -331,7 +336,7 @@ modeling languages and their syntax
 
 #### activity diagrams
 
-- used for workflow & process modeling
+- used for workflow & process modeling of actors and their interactions
 - similar to flow charts but with parallel behavior and multiple actors
 - used by users, biz analysts, and devs to capture their requirement understanding
 - key elements
@@ -363,6 +368,7 @@ modeling languages and their syntax
 
 - most common interaction diagram
 - capture the sequence of interactions/behavior, among two/more entities within a scenario
+  - useful for modeling function calls
 - to understand the behavior you need to implement in code
   - this details the runtime behavior of objects in specific scenarios
   - thus requiring use case specifications
@@ -399,8 +405,9 @@ modeling languages and their syntax
 #### state machine diagrams
 
 - aka state transition diagrams, state chart diagrams
-- models different states of an entity within a system
+- models how an entity moves through its different lifecycle states within a system
   - details how specific entities transition from one state to the next
+  - useful for capturing Enums of asset states; especially the creation and destroy states
 - types: both use basically the same key elements & concepts
   - protocol state diagrams: model interaction sequences, big emphasis on the sequence of the state transitions
   - behavioral state diagrams: model event-driven behavior of an object, used more than protocol state diagrams
