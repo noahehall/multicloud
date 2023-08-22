@@ -2,7 +2,7 @@
 
 - by Roberto Vitillo
   - reading: done
-  - copying: 90 > chain replication
+  - copying: 103 > dynamo-style data stores
 - a group of nodes that cooperate by exchanging messages over communication links to achieve some task
 - the emergence of an application requiring high availability and resilience against single node failures
 
@@ -108,6 +108,17 @@
 - gRPC: open source universal RPC framework
   - generally used for internal APIs
 
+### broadcast protocols
+
+- multicast: enables delivery of messages to groups of processes
+  - unlike TCP which is point-to-point, or unicast
+- guarantees the message is delivered to all non fault processes in a group
+  - best-effort broadcast: only if the sender doesnt crash
+  - reliable broadcast: even if the sender crashes before the message has been fully delivered
+  - eager reliable broadcast: reliable broadcast + each process retransmits the message to the rest of the gorup the first time its delivered
+  - gossip broadtcast protcol: eager reliable broadcast + only a subset of processes retransmit the message
+  - total order broadcast: reliable broadcast + guarantees that messages are delivered in the same order to all processes
+
 ## Coordination
 
 - a group of processes that gives its users the illusion they are interacting with one coherent node
@@ -203,7 +214,22 @@
 
 - increases availability, scalability and performance by redundantly storing data and operating services across multiple nodes
 
-### State Machine Replication
+### algorithm comparisons
+
+- chain vs leader-based replication
+  - chain: simpler and more performant:
+    - reads: higher througputs and lower response times
+      - can be served immediately without contacting othe replicas
+      - can be distributed across replicas while still guaranteeing linearizability
+    - writes: higher potential latency but cant be pipelined to improve throughput
+      - updates need to go through all processes in the chain before it can be considered committed
+      - a single slow replica can slow down all writes or take down the entire chain
+  - leader-based
+    - writes: more resilient to transient degredations
+      - the leader only has to wait for a quorom before a write is considered commited
+      - if any particular process fails, it doesnt matter as long as a majority are still up
+
+### State Machine (leader-based) Replication
 
 - the main idea is that a single process (the leader) broadcasts operations that changes it's state to other processes (the followers)
 - if each follower executes the same sequence of operations as the leader, then each follower will end up in the same state as the leader
@@ -211,12 +237,50 @@
   - any process can fail at any time
   - broadcast messages can be lost due to network failures
 - all operations must be deterministic so that all followers end up in the same state
-- goals
   - a deterministic way to solve the problem of consensus
+- main components
+  - broadcast protocol: guarantees every replica receives the same updates in the same order even in the presence of faults
+    - i.e. fault-tolerant total order broadcast (equivelent to consensus)
+  - update function: a deterministic function that handles updates on each replica
 
 ### Chain Replication
 
-- deals with the coordination tax paid in leader-based replication by moving coordination operations off a systems critical path
+- deals with the coordination tax paid in leader-based replication by moving coordination operations off of the systems data plane into a separate control plane
+  - control plane: can tolerate up to C/2 failures, where C = number of replicas in the control plane
+  - data plane: can tolerate up to N-1 failures, where N = number of processes
+
+#### Data Plane
+
+- the systems critical path responsible for responding to client requests
+  - doesnt require a state machine (i.e. a leader) because its not responsible for fault tolerance
+  - its sole focus is throughput and effiency
+- processes are arranged in a chain
+  - head: the leftest/first process
+    - handles all writes, updates its local state and forwards the update to the next process until it reaches the tail
+    - the tail updates its local state and responds back up the chain
+    - whe the head receives the acknowledgment it responds to the client the write succeeded
+  - tail: the rightest/last process
+    - handles all reads
+    - responsible for acknowledging writes received by the head and replicated down the chain
+- consistency: strong
+  - all writes and reads ar eproceeded one at a time by the tail
+- failure modes
+  - the head can fail
+    - the control plan removes it and promotes a successer process to be the new head and notifies clients
+  - the tail can fail
+    - the control plan removes it and makes a predecessor the new tail
+  - an intermediate process can fail
+    - the control plan removes it and updates the link to between the failed nodes predecessor and the fail nodes successor
+      - i.e. if A - B - C and B fails, the new link becomes A - C
+
+#### control plane
+
+- the configuration manager responsible for
+  - the data planes health
+  - fault tolerance in the system (replacing faulty processes)
+  - ensures theres a single view of the chain's topology and that every process agrees with it
+- the control plane itself needs to be fault tolerant
+  - requires some state machine replication like Raft
 
 ### consistency
 
@@ -265,6 +329,19 @@
 - allows clients to read from any follower to increase availability but sacrifices consistency
   - a client can send two reads that are resolved by different followers each having different views of the state
 - the only guarantee this provides is that all followers will eventual converge on the same state
+- requirments
+  - eventual delivery: guarantee that every update applied at a replica is eventually applied to all replicas
+  - convergence: guarantee that replicas that have applied the same updates eventually reach the same state
+    - particularly important as replicas may receive writes in totally different orders
+
+#### Strong Eventual Consistency
+
+- stronger guarantees relative to plain eventual consistency
+  - eventual deivery: the same guarantee as in eventual consistency
+  - strong convergence: guarantee that replicas that have executed the same updates have the same state
+- uses various kinds of algorithms that provide a detreminstic outcome for any potential write conflict without requiring consensus between nodes
+- enables building systems that are highly availble, strongly eventual consistent, and also partial tolerant
+  - i.e. almost all 3 of the CAP theoreom
 
 ### CAP Theorem
 
@@ -298,6 +375,32 @@
 - each represent consistency, availability and partitions as binary choices, but really its a spectrum
 - its really a choice between the amount of consistency and performance required by a system, relative to the required availability
 
+### Data types
+
+- Conflict-free replicated data type: CRDT; a data type with specific requirements for when
+  - a client sends an update or query operation to any replica
+    - it keeps a localy copy of the request
+    - it broadcasts the request to others
+    - it merges broadcast requests it receives
+  - how each replica converges to the same state
+    - its local state is a semilattice (partially ordered)
+    - its merge operation produces a state that is idempotent, commutative and associative
+- examples
+  - registers
+  - counters
+  - sets
+  - dictionaries
+  - graphs
+
+#### Registers
+
+- last writer wins: LWW; associates a timestamp with every update to make them totally ordewrable
+  - issues:
+    - conflicting updates resolve to the update with the greatest timestamp which may not logically make sense from a business perspective
+- multi value: MV; tracks all concurrent updates and returns conflicts to the client application for resolution
+  - issues:
+    - the client application must contain logic to resolve any conflicts
+
 ## Implementations
 
 ### Paxos
@@ -314,7 +417,7 @@
   - leader: the process is the leader
 - time: is divided into election terms of arbitrary length that are numbered in consecutive integers (i.e. logical timestamps)
   - a term begins with a new election, during which one/more candidates attempt to become the leader
-- Process
+- leader election process
   - when the system starts up, all processes are in the follower state
   - if a follower does not receive a heartbeat from the leader the process presumes the leader is dead
   - the follower starts a new election by incrementing the current term and transitioning to the candidate state
@@ -326,13 +429,9 @@
       - i.e. a split vote: the candidate state will eventually time out and start a new election and repeat until a process wins
   - the idea is that each competing process tries to acquire a lease by creating a new key with compare-and-swap
     - the first process to succeed becomes the leader and remains such until it stops renewing the lease
-
-#### Replication
-
-- uses state machine replication
-- general process
+- replication process
   - when the system starts up, a leader is elected using Rafts leader election algorithm
-  - the leader is the only process that can change the rpelicated state
+  - the leader is the only process that can change the replicated state
     - it does so by storing the sequence of operations that alter the state into a local log, which it replicaes to the followers
   - when the leader wants to change state
     - it first appends a new entry for the operation to its log and NOT to the state
@@ -342,3 +441,7 @@
 - impact on leader election
   - a follower cant vote for a leader if the candidates log is less up-to-date than its own log
     - this way only the most up to date candidate can become the leader
+
+### Dynamo-style Data stores
+
+- abcd
