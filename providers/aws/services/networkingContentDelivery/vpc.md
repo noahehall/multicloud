@@ -46,7 +46,7 @@
     - ensure resources are in the same AZ as the nat gateway
     - or create a NAT gateway in each AZ
   - service to service comms
-    - use aws resources that support interface/gateway endpoints and use AWS privateLink
+    - gateway endpoints for traffic destined to DynamoDB or Amazon S3.
 - plan for multiple VPCs
   - you cannot create a VPN/Direct Connect/VPC peering connection between two VPCs that have matching or overlapping CIDR range
 - you can now resize a VPC using a secondary CIDR range
@@ -55,6 +55,10 @@
 - plan for load balancers in your CIDR range
   - make sure that each Availability Zone subnet for your load balancer nodes, has atleast a slash 27 bit mask
 - There are tools available on the internet to help you calculate and create IPv4 subnet CIDR blocks
+- VPN Connections
+  - when you connect your VPCs to a common on-premises network, use nonoverlapping CIDR blocks for your networks.
+  - client VPNS
+    - assign a CIDR block that contains twice the number of required IP addresses to support the availability model
 
 ### anti patterns
 
@@ -71,8 +75,18 @@
 - gateways:
   - nat: each hour that a NAT gateway is available and total GB of data it processes
 - peering
-  - data transfer that crosses AZs charged at the standard in-Region data transfer rates.
-    - data within a single AZ is free
+  - Data transferred across peering connections: per gigabyte for send and receive, regardless of the Availability Zones involved.
+- endpoints
+  - Interface endpoints and Gateway Load Balancer endpoints: check the privatelink docs
+    - per hour the VPC endpoint remains provisioned in each Availability Zone and for each gigabyte processed through the VPC endpoint
+  - gateway endpoints: free biotch!
+- vpns
+  - site-to-site vpn
+    - connection per hour (varies by Region)
+    - Data transfer out charges
+    - accelerated site-to-site has additional costs
+  - client vpn
+    - charged for the number of active client connections per hour and the number of subnets associated to Client VPN per hour.
 
 ## basics
 
@@ -255,13 +269,15 @@
 
 ### Peering
 
-- enables 1:1 encrypted communication between TWO isolated VPCs using their private IP address without traversing the public internet
-- peers can span accounts and regions
-- use cases
-  - sharing resources across two VPCs
-  - enabling private access to partners/vendors
-  - workflows requiring secured access: e.g. system security audits
-  - apps requireing enhanced fault-tolerance and high availability can now span regions
+- enables 1:1 encrypted, highly available communication between TWO isolated VPCs using their private IP address without traversing the public internet
+  - an uncomplicated and cost-effective way to share resources between Regions or replicate data for geographic redundancy.
+- peers can span accounts and regions and There is no bandwidth bottleneck or single point of failure
+- inter-Region VPC peering: peering VPCs across different AWS Regions
+  - permits VPC resources that run in different AWS Regions to communicate securely with each other
+  - using private IP addresses, without requiring gateways, VPN connections, or separate network appliances
+- each VPC peering connection is nontransitive in nature and does not allow network traffic to pass from one peering connection to another.
+  - e.g. VPC1 -> VPC2, and VPC2 -> VPC3 does not mean VPC1 -> VPC3 via VPC2
+    - you have to manually connect VPC1 to VPC3
 
 ### flow logs
 
@@ -270,6 +286,64 @@
 ### Endpoints
 
 - privately connect a VPC to supported AWS services and other endpoint services
+- is a security product first
+  - Traffic between the VPC and a service does not leave the Amazon network.
+  - e.g. compliance requirements that prevent connectivity between a VPC and a public-facing service endpoint
+- and a connectivity product second.
+  - resources inside a VPC do not require public IP addresses to communicate with resources outside the VPC
+  - do not require an internet gateway, virtual private gateway, network address translation (NAT) device, virtual private network (VPN) connection, or Direct Connect connection
+
+#### Gateway Endpoints
+
+- destinations that are reachable from within a VPC through prefix-lists within the VPC’s route table.
+- used for traffic destined to DynamoDB or S3
+- Instances dont require public IP addresses to communicate with VPC endpoints because interface endpoints use local IP addresses within the consumer VPC
+
+#### Interface Endpoints
+
+- Powered by AWS PrivateLink
+- an elastic network interface with a private IP address from the IP address range of your subnet
+- serves as an entry point for traffic destined to a supported AWS service or a VPC endpoint service.
+
+#### Gateway Load Balancer Endpoints
+
+- powered by AWS PrivateLink.
+- an elastic network interface with a private IP address from the IP address range of your subnet.
+- serves as an entry point to intercept traffic and route it to a service that you've configured using Gateway Load Balancers
+- specify a Gateway Load Balancer endpoint as a target for a route in a route table
+
+### VPNs
+
+#### Site-to-Site VPN
+
+- connect your on-premises network to Amazon VPC
+- Based on IPsec technology: uses a VPN tunnel to pass data from the customer network to or from AWS.
+- use public IPv4 addresses and therefore require a public virtual interface to transport traffic over Direct Connect.
+- One connection consists of two tunnels.
+  - Each tunnel terminates in a different AZon the AWS side, but it must terminate on the same customer gateway on the customer side.
+- customer gateway: AWS resource that represents your on-premise gateway device within AWS
+  - contains information about the type of routing used by the Site-to-Site VPN, BGP, ASN and other optional configuration information.
+- customer gateway device: physical device or software application on your side of the AWS Site-to-Site VPN connection.
+- on the Amazon side of the connection, either
+  - virtual private gateway: the VPN concentrator
+    - only one tunnel out of the pair can be active and carry a maximum of 1.25 Gbps
+  - Transit gateway: used to interconnect your VPCs and on-premises networks.
+    - both tunnels in the pair can be active and carry an aggregate maximum of 2.5 Gbps
+    - Each flow (for example, TCP stream) will still be limited to a maximum of 1.25 Gbps
+    - supports equal-cost multi-path routing (ECMP) and multi-exit discriminator (MED) across tunnels in the same and different connection
+
+#### Accelerated Site-to-Site VPN
+
+- cannot use accelerated Site-to-Site VPN with a Direct Connect public virtual interface.
+
+#### Client VPN
+
+- connect users to AWS or on-premises networks
+- Based on OpenVPN technology; access your resources from any location using an OpenVPN-based VPN client.
+- client VPN endpoint: controls which networks and resources you can access when you establish a VPN connection.
+- vpn client application: the software application that you use to connect to the Client VPN endpoint and establish a secure VPN connection.
+- client vpn configuration file: includes information about the Client VPN endpoint and the certificates required to establish a VPN connection.
+  - You load this file into your chosen VPN client application.
 
 ## considerations
 
@@ -283,6 +357,37 @@
   - CIDR range thats a subset of the VPC cidr range
     - you generally increment the third octet choose an appropriate flexbit
       - use the visualizer link in the goodstuff doc
+- peering
+  - cannot create a VPC peering connection between VPCs with matching or overlapping IPv4 CIDR blocks
+    - even if you intend to use the connection for IPv6 communication only
+  - you cannot extend a peering relationship to a connection If either VPC has one of the following connections
+    - A VPN connection or a Direct Connect connection to a corporate network
+    - An internet connection
+      - through an internet gateway
+      - in a private subnet through a NAT device
+    - A gateway VPC endpoint to an AWS service, for example, an endpoint to Amazon S3
+- VPNs
+  - supports IPv4/IPv6-Dualstack through separate tunnels for inner traffic
+  - IPv6 for outer tunnel connection not supported.
+  - Site-to-Site VPN
+    - does not support Path MTU Discovery
+    - The greatest Maximum Transmission Unit (MTU) available on the inside tunnel interface is 1,399 bytes.
+    - Throughput is limited
+    - Maximum packets per second (PPS) per VPN tunnel is 140,000.
+  - client VPN
+    - IPv6 is not supported.
+    - SAML 2.0-based federated authentication only works with an AWS provided client v1.2.0 or later.
+    - Client VPN endpoint does not support subnet associations in a dedicated tenancy VPC.
+    - is not compliant with Federal Information Processing Standards (FIPS).
+    - subnets associated with a Client VPN endpoint must be in the same VPC.
+    - Client CIDR ranges
+      - must have a block size of at least /22 and must not be greater than /12.
+      - cannot be changed after you create the Client VPN endpoint.
+      - cannot overlap with
+        - the local CIDR of the VPC in which the associated subnet is located
+        - any routes manually added to the Client VPN endpoint's route table.
+    - ACM certificates are not supported with mutual authentication because you cannot extract the private key
+      - but you can use an ACM server as the server-side certificate.
 
 ## integrations
 

@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - AWS Network Connectivity Options > VPC endpoints
+    - AWS Network Connectivity Options > AWS Transit Gateway
     - AWS Systems Manager: skip this course and just read the fkn docs
       - no video transcript, nor playback speed on the video
   - LAB: Deep dive: VPC peering > deep dive 2.pdf

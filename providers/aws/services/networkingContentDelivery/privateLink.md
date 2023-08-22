@@ -18,9 +18,10 @@
 ### anti patterns
 
 - alternatives
-  - Make the application public, but then you are using the internet.
-  - set up VPC peering, but that may be more management overhead than necessary
+  - Private IP addresses using VPC peering
+    - but that may be more management overhead than necessary
     - VPC Peering connections are only a one-to-one connection.
+  - connect VPCs via Public IP addresses using the internet gateway of the VPC
 
 ## features
 
@@ -32,18 +33,31 @@
 - use private IP connectivity: services function as though they were hosted directly on your private network.
 - associate security groups and attach an endpoint policy to interface endpoints, control who access to a specified service
 
-## terms
-
 ## basics
 
-- establishes private access to services across VPC boundaries
+- services establish a TCP connection between VPCs for private access to services across VPC boundaries
   - other accounts and VPCs can create VPC endpoints to access your endpoint service
   - endpoint services can be either network or gateway load balancers
-- i.e. if you have a VPC with a private subnet and resources in that subnet
-  - you no longer need a NAT Gateway/public IP to reach out of the VPC
-  - PrivateLink: enables this application to reach out to other services
-  - VPC endpoint: enables other applications to reach into this private resource
--
+- Traffic will be sourced from the Network Load Balancer inside the service provider VPC
+  - provider perspective:
+    - all IP traffic will originate and appear as private ips addrs from the Network Load balancer
+    - the providers application will never see the IP addresses of the customer or service consumer.
+
+### Proxy Protocol v2
+
+- gain insight into the network traffic.
+- Network Load Balancers use Proxy Protocol v2 to send additional connection information such as the source and destination
+
+### DNS
+
+- endpoint-specific DNS hostnames: used to communicate with the service
+
+  - e.g. `vpce-0fe5b17a0707d6abc-29p5708s.ec2.us-east-1.vpce.amazonaws.com`
+
+- zonal-specific DNS hostnames: specific to an AZ and support cross-zone load balancing to distribute traffic across registered targets in all activated Availability Zones.
+  - manually generated and incur egional data transfer charges for any data that is transferred between AZs
+  - e.g. `vpce-0fe5b17a0707d6abc-29p5708s-us-east-1a.ec2.us-east-1.vpce.amazonaws.com`
+- Private DNS Hostnames: alias zonal-specific or regional-specific DNS hostnames into a friendly hostname e.g. `myservice.ogobar.com`
 
 ### OSI Model
 
@@ -52,15 +66,25 @@
 
 ### Endpoint types
 
-#### VPC
+- both uses private IP addresses and security groups within a VPC so that regionally hosted services function as though they were hosted directly within a VPC.
 
-- interface VPC endpoints: connect you to services hosted by AWS Partners and supported solutions available in AWS Marketplace.
+#### Interface
+
+- connect you to services hosted by AWS Partners and supported solutions available in AWS Marketplace.
 
 #### Gateway Load Balancer
 
 - Gateway Load Balancer endpoints: security and performance for virtual network appliances or custom traffic inspection logic.
 
 ## considerations
+
+- does not support IPv6
+- Endpoint services cannot be tagged.
+- The private DNS of the endpoint does not resolve outside of the VPC
+  - DNS hostnames can be configured to point directly to endpoint network interface IP addresses
+  - Endpoint services are available in the Region in which they are created and accessed using VPC peering.
+- Availability Zone names may not map to the same geographic location across accounts
+  - i.e. account-A US-East-1A !== account-B US-East-1A even tho they use the same name
 
 ## integartions
 
