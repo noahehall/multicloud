@@ -1,7 +1,5 @@
 # multicloud
 
-- 99% AWS docs and courses, hashicorp docs and blogs, books, etc
-
 ## links
 
 - [api: fan out/in integration pattern](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
@@ -32,21 +30,18 @@
 
 - [bpftrace: inspect syscalls](https://github.com/iovisor/bpftrace)
 
-## multi-cloud with cloudnative and open source
+## multi-cloudnative and open source
 
-- cloudnative: managed services offered by your cloud provider
-  - 12factor is always a good approach
-  - its difficult to implement a multicloud architecture when using managed services
-    - architect apps to be infrastructure agnostic is very important in the event you need to pivot to different providers
-- opensource: you'll retain ownership of:
+- opensource: conflicts with proprietary cloudnative services
   - configuring VMS
   - updating operating systems
-  - install application runtime
-  - build and deploy
+  - installing application runtime
+  - build and deploy pipelines
   - scaling and load balancing
   - monitor and observe
   - data storage
-- multicloud: utilizing multiple service providers requires attention to the network latency introduced
+- multicloud
+  - requires attention to the network latency introduced for request pipelines that traverse cloud networking boundaries
 
 ### cloudnative migration patterns
 
