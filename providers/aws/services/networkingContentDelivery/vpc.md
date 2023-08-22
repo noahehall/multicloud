@@ -267,6 +267,10 @@
 
 - catpure info about ip traffic and publish to cloudwatch logs, s3 or kinesis
 
+### Endpoints
+
+- privately connect a VPC to supported AWS services and other endpoint services
+
 ## considerations
 
 - vpc ip range: 1 primary and up to 4 secondary; the smallest range is 28 (4 ips), the largest is 16 (65,536 ips)
