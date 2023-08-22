@@ -79,6 +79,37 @@
 
 - a service that watches for failures through systems boundaries, and reroutes requests upon detection
 
+### Multi VPC
+
+- VPCs are separated and isolated from one another and can optionally be linked through dedicated connections
+- common goals
+  - greater flexibility for development, increased security features, and more robust analytical views.
+
+### High Availability
+
+- commonly referred to as eliminating single points of failure
+- reducing or managing failures and minimizing downtime through the implementation of redundant components, deployment of parallel components to distribute traffic load, and elimination of single points of failure.
+
+### Hybrid Networking
+
+- at least two independent cloud or on-premises networks communicate with each other
+
+### High performance
+
+- its all about reducing latency: Anything that lengthens the time to get data to the user
+  - packet loss
+  - jitter: Variations in latency or time delay between packets
+  - bandwidth constraints
+  - inefficient protocol use
+  - physical distance
+- When reducing latency, consider
+  - physical distance between two nodes
+  - quality of routes
+  - request origin location in relation to data
+  - average packet delay under network cost constraints
+  - memory resources
+  - traffic patterns and available node resources
+
 ## Storage
 
 - cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
@@ -174,6 +205,10 @@
 
 ## Microservices
 
+- scoped units of services, that work in unison but scale independently to achieve a goal
+  - breaking endpoints into distinct units of work that can be scaled independently
+  - focus on data, business and function domains, analyze call patterns and dependency graphs, and determine boundaries between services that need to be scaled independently
+
 ### Presentation Services
 
 - render data for frontend clients in a friendly and common format
@@ -195,16 +230,6 @@
 ### Data services
 
 - encsuplate data sources into a uniform data layer
-
-### Messaging services
-
-- queues and etc
-
-## patterns
-
-- microservices: scoped units of services, that work in unison but scale independently to achieve a goal
-  - breaking endpoints into distinct units of work that can be scaled independently
-  - focus on data, business and function domains, analyze call patterns and dependency graphs, and determine boundaries between services that need to be scaled independently
 
 ### messaging patterns
 
@@ -432,17 +457,19 @@
 
 ## N-tier
 
-- substacks services based on the flow of data, each stack/tier/layer exists at a different level of abstraction and is responsibile for a specific
+- stack services based on the flow of data, each stack/tier/layer exists at a different level of abstraction and is responsibile for a specific
   - tier: abstracts services by what they are, instead of what they do, so still some duplication exists over service-oriented architectures
     - the bottom tier(s) generally closer to the data and provides services to the tier above it
-    - increase the number of tiers depending on the complexity of the model & types of requests & optmizations required
   - data flows down from the requester until it reaches a lower tier that can respond to the request
   - a common theme being the hierarchical and layered flow of data, generally unidirectional but in some patterns biderirectional (e.g. server sent events)
-  - each tier can have its own HECCYA description
 - common to think of N-Tier architectures through
   - presentation: UI and pure UI logic; usually the presentation of the business logic solution to external users
   - business: the logic of the problem domain, what does the application do?
   - data: database related stuff
+- common goals
+  - increase the number of tiers depending on the complexity of the model & types of requests & optmizations required
+  - introduce extra layers of defense between attackers and your sensitive resources
+    - the most sensitive data should be at the bottom of the stack
 
 ### layered
 

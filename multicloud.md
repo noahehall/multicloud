@@ -9,6 +9,7 @@
 - [api: restful api best practices](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 - [cap theorem](https://en.wikipedia.org/wiki/CAP_theorem)
 - [database transactions](https://en.wikipedia.org/wiki/Database_transaction)
+- [gcp: what is multicloud](https://cloud.google.com/learn/what-is-multicloud)
 - [learning domain driven design](https://dddcommunity.org/learning-ddd/)
 - [microservice architecture patterns and best practices](http://microservices.io/index.html)
 - [networking: Address Allocation for Private Internets](http://www.faqs.org/rfcs/rfc1918.html)
@@ -33,19 +34,19 @@
 
 ## multi-cloud with cloudnative and open source
 
-- cloudnative: seek managed services offered by your cloud provider
-  - 12factor is always a good approach, but even more so with cloudnative apps
-  - its difficult to implement a multicloud architecture if using proprietary managed services
-    - architecture your apps to be infrastructure agnostic is very important in the event you need to pivot to different cloud providers
+- cloudnative: managed services offered by your cloud provider
+  - 12factor is always a good approach
+  - its difficult to implement a multicloud architecture when using managed services
+    - architect apps to be infrastructure agnostic is very important in the event you need to pivot to different providers
 - opensource: you'll retain ownership of:
   - configuring VMS
   - updating operating systems
   - install application runtime
-  - build and deploy apps
+  - build and deploy
   - scaling and load balancing
-  - monitor and observe apps
+  - monitor and observe
   - data storage
-- multicloud: depending on how open vs cloudnative/propertiary you are, this could be an uphill battle
+- multicloud: utilizing multiple service providers requires attention to the network latency introduced
 
 ### cloudnative migration patterns
 
