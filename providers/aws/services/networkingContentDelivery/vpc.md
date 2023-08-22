@@ -30,6 +30,7 @@
 - [subnets: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
 - [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
 - [traffic mirroring](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
+- [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
 
 ### integrations
 
@@ -63,6 +64,7 @@
   - transit gateways: when you have so many connections management & configuration > performance/cost
     - will incur a VPC connection and data transmission charge.
     - adds a hop between the data source and the data destination.
+    - all routing tables can be configured in a centralized hub
   - VPC peering connections: when performance & costs mean more than management and configuration
     - only incur a data transmission charge
     - have no aggregate bandwidth restriction

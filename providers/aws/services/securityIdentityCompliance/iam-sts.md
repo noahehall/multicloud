@@ -24,12 +24,8 @@
 
 ## features
 
-- you do not have to rotate them or explicitly revoke them when they're no longer needed
-  - just wait for them to expire
-  - After temporary security credentials expire, they cannot be reused
 - provide access to AWS resources without having to define an AWS identity or embed long-term credentials with an application.
-- manage your users in an external system outside AWS and grant them access to perform AWS tasks and access your AWS resources
-- provide temporary security credentials to ec2 instances when you launch them
+- manage users in an external system outside AWS and grant them access to perform AWS tasks and access your AWS resources
 - cross-account delegation: provide users access to resources in other aws accounts
 
 ### pricing

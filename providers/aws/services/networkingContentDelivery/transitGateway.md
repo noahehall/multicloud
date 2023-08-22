@@ -38,9 +38,6 @@
 ## basics
 
 - create 1:M peering connections between VPCs, accounts, DirectConnect and on premise networks in a centralized gateway hub
-- Between Regions: supports inter-regional peering
-  - connects AWS Transit Gateways together using the AWS global network
-  - automatic encryption for your data that never traverses the public internet.
 - hybrid network configurations
   - a Direct Connect
   - AWS Site-to-Site VPN connection
@@ -66,24 +63,36 @@
 - operates at layer 3
   - packets are sent to a specific next-hop attachments, based on their destinate ip addrs
 
-### Network Manager
+### Hub and Spoke
+
+- routing traffic between two or more VPCs within an AWS Region.
+
+### Peering
+
+- routing traffic between VPCs or other transit gateways
+- always a 1:1 nontransitive relationship
+
+#### Network Manager
 
 - dashboard provides a single global view of your private network.
+  - centrally manage traffic across all resources, services, and accounts you have deployed within a Region
 - define the resources you want to monitor
 - visualize your network on a topology diagram or a geographical map
 - access usage metrics and establish alerts for changes in the status of the resources you have registered
 - integrates with many software-defined networking in a wide area network (SD-WAN)
-
-### Peering
-
-- routing traffic between VPCs in different Regions
-- Both peering types are one-to-one
 
 #### VPC Peering
 
 #### Transit Gateway Peering
 
 - a simpler network design and more consolidated management than vpc peering
+
+#### Inter-region peering
+
+- functionally similar to inter-Region VPC peering
+- creates a nontransitive, bidirectional route from a transit gateway in one Region to a transit gateway in another Region
+- connects AWS Transit Gateways together using the AWS global network
+  - automatic encryption for your data that never traverses the public internet.
 
 ## considerations
 

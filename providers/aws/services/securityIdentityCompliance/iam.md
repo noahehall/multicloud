@@ -4,6 +4,7 @@
 - authnz for:
   - IAM users and groups: humans logging into an account and signing API calls
   - IAM roles: assumed by an entity (humans/machines) for temporary access to AWS credentials
+- [policy reference](./iam-policy-ref.md)
 
 ## my thoughts
 
