@@ -1,6 +1,7 @@
 # Transit Gateway
 
 - connect to multiple VPCs, Direct Connect, VPNs and Software-Defined Wide Area Network (SD-WAN) appliances
+- consolidating and centrally managing routing between VPCs with a hub-and-spoke network architecture.
 
 ## my thoughts
 
@@ -8,8 +9,12 @@
 
 - [landing page](https://aws.amazon.com/transit-gateway/?did=ap_card&trk=ap_card)
 - [network manager](https://aws.amazon.com/transit-gateway/network-manager/)
+- [faqs](https://aws.amazon.com/transit-gateway/faqs/)
 
 ## best practices
+
+- peering connections can be more performance and cost effective relative to transit gateways
+  - however transit gateways will be easier to manage and configure
 
 ### anti patterns
 
@@ -33,8 +38,28 @@
 ## basics
 
 - create 1:M peering connections between VPCs, accounts, DirectConnect and on premise networks in a centralized gateway hub
-- inter-Region peering connects AWS Transit Gateways together using the AWS global network
+- Between Regions: supports inter-regional peering
+  - connects AWS Transit Gateways together using the AWS global network
   - automatic encryption for your data that never traverses the public internet.
+- hybrid network configurations
+  - a Direct Connect
+  - AWS Site-to-Site VPN connection
+- attachments (i.e. connection types)
+  - One or more VPCs
+  - compatible Software-Defined Wide Area Network (SD-WAN) appliance
+  - Direct Connect gateway
+  - peering connection with another transit gateway
+  - VPN connection to a transit gateway
+- MTU by connection type
+  - 8,500 bytes for: VPC, direct connect, peering
+  - 1,500 bytes for VPN connections.
+- route table: can be be associated with many attachments, but an attachment can only be associated with a single route table
+  - default route table and can optionally have additional route tables.
+  - dynamic and static routes that decide the next hop based on the destination IP address of the packet.
+  - target of these routes can be any transit gateway attachment.
+- route propagation
+  - dynamic: A VPC, VPN connection, or Direct Connect gateway
+  - static: VPC, peering
 
 ### OSI Model
 
@@ -43,8 +68,22 @@
 
 ### Network Manager
 
-- dashboard for the entire network
-- enables connecting to Software-Defined Wide Area Network (SD-WAN) devices.
+- dashboard provides a single global view of your private network.
+- define the resources you want to monitor
+- visualize your network on a topology diagram or a geographical map
+- access usage metrics and establish alerts for changes in the status of the resources you have registered
+- integrates with many software-defined networking in a wide area network (SD-WAN)
+
+### Peering
+
+- routing traffic between VPCs in different Regions
+- Both peering types are one-to-one
+
+#### VPC Peering
+
+#### Transit Gateway Peering
+
+- a simpler network design and more consolidated management than vpc peering
 
 ## considerations
 
