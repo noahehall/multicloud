@@ -538,6 +538,45 @@
 
 #### Disaster Recovery Services
 
+## Compute
+
+- configuration of
+  - OS
+  - CPUs
+  - RAM
+  - GPU
+  - storage
+  - networking
+
+### VM instances
+
+- EC2: run anything
+  - the foundational building block of all AWS compute services
+- use cases
+  - granular and complete control of infrastructure
+  - long running applications, long running computation cycles
+  - compute-intensive or memory-intensive applications
+  - stateful apps
+
+### Containers
+
+- EKS: k8s in the cloud
+- ECS EC2: immutable apps
+- use cases
+  - fully managed with performance configurable infrastructure
+  - compute-intensive workloads
+  - microservices
+  - auto scaling
+
+### serverless
+
+- lambda: serverless max 15 minute computation cycles
+- ECS Fargate: serverless immutable services
+- use cases
+  - fully managed infrastructure with tunable infrastructure performance
+  - focus on the code
+  - event driven applications
+
 ## Analytics
 
 ### Tags

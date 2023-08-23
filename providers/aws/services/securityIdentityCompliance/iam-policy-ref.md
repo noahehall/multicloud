@@ -43,7 +43,7 @@
   "Id": "some-id?",
   "Statement": [
     {
-      "Sid": "Some Description",
+      "Sid": "someUniqueDescription", // required in some services
       "Effect": "Allow",
       "Action": ["dynamodb:PutItem"],
       "Principal": {
