@@ -2,6 +2,8 @@
 
 - service for dealing with streaming data
 - useful for ingesting and transforming large volumes of data destinated for storage services
+- TODOs
+  - split the kinesis services into different files
 
 ## links
 
@@ -91,14 +93,11 @@
 
 ### Data Firehose
 
-- Data Firehose: capture, `transform` and load streaming data into lakes, stores, and analytics services
-- you dont need to manage shards: just configure producers to send data, setup transformations in firehose, and set the backend consumers
+- see [markdown file](./kinesis-dataFireHose.md)
 
 ### Data Streams
 
-- Video Streams: stream video from connected devices into aws for analytics, ML, playback and other processing
-- Data Streams: serverless streaming service; capture, `process` and store data streams
-- you need to configure the amount of shards per stream
+- see [markdown file](./kinesis-dataStreams.md)
 
 ### Data analytics
 

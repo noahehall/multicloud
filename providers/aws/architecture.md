@@ -444,15 +444,20 @@
 
 ### Edge and hybrid cloud storage
 
-- Edge compute and storage solutions
-  - remote or disconnected locations
-  - hybrid solutions to connect on-premises to storage services in the AWS.
+- hybrid: connect your on-premises applications and systems to cloud storage
+- Edge: compute and storage solutions; remote or disconnected locations
 - in AWS
   - edge
     - Snow
   - hybrid
     - Outposts
     - Storage Gateway
+      - File Gateway mode:
+        - connect your Amazon S3 bucket using either the Network File System (NFS) or Server Message Block (SMB) protocol with local caching
+        - deploy as a virtual appliance or purchase a hardware appliance version.
+    - DirectConnect: a dedicated network connection from on premise into AWS
+      - higher throughput and secure data transfer without passing through the internet
+      - can be partitioned into multiple virtual interfaces.
 
 #### Edge: Local compute and storage
 
@@ -489,6 +494,9 @@
 ### Data transfer and migration
 
 - copy or transfer on-premises data to/from Storage services in AWS.
+- SDKs/CLIs/3rd party tools
+  - rsync
+  - aws cli
 
 #### file transfer
 
@@ -498,15 +506,38 @@
 
 #### data synchronization & online transfer
 
-- moving data between on-premises AWS and between AWS Storage services
+- move your data into and out of the AWS Cloud and Amazon S3 via online, internet based, connections.
 - in AWS
-  - AWS DataSync: online data transfer service moving data between on-premises storage systems and AWS and between AWS services
+  - DataSync: online data transfer service moving data between on-premises storage systems and AWS and between AWS services
+    - can transfer hundreds of terabytes and millions of files at speeds up to 10 times faster than open-source tools
+    - migrate active data sets or archives to AWS, transfer data to the cloud for timely analysis and processing, or replicate data to AWS for business continuity.
+  - Transfer family of services: fully managed support for file transfers directly into and out of Amazon S3
+    - migrate your file transfer workflows to AWS by integrating with existing authentication systems
+    - providing DNS routing with Amazon Route 53 so nothing changes for your customers and partners, or their applications.
+  - S3 Transfer Acceleration: fast, easy, and secure transfers of files over long distances
+    - CloudFront globally distributed edge locations, routing data to Amazon S3 over an optimized network path.
+    - best suited for scenarios in which you want to transfer data to a central location from all over the world or transfer significant amounts of data across continents regularly
+  - Kinesis Data Firehouse: stream data into Amazon S3
+    - captures and automatically loads streaming data in Amazon S3 and Amazon Redshift,
+  - Kinesis Data Streams: build custom applications that process or analyze streaming data for specialized needs
+    - continuously capture and store terabytes of data per hour from hundreds of thousands of sources, such as website clickstreams, financial transactions, social media feeds, IT logs, and location -tracking events.
+    - emit data from Kinesis Data Streams to other AWS services, such as Amazon S3, Amazon Redshift, Amazon EMR, and AWS Lambda.
+  - Amazon partners: use third-party connectors additional Amazon transfer service support.
 
 #### offline data transfer & migration
 
+- physical storage method to move your data from remote locations to AWS
 - run operations in austere, non-datacenter environments, and in locations where there’s lack of consistent network connectivity.
 - in AWS
   - AWS Snow: offers several physical devices and capacity points, most with built-in computing capabilities
+    - SnowCone: smallest member of the AWS Snow Family of edge computing, edge storage, and data transfer devices
+      - run compute applications at the edge, and ship the device with data to AWS for offline data transfer
+      - or you can transfer data online with AWS DataSync from edge locations.
+    - SnowBall: edge computing, data migration, and edge storage device that comes
+      - Edge Storage Optimized: block storage and Amazon S3-compatible object storage, along with 40 vCPUs
+      - Edge Compute optimized: 52 vCPUs, block and object storage, and an optional GPU
+    - Snowmobile: Exabyte-scale data transfer service used to move extremely large amounts of data to AWS
+      - its a big fucking truck
 
 #### migration
 
