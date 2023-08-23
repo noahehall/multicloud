@@ -11,6 +11,7 @@
 - [cost management: user guide](https://docs.aws.amazon.com/cost-management/latest/userguide/index.html)
 - [cost and usage reports](https://docs.aws.amazon.com/cur/latest/userguide/index.html)
 - [billing: conductor console](https://docs.aws.amazon.com/billingconductor/latest/userguide/index.html)
+- [cost allocation tags](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/aws-tags.html)
 
 ## best practices
 

@@ -108,11 +108,19 @@
 
 ### Tags
 
-- the best practice is to tag everything, then you can use those tags for various other things, e.g. access control
+- Each tag consists of a key and an optional value
+- the best practice is to tag everything, then you can use those tags for various other things, e.g. fine-grained access control, cost allocation, querying/filtering, lifecycle management, analytics
 - think about
   - job function/project attributes/cost allocation
   - account/team/organization/etc
   - ABAC/RBAC
+
+##### Cost Allocation Tags
+
+- must be enabled; AWS uses the tags to organize your resource costs on your cost allocation report.
+- Once you have created and applied the user-defined tags, you can activate them by using the Billing and Cost Management console for cost allocation tracking.
+- Cost Allocation Tags appear on the console after enabling AWS Cost Explorer, AWS Budgets, AWS Cost and Usage reports, or legacy reports.
+- After you activate the AWS services, they appear on your cost allocation report. You can then use the tags on your cost allocation report to track your AWS costs
 
 ## well architected framework
 
