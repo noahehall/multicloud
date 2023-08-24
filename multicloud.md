@@ -855,6 +855,12 @@
     - access protocols: rest/protobuff/nfs/ftp/smb
     - transfer performance: over the wire/physical/between services/redundancy
     - protection: backups, retention, compliance, longterm archival, point-in-time snapshots
+- workload considerations
+  - IOPS-intensive (SSD) or throughput-intensive (HDD)
+  - latency sensitivity:
+    - high performance IOPS: very low and sub-millisecond to single-digit millisecond latency is needed
+    - midgrade IOPS: single-digit to low two-digit latency is tolerable
+    - not latency sensitive: go with the cheapest option available
 
 #### storage performance
 

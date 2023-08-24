@@ -95,6 +95,9 @@
   - operate within your normal baseline range, you accumulate burst credits.
   - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
   - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
+- elastic volumes: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
+  - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
+  - increase volume size: a provisioned EBS volume size can be increased via settings
 
 #### SSD backed
 
@@ -102,16 +105,35 @@
 - I/O size is capped at 256 kibibyte (KiB)
 - expected average latency ranges from sub-1 millisecond to single-digit millisecond performance depending on the SSD volume type.
 - handle small or random I/O much more efficiently than HDD volumes
-- general purpose: designed for large sequential workloads e.g. big data analytics engines, log processing, and data warehousing
-  - types: gp2 and gp3
+
+##### general purpose
+
+- designed for large sequential workloads e.g. big data analytics engines, log processing, and data warehousing
   - balance of price and performance
-  - types: gp3, gp2
-- provisioned IOPS: high performance, low latency
-  - types: io2 block express, io2, io1
-  - supports multi attach
-- io2
-  - designed to provide 99.999 percent durability with an annual failure rate (AFR) of 0.001 percent,
-- EBS multi-attach: for provisioned IOPS io1 and io2
+- GP2: IOPS performance is tied to volume size,
+  - performance scales linearly at 3 IOPS per GiB of volume size.
+    - Larger volumes have higher baseline performance levels and accumulate I/O credits faster.
+  - minimum of 100 IOPS at 33.33 GiB and below to a maximum of 16,000 IOPS at 5,334 GiB and above.
+  - volume size can range from 1 GiB to 16 TiB.
+- GP3: scale IOPS and throughput independent from the volume size.
+  - workloads performing small, random I/O.
+  - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
+  - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
+
+##### provisioned IOPS
+
+- high performance for mission-critical, low-latency, or high-throughput workloads.
+  - particularly database workloads,
+- volume size
+  - 4 GiB to 16 TiB. You can provision 100–64,000 IOPS per volume on instances built on the Nitro System and up to 32,000 on other instances.
+- io1:
+  - 99.8–99.9 percent volume durability with an AFR no higher than 0.2 percent
+  - available for all Amazon EC2 instance types.
+- io2: the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
+  - 99.999 percent volume durability with an AFR no higher than 0.001 percent
+  - available for all EC2 instances types, with the exception of R5b.
+- io2 block express: abcd
+- EBS multi-attach
   - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
   - to achieve higher application availability for applications that manage storage consistency from multiple writers
   - Applications using Multi-attach need to provide I/O fencing for storage consistency.
@@ -120,16 +142,24 @@
 
 - I/O size is capped at 1,024 KiB
 - expected average latency is two-digit millisecond performance
-- throughput optimized: frequently accessed, throughput-intensive workloads
-  - type: st1
-- cold: low cost, less frequently accessed workloads
-  - types: sc1
+- designed to deliver their provisioned performance 90 percent of the time.
+- volume size can range from 125 GiB to 16 TiB.
 
-#### Elastic Volumes
+##### throughput optimized
 
-- Elastic Volumes feature: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
-- you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
-- increase volume size: a provisioned EBS volume size can be increased via settings
+- frequently accessed, throughput-intensive workloads
+- st1: low-cost magnetic storage that defines performance in terms of throughput rather than IOPS
+  - support frequently accessed data
+  - optimized for workloads involving large, sequential I/O; e.g. Amazon EMR, data warehouses, log processing, and extract, transform, and load (ETL) workloads.
+
+##### cold
+
+- throughput-oriented storage for data that is infrequently accessed and scenarios where the lowest storage cost is important.
+- sc1: a bunch of iops stuff thats lame relative to the others
+
+#### Magnetic (standard)
+
+- previous-generation EBS volume type that is still in use in some customer production environments and available on AWS Management Console.
 
 ### Data Lifecycle Manager
 
