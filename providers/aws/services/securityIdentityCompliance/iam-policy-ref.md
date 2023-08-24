@@ -5,6 +5,7 @@
 
 ## links
 
+- [policy generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
 - [policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html)
 - [condition: operators](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html)
 - [condition: global keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html)
@@ -23,7 +24,7 @@
   - resource: ARN denoting resource(s) this policy covers
     - `resource: "*"` indicates all resources for this service
   - NotResource: should only be used with Deny effects
-  - Principal
+  - Principal: an account, user, role, or service
   - NotPrincipal: should only be used with Deny effects
     - also specify the account ARN of the not denied principal, else risk denying access to the entire account
     - can only be used with trust policies for IAM roles and in resource-based policies
@@ -31,7 +32,7 @@
     - compare keys in the request context to the key-values in the policy
     - service specific: prefixed with the service id, e.g. `ec2:InstanceType`
     - global: prefixed with `aws:`
-  - sid: description of the permission
+  - sid: unique description of the permission
 
 ## examples
 

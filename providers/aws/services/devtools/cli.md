@@ -81,4 +81,7 @@ aws_secret_access_key=test
 ## general API
 # aws SERVICE_NAME CMD PARAMS
 
+configure # default settings
+  set
+    default.s3.signature_version s3v4 # set sigv4 for s3 presigned urls
 ```

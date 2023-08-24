@@ -6,6 +6,7 @@
 ## links
 
 - [using iam access analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html)
+- [landing page](https://aws.amazon.com/iam/features/analyze-access/)
 
 ## best practices
 
@@ -41,3 +42,7 @@
   - SQS queues: Findings are generated for policies that allow an external entity to access a queue.
 
 ## considerations
+
+## Integrations
+
+- should be able to analyze any AWS resource where iam policies can be applied

@@ -252,9 +252,17 @@
 ##### data warehouses
 
 - designed and used as repositories for analytical data
-- store and maintain aggregate values generated from relational databases.
+- store and maintain aggregate values generated from other databases.
 - data is stored in columns instead of rows
   - and is indexed in a way that matches the way analytical queries are written.
+
+##### data lakes
+
+- a centralized repository that allows you to migrate, store, and manage all structured and unstructured data at an unlimited scale.
+- Once the data is centralized, you can extract value and gain insights from your data through analytics and machine learning.
+- use cases
+  - systems that generate so much disparate data, the primary goal is to store all of it for later use and analysis, without having any immediate goals
+  - once the data is stored in the lake, various other business units can inspect and analyze it and sync it with other DBs or data warehourses for aggregation
 
 ### migration planning
 
@@ -974,9 +982,9 @@
 - encrypt data before processing
 - protect data
   - at rest: any data you persist/store for any duration
-    - client side: encrypt before you send it
-    - server side: encrypt after you receive it
+    - server side: encrypt after you receive it and before saving it to disk
   - in transit: any data that gets transmitted from one system to another
+    - client side: encrypt before you send it; performed locally and data never leaves the runtime environment unencrypted
     - SSL/TLS
     - public/private certificates
 

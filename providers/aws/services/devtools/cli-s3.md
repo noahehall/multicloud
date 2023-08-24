@@ -20,7 +20,11 @@ mb s3://SOME_BUCKET # create SOME_BUCKET
 cp SOME_FILE s3://SOME_BUCKEt # cp SOME_FILE to SOME_BUCKET
 ls # list all buckets
   SOME_BUCKET # list all objects in bucket
-
+presign
+  s3://path/to/some/object # returns a presigned url for this object
+    --expires 54321 # in seconds
+    --region us-east-1 # only in this region
+  help # with creating presigned URLs
 ##################### low level cmds
 aws s3api X Y Z
 
