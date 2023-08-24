@@ -262,7 +262,7 @@
 - Once the data is centralized, you can extract value and gain insights from your data through analytics and machine learning.
 - use cases
   - systems that generate so much disparate data, the primary goal is to store all of it for later use and analysis, without having any immediate goals
-  - once the data is stored in the lake, various other business units can inspect and analyze it and sync it with other DBs or data warehourses for aggregation
+  - makes the data and the analytics tools available to more of your users, across more lines of business enabling them to get the business insights they need, whenever they need them.
 
 ### migration planning
 

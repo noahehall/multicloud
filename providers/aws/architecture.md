@@ -177,19 +177,19 @@
   - select patterns that optimize your application for the scale you need to support
     - timeouts, retry behavior, throughput, payload size
 
-#### scale in demand
+#### demand
 
 - both compute + data
 - organic demand
 - merger and acquisition: increases dramatically within a short period
 
-#### scale in complexity
+#### complexity
 
 - management
 - performance
 - security
 
-#### scaling reliably with testss
+#### scaling reliably with tests
 
 - increased need for more effective load tests since you can scale/tweak the perf of individual components
   - you need to have a solid understanding of peak load capacity
@@ -490,6 +490,20 @@
   - FSx file gateway: optimizes on-premises access to fully managed, highly reliable file shares in Amazon FSx for Windows File Server
   - Volume gateway: cloud-backed iSCSI block storage volumes to your on-premises applications
   - Tape gateway: replace physical tapes on premises with virtual tapes in AWS without changing existing backup workflows
+
+### Data lakes
+
+- in AWS
+  - s3 as data store for a data lake because of its virtually unlimited scalability. You can nondisruptively increase storage from gigabytes to petabytes of content.
+    - store all data types in their native formats
+    - multi-tenant environment: many users can bring their own data analytics tools to a common set of data
+  - ec2: servers for non AWS analytic tools to process data stored in s3
+  - query and process data with:
+    - athena: abcd
+    - redshift spectrum: abcd
+    - rekognition: abcd
+    - glue: abcd
+    - lambda
 
 ### Data transfer and migration
 
