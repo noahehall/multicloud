@@ -18,6 +18,7 @@
 - [serverless](https://aws.amazon.com/serverless/)
 - [service search](https://aws.amazon.com/products/)
 - [youtube: databases on aws](https://www.youtube.com/watch?v=WE8N5BU5MeI&t=9s)
+- [data lakes on AWS](https://aws.amazon.com/solutions/implementations/data-lake-solution/)
 
 ### well architected
 
@@ -41,6 +42,7 @@
 - [whitepaper: aws vpc connectivity options](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/welcome.html)
 - [whitepaper: hybrid networking](https://docs.aws.amazon.com/wellarchitected/latest/hybrid-networking-lens/hybrid-networking-lens.html)
 - [whitepapers](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
+- [high performance computing with s3 whitepaper PDF](https://d1.awsstatic.com/whitepapers/architecture/AWS-HPC-Lens.pdf?did=wp_card&trk=wp_card)
 
 ### service categories
 
@@ -494,16 +496,28 @@
 ### Data lakes
 
 - in AWS
-  - s3 as data store for a data lake because of its virtually unlimited scalability. You can nondisruptively increase storage from gigabytes to petabytes of content.
+  - s3: data store because of its virtually unlimited scalability. You can nondisruptively increase storage from gigabytes to petabytes of content.
     - store all data types in their native formats
     - multi-tenant environment: many users can bring their own data analytics tools to a common set of data
   - ec2: servers for non AWS analytic tools to process data stored in s3
-  - query and process data with:
-    - athena: abcd
-    - redshift spectrum: abcd
-    - rekognition: abcd
-    - glue: abcd
-    - lambda
+  - query, process and catalogue data:
+    - athena: ad hoc data discovery and SQL querying
+      - analyze data directly in Amazon S3, using standard SQL.
+      - process unstructured, semi-structured, and structured data sets.
+    - redshift spectrum: complex queries and scenarios where a large number of data lake users want to run concurrent BI and reporting workloads.
+      - run Amazon Redshift SQL queries directly against data stored in an Amazon S3-based data lake.
+      - can ETL data into redshift to create a data warehouse
+    - FSx Lustre: can link to S3 buckets, allowing you to access and process data concurrently from a high-performance file system.
+      - use S3 as a raw data repository as well as a repository for processed data
+      - process massive data sets at up to hundreds of gigabytes per second of throughput, millions of IOPS, and sub-millisecond latencies.
+    - rekognition: image & video processing
+    - glue: fully managed ETL service that makes it simple and cost-effective to categorize your data
+      - organize, cleanse, validate, and format data for storage in a data warehouse or data lake.
+      - Glue Data Catalog is an index to the location, schema, and runtime metrics of your data.
+    - lambda: triggers populate dynamodb tables
+    - dynamodb: object names and other metadata describing objects in s3
+    - elasticsearch: search for specific assets, related metadata, and data classifications.
+    - quicksight: easy visualization
 
 ### Data transfer and migration
 

@@ -260,6 +260,10 @@
 
 - a centralized repository that allows you to migrate, store, and manage all structured and unstructured data at an unlimited scale.
 - Once the data is centralized, you can extract value and gain insights from your data through analytics and machine learning.
+- data catalog: provides a query-able interface of all assets stored
+- primary goals: data cataloguing and processing
+  - keeping track of all of the raw assets
+  - keeping track of all of the new data assets and versions created by data transformation, data processing, and analytics.
 - use cases
   - systems that generate so much disparate data, the primary goal is to store all of it for later use and analysis, without having any immediate goals
   - makes the data and the analytics tools available to more of your users, across more lines of business enabling them to get the business insights they need, whenever they need them.
@@ -852,6 +856,16 @@
     - transfer performance: over the wire/physical/between services/redundancy
     - protection: backups, retention, compliance, longterm archival, point-in-time snapshots
 
+#### storage performance
+
+- latency: aka delay; amount of time between making a request to the storage system and receiving the response.
+  - How the storage is connected to the compute system
+- Input/output operations per second: IOPS; a statistical storage measurement of the number of input/output (I/O) operations that can be performed per second
+  - used to measure the number of operations at a given type of workload and operation size can occur per second
+- throughput: statistical storage measurement used to measure the performance associated with reading large sequential data files.
+  - Large files, such as video files, must be read from beginning to end.
+  - operations are measured in megabytes per second (MB/s).
+
 ### storage types
 
 #### block storage
@@ -863,23 +877,55 @@
 - examples: HDDs, SSDs, NVMe, SAN systems
 - use cases: transactional workloads, containers, virtual machines, i/o intensive apps, operating systems, databases, big data analytics engines
   - used by the operating system or an application that has the capabilities to manage block storage directly
+- architecture
+  - the block storage: physically/logically attached to the compute system
+  - the compute system:
+  - the OS/application: runs on the the compute system, manages the block storage
+    - recognizes the block storage as available and formats or makes the block storage avaible for use
+      - an app running on the compute system can act as the managing entity rather than the OS
+
+##### block data components
+
+- block size: select the block size that best meets your use case
+  - Block size flexibility is a fundamental differentiator for block storage
+- metadata management: information that the operating system and users need to identify and track the data.
+  - e.g. resource type, permissions, and the time and way it was created.
+- read/write activity: controls in place to manage access to the data.
+  - uses metadata permissions to control who can access, modify, or delete the data.
+  - can also reference external sources such as Microsoft Active Directory or Lightweight Directory Access Protocol (LDAP) to determine these permissions.
+  - manages the caching or read activity
+  - determines how writes are cached and staged before writing the blocks and which blocks to write to.
+- locking control: manages data integrity when data is being modified or deleted
+  - file-level locking: applying a lock on the entire data file
+  - block-level locking: specific portions or blocks being modified.
+- volumes: a logical storage construct that can be created from a single drive or using multiple drives
 
 #### file storage
 
 - built on top of block storage, typically serving as a file share or file server.
+  - created using an operating system that formats and manages the reading and writing of data to the block storage devices
 - treats data as atomic units (e.g. a file) but also organized in a tree structure, like your filesystem
   - ideal when you require centralized access that must be easily shared and managed by multiple host computers
   - if changing a piece of data, you need to replace the entire file
-- examples:
-  - Server Message Block: SMB;
-  - Network File System: NFS;
 - use cases: web servers, analytics, media, file systems
+- storage protocols: enable users to use the servers' resources or share, open, and edit files.
+  - network protocols: enable users to communicate with remote computers and servers.
+
+##### Server Message Block: Storage Protocol
+
+- network protocol
+
+##### Network File System: Storage Protocol
+
+- network protocol
 
 #### object storage
 
 - built on top of block storage: created using an operating system that formats and manages the reading and writing of data to the block storage devices
 - treats data as atomic units (e.g. a file) and stores it on disk in a flat hierarchy, not subject to fragmentation over time
   - if changing a piece of the data, you need to replace the entire object
+- Unlike file storage, object storage does not differentiate between types of data
+  - method of storing files in a flat address space based on attributes and metadata.
 - uses cases: data archiving, backup and recovery, rich media; systems requiring file versioning, file tracking, and file retention.
 
 ### Onpremise capacity calculations

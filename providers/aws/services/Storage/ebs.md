@@ -2,6 +2,7 @@
 
 - high performance persistent network attached block storage for EC2 instances
 - enables you to create loosely coupled reusable & configurable EC2 storage
+- for both throughput and transaction intensive workloads at any scale.
 
 ## my thoughts
 
@@ -32,11 +33,12 @@
 - designed for scaling high performance workloads
 - high availability, replication in/across AZs, 5 9s durability: automatically replicated in its availability zone
 - build SAN in the cloud for i/o intensive apps
-- run relational/nosql database
+- data store for any type database
 - runtime flexible: modify volume type/size, IOPS configuration, resize clusters for big data analytics engines
 - data persists and is not attached to EC2 lifecycle
 - opt-in data encryption for all volume types
-- use cases
+- use Snapshots with automated lifecycle policies to back up your volumes to s3 while ensuring geographic protection of your data and business continuity.
+- use cases: non/relational databases, enterprise/containerized applications, big data analytics engines, file systems, and media workflows.
   - operating systems: boot and root volumes can be used to store an OS
   - databases: the storage layer fo a DB running on EC2 that will scaled with performance needs
   - enterprise applications: EBS provides high availability and durability for mission critical applicatins
