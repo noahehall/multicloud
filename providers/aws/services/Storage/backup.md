@@ -88,3 +88,7 @@
 
 - use AWS Backup to back up your application data stored in AWS Storage Gateway volumes
 - restore your volumes to the AWS Cloud or to your on-premises environment.
+
+### EBS
+
+- backing up your EBS volumes.

@@ -1,12 +1,9 @@
 # Elastic Block Store (EBS)
 
-- high performance persistent network attached block storage for EC2 instances
-- enables you to create loosely coupled reusable & configurable EC2 storage
-- for both throughput and transaction intensive workloads at any scale.
+- high performance persistent network attached block storage for EC2 instances supporting throughput and transaction intensive workloads at any scale.
 
 ## my thoughts
 
-- perfect for persistent application data that requires block storage
 - determine up front if you need multi-attach to share data across EC2s as it depends on volume type
 - remember there is a size limit for ebs, unlike S3
 
@@ -64,14 +61,14 @@
 
 ## basics
 
+### EC2
+
 - you need an EC2 instance in the same AZ to access data on an EBS volume
   - to associate the ebs with another ec2 instance
     - stop the current ec2 instance
     - detach the ebs volume
     - attach it to a different ec2 instance in the same AZ
   - this is a 1:M relationship: one ec2 can have multiple attached EBS volumes
-- EBS multi-attach
-  - some ec2 instance types and ebs configurations may allowing attaching more than 1 ec2 instance to a single ebs volume
 
 ### snapshots
 
@@ -79,40 +76,75 @@
   - new snapshots only track the blocks on the volume that have changed since the previous snapshot
   - backups are stored redundantly in multiple AZs using S3
 - snapshots can be used to create new volumes in any AZ and use multiple AWS Regions for geographical expansion, data center migration, and disaster recovery.
-- point-in-time snapshots: are persisted to Amazon S3
+- deleting snapshots: removes only the data not needed by any other snapshot.
+  - All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
+- use cases
+  - instantiate multiple new volumes
+  - expand the size of a volume
+  - move volumes across Availability Zones
+  - backup and retention
 
 ### volume types
+
+- cab dynamically change the configuration of a volume attached to an EC2 instance
+- Annual Failure Rate: AFR; 0.1 to 0.2 percent
+- availabilty: 99.8-99.9:
+- data is replicated across multiple servers in a single Availability Zone
+- attach multiple volumes: during/after EC2 instance creation you can attach multiple EBS volumes
+- burstability
+  - operate within your normal baseline range, you accumulate burst credits.
+  - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
+  - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
 
 #### SSD backed
 
 - designed for transactional workloads
-- general purpose: balance of price and performance
+- I/O size is capped at 256 kibibyte (KiB)
+- expected average latency ranges from sub-1 millisecond to single-digit millisecond performance depending on the SSD volume type.
+- handle small or random I/O much more efficiently than HDD volumes
+- general purpose: designed for large sequential workloads e.g. big data analytics engines, log processing, and data warehousing
+  - types: gp2 and gp3
+  - balance of price and performance
   - types: gp3, gp2
 - provisioned IOPS: high performance, low latency
   - types: io2 block express, io2, io1
   - supports multi attach
+- io2
+  - designed to provide 99.999 percent durability with an annual failure rate (AFR) of 0.001 percent,
+- EBS multi-attach: for provisioned IOPS io1 and io2
+  - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
+  - to achieve higher application availability for applications that manage storage consistency from multiple writers
+  - Applications using Multi-attach need to provide I/O fencing for storage consistency.
 
 #### HDD backed
 
+- I/O size is capped at 1,024 KiB
+- expected average latency is two-digit millisecond performance
 - throughput optimized: frequently accessed, throughput-intensive workloads
   - type: st1
 - cold: low cost, less frequently accessed workloads
   - types: sc1
 
-### scaling volume size
+#### Elastic Volumes
 
+- Elastic Volumes feature: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
 - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
 - increase volume size: a provisioned EBS volume size can be increased via settings
-- attach multiple volumes: during/after EC2 instance creation you can attach multiple EBS volumes
-  -Elastic Volumes feature: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
+
+### Data Lifecycle Manager
+
+- automated ebs snapshot management
 
 ### Security
 
 #### Encryption
 
-- can create your EBS volumes as encrypted volumes
-- data stored at rest on the volume, disk I/O, and snapshots that were created from the volume are all encrypted
-- encryption occurs on the servers that host EC2 instances, providing encryption of data in transit from EC2 instances to EBS storage.
+- seamless encryption of EBS data volumes, boot volumes, and snapshots
+- EBS volumes can be created by default at the account level
+  - any new volumes will be automatically encrypted
+- at rest: using KMS or customer managed keys
+  - data volumes, boot volumes, and snapshots
+- in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS
 
 ## considerations
 

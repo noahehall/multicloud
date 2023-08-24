@@ -409,7 +409,9 @@
 - provisioned with each virtual server and offer the ultra low latency required for high-performance workloads.
 - in AWS
   - EBS (peristent, networked)
+    - snapshots: incremental, point-in-time copies of your data stored on your EBS volumes
   - ec2 instance storage (ephemeral, direct attached)
+    - The available storage type is directly tied to the EC2 instance type.
   - FSx for NetApp ONTAP also offers block storage services over an iSCSI access protocol.
 
 #### file storage
