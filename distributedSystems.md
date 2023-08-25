@@ -34,6 +34,19 @@
 - compare-and-swap operation: atomically updates the value of a key if and only if the process attempting to update the value correctly identifies the current value
 - write-once register: WOR; a thread-safe and linearizable register that can onlyh be written once but can be read many times
 
+### put somewhere else
+
+- read-modify-write: aka optimistic concurrency control; application-level design pattern;
+  - updating an item but ONLY if it hasnt changed since you last read it
+    - requires that all processes knows to increment the version number for specific items
+  - read: an application retrieves the item and store its version number in memory
+  - modify: prepare the update and increment the version number (this will be the new version you'll check against in the future write)
+  - write: execute the update with a conditional expression that fails if the version number has changed since you last read it
+    - indicates some other process has changed the data your interested in
+- scatter gather technique: funny name for a regular-ole thread-safe data chunking algorithm
+  - the base thread determines the number of chunks primary key for each chunk
+  - threads are created to read/write chunks to/from dynamodb
+
 ## hallmarks of distributed systems
 
 - communication

@@ -272,6 +272,7 @@
 
 - homogenous migrations: migrating from/to the same db engine
 - heterogeneous migrations: migration from/to different db engines
+- back-fill: porting data from one place to another, often used in db migrations to port data between two timestamps
 
 ## virtualization
 
