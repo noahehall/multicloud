@@ -12,6 +12,8 @@
 - [user guide intro](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)
 - [concepts](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html)
 - [sending trail events to cloudwatch logs](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html)
+- [dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/logging-using-cloudtrail.html)
+- [dynamodb: log file entries](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/understanding-ddb-log-entries.html)
 
 ## best practices
 
@@ -110,3 +112,5 @@
 ### s3
 
 - can track object level data events, e.g. uploads to a bucket
+
+### dynamodb

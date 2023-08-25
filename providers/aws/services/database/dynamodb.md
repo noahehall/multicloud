@@ -40,6 +40,7 @@
 - [consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
 - [provisioned throughput: R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html)
 - [R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html)
+- [error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html)
 
 ### development
 
@@ -66,7 +67,7 @@
   - local seoncary indexes
     - use them sparingly
     - choose projections carefully and only those atributes you request frequently
-- Managing item expiration with TTL
+- table TTL: auto expire items
   - expire old items to keep your storage cost and RCU consumption low (and its free)
     - this is often more cost effective than paying for the WCU to delete an item
 - Using streams
@@ -175,8 +176,8 @@
   - generally require autoscaling or big enough write capacity to carry all global writes and accommodate the replicated traffic
   - routing mechanisms
     - geo-routing: send global clients to whichever global endpoint is closest
-- item TTL
-  - expire items after some time
+- table TTL: auto expire items
+  - doesnt consume any WCU
 
 #### data types
 
@@ -319,7 +320,7 @@
   - Choose AWS service keys or customer managed keys when you create a table.
 - in transit: abcd
 
-### backup / restore
+### backups
 
 - backups: neither type consumes any read/write capacity
   - on demand: created when you request it
@@ -330,7 +331,20 @@
   - most restores complete in less than 10 hrs
   - partitioned data is restored in parallel
 
+### Troubleshooting
+
+- console: view table and item settings, query tables directly,
+- cloudwatch: events
+- cli: provides much more data than the console; useful for automating data collection
+- cloudtrail: actions taken by a user, role, or an AWS service in DynamoDB
+
 ## considerations
+
+- Tables
+- Items
+- Attributes
+- Primary key
+- Read/write capacity mode
 
 ## integrations
 
@@ -343,3 +357,10 @@
 ### KMS
 
 - end-to-end enterprise-grade encryption for data that is both in transit and at rest
+
+### cloudwatch
+
+### cloudtrail
+
+- create a trail, you can set up continuous delivery of CloudTrail events to an S3 bucket, including events for DynamoDB.
+- don't configure a trail, you can still view the most recent events in the CloudTrail console in Event history.

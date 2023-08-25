@@ -28,6 +28,7 @@
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
 - [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
+- [dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
 
 ### api
 
@@ -215,11 +216,8 @@
 ### dynamodb
 
 - common metrics/alarms
-  - SuccessfulRequestLatency
-  - Throttling Events
-  - Capacity Consumption
-  - User Errors
-  - System Errors
+  - SuccessfulRequestLatency, Throttling Events, Capacity Consumption, User Errors, System Errors
+  - Read usage, Write usage, and Read/Write throttled requests.
 
 ### api gateway
 
