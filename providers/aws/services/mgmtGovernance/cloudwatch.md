@@ -4,13 +4,19 @@
 - CloudWatch Metrics: monitoring & billing, observability
 - CloudWatch Logs: aggregator
 - TODOs
-  - put all the common metrics AND common events into a different file
+  - put all the common metrics AND common events into a cloudwatch-events.md file
 
 ## links
 
 - [api gateway: metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html)
 - [by service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
 - [container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
+- [dynamodb: alarms](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/creating-alarms.html)
+- [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
+- [dynamodb: contributor insights tut](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_tutorial.html)
+- [dynamodb: metrics & dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html)
+- [dynamodb: monitoring](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
+- [ecs: monitoring](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_monitoring.html)
 - [eks: pushing logs to container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html)
 - [embedded metric format: intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html)
 - [embedded metric format: specification](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html)
@@ -28,7 +34,6 @@
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
 - [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
-- [dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
 
 ### api
 
@@ -83,8 +88,6 @@
     - cross-account observability
     - internet monitor
 
-## terms
-
 ## basics
 
 - general workflow
@@ -95,24 +98,14 @@
     - define an alarm
     - define an action
 
-### architecture
+### dashboards
 
-#### failure management
-
-- its all about monitoring and alarms
-- ensure your services are persisting logs to cloudwatch logs
-  - managed services: stdout is automatically posted to cloudwatch
-- exponential backoff and retry logic needs to be included in your application logic
-  - utilize the aws sdk for defaults
+- customizeable home pages configured for one/more metrics through widgets pulled from one/more regions
 
 ### metrics
 
 - custom metrics enable you to post application-level metrics to cloudwatch
 - you can run `math metrics` across metrics, e.g. errors/invocations
-
-### dashboards
-
-- customizeable home pages configured for one/more metrics through widgets pulled from one/more regions
 
 ### logs
 
@@ -140,14 +133,19 @@
 ### alarms
 
 - automatically initiate actions based on sustained state changes of metrics
-- are invoked when it transitions from one state to another
-  - ok: the metric wis within the defined threshold
+- invoked when it transitions from one state to another
+  - ok: the metric is within the defined threshold
   - alarm: the metric is outside the defined threshold
   - insufficient_data: alarm has just started, metric is not available, or not data to determine alarm start
 - you configure when alarms are invoked and the action that is peformed
   - metric: to be monitored
   - threshold: when events breach this number, cloudwatch starts the countdown
   - time period: once the metric exceeds the threshold for this duration, the alarm is triggered
+
+#### actions
+
+- abcd
+- getMetricData: retrieve cloudwatch metric values
 
 ### events
 
@@ -169,18 +167,24 @@
 
 #### contributor insights
 
+- a diagnostic tool
+
 #### application insights
 
-### actions
+### failure management
 
-- abcd
-- getMetricData: retrieve cloudwatch metric values
+- its all about monitoring and alarms
+- ensure your services are persisting logs to cloudwatch logs
+  - managed services: stdout is automatically posted to cloudwatch
+- exponential backoff and retry logic needs to be included in your application logic
+  - utilize the aws sdk for defaults
 
 ## considerations
 
 ## integration
 
 - all AWS services automatically report some information to cloudwatch
+  - The metrics in the CloudWatch console are raw and provide more statistics options than the metrics in the service console
 - there are 3rd party tools to help analyze this information
 - common goals across all integrations
   - operational issues: overutilization, application flaws, misconfiguration or security-related events
@@ -190,7 +194,7 @@
 
 ### SNS
 
-- integration SNS with alarms that trigger notifications is a foundational pattern in AWS
+- cloudwatch alarms that send SNS messages is a foundational pattern in AWS
 
 ### vpc
 
@@ -216,8 +220,22 @@
 ### dynamodb
 
 - common metrics/alarms
-  - SuccessfulRequestLatency, Throttling Events, Capacity Consumption, User Errors, System Errors
-  - Read usage, Write usage, and Read/Write throttled requests.
+  - SuccessfulRequestLatency, Throttling Events, Capacity Consumption, System Errors
+  - Read usage, Write usage, and Read/Write throttled requests
+  - table: ConsumedReadCapacityUnits, ConsumedWriteCapacityUnits, Provisioned{Read,Write}CapacityUnits
+  - table ops: ReturnedItemCount, SuccessfulRequestLatency
+  - account: AccountMax{Reads,Writes},AccountMaxTableLevel{Reads,Writes}, AccountProvisioned{Read,Write}CapacityUtilization, MaxProvisionedTable{Read,Write}CapacityUtilization, UserErrors
+  - throttling: {OnlineIndex,Read,Write}ThrottleEvents, Throttled{PutRecordCount,Requests}
+- When you turn on auto scaling for a table, DynamoDB automatically creates several alarms that can launch auto scaling actions.
+- Contributor Insights for DynamoDB: identifying the most frequently accessed and throttled keys in your table or index at a glance.
+  - rule formats: DynamoDBContributorInsights-XXXXXX-[resource_name]-[creationtimestamp]
+    - in your table or global secondary index
+      - partition keys of the most
+        - PKC: accessed items
+        - PKT: throttled items
+      - partition and sort keys of the most
+        - SKC: accessed items
+        - SKT: throttled items
 
 ### api gateway
 

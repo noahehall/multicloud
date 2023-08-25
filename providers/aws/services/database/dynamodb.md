@@ -16,7 +16,9 @@
 
 - [AAA best practices](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
 - [accelerator (DAX)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html)
+- [autoscaling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html)
 - [client and server side encryption](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/client-server-side.html)
+- [consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
 - [core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 - [data model partitioning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
 - [data protection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/data-protection.html)
@@ -25,11 +27,17 @@
 - [encryption client: how it works](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/how-it-works.html)
 - [encryption client: intro](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/what-is-ddb-encrypt.html)
 - [error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ErrorHandling.html)
+- [error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html)
 - [faqs](https://aws.amazon.com/dynamodb/faqs/?da=sec&sec=prep)
 - [IAM: authnz](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/authentication-and-access-control.html)
 - [lambda: dynamic content management](https://github.com/aws-samples/aws-lambda-manage-rds-connections)
 - [landing page](https://aws.amazon.com/dynamodb/?did=ap_card&trk=ap_card)
 - [limits](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html)
+- [partition keys: decisions](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/)
+- [partition keys: design for uniform load](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html)
+- [partition keys: write sharding](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-sharding.html)
+- [provisioned throughput: R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html)
+- [R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html)
 - [secondary indexes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SecondaryIndexes.html)
 - [setting up dynamodb local](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html)
 - [streams and lambda triggers](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html)
@@ -37,10 +45,6 @@
 - [streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html)
 - [tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html)
 - [working with large attributes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-use-s3-too.html)
-- [consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
-- [provisioned throughput: R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/ProvisionedThroughput.html)
-- [R/W capacity](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadWriteCapacityMode.html)
-- [error handling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Programming.Errors.html)
 
 ### development
 
@@ -239,7 +243,10 @@
 - tables automatically scale r/w throughput
 - capacity settings: none, its managed for you
 - scaling behavior: instantly handles up to double the previous traffic peak
-- throttling behavior: requests throttled if new peak is double the previous within 30 minutes
+- table WILL be throttled if:
+  - hot partitions exist
+  - The table exceeds double its previous peak traffic within 30 minutes
+  - The traffic exceeds the per-partition maximum
 - cost considerations: set amount for each read and write; able to evaluate cost per transaction
 - use cases
   - default serverless workloads
@@ -256,10 +263,15 @@
 
 ##### provisioned + autoscaling
 
+- automatically scales the provisioned capacity ONLY when the consumed capacity is higher than target utilization for 2 consistent minutes
+  - a scale-down event is initiated when 15 consecutive data points for consumed capacity in CloudWatch are lower than the target utilization
+  - After Application Auto Scaling is initiated
+    - UpdateTable is invoked: could takes minutes to update the provisioned capacity for a table/index
 - capacity settings: define lower + upper capacity limits and target utilization percentage (20-90%)
 - scaling behavior: auto scales to meet target utilizatoin
 - throttling behavior: very short bursts may be throttled but only for a few minutes
 - cost considerations: same as provisioned without autoscaling
+-
 
 ### Provisioned Throughput
 
@@ -334,9 +346,24 @@
 ### Troubleshooting
 
 - console: view table and item settings, query tables directly,
-- cloudwatch: events
+- cloudwatch: monitoring
 - cli: provides much more data than the console; useful for automating data collection
 - cloudtrail: actions taken by a user, role, or an AWS service in DynamoDB
+
+#### Throttling
+
+- solutions:
+  - avoid creating hot partitions by monitoring with Cloudwatch Contributor Insights
+    - partition limits of 3000 RCU or 1000 WCU (or a combination of both) per second are exceeded.
+  - add jitter and exponential backoff to your API calls
+  - requests with several peak times and abrupt workload spikes should use ondemand NOT provisioned + autoscaling
+- DynamoDB rate limits are applied per second
+  - DynamoDB reports minute-level metrics to CloudWatch
+  - thus 60 WCU === 3600 writes per minute, but you cant execute 3600 writes in one second
+- R/WCU per minute might be lower than the provisioned throughput for the table
+  - if all the workload falls within a couple of seconds then the requests might be throttled.
+- Application Auto Scaling is not a suitable solution to address sudden spikes in traffic with DynamoDB tables.
+  - It only initiates a scale-up when two consecutive data points for consumed capacity units exceed the configured target utilization value in a 1-minute span.
 
 ## considerations
 

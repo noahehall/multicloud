@@ -974,6 +974,16 @@
   - troubleshooting and remediation: identification, isolation and resolution
   - learning and improvement: detecting and preventing problems
 
+### troubleshooting
+
+- process: many issues have known solutions if you can identify the root causes
+  - identify the problem: e.g. error messages, metrics
+  - collect the data: Gather diagnostic data after the fact, or reproduce the problem to gather logs, trace data, and so forth
+  - analyze the data: pinpoint one or more possible root causes.
+    - various tools available for querying log data
+  - review documentation: product and service documentation for known issues and solutions
+  - try known solutions
+
 ### monitoring
 
 - all about metrics, logging and tracing
