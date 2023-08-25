@@ -10,6 +10,12 @@
 
 ## best practices
 
+- Backup vs EBS Snapshots
+  - backup
+    - offers a more robust backup solution when compared to EBS Snapshots.
+  - EBS Snapshots
+    - tightly integrated with EC2 and EBS services.
+
 ### anti patterns
 
 ## features
@@ -40,9 +46,20 @@
   - Health Insurance Portability
   - Accountability Act of 1996 (HIPAA), and many more.
 
+### Copy / Restore
+
+- copy backups either manually, as on-demand copy or automatically as part of a scheduled backup plan to multiple different regions
+- cross-account backup: securely copy your backups across all AWS accounts within your AWS organizations
+  - restore from the destination account or, alternatively, to the third account.
+
 ### Console
 
 - a consolidated view of your backups and backup activity logs, making it easier to audit your backups and ensure compliance.
+
+#### Dashboard
+
+- audit your backup and restore activity across AWS services
+- view the status of recent backup jobs and restore jobs across AWS services
 
 ### Backup Plans (Policies)
 
@@ -61,6 +78,23 @@
   - automatically as scheduled
 - backup window.
 
+#### Retention Policies
+
+- automatically retain and expire backups according to your business and regulatory backup compliance requirements
+
+#### Lifecycle Management Policies
+
+- configure lifecycle policies that will automatically transition backups from warm storage to cold storage according to a schedule that you define.
+
+### Backup Vaults
+
+- a container used for organizing your backups
+
+#### Access Policies
+
+- a central and secure way to control access to your backups across AWS services
+- resource-based access policies on Backup Vaults across all users, rather than having to define permissions for each user
+
 ### Security
 
 - resource-based access policies for your backup vaults
@@ -74,9 +108,19 @@
 
 - Backup integrates with most compute, database and storage services to centralize backup processes via policies across aws resources
 
+### MGN
+
+### EC2
+
+### Dynamodb
+
+### RDS
+
+### FSx
+
 ### Organizations
 
-- centrally deploy data protection policies
+- centrally deploy data protection (backup) policies to configure, manage, and govern your backup activity across your organization’s AWS accounts and resources
 
 ### Cloudtrail
 

@@ -3,6 +3,8 @@
 - centralized solution to monitor resources and applications on AWS, on premise and other clouds with dataviz, alarms and automation actions
 - CloudWatch Metrics: monitoring & billing, observability
 - CloudWatch Logs: aggregator
+- TODOs
+  - put all the common metrics AND common events into a different file
 
 ## links
 
@@ -290,7 +292,11 @@
 ### EBS
 
 - common metrics
-  - bandwidth, throughput, latency, and average queue length
+  - bandwidth, throughput, latency, VolumeReadBytes, VolumeWriteBytes, VolumeReadOps, VolumeWriteOps, VolumeTotalReadTime, VolumeTotalWriteTime
+  - VolumeIdleTime, VolumeQueueLength, VolumeThroughputPercentage, VolumeConsumedReadWriteOps, BurstBalance
+- common events
+  - createVolume, deleteVolume, attachVolume, reattachVolume, modifyVolume, createSnapshot, createSnapshots, copySnapshot, shareSnapshot
+- Data is reported to CloudWatch only when the volume is attached to an instance.
 
 ### FSx
 

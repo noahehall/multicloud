@@ -20,6 +20,7 @@
 - [networking: elastic ips](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html)
 - [networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html)
 - [networking: network interface best practices](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/best-practices-for-configuring-network-interfaces.html)
+- [concepts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
 
 ## best practices
 

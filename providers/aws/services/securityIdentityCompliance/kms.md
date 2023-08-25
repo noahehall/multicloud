@@ -12,6 +12,7 @@
 - [protecting SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html)
 - [cryptographic details pdf](https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf)
 - [best practices pdf](https://d0.awsstatic.com/whitepapers/aws-kms-best-practices.pdf)
+- [concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
 
 ## best practices
 

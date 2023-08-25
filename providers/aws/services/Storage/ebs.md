@@ -11,10 +11,12 @@
 
 - [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
 - [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
-- [faw](https://aws.amazon.com/ebs/faqs/)
+- [faq](https://aws.amazon.com/ebs/faqs/)
 - [eks: EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
 - [eks: managing EBS CSI Addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi-self-managed-add-on.html)
 - [eks: EBS CSI driver github](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
+- [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
+- [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
 
 ## best practices
 
@@ -22,6 +24,9 @@
   - you can keep app state on the EBS and server state on the EC2 instance store
   - the EBS life cycle isnt related to the EC2/instance store lifecycle
 - ensure your taking regular snapshots, and removing old snapshots
+- With Elastic Volumes,
+  - volume sizes can only be increased within the same volumes
+  - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
 
 ### anti patterns
 
@@ -43,6 +48,7 @@
 
 ### pricing
 
+- FYI: the pricing structure is insane to calculate, use the pricing calculator
 - volume type, provisioned volume size, and the provisioned IOPS and throughput performance
   - general purpose ssd: storage, iops, throughput, or regular volumes
   - provisioned IOPS ssd: storage, iops, or regular volumes
@@ -75,14 +81,86 @@
 - redundantly stored incremental backups:
   - new snapshots only track the blocks on the volume that have changed since the previous snapshot
   - backups are stored redundantly in multiple AZs using S3
-- snapshots can be used to create new volumes in any AZ and use multiple AWS Regions for geographical expansion, data center migration, and disaster recovery.
-- deleting snapshots: removes only the data not needed by any other snapshot.
-  - All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
-- use cases
-  - instantiate multiple new volumes
+- use cases: protects data with eleven 9's of durability and provides you Regional access and availability.
+  - instantiate multiple new volumes in any AZ
   - expand the size of a volume
   - move volumes across Availability Zones
   - backup and retention
+
+#### multi-volume snapshots
+
+- critical workloads that spans across multiple EBS volumes
+- take exact point-in-time, data-coordinated, and crash-consistent snapshots
+
+#### creation
+
+- create manual snapshots or create snapshot schedules
+  - is constrained to the AWS Region where it was created
+  - use it to create new volumes in the same Region
+- Snapshots occur asynchronously
+  - the point-in-time snapshot is created immediately,
+  - the status of the snapshot is pending until the snapshot is complete
+- modifying the permissions of a snapshot, share it with other AWS accounts
+  - use the shared snapshots as the basis for creating their own EBS volumes.
+  - can be modified by the authorized user; however, your original snapshot remains unaffected.
+
+#### copy
+
+- copy snapshots across/within AWS Regions
+- copy any accessible snapshot that has a completed status.
+- the copy receives an ID that is different from the ID of the original snapshot.
+
+#### deleting snapshots
+
+- delete any snapshot whether it is a full or incremental snapshot.
+  - removes only the data not needed by any other snapshot.
+- All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
+
+#### restoring snapshots
+
+- the new volume begins as an exact replica of the original volume
+- data is loaded into the new replicated volume in the background
+- can begin to use your new volume immediately while the EBS volume data loads
+  - accessing data that hasn't been loaded: the volume immediately downloads the requested data from Amazon S3.
+
+#### Data Lifecycle Manager (DLM)
+
+- automate the creation, retention, and deletion of snapshots that you use to back up your EBS volumes and EBS-backed AMIs
+- create up to 100 lifecycle policies per AWS Region.
+- add up to 45 tags per resource.
+- Target resource tags are used to identify the resources to back up.
+  - DLM tags are specific tags applied to all snapshots and AMIs created by a lifecycle policy.
+    - distinguish them from snapshots and AMIs created by any other means.
+
+##### Lifecycle Policies
+
+- created using core policy settings to define the automated policy action and behavior.
+- policy type: Defines the type of resources that the policy can manage.
+  - Snapshot lifecycle policy: target EBS volumes and instances.
+    - Cross-account copy event policy: automate the copying of snapshots across accounts; should be used in conjunction with an EBS snapshot policy that shares snapshots across accounts.
+  - EBS-backed AMI lifecycle policy: can target instances only.
+    - One AMI is created that includes snapshots of all of the volumes that are attached to the target instance.
+- resource type: Defines the type of resources that are targeted by the policy.
+  - Use VOLUME to create snapshots of individual volumes
+  - use INSTANCE to create multi-volume snapshots of all of the volumes that are attached to an instance
+- target tags: must be assigned to an EBS volume or an Amazon EC2 instance for it to be targeted by the policy.
+- Schedules: start times and intervals for creating snapshots or AMIs.
+  - operation starts within one hour after the specified start/schedule time
+- retention: retain snapshots or AMIs based on their total count (count-based) or their age (age-based).
+  - snapshot policies: the oldest snapshot is deleted.
+  - AMI policies: the oldest AMI is deregistered and its backing snapshots are deleted.
+
+##### Policy Schedules
+
+- define when snapshots or AMIs are created by the policy.
+- one mandatory schedule
+- up to three optional schedules.
+  - create snapshots or AMIs at different frequencies using the same policy
+- for each schedule
+  - frequency
+  - lifecycle policies: fast snapshot restore settings
+  - cross-Region copy rules
+  - tags: automatically assigned to the snapshots or AMIs that are created
 
 ### volume types
 
@@ -170,17 +248,37 @@
 #### Encryption
 
 - seamless encryption of EBS data volumes, boot volumes, and snapshots
-- EBS volumes can be created by default at the account level
+- encryption can be enabled by default at the account level
   - any new volumes will be automatically encrypted
+- the encryption data key is stored on-disk with your encrypted data,
+  - but not before EBS encrypts it with your CMK
+  - Your data key never appears on disk in plaintext.
+  - data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots
 - at rest: using KMS or customer managed keys
   - data volumes, boot volumes, and snapshots
 - in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS
+- snapshot encryption rules:
+  - Snapshots of encrypted volumes are automatically encrypted.
+  - Volumes created from
+    - encrypted snapshots are automatically encrypted.
+    - an unencrypted snapshot can be encrypted during the creation process.
+  - copy an
+    - unencrypted snapshot, you can encrypt it during the copy process.
+    - encrypted snapshot, you can re-encrypt it with a different encryption key during the copy process.
+  - The first snapshot taken of
+    - an encrypted volume that was created from an unencrypted snapshot is always a full snapshot.
+    - a re-encrypted volume that has a different encryption key from the source snapshot is always a full snapshot.
+- the following types of data are encrypted:
+  - Data at rest inside the volume
+  - All data moving between the EBS volume and the EC2 instance
+  - All snapshots created from the EBS volume
+    - All EBS volumes created from those snapshots
 
 ## considerations
 
-- volume type: SSD vs HDD
-
 ## integrations
+
+- use the same connectivity and access methods that you use to reach your EC2 instances to reach your EBS volumes.
 
 ### AMI
 
@@ -212,3 +310,6 @@
 - centralize and automate data protection across multiple Amazon EBS volumes
 
 ### Cloudwatch
+
+- Snapshot events are tracked through CloudWatch events
+- An event is generated each time you create a single snapshot or multiple snapshots, copy a snapshot, or share a snapshot.
