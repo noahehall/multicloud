@@ -18,7 +18,7 @@
 - [accelerator (DAX)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAX.html)
 - [autoscaling](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/AutoScaling.html)
 - [client and server side encryption](https://docs.aws.amazon.com/dynamodb-encryption-client/latest/devguide/client-server-side.html)
-- [consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
+- [read consistency](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.ReadConsistency.html)
 - [core components](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.CoreComponents.html)
 - [data model partitioning](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/HowItWorks.Partitions.html)
 - [data protection](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/data-protection.html)
@@ -32,6 +32,7 @@
 - [IAM: authnz](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/authentication-and-access-control.html)
 - [lambda: dynamic content management](https://github.com/aws-samples/aws-lambda-manage-rds-connections)
 - [landing page](https://aws.amazon.com/dynamodb/?did=ap_card&trk=ap_card)
+- [latency aware dynamodb apps (example in java)](https://aws.amazon.com/blogs/database/tuning-aws-java-sdk-http-request-settings-for-latency-aware-amazon-dynamodb-applications/)
 - [limits](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Limits.html)
 - [partition keys: decisions](https://aws.amazon.com/blogs/database/choosing-the-right-dynamodb-partition-key/)
 - [partition keys: design for uniform load](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-partition-key-uniform-load.html)
@@ -43,8 +44,10 @@
 - [streams and lambda triggers](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.html)
 - [streams and lambdas (tut)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.Tutorial.html)
 - [streams](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html)
+- [tables: global](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GlobalTables.html)
 - [tables](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/WorkingWithTables.html)
 - [working with large attributes](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-use-s3-too.html)
+- [latency logging (java example)](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/java-dg-logging.html)
 
 ### development
 
@@ -264,14 +267,11 @@
 ##### provisioned + autoscaling
 
 - automatically scales the provisioned capacity ONLY when the consumed capacity is higher than target utilization for 2 consistent minutes
-  - a scale-down event is initiated when 15 consecutive data points for consumed capacity in CloudWatch are lower than the target utilization
-  - After Application Auto Scaling is initiated
-    - UpdateTable is invoked: could takes minutes to update the provisioned capacity for a table/index
+
 - capacity settings: define lower + upper capacity limits and target utilization percentage (20-90%)
-- scaling behavior: auto scales to meet target utilizatoin
+- scaling behavior: auto scales to meet target utilization
 - throttling behavior: very short bursts may be throttled but only for a few minutes
 - cost considerations: same as provisioned without autoscaling
--
 
 ### Provisioned Throughput
 
@@ -279,11 +279,24 @@
   - read and writes are managed separately
   - must be specified when you create a table; AWS provisions resources to ensure your settings can be met
     - you set a min, max and a target utilization (in percent)
-- autoscaling: adjusts provisioned throughput in response to actual traffic patterns
+
+#### autoscaling
+
+- adjusts provisioned throughput only when the workload stays depressed or elevated for 2/more minutes.
   - is enabled by default and can be configured separately for the table and GSI
-  - the target utilization setting is what drives a smooth reaction in autoscaling to match your target request throughput
 - Throttling: prevents your application from consuming too many capacity units.
   - fails with an HTTP 400 Bad Request error and a ProvisionedThroughputExceededException.
+- the target utilization setting is what drives a smooth reaction in autoscaling to match your target request throughput
+- workflow
+  - create an application autoscaling policy for some dynamodb table
+  - dynamodb publishes metrics to cloudwatch
+  - if the consumed capacity metrics are outside targat utilization for 2/more minutes; the the alarm is activated
+    - view the alarm in the console and notifications in SNS
+  - the alarm invokes autoscaling to evaluate your policy
+    - a scale-down event is initiated when 15 consecutive data points for consumed capacity in CloudWatch are lower than the target utilization
+  - autoscaling issues an updateTable request to adjust the provisioned throughput
+  - dynamodb processes the updateTable request
+    - could takes minutes to update the provisioned capacity for a table/index
 
 #### Read Capacity Units (RCU)
 
@@ -352,18 +365,59 @@
 
 #### Throttling
 
-- solutions:
-  - avoid creating hot partitions by monitoring with Cloudwatch Contributor Insights
-    - partition limits of 3000 RCU or 1000 WCU (or a combination of both) per second are exceeded.
-  - add jitter and exponential backoff to your API calls
-  - requests with several peak times and abrupt workload spikes should use ondemand NOT provisioned + autoscaling
 - DynamoDB rate limits are applied per second
-  - DynamoDB reports minute-level metrics to CloudWatch
+  - but DynamoDB reports minute-level metrics to CloudWatch
   - thus 60 WCU === 3600 writes per minute, but you cant execute 3600 writes in one second
 - R/WCU per minute might be lower than the provisioned throughput for the table
   - if all the workload falls within a couple of seconds then the requests might be throttled.
 - Application Auto Scaling is not a suitable solution to address sudden spikes in traffic with DynamoDB tables.
   - It only initiates a scale-up when two consecutive data points for consumed capacity units exceed the configured target utilization value in a 1-minute span.
+- solutions:
+  - avoid creating hot partitions by monitoring with Cloudwatch Contributor Insights
+    - partition limits of 3000 RCU or 1000 WCU (or a combination of both) per second are exceeded.
+  - add jitter and exponential backoff to your API calls
+  - requests with several peak times and abrupt workload spikes should use ondemand NOT provisioned + autoscaling
+
+#### high latency tables
+
+- increase in the response times
+  - if average latency is high, its an issue; occasional spikes can be ignored
+  - SuccessfulRequestLatency is point in time, not average
+- identify the source of latency issues: enable the latency logger
+  - Set the `com.amazonaws.latency` logger to DEBUG to enable this logger.
+  - metrics like which process is taking the most time or whether server or client side has the greater latency
+  - FYI
+    - it measurea activity in DynamoDB or DynamoDB Streams
+    - doesnt consider network latency or client-side activity into account.
+- solutions
+  - reduce the request timeout settings
+    - configure client AWS SDK parameters requestTimeOut and clientExecutionTimeout to timeout and fail much faster e.g. after 50 milliseconds
+      - abandon high-latency requests after the time period and then send a second request that usually completes much faster than the first.
+  - reduce distance between client and dynamodb endpoint
+    - use global tables and specify the AWS Regions for which you want the table to be available.
+  - use caching for read heavy applications, e.g. via DAX
+  - send constant traffic/reuse connections: keep internal caches warm, which can help keep latency low.
+    - send dummy traffic to a DynamoDB table
+    - reuse client connections or try connection pooling
+  - use eventually consistent reads: cheaper and less likely to experience high latency.
+
+#### HTTP 5xx errors
+
+- affect application performance
+- indicates a problem that must be resolved by AWS
+- solutions
+  - All AWS SDKs have built-in retry that uses exponential backoff.
+    - modify the retry parameters to suit your needs.
+  - Avoid strongly consistent reads which are more likely to fail with 5xx
+
+#### autoscaling not meeting expectations
+
+- t's not working as expected or your read/write activity is still being throttled.
+- solutions
+  - if you deleted the cloudwatch alarms
+    - turn off and turn on auto scaling for the table. CloudWatch automatically recreates the alarms.
+  - Don't rely on DynamoDB auto scaling to handle occasional short-duration activity spikes.
+    - burst-capacity is responsibile for occasional activity spikes
 
 ## considerations
 

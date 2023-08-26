@@ -1,6 +1,6 @@
 # RDS
 
-- server-based relational database supporting 7 different RDBMDS's like postgres, mysql, oracle, mariadb and sql server
+- distributed relational database supporting 7 different RDBMDS's like postgres, mysql, oracle, mariadb and sql server
 
 ## my thoughts
 
@@ -18,9 +18,6 @@
 - [instance types](https://aws.amazon.com/rds/instance-types/)
 
 ## best practices
-
-- restrict access to your database by placing it inside of a VPC
-  - create an internet gateway for access outside the VPC
 
 ### anti patterns
 

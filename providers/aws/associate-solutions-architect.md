@@ -4,9 +4,10 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Troubleshooting: Amazon Dynamodb > Troubleshooting Observed Latency in DynamoDB
-    - AWS Systems Manager: skip this course and just read the fkn docs
-      - no video transcript, nor playback speed on the video
+    - Amazon RDS Service Primer
+    - skipped courses: video only, no transcript or speed adjust
+      - AWS Systems Manager
+      - Amazon Route 53 - Amazon Route 53 - Basics
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
 - todos
   - FYI: just by opening a lab marks it as completed, check the completed list and figure out which ones you still need to do
