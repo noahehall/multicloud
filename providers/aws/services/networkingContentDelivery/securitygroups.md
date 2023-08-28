@@ -26,7 +26,7 @@
 
 #### VPC
 
-- attaches to VPCs
+- attaches to resources within a VPC
 
 ### OSI Model
 

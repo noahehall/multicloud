@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Configuring and Deploying Amazon VPC with Multiple Subnets > Introduction – Securing and Configuring High Availability
+    - Configuring and Deploying Amazon VPC with Multiple Subnets > Production–Ready: Multi-Tier Architecture for an Amazon VPC
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

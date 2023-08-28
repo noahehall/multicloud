@@ -24,6 +24,7 @@
 
 - [WAT: well architected tool](https://aws.amazon.com/well-architected-tool/)
 - [WAT: user guide](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+- [cloud adoption framework](https://aws.amazon.com/cloud-adoption-framework/)
 
 ### guide
 

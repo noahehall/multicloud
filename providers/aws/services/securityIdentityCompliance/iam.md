@@ -85,11 +85,16 @@
 
 ## basics
 
+- IAM acts as an identity provider (IdP), and manages identities inside an AWS account
+- authenticates these identities facilitating AWS account login activities to be allowed to log into the AWS account
+- then authorizes those identities to access resources or deny access to resources based on the policies attached.
+
 ### users & groups
 
 - for managing access to resources within your account
 - root user: the initial user on the aws account
-- groups are collections of users; specify permissions for similar types of users
+- non root users: represent people and also applications that need access to an AWS account.
+- groups: are collections of users; specify permissions for similar types of users
 - characteristics
   - static credentials
   - dont expire by default but you should definitely set requiremnets for periodic rotation

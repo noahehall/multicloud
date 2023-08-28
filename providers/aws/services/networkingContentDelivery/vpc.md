@@ -18,6 +18,8 @@
 - [fow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
 - [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
 - [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
+- [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
+- [lambda: vpc endpoints](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-endpoints.html)
 - [landing page](https://aws.amazon.com/vpc/?did=ap_card&trk=ap_card)
 - [monitoring](https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html)
 - [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
@@ -27,15 +29,11 @@
 - [route tables: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
 - [route tables: walkthrough](https://docs.aws.amazon.com/vpc/latest/userguide/WorkWithRouteTables.html)
 - [route tables](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html)
+- [security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
 - [subnets: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
 - [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
 - [traffic mirroring](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
 - [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
-
-### integrations
-
-- [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
-- [lambda: vpc endpoints](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-endpoints.html)
 
 ## best practices
 
@@ -157,8 +155,8 @@
   - IGW: Internet gateway; enables all resources to communicate with the public internet
   - VGW: Virtual Gatway: enables direct communication from specific IPs into a VPCs private subnets
     - e.g. a data center, or VPN tunnel
-- security groups: stateful firewall: outbound automatically allows inbound responses
-- NACLs: stateless stateless firewall: outbound DOES NOT automatically allow the inbound response
+- security groups: stateful firewall at the resource level: outbound automatically allows inbound responses
+- NACLs: stateless stateless firewall at the subnet level: outbound DOES NOT automatically allow the inbound response
 - extending a VPC to an on-premise network
   - Direct Connect
   - Site-to-Site VPN
@@ -295,9 +293,10 @@
   - each subnet must be associated with exaclty one route table
   - but one route table can have multiple subnets
 
-### NACLs: network access control lists:
+### NACLs: network access control lists
 
 - stateless firewall that can filter traffic as it enters and leaves a subnet.
+  - you can explicitly deny traffic
   - only manage traffic that is crossing the subnet boundary.
     - i.e. has no impact on resources within the same subnet
   - do not recognize AWS resources like security groups do
@@ -310,7 +309,7 @@
 
 ### security groups
 
-- control access at the resource level
+- control access at the resource level; specifically the elastic network interfaces (ENIs)
 - see [markdown file](./securitygroups.md)
 
 ### Peering
@@ -327,7 +326,9 @@
 
 ### flow logs
 
-- catpure info about ip traffic and publish to cloudwatch logs, s3 or kinesis
+- capture info about ip traffic and publish to cloudwatch logs, s3 or kinesis
+- tool for identifying problems with your network's traffic
+  - e.g. Tracing network activity to a specific IP address
 
 ### Endpoints
 
@@ -440,3 +441,8 @@
     - default routing table: routes traffic to pods
     - network interface: has its own routing table for routing outgoing pod traffic
   - each pod is assigned one of the network interfaces secondary ip addr
+
+### Elastic Load Balancers
+
+- load balancing across resources in multiple subnets
+- great to pair with an AWS Auto Scaling Group to enhance the high availability, fault-tolerance, and scalability of an application.

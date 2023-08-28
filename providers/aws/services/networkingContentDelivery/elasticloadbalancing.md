@@ -10,9 +10,10 @@
 - [landing page](https://aws.amazon.com/elasticloadbalancing/?did=ap_card&trk=ap_card)
 - [user guide](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html)
 - [sticky sessions](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html)
-- [elb type comparisons](https://aws.amazon.com/elasticloadbalancing/features/#Product_comparisons)
+- [load balancer type comparisons](https://aws.amazon.com/elasticloadbalancing/features/#Product_comparisons)
 - [alb: authnz](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html)
 - [glb: intro](https://aws.amazon.com/blogs/aws/introducing-aws-gateway-load-balancer-easy-deployment-scalability-and-high-availability-for-partner-appliances/)
+- [blue green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-create-loadbalancer-bluegreen.html)
 
 ## best practices
 
@@ -76,11 +77,16 @@
   - source IP: when the source ip matches, the listener will handle the request
   - target group: where to matched requets
 
+### Classic Load Balancer
+
+- the first load balancer type
+- not recommended for use unless you have legacy services or applications that need the Classic Load Balancer.
+
 ### application load balancer
 
 - layer 7 http/s/grpc
 - features
-  - route traffic based on request data
+  - route traffic based on request data e.g. paths, headers, hosts, etc
   - send fixed responses directly to the client
   - TLS offloading/termination
   - user authnz: uses OpenID Connect (OIDC) and supports SAML, LDAP, microsoft active directory, etc
@@ -96,6 +102,7 @@
 - layer 4 tcp/udp/tls
   - enable access to resources within a private vpc
 - features
+  - does not need to worry about the upper layer protocol and it is much faster
   - tcp & UDP connections
   - source IP preservation
   - low latency
@@ -106,15 +113,19 @@
 
 ### gateway laod balancer
 
+- mainly used to load balance requests to third party applications
+  - uses Gateway Load Balancer endpoints to securely exchange traffic across VPC boundaries.
+  - Gateway Load Balancer endpoint is a VPC endpoint that provides private connectivity between virtual appliances across VPCs
 - layer 3 gateway and layer 4 loadbalancer
   - deploy scale and manage thirdparty appliances like firewalls, intrusion detection adn prevension systems, and deep packet inspection systems
+  - It listens for all IP packets across all ports and forwards traffic to the target group that's specified in the listener rule.
+  - It maintains stickiness of flows to a specific target appliance using 5-tuple (for TCP/UDP flows) or 3-tuple (for non-TCP/UDP flows).
 - features
   - high availabilty routing to backends via health checks
   - gateway load balancer endpoints
   - integrated with cloudwatch metrics for monitoring
   - deploy new appliances by selecting them from the aws marketplace
   - private connectivity to itnernet gateways, VPCs and other resources over a private network
-- mainly used to load balance requests to third party applications
 
 ## considerations
 
