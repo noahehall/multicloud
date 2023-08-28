@@ -93,37 +93,16 @@
 
 ## basics
 
-- general workflow
-  - create a vpc in a specific region but spans all the AZs
-    - enter CIDR range with enough IPs for available resources across subnets
-  - create subnets
-    - attach to VPC & pick an AZ:
-    - pick a CIDR range thats a subset of the VPC cidr range and doesnt overlap with other subnets or AZs
-      - check the goodstuff file for notes and this [cidr visualizer](https://cidr.xyz/)
-  - create gateways
-    - internet gateway for public subnets
-      - attach it to a VPC
-    - nat gateway for private subnets
-    - virtual private gateway for private access
-  - create/adjust route table routes
-    - attach to VPC
-    - generally you want distinct route tables for public vs private subnets
-      - only subnets with the appropriate route table connection & routes can access the internet/other vpc-local resources
-      - if a subnet is public/private doesnt technically matter, its all about how the route table routes are configured
-  - VPC firewalls
-    - create/adjust NACLs
-    - create/adjust security groups
-
-### OSI Model
-
-- layer 3
-  - routes and route tables
+- virtual network, associated to a single AWS Region
+- a service that defines a boundary around the AWS services and resources and how those services and resources communicate with each other and external networks such as the internet
 
 ### Default vs Non-Default VPCs
 
 - Default: created by AWS and are all configured in the same way
   - only one per region
   - one CIDR range that handles all i/o comms
+    - VPC CIDR range is /56; VPC IPv6 CIDR for your subnet range is /64
+    - VPC IPv4 CIDR 172.31.0.0/16
   - one class B subnet per AZ per region
   - A default internet gateway attached to the VPC
   - a default network ACL is created for your default Amazon VPC and is associated with all subnets.
@@ -149,9 +128,73 @@
       - fourth: reserved for future use
       - last: network broadcast address (even tho its not supported in VPC)
 
+### Architecture
+
+- VPC: parent CIDR block
+  - primary goal is to provide an isolated network for all other components
+- subnets: non overlapping CIDR blocks; sub-network within the VPC cidr block
+- route table: route communication between networking components
+  - default route table: local route
+    - enables private communication between all networking components within the associated VPC
+    - never associate the defualt route table to an IGW, then ALL networking components will be publicaly accessible
+  - non default route tables: each automatically copies the routes in the default route table
+    - Public: destination = 0.0.0.0/0; target = IGW
+      - allows inbound & outbound
+    - Public via redirect: destination = 0.0.0.0/0; target = NAT instance ID
+      - allows outbound to the public internet
+    - private: no routes to components with public access
+- resources: located within subnets
+  - public subnets: attached to a route table that is attached to an internet gateway
+    - you always want NORTH-SOUTH traffic to hit the public facing resource
+    - the public resource can send EAST-WEST traffic privately to resources across subnet boundaries
+    - Bastion Host: aka jump box; a server that enables INBOUND public communication with resources in private subnets
+      - server is locked down with some form of authNZ,
+      - entity X can login to the server and access private resources
+    - NAT Instance: enables private resources to communicate with public internet by redirecting their requests through the IGW
+      - you MUST disable Source/Destination checking
+  - private subnets: traffic must stay OFF the public internet
+- Gateways
+  - IGW: Internet gateway; enables all resources to communicate with the public internet
+  - VGW: Virtual Gatway: enables direct communication from specific IPs into a VPCs private subnets
+    - e.g. a data center, or VPN tunnel
+- security groups: stateful firewall: outbound automatically allows inbound responses
+- NACLs: stateless stateless firewall: outbound DOES NOT automatically allow the inbound response
+- extending a VPC to an on-premise network
+  - Direct Connect
+  - Site-to-Site VPN
+  - Client VPN
+
+### general workflow
+
+- create a vpc in a specific region but spans all the AZs
+  - enter CIDR range with enough IPs for available resources across subnets
+- create subnets
+  - attach to VPC & pick an AZ:
+  - pick a CIDR range thats a subset of the VPC cidr range and doesnt overlap with other subnets or AZs
+    - check the goodstuff file for notes and this [cidr visualizer](https://cidr.xyz/)
+- create gateways
+  - internet gateway for public subnets
+    - attach it to a VPC
+  - nat gateway for private subnets
+  - virtual private gateway for private access
+- create/adjust route table routes
+  - attach to VPC
+  - generally you want distinct route tables for public vs private subnets
+    - only subnets with the appropriate route table connection & routes can access the internet/other vpc-local resources
+    - if a subnet is public/private doesnt technically matter, its all about how the route table routes are configured
+- VPC firewalls
+  - create/adjust NACLs
+  - create/adjust security groups
+
+### OSI Model
+
+- layer 3
+  - routes and route tables
+
 ### subnets
 
 - each subnet is bound to a specific AZ within a VPC and must be associated with a single route table
+- the first four IPs and the last IP in that subnet are reserved by AWS.
 - a subnet is made public by:
   - associating the subnet with a route table with a route to an internet gateway
     - the destination is the public internet, e.g 0.0.0.0/0
@@ -164,7 +207,6 @@
     - allows connectivity between the subnets in the same VPC
   - you can add a VPC endpoint for private connection between your VPC and other AWS services
   - you can have a route for VPC peering connection between your databases and other VPCs so that the traffic just communicates over private IPv4 address.
-- all resources within a VPC live inside
 
 ### Gateways
 
