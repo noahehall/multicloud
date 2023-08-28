@@ -6,16 +6,18 @@
 
 ## links
 
-- [landing page](https://aws.amazon.com/rds/?did=ap_card&trk=ap_card)
-- [high avialability multi az](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
-- [working with read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html)
 - [configuration](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_RDS_Configuring.html)
-- [snapshots and restoring](https://docs.aws.amazon.com//AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html)
-- [security](https://docs.aws.amazon.com//AmazonRDS/latest/UserGuide/UsingWithRDS.html)
-- [dev resources](https://aws.amazon.com/rds/resources/)
-- [vpc: rds user guide](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html)
 - [controlling access with security groups](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html)
+- [dev resources](https://aws.amazon.com/rds/resources/)
+- [high avialability multi az](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html)
 - [instance types](https://aws.amazon.com/rds/instance-types/)
+- [landing page](https://aws.amazon.com/rds/?did=ap_card&trk=ap_card)
+- [security in RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html)
+- [security](https://docs.aws.amazon.com//AmazonRDS/latest/UserGuide/UsingWithRDS.html)
+- [snapshots and restoring](https://docs.aws.amazon.com//AmazonRDS/latest/UserGuide/CHAP_CommonTasks.BackupRestore.html)
+- [vpc: rds landing page](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.html)
+- [vpc: rds user guide](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html)
+- [working with read replicas](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ReadRepl.html)
 
 ## best practices
 
@@ -52,22 +54,11 @@
 
 ## basics
 
-- general workflow
-  - pick db engine and configuration details (instance class, storage, master pass/name, etc)
-  - create a VPC for the EC2 instance and the db engine
-    - setup subnets
-      - private: at least 2 private subnets in two distinct AZs
-      - public: adds an EC2 instance in a third public subnet for connecting to the db in the private subnets
-    - setup VPC security groups
-  - IAM authnz
-  - encryption
-  - backup snapshots windows
-  - monitoring
-  - log exports to cloudwatch
-  - version maintainence and time frames
-  - deletion protection
+### db engine
 
-### db instance
+- manages and runs all db operations
+
+### db instance class
 
 - determines the resources available to your instance
 - the compute portion of RDS, the EC2 that runs the selected db engine
@@ -108,28 +99,57 @@
 
 ### security
 
-- it boils down to application security, vpc, NACL, security groups, and IAM
-- encryption at rest: can be enabled in configuration; uses the industry-standard AES-256 bit encryption
-- encryption in transit: enable SSL or TLS for securing communicatoin
-- restrict access with security groups
-- manage credentials with IAM
+#### Security Groups
+
+- can use 3 types of security groups
+  - VPC
+  - EC2
+  - database
+
+#### Encryption
+
+- at rest: can be enabled in configuration; uses the industry-standard AES-256 bit encryption
+- in transit: enable SSL or TLS for securing communicatoin
 
 ## considerations
 
 - create method
   - standard: set all available configuration options
   - easy: use recommended configuration options
-- db instance size: product, dev/test, or free tier
-- engine type
-- backups: automated vs manual snapshopts
+- general workflow
+  - pick db engine and configuration details (instance class, storage, master pass/name, etc)
+  - create a VPC for the EC2 instance and the db engine
+    - setup subnets
+      - private: at least 2 private subnets in two distinct AZs
+      - public: adds an EC2 instance in a third public subnet for connecting to the db in the private subnets
+    - setup VPC security groups
+  - IAM authnz
+  - encryption
+  - backup snapshots windows
+  - monitoring
+  - log exports to cloudwatch
+  - version maintainence and time frames
+  - deletion protection
 
 ## integrations
 
+### lambda
+
+- disaster recovery solution for RDS
+  - create a scheduled AWS Lambda function to take database snapshots and store them in an S3 bucket.
+  - configure Amazon SNS, as an event source for a second Lambda function, which copies the database into a second S3 bucket in a different Region.
+- support real-time data analytics
+  - creating a Lambda function that’s triggered each time an insert operation is run on the database
+  - Lambda writes the data from the Amazon RDS record into an Amazon Kinesis Data Firehose stream
+  - he stream of data is written to an S3 bucket
+
 ### vpc
+
+- requires two subnets in two different Availability Zones for high availability.
 
 ### security groups
 
-- restrict access
+- restrict access at ec2, db, and VPC levels
 - check the [markdown file](../networkingContentDelivery/securitygroups.md)
 
 ### IAM
@@ -138,3 +158,8 @@
 - check the [markdown file](../securityIdentityCompliance/iam.md)
 
 ### ec2
+
+### DMS
+
+- database migration service
+- migrate or replicate your existing databases to Amazon RDS

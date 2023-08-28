@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Amazon RDS Service Primer
+    - Subnets, Gateways, and Route Tables Explained > 1:24
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

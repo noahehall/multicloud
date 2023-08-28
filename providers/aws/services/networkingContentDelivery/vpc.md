@@ -164,6 +164,7 @@
     - allows connectivity between the subnets in the same VPC
   - you can add a VPC endpoint for private connection between your VPC and other AWS services
   - you can have a route for VPC peering connection between your databases and other VPCs so that the traffic just communicates over private IPv4 address.
+- all resources within a VPC live inside
 
 ### Gateways
 

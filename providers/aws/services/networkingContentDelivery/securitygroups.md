@@ -14,6 +14,20 @@
 - attached to the elastic network interface of resources in a subnet.
 - rules are processed all at once, there is no order
 
+### security group types
+
+#### EC2
+
+- attaches to ec2 instances
+
+#### Database
+
+- attaches to rds instance
+
+#### VPC
+
+- attaches to VPCs
+
 ### OSI Model
 
 - operates at layer 3 and 4
