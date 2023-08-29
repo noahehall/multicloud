@@ -33,6 +33,7 @@
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
 - [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
+- [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
 
 ### api
 
@@ -186,11 +187,3 @@
 ## integration
 
 - [check the markdown file](./cloudwatch-integrations.md)
-- all AWS services automatically report some information to cloudwatch
-  - The metrics in the CloudWatch console are raw and provide more statistics options than the metrics in the service console
-- there are 3rd party tools to help analyze this information
-- common goals across all integrations
-  - operational issues: overutilization, application flaws, misconfiguration or security-related events
-  - cost optimization: underutilization
-  - scaling, alarms, status checks
-  - resource optimization: network utilization, response times, traffic i/o, storage/diskspace consumption/data throughput

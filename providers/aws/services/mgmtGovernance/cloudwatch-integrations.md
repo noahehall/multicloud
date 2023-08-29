@@ -1,6 +1,19 @@
 # Cloudwatch Metrics and Events
 
-- catchall for common metrics and events for various AWS services
+- catchall for
+  - integratin patterns
+  - common metrics and events for various AWS services
+
+## basics
+
+- all AWS services automatically report some information to cloudwatch
+  - The metrics in the CloudWatch console are raw and provide more statistics options than the metrics in the service console
+- there are 3rd party tools to help analyze this information
+- common goals across all integrations
+  - operational issues: overutilization, application flaws, misconfiguration or security-related events
+  - cost optimization: underutilization
+  - scaling, alarms, status checks
+  - resource optimization: network utilization, response times, traffic i/o, storage/diskspace consumption/data throughput
 
 ## SNS
 

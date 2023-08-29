@@ -844,23 +844,52 @@
     - provide historical data and establish a baseline
     - important for forensic analysis to identify the root cause after incidents.
   - Data in the form of tables, charts, graphs, dashboards, and reports.
-- general process
-  - identify the devices and related performance metrics to be monitored
-  - deterime the monitoring interval:
-    - the frequency at which network devices are polled to identify performance and availability status
-  - choosing the right protocols
-    - SNMP: simple network management protocol
-    - HTTP: hyper text trasnfer protocol
-    - TCP: transmission control protocol
-    - IP: internet protocol
-    - ICMP: internet control message protocol
-    - WMI: windows management instrumentation
-  - set proactive thresholds
-- diagnostic tools: always need to be compared against historical baseline of network performance
-  - ping: some service providers have ping (ICMP echo packets) disabled by default, or cant be enabled at all
-  - traceroute: uses successive echo packets to display the path to the destination and the response time of each hop.
-  - Speedtest: useful in evaluating the performance of your internet access.
-  - packet analyzers: aka packet sniffers; logs each packet it intercepts, decodes the packet, and presents the values of the various fields within the packet for examination.
+
+#### general process
+
+- identify the devices and related performance metrics to be monitored
+- deterime the monitoring interval:
+  - the frequency at which network devices are polled to identify performance and availability status
+- choosing the right protocols
+  - SNMP: simple network management protocol
+  - HTTP: hyper text trasnfer protocol
+  - TCP: transmission control protocol
+  - IP: internet protocol
+  - ICMP: internet control message protocol
+  - WMI: windows management instrumentation
+- set proactive thresholds
+
+#### diagnostic tools
+
+- always need to be compared against historical baseline of network performance
+- ping: some service providers have ping (ICMP echo packets) disabled by default, or cant be enabled at all
+- traceroute: uses successive echo packets to display the path to the destination and the response time of each hop.
+- Speedtest: useful in evaluating the performance of your internet access.
+- packet analyzers: aka packet sniffers; logs each packet it intercepts, decodes the packet, and presents the values of the various fields within the packet for examination.
+
+#### common networking metrics
+
+- bandwidth capacity: the maximum data transmission rate possible on a network
+  - measures the theoretical limit of data transfer
+  - For optimal network operations, you want to get as close to your maximum bandwidth as possible without reaching critical levels
+  - indicates that your network is sending as much data as it can within a period of time, but isn’t being overloaded.
+- throughput: measures your network’s actual data transmission rate
+  - measures the units such as megabyte or gigabyte per second of data packets that are successfully being sent.
+  - a high bandwidth connection but low throughput, that's an indicator of an underlying problem
+- latency: delay between requesting data and when that data is finished being delivered.
+  - Consistent delays or odd spikes in delay time indicate a major performance issue
+- packet loss: examines how many data packets are dropped during data transmissions on your network
+  - The more data packets that are lost, the longer it takes for a data request to be fulfilled
+  - A network’s TCP interprets when packets are dropped and takes steps to ensure that data packets can still be transmitted;
+- retransmission: is when packets are lost, The network needs to retransmit them to complete a data request.
+  - retransmission rate lets your enterprise know how often packets are being dropped, which is an indication of congestion on your network.
+  - analyze retransmission delay (or the time it takes for a dropped packet to be retransmitted) to understand how long it takes your network to recover from packet loss.
+- availability: i.e. uptime, the percentage of time the network is available.
+  - can never guarantee 100 percent availability, but you want to be aware of any downtime that happens on your network that you weren’t expecting
+- connectivity: whether the connections between the nodes on your network are working properly
+  - jitter: a variation in delay or disruption that occurs while data packets travel across the network.
+  - congestion: occurs when network devices are unable to send the equivalent amount of traffic they receive.
+- response times: measures the time it takes for a server to respond to a data request with application data
 
 #### fault monitoring:
 
