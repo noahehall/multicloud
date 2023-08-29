@@ -43,20 +43,10 @@
 
 ### anti patterns
 
-- abc
-
 ## features
 
 - run mulitple api versions/deploy to distinct stages at the same time
 - sdk generation via aws cli for java, javascript, objective-c or swift and ruby
-- proxy integration: more straight forward
-  - mapping templates require putting logic at the API gateway layer, which can become complex
-  - prefer using a proxy integration that handles this translation for you
-- mapping templates: more complex
-  - transform and validate incoming and outgoing requests if require
-    - Transform the body and headers of incoming API requests to match backend systems
-    - Transform the body and headers of the outgoing API responses to match API requirement
-    - Define models to help standardize your API request and response transformations
 - integrate with cloudfront edge locations
   - reduce latency and throttle traffic
   - cache responses
@@ -67,6 +57,7 @@
   - use lambda fn for custom authnz
 - full https support for encryption in transit
 - simple request validation against a type definition at the method level
+- create apis by importing openApi/swagger docs
 
 ### pricing
 
@@ -78,40 +69,51 @@
     - public endpoints: standard aws prices
   - optional cache: per hour per stage depending on cache size
 
-## terms
-
-- resource: represented as a url endpoint and path, e.g. blah.com/this/thing and represents a single microservice
-- method: the combination of an http method and resource
-- method request: authg settings, url query string params, and request headers
-- integration request: define the backend target used with the method and mapping templates to transform incoming requests
-- integration response: define mappings between teh backend target's response and the api gateway response, transform outgoing requests
-- method response: define the method response types, headers and content types
-- model: define the format/schema of some data; create and use models for mapping templates
-- stage: the path through which an api deployment is accessible, e.g. prod vs dev endpoints
-- backend target: e.g. a lambda function, another aws service, or a thirdparty api
-- api endpoint: the hostname of the API; can be edge-optimized or regional, depending on where traffic originates from
-- invoke url: `https://${api-id}.execute-api.${region}.amazon.com/${stage}/${resource}`
-- stage: a deployed snapshot of the API with a unique versioned identifier
-- OIDC: openid connect token, usually part of a json web token
-
 ## basics
 
-| api type  |                              purpose                              |            workloads             |
-| :-------: | :---------------------------------------------------------------: | :------------------------------: |
-|   rest    |         api mgmt, private proxies, backend auth, WAF, iam         | sync edge, private apis, caching |
-|   http    | native oidc/oauth2, serverless proxies, cheaper & faster, no mgmt |           low latency            |
-| websocket |                      realtime + server push                       |            real time             |
+- resource: represented as a url endpoint and path, e.g. blah.com/this/thing and represents a single service
+- method: the combination of an http method and resource
+- backend target: e.g. a lambda function, another aws service, or a thirdparty api
+- api endpoint: the hostname of the API; can be edge-optimized or regional, depending on where traffic originates from
+- OIDC: openid connect token, usually part of a json web token
+- request pipeline:
+  - method request: the first step in inspecting the request from the client
+    - define auth settings, url query string params, and request headers, and extract data from the request
+  - integration request: receives data extracted from the method request > transforms it and passes it to the backend target
+    - mapping templates to transform incoming requests
+  - target: whatever service that handles the client request, e.g. a lambda fn
+  - integration response: transforms the target reponse into the interface expected by the client
+    - mapping templates to transform outgoing requests
+  - method response: last chance to modify outgoing requests before responding to the client
+    - define the method response types, headers and content types
 
 ### OSI model
 
 - operates at layer 7
 
+### Stages
+
+- a deployed snapshot of the API with a unique versioned identifier
+- the path through which an api is accessible, e.g. prod vs dev stage, v1 vs v2 stage
+- invoke url: `https://${api-id}.execute-api.${region}.amazon.com/${stage}/${resource}`
+- each stage maintains its own configuration
+  - stage variables
+  - client SDK generations
+  - deployment history
+  - settings
+
+### Models
+
+- define the format/schema of some data; create and use models for mapping templates
+
 ### architecture
 
-- three options for authnz
-  - IAM: best for authn users within your AWS env or can use IAM creds
-  - lambda: best for integratin with external oauth services and need to run additional logic within a lambda fn or centralize authnz across AWS accounts
-  - cognito: best when starting fresh and want a managed service, or mobile apps
+- rest: api mgmt, private proxies, backend auth, WAF, iam
+  - sync edge, private apis, caching
+- http: native oidc/oauth2, serverless proxies, cheaper & faster, no mgmt
+  - low latency
+- websocket: realtime + server push
+  - real time
 
 #### rest api
 
@@ -139,6 +141,13 @@
   - connect: the client sends a websocket upgrade request; until the `$connect` comletes successfully the upgrade request is pending
   - established: `$connect` was successful and the websocket api routes the request.body to the appropriate route based on the determiend route key
   - discconect: `$disconnect` is invoked after the connection is closed, anything after this is a best effort
+
+### Security
+
+- three options for authnz
+  - IAM: best for authn users within your AWS env or can use IAM creds
+  - lambda: best for integrating with external oauth services and need to run additional logic within a lambda fn or centralize authnz across AWS accounts
+  - cognito: best when starting fresh and want a managed service, or mobile apps
 
 ## considertaions
 

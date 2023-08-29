@@ -213,3 +213,19 @@
     - prioritized list of issues/recommendations
     - links to videos and documentation concerning best practices
     - generated report that summarizes your workload review
+
+## Cloud Adoption Framework (CAF)
+
+- review and summarize the link up top
+
+### Security Perspective
+
+- think about security from a data perspective: think about the data you are protecting, how it is stored, and who has access to it.
+  - data is the most sensitive resource, so you would place it at the end of a chain to introduce two/more layers of defense between attackers and your data.
+    - e.g. in a VPC having 2/more subnets for a multi-tier architecture
+- key domains
+  - AWS Identity and Access Management (IAM): Define, enforce, and audit user permissions across AWS services, actions, and resources.
+  - Detective control: Improve your security posture, reduce the risk profile of your environment, and gain the visibility you need to spot issues before they impact your business.
+  - Infrastructure security: Reduce the surface area of the infrastructure you manage and increase the privacy and control of your overall infrastructure on AWS.
+  - Data protection: Implement appropriate safeguards that help protect data in transit and at rest by using natively integrated encrypted services.
+  - Incident response: Define and launch a response to security incidents as a guide for security planning.

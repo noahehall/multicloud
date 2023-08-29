@@ -1,5 +1,8 @@
 # multicloud
 
+- TODOs:
+  - alot of this stuff should be in [distributedSystems.md](./distributedSystems.md)
+
 ## links
 
 - [api: fan out/in integration pattern](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
@@ -30,7 +33,18 @@
 
 - [bpftrace: inspect syscalls](https://github.com/iovisor/bpftrace)
 
-## multi-cloudnative and open source
+## Infrastructure Design
+
+- the document, diagram, or vision that encompasses all of the characteristics of your infrastructure that supports your hosted applications
+- constraints and assumptions that address the `insert here` of systems and resources that support and host your business automation workflows
+  - requirements
+  - availability
+  - manageability
+  - performance
+  - recoverability
+  - security: data security patterns and a clear mapping of these patterns to Cloud security controls
+
+### multi-cloudnative and open source
 
 - opensource: conflicts with proprietary cloudnative services
   - configuring VMS
@@ -635,6 +649,7 @@
 
 # 1024 ip addresses
 192.168.0.0/22
+
 ```
 
 ### routing

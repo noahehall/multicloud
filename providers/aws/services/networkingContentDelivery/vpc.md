@@ -138,13 +138,14 @@
   - non default route tables: each automatically copies the routes in the default route table
     - Public: destination = 0.0.0.0/0; target = IGW
       - allows inbound & outbound
-    - Public via redirect: destination = 0.0.0.0/0; target = NAT instance ID
+    - Public via redirect: destination = 0.0.0.0/0; target = NAT Gateway/instance ID
       - allows outbound to the public internet
     - private: no routes to components with public access
 - resources: located within subnets
   - public subnets: attached to a route table that is attached to an internet gateway
     - you always want NORTH-SOUTH traffic to hit the public facing resource
     - the public resource can send EAST-WEST traffic privately to resources across subnet boundaries
+      - FYI: you don't need to expose resources in the public subnet at all if you use managed AWS endpoints, such as load balancers or Network Address Translation (NAT) options.
     - Bastion Host: aka jump box; a server that enables INBOUND public communication with resources in private subnets
       - server is locked down with some form of authNZ,
       - entity X can login to the server and access private resources
@@ -278,6 +279,7 @@
   - routes internet gateway traffic to specific subnets
   - is always connected to a VPC, some type of gateway, and one/more subnets via its route destination configuration
 - route: can be applied at the VPC or subnet level
+  - When the CIDR blocks for route table routes overlap, the more specific (smaller range) CIDR block takes priority
 - main route table: created with a VPC; allows all traffic between subnets in a vpc
   - cannot be deleted from the route table
   - implicitly used by all subnets without an explicit route table association

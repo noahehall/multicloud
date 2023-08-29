@@ -47,6 +47,7 @@
 ### service categories
 
 - [application integration](https://aws.amazon.com/products/application-integration/)
+- [compliance](https://aws.amazon.com/compliance/)
 - [compute](https://aws.amazon.com/products/compute/)
 - [cost management](https://aws.amazon.com/aws-cost-management/)
 - [data lakes and analytics](https://aws.amazon.com/big-data/datalakes-and-analytics/)
@@ -63,6 +64,10 @@
 - [securing enterprise grade serverless apps video](https://www.youtube.com/watch?v=tYhUWbDZ4-8)
 - [security, identity and compliance](https://aws.amazon.com/products/security/)
 - [storage](https://aws.amazon.com/products/storage/)
+
+### Quickstart Partner Solutions
+
+- [landing page](https://aws.amazon.com/quickstart/)
 
 ### best practices
 
@@ -93,6 +98,11 @@
 - integration
   - understand your component timeouts, e.g. api gateway and lambda have different hard limits
 - amazon has a database engine for every occasion, choose wisely
+
+## Quick Start Partner Solutions
+
+- automated reference deployments built by Amazon Web Services (AWS) solutions architects and AWS Partners
+- review the link up top
 
 ## Serverless
 
