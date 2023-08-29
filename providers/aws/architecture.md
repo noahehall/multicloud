@@ -650,6 +650,13 @@
 
 ## Analytics
 
+### Monitoring and troubleshooting
+
+- in AWS
+  - cloudwatch: core supporting service within AWS which provides metrics, logs, and event management services
+    - used throughout AWS services for health and performance monitoring and log management
+    - also automatically troubleshoot and remediate incidents in real time.
+
 ### Tags
 
 - tagging resources is foundational to all analytical services

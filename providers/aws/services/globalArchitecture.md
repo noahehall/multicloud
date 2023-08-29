@@ -60,7 +60,8 @@
   - operating system, network and firewall configuration: e.g. patching and upgrades
   - customer-side data encryption and data integrity authnz
   - server-side encryption: file sytem/data
-  - networking trafic protection: encryption, integrity identity
+  - networking traffic protection: encryption, integrity identity
+    - network and firewall configurations
 - aws: security **OF** the cloud:
   - protecting the global infrastructure that runs all of the services offered in the AWS Cloud. This infrastructure comprises the hardware, software, networking, and facilities that run AWS services.
   - aws operates, manage and controls the components from the host operating system and virtualization layer down to the physical security of facilities inw hich services operate

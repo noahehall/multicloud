@@ -57,16 +57,6 @@
 - multicloud
   - requires attention to the network latency introduced for request pipelines that traverse cloud networking boundaries
 
-### cloudnative migration patterns
-
-- refactor/migration: service by service is moved to the cloud into a new architecture
-- lift and shift: aka rehost; copy pasta legacy into cloud services to save on hosting costs
-  - the idea is you take the entire legacy set of applications and move it into the cloud
-  - the core benefit is reducing infrastructure costs (no more on premise) while taking advantage of cloud compute reliability & availability
-- replatform: lift and shift then replacement/refactor
-  - this is more incremental then a pure lift and shift
-  - you will need to connect the remaining legacy services with the new cloud services until everything is fully migrated
-
 ### server-based vs serverless architectures
 
 - cost aside, its all about
@@ -92,6 +82,16 @@
 - use cases/considerations
   - purpose driven architectures and application flexibility
   - quick to market
+
+## migration patterns
+
+- refactor/migration: service by service is moved to the cloud into a new architecture
+- lift and shift: aka rehost; copy pasta legacy into cloud services to save on hosting costs
+  - the idea is you take the entire legacy set of applications and move it into the cloud
+  - the core benefit is reducing infrastructure costs (no more on premise) while taking advantage of cloud compute reliability & availability
+- replatform: lift and shift then replacement/refactor
+  - this is more incremental then a pure lift and shift
+  - you will need to connect the remaining legacy services with the new cloud services until everything is fully migrated
 
 ## APIs
 
@@ -832,6 +832,75 @@
 - implemented via a combination of
   - gateways to connect standard on-premises resources to resources in the cloud
   - hardware that moves cloud-native technology to the on-premises location.
+
+### Network Monitoring and Troubleshooting
+
+- monitor the availability, uptime, operation, and performance of complex networks
+- reduce the mean time to repair and recover and solve real-time network performance issues.
+- key tasks:
+  - Tracking and analyzing network components and the connections between them
+  - Surveilling different data layers, network endpoints, and links
+  - the health and performance of network interfaces for their faults helps to diagnose, optimize, and manage various network resources
+    - provide historical data and establish a baseline
+    - important for forensic analysis to identify the root cause after incidents.
+  - Data in the form of tables, charts, graphs, dashboards, and reports.
+- general process
+  - identify the devices and related performance metrics to be monitored
+  - deterime the monitoring interval:
+    - the frequency at which network devices are polled to identify performance and availability status
+  - choosing the right protocols
+    - SNMP: simple network management protocol
+    - HTTP: hyper text trasnfer protocol
+    - TCP: transmission control protocol
+    - IP: internet protocol
+    - ICMP: internet control message protocol
+    - WMI: windows management instrumentation
+  - set proactive thresholds
+- diagnostic tools: always need to be compared against historical baseline of network performance
+  - ping: some service providers have ping (ICMP echo packets) disabled by default, or cant be enabled at all
+  - traceroute: uses successive echo packets to display the path to the destination and the response time of each hop.
+  - Speedtest: useful in evaluating the performance of your internet access.
+  - packet analyzers: aka packet sniffers; logs each packet it intercepts, decodes the packet, and presents the values of the various fields within the packet for examination.
+
+#### fault monitoring:
+
+- when a system polls registered devices at established intervals to verify if they respond
+- this is the simplest form of network monitoring
+
+#### performance monitoring:
+
+- collects detailed information to help determine possible reasons for poor network performance
+- simulate real user traffic
+- establish a network performance baseline measurement for each segment of a network
+- deploy monitoring agents to constantly monitor network performance
+- automated alerts when thresholds are breached
+
+#### security monitoring
+
+- add protection to your network against malware, unauthorized access, distributed denial of service (DDoS) attacks, man-in-the-middle attacks, Code and SQL injection attacks, privilege escalation, and insider threats.
+
+#### capacity monitoring
+
+- monitor the users, applications, and other services on your network to see if one or many are draining the network
+
+#### Application Performance Optimization
+
+- monitoring and troubleshooting of performance issues with applications
+- permits applications to evaluate the network API communication from the application perspective
+
+#### Automated Alerts
+
+- When there are issues, you should be alerted immediately, either through:
+  - on-screen displays
+  - Text and emails automatically generated by the network monitoring solution
+- every alert should contain
+  - when a problem occured and which threshold is being approached/breached
+  - information to identify the device
+
+#### Quality of Service policy (QoS),
+
+- restrict each service or system to a maximum and minimum amount of bandwidth usage.
+- its all about enforcing limits on the services utilizing a network to avoid the noisy neighbor problem
 
 ## Storage
 
