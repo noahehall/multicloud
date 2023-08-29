@@ -2,13 +2,14 @@
 
 - connect to multiple VPCs, Direct Connect, VPNs and Software-Defined Wide Area Network (SD-WAN) appliances
 - consolidating and centrally managing routing between VPCs with a hub-and-spoke network architecture.
+- provides a single global view of your private network to visualize and monitor the health of your Amazon VPCs, Transit Gateways, Direct Connect, and VPN connections to branch locations and on-premises networks.
 
 ## my thoughts
 
 ## links
 
 - [landing page](https://aws.amazon.com/transit-gateway/?did=ap_card&trk=ap_card)
-- [network manager](https://aws.amazon.com/transit-gateway/network-manager/)
+- [network manager landing page](https://aws.amazon.com/transit-gateway/network-manager/)
 - [faqs](https://aws.amazon.com/transit-gateway/faqs/)
 
 ## best practices
@@ -63,6 +64,17 @@
 - operates at layer 3
   - packets are sent to a specific next-hop attachments, based on their destinate ip addrs
 
+### Network Manager
+
+- dashboard provides a single global view of your private network.
+  - centrally manage traffic across all resources, services, and accounts you have deployed within a Region
+- define the resources you want to monitor
+- visualize your network on a topology diagram or a geographical map
+- access usage metrics and establish alerts for changes in the status of the resources you have registered
+  - e.g. bytes in/out, packets in/out, packets dropped, and alerts for changes in the topology, routing, and up/down connection status, and more easily manage your entire global network.
+- integrates with many software-defined networking in a wide area network (SD-WAN)
+- take automated actions using Lambda functions when key events occur within a network
+
 ### Hub and Spoke
 
 - routing traffic between two or more VPCs within an AWS Region.
@@ -71,15 +83,6 @@
 
 - routing traffic between VPCs or other transit gateways
 - always a 1:1 nontransitive relationship
-
-#### Network Manager
-
-- dashboard provides a single global view of your private network.
-  - centrally manage traffic across all resources, services, and accounts you have deployed within a Region
-- define the resources you want to monitor
-- visualize your network on a topology diagram or a geographical map
-- access usage metrics and establish alerts for changes in the status of the resources you have registered
-- integrates with many software-defined networking in a wide area network (SD-WAN)
 
 #### VPC Peering
 

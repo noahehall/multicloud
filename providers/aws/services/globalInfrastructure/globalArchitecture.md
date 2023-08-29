@@ -26,6 +26,7 @@
 - [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
 - [pillar: reliability whitepaper](https://wa.aws.amazon.com/wat.question.REL_6.en.html)
 - [serverless application lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/wellarchitected-serverless-applications-lens.pdf?810a2056-c993-4832-af32-11286cad694c)
+- [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
 
 ### tools
 

@@ -6,11 +6,13 @@
 
 - [common AWS architecture notes](./architecture.md)
 - [aws services by category](./services/)
+  - [global architecture is pretty good](./services/globalInfrastructure/globalArchitecture.md)
 
 ## Associate level exams
 
 - [developer](./associate-developer.md)
-  - some what complete to take the exam
-  - whats missing is diving deeper into the specific services on the exam
+  - establishes everything need to take the exam, pretty much a copypasta from AWS
+  - however it will inform you on which files in the services directory you need to review
+    - everything is there, but perhaps not deep enough to take the exam just yet
 - [solutions architect](./associate-solutions-architect.md)
   - in progress

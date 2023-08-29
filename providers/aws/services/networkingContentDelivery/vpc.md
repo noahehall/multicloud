@@ -330,7 +330,9 @@
 
 - capture info about ip traffic and publish to cloudwatch logs, s3 or kinesis
 - tool for identifying problems with your network's traffic
-  - e.g. Tracing network activity to a specific IP address
+  - Tracing network activity to a specific IP address
+  - troubleshooting why specific traffic is not reaching an instance,
+  - a security tool to monitor the traffic, profile your network traffic, and to look for abnormal traffic behaviors.
 
 ### Endpoints
 

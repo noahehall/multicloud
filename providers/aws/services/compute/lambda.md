@@ -5,6 +5,7 @@
   - tasks that run < 15 minutes
   - spike/unpredictable workloads
   - real-time data processing
+  - event-driven, automated actions based on any event occuring in AWS
 
 ## my thoughts
 
@@ -13,6 +14,7 @@
   - cloudwatch for events/triggers
   - SNS/SQS for messaging
   - step functions for orchestration
+  - get creative
 
 ## links
 

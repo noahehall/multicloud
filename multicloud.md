@@ -847,17 +847,36 @@
 
 #### general process
 
-- identify the devices and related performance metrics to be monitored
-- deterime the monitoring interval:
-  - the frequency at which network devices are polled to identify performance and availability status
-- choosing the right protocols
-  - SNMP: simple network management protocol
-  - HTTP: hyper text trasnfer protocol
-  - TCP: transmission control protocol
-  - IP: internet protocol
-  - ICMP: internet control message protocol
-  - WMI: windows management instrumentation
-- set proactive thresholds
+- monitoring devices and network components
+  - identify performance metrics to be monitored
+  - deterime the monitoring interval:
+    - the frequency at which network devices are polled to identify performance and availability status
+  - choosing the right protocols for devices & network components
+    - SNMP: simple network management protocol
+    - HTTP: hyper text trasnfer protocol
+    - TCP: transmission control protocol
+    - IP: internet protocol
+    - ICMP: internet control message protocol
+    - WMI: windows management instrumentation
+  - set proactive thresholds
+  - alert, alert, alert!
+- monitoring applications, services and resources: use a tool that will get you 90% there
+  - record performance-related metrics appropriate for the service: e.g. db transactions, slow queries, i/o latency, http request throughput, service latency, etc
+    - Identify metrics that matter for your workload and record them.
+    - Identify the target, measurement approach, and priority to build alarms and notifications to proactively address performance-related issues.
+  - analyze metrics when events/incidents occur
+    - monitoring dashboards or reports to understand and diagnose the impact.
+    - write use cases for your architecture, include performance requirements and incident responses.
+  - establish KPIs to measure workload performance
+    - Identify the key performance indicators (KPIs) that indicate whether the workload is performing as intended.
+    - Document the performance experience of customers, and use these requirements to establish your KPIs
+  - use monitoring to generate alarm-based notifications
+    - using your KPIs, a monitoring system should automatically alert when measurements are outside of the baseline.
+  - review metrics at regular intervals
+    - review the metrics collected to identify which metrics were key in addressing issues
+    - Also ask which additional metrics would help to identify, address, or prevent issues.
+  - monitor and alarm proactively
+    - Use KPIs, combined with monitoring and alerting systems, to proactively address performance-related issues.
 
 #### diagnostic tools
 
@@ -930,6 +949,27 @@
 
 - restrict each service or system to a maximum and minimum amount of bandwidth usage.
 - its all about enforcing limits on the services utilizing a network to avoid the noisy neighbor problem
+
+### Data driven network design
+
+- understand how networking impacts performance, determine the workload requirements for bandwidth, latency, jitter, and throughput.
+  - network latency often impacts the user experience.
+  - Not providing enough network capacity can bottleneck workload performance.
+- the network is between all application components
+  - can have large positive and negative impacts on application performance and behavior.
+- When there is a requirement for on premises communication
+  - ensure that you have adequate bandwidth for workload performance
+  - estimate the bandwidth and latency requirements for your hybrid workload
+- Use load balancing and encryption offloading
+  - Distribute traffic across multiple resources or services to allow your workload to take advantage of the elasticity that the cloud provides
+- Choose network protocols to optimize network traffic
+  - There is a relationship between latency and bandwidth to achieve throughput.
+- Choose location based on network requirements
+  - user location: Choosing a location close to your workload’s users ensures lower latency when they use the workload.
+  - data location: For data-heavy applications, the major bottleneck in latency is data transfer. Application code should execute as close to the data as possible.
+- Optimize network configuration based on metrics
+  - collected and analyzed data to make informed decisions about optimizing your network configuration
+  - Measure the impact of those changes and use the impact measurements to make future decisions.
 
 ## Storage
 
