@@ -20,6 +20,13 @@
 - [billing: user guide](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html)
 - [billing: consolidated](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
 
+### well architected
+
+- [AAA landing page](https://aws.amazon.com/architecture/well-architected/)
+- [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
+- [pillar: reliability whitepaper](https://wa.aws.amazon.com/wat.question.REL_6.en.html)
+- [serverless application lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/wellarchitected-serverless-applications-lens.pdf?810a2056-c993-4832-af32-11286cad694c)
+
 ### tools
 
 - [WAT: well architected tool](https://aws.amazon.com/well-architected-tool/)
@@ -187,6 +194,12 @@
 ### reliability
 
 - ability to prevent and quickly recover from failures to meet demand
+- 5 phases
+  - generate: data through monitoring, gathering metrics and establishing thresholds
+  - aggregate: creation of a complete view from multiple resources
+  - alert: leveraging real-time processing and alerting capabilities
+  - storage: data managent and retention policies; e.g. where and for how long logs are stored
+  - analyze: analytics; dashboards, reports, and useful insights
 
 ### performance efficiency
 

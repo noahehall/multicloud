@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - AWS Network - Monitoring and Troubleshooting > Monitoring for Troubleshooting
+    - AWS Network - Monitoring and Troubleshooting > Monitoring for Troubleshooting > Monitor your resources to ensure expected performance
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics
