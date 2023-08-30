@@ -10,12 +10,12 @@
 - [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
 - [agent: install](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
 - [api gateway: metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html)
-- [by service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
 - [container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
 - [cross account cloudwatch ](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Cross-Account-Cross-Region.html)
 - [dashboards: alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/add_remove_alarm_dashboard.html)
 - [dashboards: animation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-animated-dashboard.html)
 - [dashboards: metrics explorere](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/add_metrics_explorer_dashboard.html)
+- [dashboards: sharing](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-dashboard-sharing.html)
 - [dynamodb: alarms](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/creating-alarms.html)
 - [dynamodb: contributor insights tut](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_tutorial.html)
 - [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
@@ -35,12 +35,21 @@
 - [logging intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
 - [logs export to s3](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/S3Export.html)
 - [logs: intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
+- [metrics : explorer](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Metrics-Explorer.html)
+- [metrics: by service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
+- [metrics: intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
+- [metrics: using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [sns: metrics](https://docs.aws.amazon.com/sns/latest/dg/sns-monitoring-using-cloudwatch.html)
 - [sqs: metrics](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-available-cloudwatch-metrics.html)
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
-- [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
-- [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
-- [dashboards: sharing](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-dashboard-sharing.html)
+- [systemManager: alarm create opsItems](https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-create-OpsItems-from-CloudWatch-Alarms.html)
+- [sns: setup](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_SetupSNS.html)
+- [alarms: static thresholds](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ConsoleAlarms.html)
+- [alarms: anomaly detetion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Anomaly_Detection_Alarm.html)
+- [ec2: cpu usage alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_AlarmAtThresholdEC2.html)
+- [elb: load balancing alarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_AlarmAtThresholdELB.html)
+- [ec2: automation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/UsingAlarmActions.html)
+- [billing: alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
 
 ### api
 
@@ -65,6 +74,14 @@
 - be careful about enabling logging of full requests in production and leaking sensitive data
 - alarms
   - the time period should be for a sustaind amount of time, and not short bursts/temporary spikes in metrics
+  - recommended alarms
+    - API call is performed to create, update, or delete a VPC customer or internet gateway.
+    - API call is performed to create, update, or delete a network ACL.
+    - API call is performed to create, update, or delete a security group.
+    - API call is made to create, update, or delete a CloudTrail trail or when the logging process defined by a trail is stopped or started.
+    - every time an AWS root account is used.
+    - alarm is created and configured for the metric filter attached to the VPC Flow Logs CloudWatch log group to receive notifications when IP packets are rejected inside the specified VPC
+      - Ensure that a metric filter that matches the pattern of the rejected traffic is created for the CloudWatch log group assigned to VPC Flow Logs.
 - reducing cloudwatch costs
   - Only use detailed monitoring when needed.
   - Remove any unnecessary alarms.
@@ -79,7 +96,7 @@
 
 - collect, assess and analyze resource and application data using visualization tools
 - improve operational performance using alarms and automated actions at predetermined thresholds
-- integrate with 70+\_ aws services for a centralized solution
+- integrate with 70+ aws services for a centralized solution
 - troubleshoot operational problems with actionable insights derived from logs and metrics
 - monitor application performance, perform root cause analysis, optimize resources
 
@@ -140,6 +157,11 @@
     - `AWS/Blah` is reserved for AWS
 - dimensions: separate your data points for different measurements
 
+#### Metrics Explorer
+
+- monitor resources by their tags and properties.
+- tag-based tool filters, aggregates, and visualizes metrics, adding enhanced observability
+
 ### logs
 
 - centralized place for logs to be stored, queried and analyzed
@@ -183,18 +205,44 @@
 ### alarms
 
 - automatically initiate actions based on sustained state changes of metrics
+  - Create up to 5,000 alarms per Region per AWS account.
+  - Only use ASCII characters for alarm names.
 - invoked when it transitions from one state to another
+  - alarms with Auto Scaling actions: continues to invoke the action once per minute that the alarm remains in the new state.
+- alarm evaluation
+  - period: seconds to evaluate the metric or expression to create each individual data point for an alarm
+  - evaluation periods: number of the most recent periods, or data points, to evaluate when determining alarm state.
+  - datapoints to alarm: number of data points within the evaluation periods that must be breaching to cause the alarm to go to the ALARM state
+    - The breaching data points don't have to be consecutive;
+    - just must all be within the last number of data points equal to the Evaluation Period.
+
+#### Metric Alarm
+
+- watches a single CloudWatch metric or the result of a math expression based on CloudWatch metrics
+- performs one or more actions based on the value of the metric or expression relative to a threshold over a number of time periods.
+- alarm states
   - ok: the metric is within the defined threshold
   - alarm: the metric is outside the defined threshold
   - insufficient_data: alarm has just started, metric is not available, or not data to determine alarm start
-- you configure when alarms are invoked and the action that is peformed
-  - metric: to be monitored
-  - threshold: when events breach this number, cloudwatch starts the countdown
-  - time period: once the metric exceeds the threshold for this duration, the alarm is triggered
+- each specific data point reported to CloudWatch is also in one of three states:
+  - Not breaching (within the threshold)
+  - Breaching (violating the threshold)
+  - Missing
+- specify CloudWatch to treat missing data points as:
+  - notBreaching: within threshold (good)
+  - breaching: outside threshold (cont towards trigger)
+  - ignore: current alarm state is maintained
+  - missing: If all data points in the alarm evaluation range are missing, the alarm transitions to INSUFFICIENT_DATA.
+
+#### Composite Alarm
+
+- includes a rule expression that takes into account the alarm states of other alarms that you have created.
+- goes into an ALARM state only if all conditions of the rule are met.
+  - Using composite alarms can reduce alarm noise.
 
 #### actions
 
-- abcd
+- theres to many to list here, check the link up top
 - getMetricData: retrieve cloudwatch metric values
 
 ### EventBridge fka events

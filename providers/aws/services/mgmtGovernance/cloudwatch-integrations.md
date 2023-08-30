@@ -145,3 +145,8 @@
 ## FSx
 
 ### lustre
+
+## EventBridge
+
+- CloudWatch sends events to Amazon EventBridge whenever a CloudWatch alarm changes alarm state
+- use EventBridge and these events to write rules that take actions,

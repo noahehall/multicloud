@@ -15,7 +15,7 @@
 - [eks: subnet tagging](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#vpc-subnet-tagging)
 - [eks: vpc cni k8s plugin](https://github.com/aws/amazon-vpc-cni-k8s)
 - [eks: vpc considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
-- [fow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
+- [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
 - [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
 - [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
 - [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
@@ -332,10 +332,32 @@
 ### flow logs
 
 - capture info about ip traffic and publish to cloudwatch logs, s3 or kinesis
+- track and trigger cloudwatch alarms based on changes in:
+  - flow duration
+  - latency
+  - traffic type
+- centralized source to monitor different network aspects and to provide a history of network traffic flows within entire Amazon VPCs, subnets, or specific elastic network interfaces (ENIs).
+- data is collected outside of the path of your network traffic, and therefore does not affect network throughput or latency. You can create or delete flow logs without any risk of impact to network performance.
 - tool for identifying problems with your network's traffic
   - Tracing network activity to a specific IP address
   - troubleshooting why specific traffic is not reaching an instance,
   - a security tool to monitor the traffic, profile your network traffic, and to look for abnormal traffic behaviors.
+- configuration
+  - traffic filter type: all, accepted, rejected traffic
+  - log name: specify a functional name for the log
+  - destination: where to publish flow log data; s3 or cloudwatch
+  - permissions: the log owner requires IAM privleges to publish and work with flow log data
+- Flows are collected, processed, and stored in capture windows that are approximately 10 minutes long
+  - create up to 2 flow logs per resource
+- publishing to s3 vs cloudwatch
+
+#### Records
+
+- data for a monitored network interface
+- log events consisting of fields that describe the traffic flow
+  - vpc level: activity of your operations within your cloud environment.
+  - subnet level: activity for a specific subnet.
+  - network interface level: specific interfaces on ec2 instances and capture flow logs from that interface.
 
 ### Endpoints
 
