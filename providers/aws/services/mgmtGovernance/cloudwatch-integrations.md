@@ -21,7 +21,8 @@
 
 ## vpc
 
-- abc
+- Replication traffic are NetworkIn, InboundPackets
+- Route table changes are ReplaceRoute, ReplaceRouteTableAssociation
 
 ## lambda
 

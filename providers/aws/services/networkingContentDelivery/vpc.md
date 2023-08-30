@@ -16,6 +16,7 @@
 - [eks: vpc cni k8s plugin](https://github.com/aws/amazon-vpc-cni-k8s)
 - [eks: vpc considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
 - [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
+- [flow logs: guide](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
 - [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
 - [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
 - [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
@@ -37,6 +38,10 @@
 - [benchmarking network throughput between ec2 instances](https://repost.aws/knowledge-center/network-throughput-benchmark-linux-ec2)
 - [benchmarking network throughput between ec2 instances over an IGW](https://aws.amazon.com/premiumsupport/knowledge-center/network-issue-vpc-onprem-ig/)
 - [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
+- [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
+- [cloudwatch logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
+- [s3](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-s3.html)
+- [troubleshooting](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-troubleshooting.html)
 
 ## best practices
 
@@ -70,6 +75,8 @@
     - only incur a data transmission charge
     - have no aggregate bandwidth restriction
     - does not add any additional hops.
+- flow logs
+  - can quickly grow into the hundreds of gigabytes.
 
 ### anti patterns
 
@@ -329,36 +336,6 @@
   - e.g. VPC1 -> VPC2, and VPC2 -> VPC3 does not mean VPC1 -> VPC3 via VPC2
     - you have to manually connect VPC1 to VPC3
 
-### flow logs
-
-- capture info about ip traffic and publish to cloudwatch logs, s3 or kinesis
-- track and trigger cloudwatch alarms based on changes in:
-  - flow duration
-  - latency
-  - traffic type
-- centralized source to monitor different network aspects and to provide a history of network traffic flows within entire Amazon VPCs, subnets, or specific elastic network interfaces (ENIs).
-- data is collected outside of the path of your network traffic, and therefore does not affect network throughput or latency. You can create or delete flow logs without any risk of impact to network performance.
-- tool for identifying problems with your network's traffic
-  - Tracing network activity to a specific IP address
-  - troubleshooting why specific traffic is not reaching an instance,
-  - a security tool to monitor the traffic, profile your network traffic, and to look for abnormal traffic behaviors.
-- configuration
-  - traffic filter type: all, accepted, rejected traffic
-  - log name: specify a functional name for the log
-  - destination: where to publish flow log data; s3 or cloudwatch
-  - permissions: the log owner requires IAM privleges to publish and work with flow log data
-- Flows are collected, processed, and stored in capture windows that are approximately 10 minutes long
-  - create up to 2 flow logs per resource
-- publishing to s3 vs cloudwatch
-
-#### Records
-
-- data for a monitored network interface
-- log events consisting of fields that describe the traffic flow
-  - vpc level: activity of your operations within your cloud environment.
-  - subnet level: activity for a specific subnet.
-  - network interface level: specific interfaces on ec2 instances and capture flow logs from that interface.
-
 ### Endpoints
 
 - privately connect a VPC to supported AWS services and other endpoint services via PrivateLink
@@ -392,17 +369,89 @@
 
 - [see markdown file](./vpn.md)
 
-### Traffic Mirroring
+### VPC Networking Tools
+
+#### Traffic Mirroring
 
 - feature that you can use to copy network traffic from an elastic network interface of type interface. You can then send the traffic to out-of-band security and monitoring appliances for:
   - Content inspection
   - threat monitoring
   - troubleshooting
 
-### Reachability Analyzer
+#### Reachability Analyzer
 
 - configuration analysis tool that enables you to perform connectivity testing between a source resource and a destination resource in your virtual private clouds
 - troubleshoots reachability between two endpoints in an Amazon VPC, or within multiple Amazon VPCs.
+
+#### flow logs
+
+- capture info about ip traffic and publish to cloudwatch logs, s3 or kinesis
+  - logs do not capture IP traffic to and from Amazon reserved IPs
+- track and trigger cloudwatch alarms based on changes in:
+  - flow duration
+  - latency
+  - traffic type
+- centralized source to monitor different network aspects and to provide a history of network traffic flows within entire Amazon VPCs, subnets, or specific elastic network interfaces (ENIs).
+- data is collected outside of the path of your network traffic, and therefore does not affect network throughput or latency. You can create or delete flow logs without any risk of impact to network performance.
+- tool for identifying problems with your network's traffic
+  - Tracing network activity to a specific IP address
+  - troubleshooting why specific traffic is not reaching an instance,
+  - a security tool to monitor the traffic, profile your network traffic, and to look for abnormal traffic behaviors.
+- primary use cases
+  - performance: provides flow duration, latency, and bytes sent and can be used to identify latencies, establish performance baselines, and improve applications.
+  - security: log all traffic from an Amazon VPC, an interface, or a subnet for root cause analysis to identify gaps in your security.
+  - compliance: how that your organization is compliant with specific industry, federal, state, and local regulations that your organization must follow; publish to s3 for historical audits
+- configuration: once a flow log is created, it can be updated: it must be deleted and created anew
+  - traffic filter type: all, accepted, rejected traffic
+  - log name: specify a functional name for the log
+  - destination: where to publish flow log data; s3 or cloudwatch
+  - permissions: the log owner requires IAM privleges to publish and work with flow log data
+- Flows are collected, processed, and stored in capture windows that are approximately 10 minutes long
+  - create up to 2 flow logs per resource
+- publishing to s3 vs cloudwatch
+  - cloudwatch: data is published to a log group; Log streams contain flow log records
+    - Search and analyze the log data with CloudWatch Logs Insights to perform queries and to respond efficiently and effectively to operational issues.
+    - Subscribe to a Kinesis Stream for analysis with AWS Lambda.
+  - s3: using a folder structure that is determined by the flow log's ID, Region, and the date on which they are created.
+    - Scalability and log consolidation using Amazon Athena to query the data for analysis.
+    - ingestion from pipelines using S3 bucket notifications, Amazon SQS, and AWS Lambda to provide events to Amazon Elasticsearch Service for real-time monitoring using Kibana.
+- monitoring complex multi-ip addrs or mult-interface ec2s
+  - EC2 with multiple IP addresses:
+    - recorded under the primary private IP address, listed in the dstaddr field for the EC2 network interface
+    - configure the flow log to use the pkt-dstddr log field To separate log traffic by destination IP
+  - intermediate devices e.g. a NAT gateway
+    - traffic sent
+      - record the IP of the intermediate device in the srcaddr field
+      - configure the flow log to use the pkt-srcaddr field To ensure that the original source IP address of device that generated the packet is recorded
+    - traffic received
+      - record the IP of the intermediate device in the dstaddr field
+      - configure the flow log to use the pkt-dstaddr field To ensure that the original destination IP address is recorded
+
+##### Records
+
+- log events consisting of fields that describe the traffic flow
+  - vpc level: activity of your operations within your cloud environment.
+  - subnet level: activity for a specific subnet.
+  - network interface level: specific interfaces on ec2 instances and capture flow logs from that interface.
+- inspect flow logs:
+  - remeber that the flow of a flow log is a subset of a session and describes the number of packets moving in one direction
+    - thus you need to inspect a series of flow logs to understand the request-respone between parties
+  - you can identify sessions if the SOURCE + DEST IPs and PORTS dont change across flow records
+
+```sh
+
+# if a field is not applicable/computed for a record, its marked by `-`
+ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - - ACTION -
+# account-id: owner of the network interface
+# ENI-ID: id of the network interface
+# SOURCE-IP: of incoming traffic / ipv4/6 of the ENI of the outgoing interface
+# DEST-IP: of outgoing traffic / ipv4/6 of ENI for incoming traffic on the interface
+# SOURCE-PORT: used by the transmitting system
+# DEST-PORT: expected to receive this traffic
+# PROTOCOL: [this link for number assignments](https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml)
+# PACKETS: number of packets transferred during the flow
+# ACTION: e.g. accept/reject, taken by the security groups, NACLs, etc
+```
 
 ## considerations
 

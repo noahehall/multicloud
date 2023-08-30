@@ -147,6 +147,7 @@
 
 ### metrics
 
+- metrics become events become alarms
 - custom metrics enable you to post application-level metrics to cloudwatch
 - you can run `math metrics` across metrics, e.g. errors/invocations
 - namespaces
