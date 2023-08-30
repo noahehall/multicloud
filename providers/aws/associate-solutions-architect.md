@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - AWS Network - Monitoring and Troubleshooting > AWS Systems Manager Agent
+    - AWS Network - Monitoring and Troubleshooting > Amazon CloudWatch Alarms
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

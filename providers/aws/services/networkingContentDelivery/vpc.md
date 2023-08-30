@@ -339,7 +339,7 @@
 
 ### Endpoints
 
-- privately connect a VPC to supported AWS services and other endpoint services
+- privately connect a VPC to supported AWS services and other endpoint services via PrivateLink
 - is a security product first
   - Traffic between the VPC and a service does not leave the Amazon network.
   - e.g. compliance requirements that prevent connectivity between a VPC and a public-facing service endpoint
@@ -406,6 +406,8 @@
 
 ## integrations
 
+- many integrations can be more secured by communicating with other services via VPC Endpoint
+
 ### EC2
 
 - on ec2 creation, you can select an existing VPC and subnet to launch an instance into under network settings
@@ -465,3 +467,8 @@
 
 - load balancing across resources in multiple subnets
 - great to pair with an AWS Auto Scaling Group to enhance the high availability, fault-tolerance, and scalability of an application.
+
+### Systems Manager
+
+- configuring Systems Manager to use an interface VPC endpoint
+- AWS PrivateLink restricts all network traffic between your managed instances, Systems Manager, and Amazon EC2 to the Amazon network.

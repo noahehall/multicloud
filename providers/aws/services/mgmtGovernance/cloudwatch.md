@@ -7,14 +7,21 @@
 
 ## links
 
+- [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
+- [agent: install](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
 - [api gateway: metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html)
 - [by service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
 - [container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ContainerInsights.html)
+- [cross account cloudwatch ](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Cross-Account-Cross-Region.html)
+- [dashboards: alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/add_remove_alarm_dashboard.html)
+- [dashboards: animation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-animated-dashboard.html)
+- [dashboards: metrics explorere](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/add_metrics_explorer_dashboard.html)
 - [dynamodb: alarms](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/creating-alarms.html)
-- [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
 - [dynamodb: contributor insights tut](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_tutorial.html)
+- [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
 - [dynamodb: metrics & dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html)
 - [dynamodb: monitoring](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
+- [ec2: enhanced networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
 - [ecs: monitoring](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_monitoring.html)
 - [eks: pushing logs to container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html)
 - [embedded metric format: intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html)
@@ -33,16 +40,14 @@
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
 - [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
-- [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
-- [agent: install](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
-- [ec2: enhanced networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
-- [cross account cloudwatch ](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Cross-Account-Cross-Region.html)
+- [dashboards: sharing](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-dashboard-sharing.html)
 
 ### api
 
 - [AAA all actions](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_Operations.html)
 - [AAA api landing page](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/Welcome.html)
 - [getMetricData](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html)
+- [start query](https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_StartQuery.html)
 
 ### tools
 
@@ -140,23 +145,40 @@
 - centralized place for logs to be stored, queried and analyzed
 - execution logging: what occurs during a service action; useful for troubleshooting services
 - access logging: whos invoking a service action; fully customizable
-- log event: record of activity consisting of a timestamp and an event message
-- log stream: sequences of log events that all belong to the same resource
-- log group: composed of log streams that all share the same retention and permissions settings
 
-#### metric filters
+#### Log Events
 
-- how cloudwatch turns log data into numerical cloudwatch metrics that you can graph and use on dashboards
+- a record of some activity recorded by the application or resource being monitored.
+- contains two properties:
+  - the timestamp of when the event occurred
+  - the raw event message. Event messages must be UTF-8 encoded.
+
+#### Log Groups
+
+- define groups of log streams that share the same retention, monitoring, and access control settings.
+- can also export log data from your log groups to an Amazon Simple Storage Service (S3) bucket and use this data in custom processing and analysis, or to load onto other systems
+
+##### Log Streams
+
+- a sequence of log events that share the same source
+- generally intended to represent the sequence of events coming from the application instance or resource being monitored.
+- Each log stream has to belong to one log group
+
+##### Retention Settings
+
+- specify how long log events are kept in CloudWatch Logs.
+- expired log events get deleted automatically.
+- are also assigned to log groups, and the retention assigned to a log group is applied to its log streams.
+
+##### metric filters
+
+- how cloudwatch turns log data into numerical cloudwatch metrics that you can graph and use on dashboards or set an alarm on.
+- are assigned to log groups and all of the filters assigned to a log group are applied to their log streams.
+- define the terms and patterns to look for in log data as it is sent to CloudWatch Logs
 
 #### log agent
 
 - runs on EC2 to automatically send log data to cloudwatch logs
-
-#### log insights
-
-- interactively search and query and analyze log data in Cloudwatch Logs
-- will automatically extract fields from structured logs
-- use prebuilt or custom queries on your logs to provide aggregated views and reporting
 
 ### alarms
 
@@ -194,6 +216,41 @@
 
 ### insights
 
+#### Query language
+
+- use to perform queries on your log groups.
+- One or more query commands separated by Unix-style pipe characters (|).
+- Six query commands, along with many supporting functions and operations
+- scheduling a query: a query timesout after 5 minutes
+  - Log group
+  - time range to query
+  - query string to use
+
+```sh
+# example queries
+
+## top 15 packet transfers across hosts
+stats sum(packets) as packetsTransferred by srcAddr, dstAddr
+  | sort packetsTransferred  desc
+  | limit 15
+
+## top 15 byte transfers for hosts in a subnet
+filter isIpv4InSubnet(srcAddr, "192.X.X.X/24")
+  | stats sum(bytes) as bytesTransferred by dstAddr
+  | sort bytesTransferred desc
+  | limit 15
+
+## protocol numbers: https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+## ip addrs that use a specific protocol
+filter protocol=6 | stats count(*) by srcAddr
+
+## 25 most recent log events
+fields @timestamp, @message | sort @timestamp desc | limit 25
+
+## list of log events that are not exceptions
+fields @message | filter @message not like /Exception/
+```
+
 #### container insights
 
 - creates automatic dashboards, and are also viewable in the cloudwatch console
@@ -208,6 +265,20 @@
 - a diagnostic tool
 
 #### application insights
+
+#### log insights
+
+- interactively search and query and analyze log data in Cloudwatch Logs
+- will automatically extract fields from structured logs
+- use prebuilt or custom queries on your logs to provide aggregated views and reporting
+- 1,000 CloudWatch Logs Insights queries, per Region per account.
+- default system fields
+  - @message: raw unparsed log event
+  - @timestamp: in the log event's timestamp field. This is equivalent to the timestamp field in InputLogevent.
+  - @ingestionTime: time when the log event was received by CloudWatch Logs.
+  - @logStream: name of the log stream that the log event was added to.
+  - @log: identifier in the form of account-id:log-group-name;
+    - useful in queries of multiple log groups, to identify which log group a particular event belongs to.
 
 ## considerations
 
