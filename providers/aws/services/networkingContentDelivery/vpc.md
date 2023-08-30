@@ -34,6 +34,9 @@
 - [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
 - [traffic mirroring](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
 - [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
+- [benchmarking network throughput between ec2 instances](https://repost.aws/knowledge-center/network-throughput-benchmark-linux-ec2)
+- [benchmarking network throughput between ec2 instances over an IGW](https://aws.amazon.com/premiumsupport/knowledge-center/network-issue-vpc-onprem-ig/)
+- [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
 
 ## best practices
 
@@ -366,6 +369,18 @@
 ### VPNs
 
 - [see markdown file](./vpn.md)
+
+### Traffic Mirroring
+
+- feature that you can use to copy network traffic from an elastic network interface of type interface. You can then send the traffic to out-of-band security and monitoring appliances for:
+  - Content inspection
+  - threat monitoring
+  - troubleshooting
+
+### Reachability Analyzer
+
+- configuration analysis tool that enables you to perform connectivity testing between a source resource and a destination resource in your virtual private clouds
+- troubleshoots reachability between two endpoints in an Amazon VPC, or within multiple Amazon VPCs.
 
 ## considerations
 

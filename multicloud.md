@@ -834,114 +834,6 @@
   - gateways to connect standard on-premises resources to resources in the cloud
   - hardware that moves cloud-native technology to the on-premises location.
 
-### Network Monitoring and Troubleshooting
-
-- monitor the availability, uptime, operation, and performance of complex networks
-- reduce the mean time to repair and recover and solve real-time network performance issues.
-- key tasks:
-  - Tracking and analyzing network components and the connections between them
-  - Surveilling different data layers, network endpoints, and links
-  - the health and performance of network interfaces for their faults helps to diagnose, optimize, and manage various network resources
-    - provide historical data and establish a baseline
-    - important for forensic analysis to identify the root cause after incidents.
-  - Data in the form of tables, charts, graphs, dashboards, and reports.
-
-#### general process
-
-- monitoring devices and network components
-  - identify performance metrics to be monitored
-  - deterime the monitoring interval:
-    - the frequency at which network devices are polled to identify performance and availability status
-  - choosing the right protocols for devices & network components
-    - SNMP: simple network management protocol
-    - HTTP: hyper text trasnfer protocol
-    - TCP: transmission control protocol
-    - IP: internet protocol
-    - ICMP: internet control message protocol
-    - WMI: windows management instrumentation
-  - set proactive thresholds
-  - alert, alert, alert!
-- monitoring applications, services and resources: use a tool that will get you 90% there
-  - record performance-related metrics appropriate for the service: e.g. db transactions, slow queries, i/o latency, http request throughput, service latency, etc
-    - Identify metrics that matter for your workload and record them.
-    - Identify the target, measurement approach, and priority to build alarms and notifications to proactively address performance-related issues.
-  - analyze metrics when events/incidents occur
-    - monitoring dashboards or reports to understand and diagnose the impact.
-    - write use cases for your architecture, include performance requirements and incident responses.
-  - establish KPIs to measure workload performance
-    - Identify the key performance indicators (KPIs) that indicate whether the workload is performing as intended.
-    - Document the performance experience of customers, and use these requirements to establish your KPIs
-  - use monitoring to generate alarm-based notifications
-    - using your KPIs, a monitoring system should automatically alert when measurements are outside of the baseline.
-  - review metrics at regular intervals
-    - review the metrics collected to identify which metrics were key in addressing issues
-    - Also ask which additional metrics would help to identify, address, or prevent issues.
-  - monitor and alarm proactively
-    - Use KPIs, combined with monitoring and alerting systems, to proactively address performance-related issues.
-
-#### diagnostic tools
-
-- always need to be compared against historical baseline of network performance
-- ping: some service providers have ping (ICMP echo packets) disabled by default, or cant be enabled at all
-- traceroute: uses successive echo packets to display the path to the destination and the response time of each hop.
-- Speedtest: useful in evaluating the performance of your internet access.
-- packet analyzers: aka packet sniffers; logs each packet it intercepts, decodes the packet, and presents the values of the various fields within the packet for examination.
-
-#### common networking metrics
-
-- bandwidth capacity: the maximum data transmission rate possible on a network
-  - measures the theoretical limit of data transfer
-  - For optimal network operations, you want to get as close to your maximum bandwidth as possible without reaching critical levels
-  - indicates that your network is sending as much data as it can within a period of time, but isn’t being overloaded.
-- throughput: measures your network’s actual data transmission rate
-  - measures the units such as megabyte or gigabyte per second of data packets that are successfully being sent.
-  - a high bandwidth connection but low throughput, that's an indicator of an underlying problem
-- latency: delay between requesting data and when that data is finished being delivered.
-  - Consistent delays or odd spikes in delay time indicate a major performance issue
-- packet loss: examines how many data packets are dropped during data transmissions on your network
-  - The more data packets that are lost, the longer it takes for a data request to be fulfilled
-  - A network’s TCP interprets when packets are dropped and takes steps to ensure that data packets can still be transmitted;
-- retransmission: is when packets are lost, The network needs to retransmit them to complete a data request.
-  - retransmission rate lets your enterprise know how often packets are being dropped, which is an indication of congestion on your network.
-  - analyze retransmission delay (or the time it takes for a dropped packet to be retransmitted) to understand how long it takes your network to recover from packet loss.
-- availability: i.e. uptime, the percentage of time the network is available.
-  - can never guarantee 100 percent availability, but you want to be aware of any downtime that happens on your network that you weren’t expecting
-- connectivity: whether the connections between the nodes on your network are working properly
-  - jitter: a variation in delay or disruption that occurs while data packets travel across the network.
-  - congestion: occurs when network devices are unable to send the equivalent amount of traffic they receive.
-- response times: measures the time it takes for a server to respond to a data request with application data
-
-#### fault monitoring:
-
-- when a system polls registered devices at established intervals to verify if they respond
-- this is the simplest form of network monitoring
-
-#### performance monitoring:
-
-- collects detailed information to help determine possible reasons for poor network performance
-- simulate real user traffic
-- establish a network performance baseline measurement for each segment of a network
-- deploy monitoring agents to constantly monitor network performance
-- automated alerts when thresholds are breached
-
-#### capacity monitoring
-
-- monitor the users, applications, and other services on your network to see if one or many are draining the network
-
-#### Application Performance Optimization
-
-- monitoring and troubleshooting of performance issues with applications
-- permits applications to evaluate the network API communication from the application perspective
-
-#### Automated Alerts
-
-- When there are issues, you should be alerted immediately, either through:
-  - on-screen displays
-  - Text and emails automatically generated by the network monitoring solution
-- every alert should contain
-  - when a problem occured and which threshold is being approached/breached
-  - information to identify the device
-
 #### Quality of Service policy (QoS),
 
 - restrict each service or system to a maximum and minimum amount of bandwidth usage.
@@ -1118,21 +1010,12 @@
 ## analytics
 
 - key domains
+
   - customer experience
   - performance over time: system, costs, etc
   - trends
   - troubleshooting and remediation: identification, isolation and resolution
   - learning and improvement: detecting and preventing problems
-
-### troubleshooting
-
-- process: many issues have known solutions if you can identify the root causes
-  - identify the problem: e.g. error messages, metrics
-  - collect the data: Gather diagnostic data after the fact, or reproduce the problem to gather logs, trace data, and so forth
-  - analyze the data: pinpoint one or more possible root causes.
-    - various tools available for querying log data
-  - review documentation: product and service documentation for known issues and solutions
-  - try known solutions
 
 ### monitoring
 
@@ -1150,6 +1033,119 @@
   - investigate how apps and their underlying services are performing
   - important for troubleshooting the root cause of performance issues and errors
 
+#### Network Monitoring and Troubleshooting
+
+- monitor the availability, uptime, operation, and performance of complex networks
+- reduce the mean time to repair and recover and solve real-time network performance issues.
+- key tasks:
+  - Tracking and analyzing network components and the connections between them
+  - Surveilling different data layers, network endpoints, and links
+  - the health and performance of network interfaces for their faults helps to diagnose, optimize, and manage various network resources
+    - provide historical data and establish a baseline
+    - important for forensic analysis to identify the root cause after incidents.
+  - Data in the form of tables, charts, graphs, dashboards, and reports.
+
+##### general process
+
+- monitoring devices and network components
+  - identify performance metrics to be monitored
+  - deterime the monitoring interval:
+    - the frequency at which network devices are polled to identify performance and availability status
+  - choosing the right protocols for devices & network components
+    - SNMP: simple network management protocol
+    - HTTP: hyper text trasnfer protocol
+    - TCP: transmission control protocol
+    - IP: internet protocol
+    - ICMP: internet control message protocol
+    - WMI: windows management instrumentation
+  - set proactive thresholds
+  - alert, alert, alert!Network Monitoring and Troubleshooting
+- monitoring applications, services and resources: use a tool that will get you 90% there
+  - record performance-related metrics appropriate for the service: e.g. db transactions, slow queries, i/o latency, http request throughput, service latency, etc
+    - Identify metrics that matter for your workload and record them.
+    - Identify the target, measurement approach, and priority to build alarms and notifications to proactively address performance-related issues.
+  - analyze metrics when events/incidents occur
+    - monitoring dashboards or reports to understand and diagnose the impact.
+    - write use cases for your architecture, include performance requirements and incident responses.
+  - establish KPIs to measure workload performance
+    - Identify the key performance indicators (KPIs) that indicate whether the workload is performing as intended.
+    - Document the performance experience of customers, and use these requirements to establish your KPIs
+  - use monitoring to generate alarm-based notifications
+    - using your KPIs, a monitoring system should automatically alert when measurements are outside of the baseline.
+  - review metrics at regular intervals
+    - review the metrics collected to identify which metrics were key in addressing issues
+    - Also ask which additional metrics would help to identify, address, or prevent issues.
+  - monitor and alarm proactively
+    - Use KPIs, combined with monitoring and alerting systems, to proactively address performance-related issues.
+
+##### diagnostic tools
+
+- always need to be compared against historical baseline of network performance
+- ping: some service providers have ping (ICMP echo packets) disabled by default, or cant be enabled at all
+- traceroute: uses successive echo packets to display the path to the destination and the response time of each hop.
+- Speedtest: useful in evaluating the performance of your internet access.
+- packet analyzers: aka packet sniffers; logs each packet it intercepts, decodes the packet, and presents the values of the various fields within the packet for examination.
+- benching tools: measure throughput and bandwidth;
+  - iperf/iperf3: tools for active measurements of the maximum achievable bandwidth on IP networks
+    - supports tuning of various parameters related to timing, buffers, and protocols (TCP, UDP, SCTP with IPv4 and IPv6)
+  - extrahop: monitoring solution for security, network performance, and the cloud
+  - netperf: a CLI tool similar to iPerf that measures throughput and benchmarking speeds.
+
+##### common networking metrics
+
+- bandwidth capacity: the maximum data transmission rate possible on a network
+  - measures the theoretical limit of data transfer
+  - For optimal network operations, you want to get as close to your maximum bandwidth as possible without reaching critical levels
+  - indicates that your network is sending as much data as it can within a period of time, but isn’t being overloaded.
+- throughput: measures your network’s actual data transmission rate
+  - measures the units such as megabyte or gigabyte per second of data packets that are successfully being sent.
+  - a high bandwidth connection but low throughput, that's an indicator of an underlying problem
+- latency: delay between requesting data and when that data is finished being delivered.
+  - Consistent delays or odd spikes in delay time indicate a major performance issue
+- packet loss: examines how many data packets are dropped during data transmissions on your network
+  - The more data packets that are lost, the longer it takes for a data request to be fulfilled
+  - A network’s TCP interprets when packets are dropped and takes steps to ensure that data packets can still be transmitted;
+- retransmission: is when packets are lost, The network needs to retransmit them to complete a data request.
+  - retransmission rate lets your enterprise know how often packets are being dropped, which is an indication of congestion on your network.
+  - analyze retransmission delay (or the time it takes for a dropped packet to be retransmitted) to understand how long it takes your network to recover from packet loss.
+- availability: i.e. uptime, the percentage of time the network is available.
+  - can never guarantee 100 percent availability, but you want to be aware of any downtime that happens on your network that you weren’t expecting
+- connectivity: whether the connections between the nodes on your network are working properly
+  - jitter: a variation in delay or disruption that occurs while data packets travel across the network.
+  - congestion: occurs when network devices are unable to send the equivalent amount of traffic they receive.
+- response times: measures the time it takes for a server to respond to a data request with application data
+
+##### fault monitoring:
+
+- when a system polls registered devices at established intervals to verify if they respond
+- this is the simplest form of network monitoring
+
+##### performance monitoring:
+
+- collects detailed information to help determine possible reasons for poor network performance
+- simulate real user traffic
+- establish a network performance baseline measurement for each segment of a network
+- deploy monitoring agents to constantly monitor network performance
+- automated alerts when thresholds are breached
+
+##### capacity monitoring
+
+- monitor the users, applications, and other services on your network to see if one or many are draining the network
+
+##### Application Performance Optimization
+
+- monitoring and troubleshooting of performance issues with applications
+- permits applications to evaluate the network API communication from the application perspective
+
+##### Automated Alerts
+
+- When there are issues, you should be alerted immediately, either through:
+  - on-screen displays
+  - Text and emails automatically generated by the network monitoring solution
+- every alert should contain
+  - when a problem occured and which threshold is being approached/breached
+  - information to identify the device
+
 ### observability
 
 - the extent to which a system can be monitored
@@ -1162,6 +1158,7 @@
 ## security
 
 - the practice of protecting your intellectual property from unauthorized access, use, or modification
+- set of technical systems, tools, and processes to protect and defend the information and technology assets of an organization
 - Confidentiality: limiting information access and disclosure to authorized users (the right people) and preventing access by unauthorized people
 - practices
   - audit system for changes, unusual access and errors
@@ -1248,6 +1245,7 @@
   - Detective controls: intended to identify and characterize an incident in progress and provide assistance during investigations and audits after the event has occurred
     - alert the network team, security guards, or police
     - include security event log monitoring, host and network intrusion detection of threat events, and antivirus identification of malicious code.
+    - Intrusion detection: identifying strange patterns in network traffic that could signal a hack
   - Preventive controls: designed to prevent an incident from occurring
     - lock out unauthorized intruders & protect your network and workloads and mitigate threats and vulnerabilities.
     - include policies, standards, processes, procedures, encryption, firewalls, and physical barriers
@@ -1281,7 +1279,15 @@
 - difficult to detect because they do not involve alteration in data or information
 - more emphasis is given to prevention controls compared to the detection controls.
 
-### Compliance
+#### Anomalie Detection
+
+- anomalies: Changes in metrics that show variance from the baseline
+- anomalie detection: technique used to identify unusual patterns that do not conform to expected behavior, called outliers.
+  - Network anomalies: deviate from what is normal, standard, or expected network behavior.
+  - Application performance anomalies: observe application function, collect data on all problems, including supporting infrastructure and application dependencies
+  - Web application security anomalies: include any other anomalous or suspicious web application behavior that impacts security such as cross-site scripting attacks or DDoS attacks.
+
+## Compliance
 
 - focuses on the kind of data handled and stored, and studies an organization’s security processes.
   - ensure regulation of data happens securely and to understand how your organization shares, stores, and receives information

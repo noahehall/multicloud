@@ -652,6 +652,18 @@
   - cloudwatch: core supporting service within AWS which provides metrics, logs, and event management services
     - used throughout AWS services for health and performance monitoring and log management
     - also automatically troubleshoot and remediate incidents in real time.
+  - CloudTrail: logs all API actions in your account to an S3 bucket
+    - Management Events: control plane events are logged by default
+    - Data Events: data plane events require additional setup
+
+#### Network Monitoring
+
+- in AWS:
+  - VPC flow logs: lets you to capture information about the IP traffic going to and from network interfaces in your VPC.
+  - Traffic Mirroring: copy network traffic from an elastic network interface of an Amazon EC2 instance
+    - can send the traffic to out-of-band security and monitoring appliances for further analysis
+  - VPC Reachability Analyzer: network diagnostics tool that troubleshoots reachability between two endpoints in an Amazon VPC, or within multiple Amazon VPCs.
+  - AWS Transit Gateway Network Manager: lets you to centrally manage your networks that are built around transit gateways.
 
 ### Tags
 

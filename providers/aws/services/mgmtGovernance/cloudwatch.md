@@ -34,6 +34,9 @@
 - [using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
 - [using metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
 - [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
+- [agent: install](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
+- [ec2: enhanced networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
+- [cross account cloudwatch ](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Cross-Account-Cross-Region.html)
 
 ### api
 
@@ -57,6 +60,13 @@
 - be careful about enabling logging of full requests in production and leaking sensitive data
 - alarms
   - the time period should be for a sustaind amount of time, and not short bursts/temporary spikes in metrics
+- reducing cloudwatch costs
+  - Only use detailed monitoring when needed.
+  - Remove any unnecessary alarms.
+  - Disable monitoring of custom metrics.
+  - Delete unnecessary dashboards.
+  - Stop ingesting logs that are not needed.
+  - Run queries for shorter durations.
 
 ### anti patterns
 
@@ -70,23 +80,29 @@
 
 ### pricing
 
-- the free tier is pretty good
+- the free tier
   - basic monitoring: visibility into aws resources without any extra costs
     - resources automatically send metrics to cloudwatch for free at a rate of 1 data point per metric per 5-minute interval
-- the paid tier: your best bet is to use the aws calculator
-  - depends on the region and is split out by feature
-    - logs
-    - metrics
-    - dashboards
-    - alarms
-    - events
-    - contributor insights
-    - canaries
-    - evidently
-    - rum
-    - metrics insights
-    - cross-account observability
-    - internet monitor
+- the paid tier: your best bet is to use the aws calculator; depends on the region and is split out by feature
+  - logs
+  - metrics
+  - dashboards
+  - alarms
+  - events
+  - contributor insights
+  - canaries
+  - evidently
+  - rum
+  - metrics insights
+  - cross-account observability
+  - internet monitor
+- a good heuristic
+  - CloudWatch alarm with multiple metrics, you are charged for each metric associated with a CloudWatch alarm.
+  - exceed three dashboards with up to 50 metrics.
+  - ingesting and storing logs, as well as the amount of ingested logs scanned for each CloudWatch Insights query.
+  - number of custom events.
+  - monitor more than 10 custom metrics
+    - Metrics collected by the CloudWatch agent are billed as custom metrics.
 
 ## basics
 
@@ -102,10 +118,22 @@
 
 - customizeable home pages configured for one/more metrics through widgets pulled from one/more regions
 
+#### Cross Account Cloudwatch
+
+- gives a central AWS account the ability to receive CloudWatch metrics from other AWS accounts
+- monitor several accounts from a single dashboard
+
 ### metrics
 
 - custom metrics enable you to post application-level metrics to cloudwatch
 - you can run `math metrics` across metrics, e.g. errors/invocations
+- namespaces
+  - Each namespace contains data and each different namespace holds different data
+    - service namespaces: AWS/{NetworkManager,TransitGateway,InsertServiceNameHere}
+    - CloudWatch agent: CWAgent
+  - create custom namespaces to collect data on your applications and system
+    - `AWS/Blah` is reserved for AWS
+- dimensions: separate your data points for different measurements
 
 ### logs
 
@@ -147,15 +175,22 @@
 - abcd
 - getMetricData: retrieve cloudwatch metric values
 
-### events
+### EventBridge fka events
 
 - when metrics are logged to cloudwatch, an Event can be configured to deliver near real-time streams that describe changes in aws resources
+- you create an event in order to perform an action when that event occurs
+- events can be based on service, schedule, or an alarm
 
 #### rules
 
 - match events and route them to one/more target functions or streams
 
-### application monitoring
+### Agent
+
+- Some CloudWatch metrics are not collected by default.
+- must be installed on servers in order post events
+
+#### application monitoring
 
 ### insights
 
@@ -173,14 +208,6 @@
 - a diagnostic tool
 
 #### application insights
-
-### failure management
-
-- its all about monitoring and alarms
-- ensure your services are persisting logs to cloudwatch logs
-  - managed services: stdout is automatically posted to cloudwatch
-- exponential backoff and retry logic needs to be included in your application logic
-  - utilize the aws sdk for defaults
 
 ## considerations
 

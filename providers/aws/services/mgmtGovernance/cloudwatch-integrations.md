@@ -99,6 +99,11 @@
   - NetworkOut
 - detailed monitoring: apps running on EC2 can post metrics every minute (instead of every 5 with basic monitoring)
 
+### enhanced networking:
+
+- uses single root I/O virtualization (SR-IOV) to provide high-performance networking capabilities on supported instance types
+  - requires the cloudwatch agent to be installed
+
 ## RDS
 
 - common metrics

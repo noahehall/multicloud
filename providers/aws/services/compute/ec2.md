@@ -207,6 +207,21 @@
 - For cost optimization, ensure that your elastic IP addresses are attached to your EC2 instances.
 - You can get significantly higher packet per second (PPS) performance using enhanced networking.
 
+#### Networking Gotchas
+
+- EC2 defines network maximums at the instance level
+- bandwidth capability: ach EC2 instance has a maximum bandwidth for aggregate inbound and outbound traffic, based on instance type and size
+- Each EC2 instance has a maximum PPS performance, based on instance type and size.
+- The security group tracks each connection established to ensure that return packets are delivered as expected. There is a maximum number of connections that can be tracked per instance.
+- provides a maximum PPS per network interface for traffic to services such as the Domain Name System (DNS) service, the instance metadata service (IMDS), and the Amazon Time Sync Service.
+  - When the PPS for an instance exceeds its maximum, AWS queues the extra packets for delivery at a later time
+    - minimize the risk of losing packets and data, monitoring when network traffic exceeds the service maximums is important.
+    - Establishing CloudWatch alarms to activate when network performance metrics near their maximum will inform you,
+
+#### Elastic Network Intefaces
+
+- are limited to servicing 1,024 requests simultaneously. Any requests beyond 1,024 are reported as spillover.
+
 ## considerations
 
 - key pair: if you dont plan on sshing into a server a keypair isnt required
