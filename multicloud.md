@@ -1,7 +1,8 @@
 # multicloud
 
 - TODOs:
-  - alot of this stuff should be in [distributedSystems.md](./distributedSystems.md)
+  - some of this stuff should be in [distributedSystems.md](./distributedSystems.md)
+    - we really need to define the boundaries between these two files
 
 ## links
 
@@ -923,10 +924,6 @@
 - deploy monitoring agents to constantly monitor network performance
 - automated alerts when thresholds are breached
 
-#### security monitoring
-
-- add protection to your network against malware, unauthorized access, distributed denial of service (DDoS) attacks, man-in-the-middle attacks, Code and SQL injection attacks, privilege escalation, and insider threats.
-
 #### capacity monitoring
 
 - monitor the users, applications, and other services on your network to see if one or many are draining the network
@@ -1172,6 +1169,23 @@
     - validate request bodies
     - throttle/rate limits
   - defense in depth: multiple layers of redundant security
+- areas of focus
+  - network layer
+    - breached network or data breach of personal information
+    - Data loss or destruction
+    - mitigation
+      - network security tools can prevent unauthorized access to the system
+      - Firewalls and content filtering software can also protect data and only allow valid users.
+  - user devices
+    - personal device that connects to your network can inject unknown code into the system
+    - mitigation
+      - Antivirus and endpoint scanning tools can stop attackers from gaining access to the device.
+      - Phishing attacks and viruses have known signatures making them detectable and preventable.
+      - Segmenting access to the network by device, user, and facility limits the spread of malicious software.
+  - users
+    - Most of the time, the user does not know they have been compromised.
+    - mitigatoin
+      - train users to be mindful and limit innocuous actions.
 
 ### access control
 
@@ -1213,10 +1227,67 @@
   - avoid long term credentials and prefer temporary creds with expiration
 - enforce separation of duties: with appropriate authorization for each interaction with resources
 
-### Security Monitoring
+### Network Security Monitoring
 
-- starts by answering the following questions
-  - what are the KPIs?
-  - how should you measure them?
-  - what are the thresholds for these metrics?
-  - what is the escalation process
+- a process of collecting and analyzing information to detect suspicious behavior or unauthorized system changes on your network
+  - security information monitoring (SIM)
+  - security event monitoring (SEM)
+- continual assessment of the overall security architecture to comply with internal security policies, compliance, and governance
+- add protection to your network against malware, unauthorized access, distributed denial of service (DDoS) attacks, man-in-the-middle attacks, Code and SQL injection attacks, privilege escalation, and insider threats.
+- general process
+  - Implement metrics to define which type of behavior will initiate an alert and what action to take.
+  - Protect your network and environment from hackers, malware, disgruntled employees, careless employees, outdated devices and operating systems.
+  - Set up continuous security monitoring to act and automate the monitoring of vulnerabilities, cyber threats, and your organization's risk-management decisions.
+  - Implement real-time visibility in your environment to alert on compromises of security, misconfigurations, and vulnerabilities.
+- security incident response: understand issues and prepare, educate, and train your team before security issues occur
+  - Develop runbooks
+  - Use basic capabilities
+  - Create an initial library of incident response mechanisms to iterate from and improve upon
+- security controls
+  - Directive controls: establish the governance, risk, and compliance models within which the environment operates.
+  - Detective controls: intended to identify and characterize an incident in progress and provide assistance during investigations and audits after the event has occurred
+    - alert the network team, security guards, or police
+    - include security event log monitoring, host and network intrusion detection of threat events, and antivirus identification of malicious code.
+  - Preventive controls: designed to prevent an incident from occurring
+    - lock out unauthorized intruders & protect your network and workloads and mitigate threats and vulnerabilities.
+    - include policies, standards, processes, procedures, encryption, firewalls, and physical barriers
+  - Responsive controls: intended to limit the extent of any damage caused by the incident and recover to normal operations.
+    - drive remediation of potential deviations from your security baselines.
+- implementing network security
+  - firewalls: designed to prevent unauthorized access to or from a private network.
+  - Packet Sniffers: used to monitor network traffic.
+    - work by examining streams of data packets that flow between computers on a network and also flow between networked computers and the larger internet.
+    - promiscuous mode lets engineers, end users, or malicious intruders to examine any packet, regardless of destination.
+  - penetration testing: identifying security weaknesses in a network, server, or web application.
+    - useful to identify the unknown vulnerabilities in the software and networking applications that can cause a security breach.
+    - helps to determine the efficacy of the security policies, strategies, and controls in an organization.
+
+#### Network Attacks
+
+##### active attacks
+
+- one in which an unauthorized change of the system is attempted
+  - masquarade attacks
+  - message replay
+  - message modification
+  - denial-of-service attacks
+- instead of prevention, it is important to focus more on detective controls, detecting the attacks, and restoring the system afterward.
+
+##### Passive Attacks
+
+- when an attacker analyzes traffic and the content of packets.
+  - man in the middle attacks
+- information can be obtained regarding your network design, protocols used, information on hosts, and more
+- difficult to detect because they do not involve alteration in data or information
+- more emphasis is given to prevention controls compared to the detection controls.
+
+### Compliance
+
+- focuses on the kind of data handled and stored, and studies an organization’s security processes.
+  - ensure regulation of data happens securely and to understand how your organization shares, stores, and receives information
+  - details the security at a single moment in time and compares it to a specific set of regulatory requirements and frameworks from legislation, industry regulations, and standards created from data protection best practices.
+- key mistakes
+  - security and compliance are NOT the same thing
+  - compliance is not security, but Security is a big part of compliance.
+  - You can be compliant but not secure because compliance doesn’t always achieve security.
+- Becoming secure and compliant means securing information assets, preventing damage, protecting it, and detecting theft
