@@ -1,8 +1,9 @@
 # neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
+- workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
 - bookmark
-  - skillbuilder > Getting Started with Neptune
+  - skillbuilder > Getting Started with Neptune > Architecture and Use Cases
 
 ## my thoughts
 
@@ -43,10 +44,17 @@
 
 ### pricing
 
+- pay for the compute, I/O, and storage costs that your workload requires.
+  - ballpark: costs break down to about 85 percent EC2 instances, 10 percent storage, and 5 percent I/O, but costs vary based on the workload.
 - instance hosting: on demand by hour
+  - primary instances used for read-write workloads
+  - read replicas used to scale reads and enhance failover
+  - Neptune workbench instances: work with your Neptune cluster using Jupyter notebooks (hosted by Amazon SageMaker).
 - storage consumed: per gigabyte per month
-- requests in
-- data out
+  - automated database backups and customer-initiated database cluster snapshots
+- i/o: billed in per million request increments
+  - requests in
+  - data out
 
 ## terms
 
@@ -139,3 +147,17 @@
 ### Glue
 
 - getting data into neptune
+
+### OpenSearch
+
+- Amazon OpenSearch Service for full-text search capabilities
+
+### DMS
+
+- migrating data to a neptune cluster
+
+### Backup
+
+### EC2
+
+- autoscaling groups for read replicas
