@@ -4,6 +4,8 @@
   - integratin patterns
   - common metrics and events for various AWS services
 
+## links
+
 ## basics
 
 - all AWS services automatically report some information to cloudwatch
@@ -23,6 +25,7 @@
 
 - Replication traffic are NetworkIn, InboundPackets
 - Route table changes are ReplaceRoute, ReplaceRouteTableAssociation
+- NetworkMirrorIn (traffic mirror)
 
 ## lambda
 

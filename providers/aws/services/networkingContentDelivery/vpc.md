@@ -5,18 +5,19 @@
 ## my thoughts
 
 - everything starts and ends with vpc
-
-## links
-
+  king network throughput between ec2 instances over an IGW](https://aws.amazon.com/premiumsupport/knowledge-center/network-issue-vpc-onprem-ig/)
+- [benchmarking network throughput between ec2 instances](https://repost.aws/knowledge-center/network-throughput-benchmark-linux-ec2)
 - [cidr: prefix lists](https://docs.aws.amazon.com/vpc/latest/userguide/managed-prefix-lists.html)
+- [cloudwatch logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
 - [default vpc](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html)
 - [DHCP: dns server for VPC](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_DHCP_Options.html)
 - [ec2: elastic network interfaces](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_ElasticNetworkInterfaces.html)
 - [eks: subnet tagging](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#vpc-subnet-tagging)
 - [eks: vpc cni k8s plugin](https://github.com/aws/amazon-vpc-cni-k8s)
 - [eks: vpc considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
-- [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
 - [flow logs: guide](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
+- [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
+- [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
 - [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
 - [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
 - [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
@@ -26,22 +27,53 @@
 - [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
 - [nat gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
 - [peering: intro](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
+- [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
 - [route tables: examples](https://docs.aws.amazon.com/vpc/latest/userguide/route-table-options.html)
 - [route tables: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
 - [route tables: walkthrough](https://docs.aws.amazon.com/vpc/latest/userguide/WorkWithRouteTables.html)
 - [route tables](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html)
+- [s3](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-s3.html)
 - [security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
 - [subnets: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
 - [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
-- [traffic mirroring](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
-- [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
-- [benchmarking network throughput between ec2 instances](https://repost.aws/knowledge-center/network-throughput-benchmark-linux-ec2)
-- [benchmarking network throughput between ec2 instances over an IGW](https://aws.amazon.com/premiumsupport/knowledge-center/network-issue-vpc-onprem-ig/)
-- [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
-- [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
-- [cloudwatch logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
-- [s3](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-s3.html)
+- [traffic mirror: considerations](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-considerations.html)
+- [traffic mirror: examples](https://docs.aws.amazon.com/vpc/latest/mirroring/Traffic_Mirroring_Scenarios.html)
+- [traffic mirror: intro](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
+- [traffic mirror: session](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-sessions.html)
+- [traffic mirror: targets](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-targets.html)
 - [troubleshooting](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-troubleshooting.html)
+- [vom/vpc/latest/userguide/VPC_ElasticNetworkInterfaces.html)
+- [eks: subnet tagging](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#vpc-subnet-tagging)
+- [eks: vpc cni k8s plugin](https://github.com/aws/amazon-vpc-cni-k8s)
+- [eks: vpc considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
+- [flow logs: guide](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
+- [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
+- [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
+- [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
+- [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
+- [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
+- [lambda: vpc endpoints](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-endpoints.html)
+- [landing page](https://aws.amazon.com/vpc/?did=ap_card&trk=ap_card)
+- [monitoring](https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html)
+- [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
+- [nat gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
+- [peering: intro](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
+- [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
+- [route tables: examples](https://docs.aws.amazon.com/vpc/latest/userguide/route-table-options.html)
+- [route tables: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
+- [route tables: walkthrough](https://docs.aws.amazon.com/vpc/latest/userguide/WorkWithRouteTables.html)
+- [route tables](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html)
+- [s3](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-s3.html)
+- [security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
+- [subnets: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
+- [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
+- [traffic mirror: considerations](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-considerations.html)
+- [traffic mirror: examples](https://docs.aws.amazon.com/vpc/latest/mirroring/Traffic_Mirroring_Scenarios.html)
+- [traffic mirror: intro](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
+- [traffic mirror: session](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-sessions.html)
+- [traffic mirror: targets](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirroring-targets.html)
+- [troubleshooting](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-troubleshooting.html)
+- [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
 
 ## best practices
 
@@ -369,14 +401,58 @@
 
 - [see markdown file](./vpn.md)
 
-### VPC Networking Tools
+### Networking Tools
 
 #### Traffic Mirroring
 
-- feature that you can use to copy network traffic from an elastic network interface of type interface. You can then send the traffic to out-of-band security and monitoring appliances for:
-  - Content inspection
-  - threat monitoring
+- copies inbound and outbound traffic from the network interfaces that are attached to your EC2 instances;
+  - send the mirrored traffic to
+    - the network interface of another EC2 instance
+    - a Network Load Balancer that has a User Datagram Protocol (UDP) listener.
+- use cases
   - troubleshooting
+  - Content inspection
+  - intrusion detection
+  - treat monitoring
+  - use traffic mirroring to monitor and replay production traffic in a test environment.
+- similar in concept to on-premises network, packet inspection is accomplished through port mirroring on a physical switch or hub.
+  - AWS only allows packets addressed for the network interface to reach it, all other traffic is filtered out, including protocols such as address resolution protocol (ARP) and broadcast traffic.
+- gives you direct access to the network packets flowing through your VPC to help analyze network traffic and compare it to VPC Flow Logs to ensure the right technique for a given operations task is chosen
+  - capture all traffic or you can use filters to capture the packets that are of particular interest to you, with an option to limit the number of bytes captured per packet.
+  - in a multi-account AWS environment, capturing traffic from VPCs spread across many AWS accounts and then routing it to a central VPC for inspection.
+  - Mirror traffic from any EC2 instance that is powered by the AWS Nitro system and 12 Xen-based instance types.
+
+##### Components
+
+- traffic mirror source: ENI of an Amazon EC2 instance where AWS copies the network traffic from.
+- traffic mirror target: the destination for mirrored traffic Used in more than one traffic mirror session.
+  - either a network interface or a network load balancer
+  - featues
+    - Stream replicated traffic to any network packet collector or analytics tool, without having to install vendor-specific agents.
+    - Use open-source tools or choose a monitoring solution available on AWS Marketplace.
+- traffic mirror filter: rules that defines the traffic that is copied in a traffic mirror session.
+  - By default, no traffic is mirrored.
+  - add traffic mirror rules to the filter to define what traffic gets mirrored.
+- A traffic mirror session: establishes a relationship between a source and a target that makes use of a filter.
+  - A given packet is only mirrored one time
+    - use multiple sessions on a source for multiple mirrors
+    - useful if you want to send a subset of the mirrored traffic from a traffic mirror source to different tools.
+  - evaluated based on the ascending session number that you define when you create the session. The first match (accept or reject) is used to determine the fate of the packet.
+- connectivity considerations
+  - If the traffic mirror source and the traffic mirror target is owned by:
+    - same account
+      - traffic can be in
+        - the same VPC
+        - a different VPC connected through an intra-Region VPC peering or a transit gateway.
+    - different accounts
+      - The traffic mirror target owner must share the target with the traffic mirror source account using the Amazon Resource Access Manager (Amazon RAM).
+      - the mirrored traffic is sent to the traffic mirror target using the source Amazon VPC route table
+- setup process
+  - identify the traffic mirror source
+  - configure the traffic mirror target
+  - configure the traffic mirror filter for the source ec2 instance
+  - configure the traffic mirror sessions for the source, filter, and target
+  -
 
 #### Reachability Analyzer
 
@@ -543,3 +619,7 @@ ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - -
 
 - configuring Systems Manager to use an interface VPC endpoint
 - AWS PrivateLink restricts all network traffic between your managed instances, Systems Manager, and Amazon EC2 to the Amazon network.
+
+### Cloudwatch
+
+- using traffic mirroring, vpc flow logs + cloudwatch
