@@ -10,6 +10,8 @@
 
 - [benchmarking network throughput between ec2 instances over an IGW](https://aws.amazon.com/premiumsupport/knowledge-center/network-issue-vpc-onprem-ig/)
 - [benchmarking network throughput between ec2 instances](https://repost.aws/knowledge-center/network-throughput-benchmark-linux-ec2)
+- [blog: automating connectivity assessments with reachability analyzer](https://aws.amazon.com/blogs/networking-and-content-delivery/automating-connectivity-assessments-with-vpc-reachability-analyzer/)
+- [blog: integrating network connectivity with CICd](https://aws.amazon.com/blogs/networking-and-content-delivery/integrating-network-connectivity-testing-with-infrastructure-deployment/)
 - [cidr: prefix lists](https://docs.aws.amazon.com/vpc/latest/userguide/managed-prefix-lists.html)
 - [cloudwatch logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-cwl.html)
 - [default vpc](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html)
@@ -30,7 +32,9 @@
 - [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
 - [nat gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
 - [peering: intro](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
-- [reachability analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
+- [reachability analyzer for AWS whitepaper pdf](https://d1.awsstatic.com/whitepapers/Security/Reachability_Analysis_for_AWS-based_Networks.pdf)
+- [reachability: analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
+- [reachability: explanation codes](https://docs.aws.amazon.com/vpc/latest/reachability/explanation-codes.html)
 - [route tables: examples](https://docs.aws.amazon.com/vpc/latest/userguide/route-table-options.html)
 - [route tables: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
 - [route tables: walkthrough](https://docs.aws.amazon.com/vpc/latest/userguide/WorkWithRouteTables.html)
@@ -50,10 +54,6 @@
   - [suricata: threat detection engine](https://suricata-ids.org/)
   - iperf3: testing bandwidth and jitter for TCP and UDP traffic
   - wireshark: detecting and decrypting network traffic
-
-## my thoughts
-
-- everything starts and ends with vpc
 
 ## best practices
 
@@ -89,6 +89,7 @@
     - does not add any additional hops.
 - flow logs
   - can quickly grow into the hundreds of gigabytes.
+- tag your reachability analysis to keep track of the cost
 
 ### anti patterns
 
@@ -110,6 +111,8 @@
   - Interface endpoints and Gateway Load Balancer endpoints: check the privatelink docs
     - per hour the VPC endpoint remains provisioned in each Availability Zone and for each gigabyte processed through the VPC endpoint
   - gateway endpoints: free biotch!
+- reachability analyzer
+  - charged per analysis run between a source and a destination
 
 ## basics
 
@@ -395,12 +398,19 @@
   - intrusion detection
   - treat monitoring
   - use traffic mirroring to monitor and replay production traffic in a test environment.
+  - analyze for both active and passive attacks.
 - similar in concept to on-premises network, packet inspection is accomplished through port mirroring on a physical switch or hub.
   - AWS only allows packets addressed for the network interface to reach it, all other traffic is filtered out, including protocols such as address resolution protocol (ARP) and broadcast traffic.
 - gives you direct access to the network packets flowing through your VPC to help analyze network traffic and compare it to VPC Flow Logs to ensure the right technique for a given operations task is chosen
   - capture all traffic or you can use filters to capture the packets that are of particular interest to you, with an option to limit the number of bytes captured per packet.
   - in a multi-account AWS environment, capturing traffic from VPCs spread across many AWS accounts and then routing it to a central VPC for inspection.
   - Mirror traffic from any EC2 instance that is powered by the AWS Nitro system and 12 Xen-based instance types.
+- traffic types that cannot be mirrored:
+  - ARP
+  - DHCP
+  - Instance metadata service
+  - NTP
+  - Windows activation
 
 ##### Components
 
@@ -436,8 +446,45 @@
 
 #### Reachability Analyzer
 
-- configuration analysis tool that enables you to perform connectivity testing between a source resource and a destination resource in your virtual private clouds
+- easy way to examine network connectivity between two endpoints within your VPC without sending any packets
+- analyzes all possible paths through your network without having to send any traffic on the wire. It looks at the configuration of all resources in your Amazon VPCs to determine what network flows are feasible.
 - troubleshoots reachability between two endpoints in an Amazon VPC, or within multiple Amazon VPCs.
+  - All resource configurations (security groups, routes, firewalls, etc) that can affect the connectivity of your network are inspected to determine if the network flow is possible.
+  - VPN gateways
+  - Network interfaces
+  - Internet gateways
+  - VPC endpoints
+  - VPC peering connections
+  - Transit gateways
+- use cases
+  - should be integrated into your network design process
+  - configuration analysis tool that enables you to perform connectivity testing between a source resource and a destination resource in your virtual private clouds
+  - Network diagnostics tool that troubleshoots reachability between two endpoints.
+
+##### General Workflow
+
+- create a path: from traffic source to destination
+  - endpoint types: VPN Gateways, Instances, Network Interfaces, Internet Gateways, VPC Endpoints, VPC Peering Connections, and Transit Gateways.
+  - connectivity options:
+    - TCP/UDP + port number
+    - IP addrs
+  - sources & destinations
+    - owned by the same account
+    - in the same region
+    - either
+      - within the same VPC
+      - different VPCs but connected via VPC peering
+      - Shared VPC owned by the same account
+- analyze the path: repeat whenever the configuration changes
+  - displays the details and identifies the blocking component
+  - identifies the blocking component.
+- review results
+  - destination
+    - reachable: produces hop-by-hop details of the virtual network path between the source and the destination.
+      - multiple reachable paths: identifies and displays the shortest path
+    - not reachable: identifies the blocking component.
+      - possibly caused by configuration issues in a security group, network ACL, route table, or load balancer.
+      - explanation codes:
 
 #### flow logs
 
@@ -603,3 +650,4 @@ ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - -
 ### Cloudwatch
 
 - using traffic mirroring, vpc flow logs + cloudwatch
+- configure VPC Reachability Analyzer with CloudWatch to alert on connectivity issues and possibly automatically remediate using AWS Lambda.

@@ -41,6 +41,7 @@
 - [identities](https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html)
 - [ec2: iam](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-iam.html)
 - [systemsManager profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
+- [vpc: reachability analyzer perms](https://docs.aws.amazon.com/vpc/latest/reachability/security_iam_required-API-permissions.html)
 
 ### API
 

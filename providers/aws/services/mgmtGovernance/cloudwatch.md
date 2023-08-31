@@ -137,6 +137,14 @@
   - create custom namespaces to collect data on your applications and system
     - `AWS/Blah` is reserved for AWS
 - dimensions: separate your data points for different measurements
+- retention:
+  - the longer CloudWatch data is stored, the less information is available, due to aggregation of those data points.
+  - Data points with a period of
+    - less than 1 minute are available for 3 hours.
+      - These data points are high-resolution custom metrics.
+    - 1 minute are available for 15 days
+    - 5 minutes are available for 63 days
+    - 1 hours are available for 455 days (15 months)
 
 #### Metrics Explorer
 
@@ -196,6 +204,14 @@
   - datapoints to alarm: number of data points within the evaluation periods that must be breaching to cause the alarm to go to the ALARM state
     - The breaching data points don't have to be consecutive;
     - just must all be within the last number of data points equal to the Evaluation Period.
+- creating alarms
+  - choose the metric to monitor
+  - choose the metric alarm state
+  - configure alarm
+    - period
+    - evaluation periods
+    - data points to alarm
+  - choose when to initiate and what actions to take
 
 #### Metric Alarm
 
@@ -240,6 +256,7 @@
 
 - Some CloudWatch metrics are not collected by default.
 - must be installed on servers in order post events
+- imports network performance metrics for EC2 instances running on Linux using the Elastic Network Adapter (ENA) to publish network performance metrics to CloudWatch.
 
 #### application monitoring
 

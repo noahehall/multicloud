@@ -659,6 +659,7 @@
 #### Network Monitoring
 
 - in AWS:
+  - Only CloudWatch and VPC Flow Logs TOETHER can collect logs to ensure you are meeting your compliance requirements and use the logs to identify any suspicious ports and IP addresses.
   - VPC flow logs: lets you to capture information about the IP traffic going to and from network interfaces in your VPC.
   - Traffic Mirroring: copy network traffic from an elastic network interface of an Amazon EC2 instance
     - can send the traffic to out-of-band security and monitoring appliances for further analysis

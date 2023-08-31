@@ -15,6 +15,7 @@
 - [dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/logging-using-cloudtrail.html)
 - [dynamodb: log file entries](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/understanding-ddb-log-entries.html)
 - [neptune](https://docs.aws.amazon.com/neptune/latest/userguide/cloudtrail.html)
+- [vpc: transit gateway](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudtrail-logs.html)
 
 ## best practices
 

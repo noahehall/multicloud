@@ -29,6 +29,8 @@
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
 - [systemManager: alarm create opsItems](https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-create-OpsItems-from-CloudWatch-Alarms.html)
 - [vpc: traffic mirror metrics](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirror-cloudwatch.html)
+- [vpc: transit gateway metrics](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html)
+- [vpc: transit gateway monitoring](https://docs.aws.amazon.com/vpc/latest/tgw/monitoring-cloudwatch-metrics.html)
 
 ## basics
 
@@ -50,6 +52,7 @@
 - Replication traffic are NetworkIn, InboundPackets
 - Route table changes are ReplaceRoute, ReplaceRouteTableAssociation
 - NetworkMirrorIn (traffic mirror)
+- namespace for VPC Peering connections AWS/PCX
 
 ## lambda
 
