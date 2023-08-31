@@ -236,11 +236,16 @@
 - In a graph data model, relationships are first-class citizens, and the data is modeled as nodes (vertices) and links (edges)
 - Nodes: are usually a person, place, or thing
 - links: how nodes are all connected
-- graph workloads
+- graph workloads: tracking relationships between entities.
   - complex domain model: large data set with many different entities
   - variable schema: similar entities may have different properties
   - variable structure: highly connected entities in many different ways
   - connected queries: navigate connected structures taking into account strength, weight, or quality of relationships
+
+###### Identity Graphs
+
+- a single unified view of customers and prospects by linking multiple identifiers such as cookies, device identifiers, IP addresses, email IDs, and internal enterprise IDs to a known person or anonymous profile using privacy-compliant methods
+-  captures customer behavior and preferences across devices and marketing channels.
 
 ##### key value
 

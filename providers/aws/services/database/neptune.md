@@ -72,25 +72,45 @@
   - scale out read traffic across read replicas
   - reader endpoint balances connections across read replicas
 
-### architecture
-
-- primary database: read and write operations and performs all the data modifications to the cluster volume
-- read-only replicas: up to 15; connects to the same storage volume as the primary database instance
-- cluster volume: designed for reliability and high availability; copies data across AZs in a single region.
-- stores three fields for each connection or relationship
-- endpoints:
-  - cluster: connects to the current primary database instance for the database cluster.
-  - reader: connects to one of the available Neptune replicas. Each replica has its own endpoint
-  - instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
-
 ### cluster
 
-- consists of zero or one writer instance and zero to fifteen read replicas
+- primary database: read and write operations and performs all the data modifications to the cluster volume
 - compute layer
   - single-writer architecture: no more than a single writer instance can be provisioned.
-  - read replicas
+  - read replicas: up to 15; connects to the same storage volume as the primary database instance
     - Readsare eventually consistent: generally in the single-digit milliseconds, but potentially up to 100 ms under extremely heavy traffic.
 - storage layer: spans multiple AZs
+  - cluster volume: designed for reliability and high availability; copies data across AZs in a single region.
+
+#### endpoints:
+
+- cluster: connects to the current primary database instance for the database cluster.
+- instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
+- writer: points at the writer instance and should be used for any query that modifies data in the cluster.
+- reader: rotates distribution of requests across all of the read replicas in the cluster.
+  - connects to one of the available Neptune replicas. Each replica has its own endpoint
+
+#### Parameter Groups
+
+- db parameter groups: apply at the instance level
+- db cluster parameter groups: apply to every instance in the cluster
+- default parameter & cluster parameter groups
+  - every account has them, cant be modified
+- customer paramter and cluster parameter groups
+  - all Neptune DB parameters are static
+  - you must manually reboot each db instance before changes take effect
+
+#### Instances
+
+- choosing the right class:
+  - number of concurrent requests
+  - write latency
+  - query complexity
+  - query performance requirements
+  - etc
+- testing query performance:
+  - optimal concurrency for writing or querying data is twice the number of vCPUs:
+    - e.g. db.r5.large instance has TWO vCPUs -> FOUR processes writing data in parallel to test load times
 
 ### Graph Data Models
 
@@ -111,7 +131,7 @@
 - network isolation via VPC
 - control ingress via security groups
 
-### encryption
+#### encryption
 
 - data at rest in the database is encrypted using industry standard AES-256 KMS
   - Keys can also be used, which are managed through KMS
