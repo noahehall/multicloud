@@ -3,7 +3,7 @@
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
 - bookmark
-  - skillbuilder > Getting Started with Neptune > How Do I Create a Neptune Cluster in the AWS Management Console?
+  - skillbuilder > Getting Started with Neptune > How Do I Use Neptune with AWS CloudFormation?
 
 ## my thoughts
 
@@ -118,6 +118,10 @@
   - optimal concurrency for writing or querying data is twice the number of vCPUs:
     - e.g. db.r5.large instance has TWO vCPUs -> FOUR processes writing data in parallel to test load times
 
+### Notebooks
+
+- jupyter notebooks: run python code
+
 ### Audit Logs
 
 - View, download, or watch database log files using the Neptune console.
@@ -154,7 +158,10 @@
 ## considerations
 
 - db engine version
-- instance class
+- instances
+  - instance class
+  - burstable
+  - notebook configuration: enables access to the cluster
 - high availability: can be disabled
 - db instance identifier: must be unique per account per region
 - vpc, subnets, security group
@@ -163,6 +170,8 @@
 - failover
 - backup retention period & window
 - version maintenance and window
+- sagemaker
+  - direct access
 
 ## integrations
 
