@@ -9,3 +9,12 @@
 ## Gremlin
 
 - a functional, data-flow language that enables users to succinctly express complex traversals on (or queries of) their application's property graph. Every Gremlin traversal is composed of a sequence of (potentially nested) steps.
+
+## Property Graph
+
+### Data Model
+
+- vertices: nodes
+- edges: connect nodes
+- properties: attached to vertices
+- labels: attached to vertices and edges
