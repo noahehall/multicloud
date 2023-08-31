@@ -14,6 +14,7 @@
 - [sending trail events to cloudwatch logs](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/send-cloudtrail-events-to-cloudwatch-logs.html)
 - [dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/logging-using-cloudtrail.html)
 - [dynamodb: log file entries](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/understanding-ddb-log-entries.html)
+- [neptune](https://docs.aws.amazon.com/neptune/latest/userguide/cloudtrail.html)
 
 ## best practices
 

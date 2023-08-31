@@ -3,7 +3,7 @@
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
 - bookmark
-  - skillbuilder > Getting Started with Neptune > Architecture and Use Cases > What are the basic technical concepts of Neptune?
+  - skillbuilder > Getting Started with Neptune > How Do I Create a Neptune Cluster in the AWS Management Console?
 
 ## my thoughts
 
@@ -27,6 +27,8 @@
 - [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
 - [tagging resources](https://docs.aws.amazon.com/neptune/latest/userguide/tagging.html)
 - [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
+- [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
+- [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
 
 ### opensource
 
@@ -104,6 +106,8 @@
 
 #### Instances
 
+- DB instances are created by default with a firewall and a default security group that prevents access
+  - To enable access, you must have a VPC security group with additional rules.
 - choosing the right class:
   - number of concurrent requests
   - write latency
@@ -113,6 +117,14 @@
 - testing query performance:
   - optimal concurrency for writing or querying data is twice the number of vCPUs:
     - e.g. db.r5.large instance has TWO vCPUs -> FOUR processes writing data in parallel to test load times
+
+### Audit Logs
+
+- View, download, or watch database log files using the Neptune console.
+
+### Events
+
+- Subscribe to Neptune events within the neptune console
 
 ### Graph Data Models
 
