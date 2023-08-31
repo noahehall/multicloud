@@ -192,6 +192,16 @@
 - Integrity: maintaining the consistency, accuracy, and trustworthiness of data over its entire life cycle
 - Availability: the readiness of information resources. a system that is not available when you need it is almost as useless as not having a system in the first place
 
+#### Principle of Least Privelege
+
+- giving a user or system only those privileges that are essential to perform its intended function
+- grant access as needed: start with denying access to everything and grant access as needed based on job role.
+- enforce separation of duties: Set expectations on how authority will be delegated down through software engineers, operations staff, and other job functions involved in cloud adoption.
+  - authorization for each interaction with resources
+- avoid long-term credentials: use of temporary security credentials that eventually expire
+  - centralizing privilege management
+  - reducing or even eliminating reliance on long-term credentials
+
 ### reliability
 
 - ability to prevent and quickly recover from failures to meet demand
