@@ -4,7 +4,10 @@
 
 ## links
 
-[landing page](https://tinkerpop.apache.org/)
+- [landing page](https://tinkerpop.apache.org/)
+- [tinkerpop: reference](http://tinkerpop.apache.org/docs/current/reference/)
+- [gremlin: with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
+- [gremlin: online book](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
 
 ## Gremlin
 
@@ -14,7 +17,7 @@
 
 ### Data Model
 
-- vertices: nodes
-- edges: connect nodes
-- properties: attached to vertices
+- vertices: entity nodes
+- edges: relationships connecting nodes
+- properties: represent and store data
 - labels: attached to vertices and edges

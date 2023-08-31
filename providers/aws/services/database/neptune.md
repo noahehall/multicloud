@@ -1,6 +1,8 @@
 # neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
+- bookmark
+  - skillbuilder > Getting Started with Neptune
 
 ## my thoughts
 
@@ -16,7 +18,16 @@
 - [db clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
 - [storage](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
 - [security](https://docs.aws.amazon.com/neptune/latest/userguide/security.html)
-- [onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
+- [slideshare:onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
+- [slideshare: graph data model and queries with neptune](https://www.slideshare.net/AmazonWebServices/work-backwards-to-your-graph-data-model-queries-with-amazon-neptune-dat330-aws-reinvent-2018)
+- [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
+- [best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
+- [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
+- [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
+
+### opensource
+
+- [convert graphML to neptune](https://github.com/awslabs/amazon-neptune-tools/blob/master/graphml2csv/README.md)
 
 ## best practices
 
@@ -120,3 +131,11 @@
 ### cloudtrail
 
 ### SNS
+
+### SageMaker
+
+- for analyzing neptune graphs
+
+### Glue
+
+- getting data into neptune
