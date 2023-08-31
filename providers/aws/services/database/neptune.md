@@ -25,6 +25,8 @@
 - [best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
 - [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
 - [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
+- [tagging resources](https://docs.aws.amazon.com/neptune/latest/userguide/tagging.html)
+- [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
 
 ### opensource
 
@@ -129,7 +131,8 @@
 ### security
 
 - network isolation via VPC
-- control ingress via security groups
+  - endpoints only accessible within VPC/peered connections
+- security groups: firewall for the associated Neptune DB instance;
 
 #### encryption
 
@@ -194,3 +197,5 @@
 ### EC2
 
 - autoscaling groups for read replicas
+
+### cloudwatch

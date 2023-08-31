@@ -1,10 +1,33 @@
-# Cloudwatch Metrics and Events
+# Cloudwatch Integrations, Metrics and Events
 
 - catchall for
   - integratin patterns
   - common metrics and events for various AWS services
 
 ## links
+
+- [neptune](https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch.html)
+- [dynamodb: alarms](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/creating-alarms.html)
+- [dynamodb: contributor insights tut](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_tutorial.html)
+- [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
+- [dynamodb: metrics & dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html)
+- [dynamodb: monitoring](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
+- [ec2: automation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/UsingAlarmActions.html)
+- [ec2: cpu usage alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_AlarmAtThresholdEC2.html)
+- [ec2: enhanced networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
+- [ecs: monitoring](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_monitoring.html)
+- [eks: pushing logs to container insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-EKS-logs.html)
+- [elb: load balancing alarm](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_AlarmAtThresholdELB.html)
+- [fsx: metrics](https://docs.aws.amazon.com/fsx/latest/LustreGuide/monitoring_overview.html)
+- [kinesis: metrics](https://docs.aws.amazon.com/streams/latest/dev/monitoring-with-cloudwatch.html)
+- [lambda: analyzing behavior](https://aws.amazon.com/blogs/mt/understanding-aws-lambda-behavior-using-amazon-cloudwatch-logs-insights/)
+- [lambda: metrics](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-functions-metrics.html)
+- [sns: metrics](https://docs.aws.amazon.com/sns/latest/dg/sns-monitoring-using-cloudwatch.html)
+- [sns: setup](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_SetupSNS.html)
+- [sqs: metrics](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-available-cloudwatch-metrics.html)
+- [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
+- [systemManager: alarm create opsItems](https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-create-OpsItems-from-CloudWatch-Alarms.html)
+- [vpc: traffic mirror metrics](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirror-cloudwatch.html)
 
 ## basics
 
@@ -154,3 +177,5 @@
 
 - CloudWatch sends events to Amazon EventBridge whenever a CloudWatch alarm changes alarm state
 - use EventBridge and these events to write rules that take actions,
+
+## neptune

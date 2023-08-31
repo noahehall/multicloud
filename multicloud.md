@@ -1,5 +1,6 @@
 # multicloud
 
+- [databases](./databases.md)
 - TODOs:
   - some of this stuff should be in [distributedSystems.md](./distributedSystems.md)
     - we really need to define the boundaries between these two files

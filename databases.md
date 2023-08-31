@@ -2,14 +2,6 @@
 
 ## best practices
 
-- sharding use cases: all about scaling horizontally
-  - distribute your data volume across multiple db instances for storage flexibility
-  - serve increased request rates
-- consistency patterns: all about ensuring previous writes are reflected in future reads
-  - strongly consistent: i.e. read after write; all writes are always reflected
-  - eventually consistent: previous writes may NOT be reflected
-  - always design around eventually consistency
-    - strongly consistency means you received the latest, but subsequent writes it may be stale whenever based on previous reads
 - use purpose built dbs instead of general purpose
   - purpose built DBS excel in as peicfic domain with unmatched performance relative to general purpose dbs
   - deploy mulitple DB engines for specific needs and run analytics across a data warehouse
@@ -23,7 +15,13 @@
   - can extract information from a large database and analyze it for decision-making
 - command query respnsibility segregation: aka polyglot persistence
   - having a single big db instance thats queried by analytics services to provide `views` into the data for specific microservices/consumers
-- sharding: enables horizontal scaling
+- consistency patterns: all about ensuring previous writes are reflected in future reads
+  - strongly consistent: i.e. read after write; all writes are always reflected
+  - eventually consistent: previous writes may NOT be reflected
+  - always design around eventually consistency
+    - strongly consistency means you received the latest, but subsequent writes it may be stale whenever based on previous reads
+- sharding: enables horizontal scaling to serve more requests
+  - distribute your data volume across multiple db instances for storage flexibility
   - the entire dataset is partitioned amongst multiple db instances
   - items stored in a particular partition is based on a hash of a partition key
 - no/newsql
@@ -93,7 +91,44 @@
 
 - a single unified view of customers and prospects by linking multiple identifiers such as cookies, device identifiers, IP addresses, email IDs, and internal enterprise IDs to a known person or anonymous profile using privacy-compliant methods
 - captures customer behavior and preferences across devices and marketing channels.
--
+- acts as a central hub and drives targeted advertising, personalization of customer experiences, and measurement of marketing effectiveness.
+
+#### knowledge graphs
+
+- a means of structuring and organizing information for improved access and understanding
+- build systems that can recommend people to projects, connect related projects, or centralize access to avoid duplicate efforts.
+- build systems that can recommend people to projects, connect related projects, or centralize access to avoid duplicate efforts.
+- build context-aware systems that can derive answers based on queries and a vast knowledge base
+- use machine learning services with knowledge graphs for better decision making and knowledge discovery.
+
+#### Fraud Detection
+
+- stores the relationships between the transactions, actors, and other relevant information to help customers find common patterns in the data and build applications that can detect fraudulent activities.
+- people can collude to commit fraudulent transactions, creating fraud rings.
+  - can have hundreds of members, which makes it challenging to find the bad actors and detect fraud.
+
+#### Social Networking
+
+- store human interactions between people, track skills, and roles at organizations.
+- understand social interactions, likes, and preferences
+- find beneficial connections across companies, fill occupational needs that may not be obvious from job title alone, and understand how information spreads through a population
+
+#### Network/IT operations
+
+- store resources, configurations, and access patterns across the technology landscape
+- Storing this topology in a graph gives better insight to the critical resources in the production environment that are essential to protect and better understand whether the changes observed daily in an environment are critical, expected, or anomalous.
+
+#### Recommendation Engines
+
+- provide predictive capability based on existing connections in a graph
+- exploit the fact that similarity breeds connections.
+- make recommendations based on a well-understood phenomenon called triadic closure.
+  - If a connection between Bill and Sarah exists and a connection between Bill and Terry exists, there is a tendency for a connection between Terry and Sarah to form.
+
+#### Life Sciences
+
+- store connections ranging from relationships between biological compounds and biochemical reactions to those connecting multiple datasets.
+- used for applications such as data integration, management of research publications, drug discovery, precision medicine, and cancer research.
 
 ### key value
 
