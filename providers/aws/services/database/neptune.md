@@ -3,7 +3,7 @@
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
 - bookmark
-  - skillbuilder > Getting Started with Neptune > Architecture and Use Cases
+  - skillbuilder > Getting Started with Neptune > Architecture and Use Cases > What are the basic technical concepts of Neptune?
 
 ## my thoughts
 
@@ -31,6 +31,9 @@
 - [convert graphML to neptune](https://github.com/awslabs/amazon-neptune-tools/blob/master/graphml2csv/README.md)
 
 ## best practices
+
+- read replicas always be equal to or larger than the writer instance
+  - avoid the the larger writer instance is handling changes too quickly for the reader to maintain pace.
 
 ### anti patterns
 
@@ -60,16 +63,6 @@
 
 ## basics
 
-### architecture
-
-- primary database: read and write operations and performs all the data modifications to the cluster volume
-- read-only replicas: up to 15; connects to the same storage volume as the primary database instance
-- cluster volume: esigned for reliability and high availability; copies data across AZs in a single region.
-- stores three fields for each connection or relationship
-- endpoints:
-  - cluster: connects to the current primary database instance for the database cluster.
-  - reader: connects to one of the available Neptune replicas. Each replica has its own endpoint
-  - instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
 - availability:
   - failing db nodes auto detected and replaced
   - failing db processes auto detected and recycled
@@ -78,6 +71,26 @@
 - performance
   - scale out read traffic across read replicas
   - reader endpoint balances connections across read replicas
+
+### architecture
+
+- primary database: read and write operations and performs all the data modifications to the cluster volume
+- read-only replicas: up to 15; connects to the same storage volume as the primary database instance
+- cluster volume: designed for reliability and high availability; copies data across AZs in a single region.
+- stores three fields for each connection or relationship
+- endpoints:
+  - cluster: connects to the current primary database instance for the database cluster.
+  - reader: connects to one of the available Neptune replicas. Each replica has its own endpoint
+  - instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
+
+### cluster
+
+- consists of zero or one writer instance and zero to fifteen read replicas
+- compute layer
+  - single-writer architecture: no more than a single writer instance can be provisioned.
+  - read replicas
+    - Readsare eventually consistent: generally in the single-digit milliseconds, but potentially up to 100 ms under extremely heavy traffic.
+- storage layer: spans multiple AZs
 
 ### Graph Data Models
 

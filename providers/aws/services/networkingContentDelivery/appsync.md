@@ -8,6 +8,7 @@
 
 - [landing page](https://aws.amazon.com/appsync/?did=ap_card&trk=ap_card)
 - [developer guide](https://docs.aws.amazon.com/appsync/latest/devguide/welcome.html)
+- [graphql overview](https://docs.aws.amazon.com/appsync/latest/devguide/graphql-overview.html)
 
 ## best practices
 
