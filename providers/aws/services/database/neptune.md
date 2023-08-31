@@ -3,7 +3,7 @@
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
 - bookmark
-  - skillbuilder > Getting Started with Neptune > How Do I Use Neptune with AWS CloudFormation?
+  - [graph data model queries reinvent 2018](https://www.slideshare.net/AmazonWebServices/work-backwards-to-your-graph-data-model-queries-with-amazon-neptune-dat330-aws-reinvent-2018)
 
 ## my thoughts
 
@@ -29,10 +29,17 @@
 - [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
 - [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
 - [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
+- [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+- [reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
+- [tools and utilities](https://github.com/awslabs/amazon-neptune-tools)
 
 ### opensource
 
 - [convert graphML to neptune](https://github.com/awslabs/amazon-neptune-tools/blob/master/graphml2csv/README.md)
+- [open cycpher](https://opencypher.org/)
+- [apache tinkerpop](https://tinkerpop.apache.org/)
+- [w3c RDF](https://www.w3.org/RDF/)
+- [w3c SPARQL](https://www.w3.org/TR/sparql11-query/)
 
 ## best practices
 
