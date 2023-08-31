@@ -309,7 +309,13 @@
 
 ### AuthNZ
 
-- Cognito, Directory Service, IAM, Identity Center
+- in AWS
+  - Cognito
+  - directory service
+  - IAM
+    - Tags: enable ABAC
+    - Roles: enable RBAC
+  - Identity Center
 
 ### Incident Response
 

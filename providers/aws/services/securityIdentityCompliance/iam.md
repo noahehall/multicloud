@@ -32,7 +32,7 @@
 - [signing aws api requests (sig v4)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html)
 - [mfa](https://aws.amazon.com/iam/details/mfa/)
 - [groups and jobs functions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html)
-- [ABAC via tags tutorial](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html)
+- [tutorial: ABAC via tags](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html)
 - [testing iam policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
 - [access history: tightenting s3 permissions](https://aws.amazon.com/blogs/security/tighten-s3-permissions-iam-users-and-roles-using-access-history-s3-actions/)
 - [access history: finding unused credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html)
@@ -103,6 +103,7 @@
 
 #### Federated Identities
 
+- for identities stored outside AWS.
 - a system of trust between two parties for the purpose of authenticating users and conveying information needed to authorize their access to resources
 - identity provider: (IdP) is responsible for user authentication
 - service provider: such as a service or an application, controls access to resources
@@ -130,7 +131,6 @@
 
 ### roles
 
-- also check the [iam STS file](./iam-sts.md)
 - delegate access to users, applications, or services
 - endow an entity with temporary credentials to perform some function
   - users and groups
@@ -145,8 +145,15 @@
   - credentials are always temporary for the requested amount of time
 - execution role: enables a service to assume some role with some predefined behavior for interacting with other services
   - determines what service A can do within a service boundary
-- service roles: iam roles that can be assumed by an AWS service
-  - must include a trust policy
+- passing roles: the user passing the role must have permissions to pass the role
+  - ensure that only approved users can configure a service with a role that grants permissions
+  -
+
+#### service roles:
+
+- iam roles that can be assumed by an AWS service
+- must include a trust policy
+  - or (i think) sts assumeRole
 
 ### authentication schemes
 
@@ -289,12 +296,12 @@
 ### Request Context
 
 - what is being authenticated and authorized by IAM
-- principal: subject that sends the request and the policies associated with that principal
+- principal: a subject that can make a request for an action/operation on an AWS resource
   - aws accounts: delegate authority to the account; the permission policies can be scoped to specific account identities
-  - iam users:
-  - federated users:
-  - iam roles:
-  - aws services:
+  - iam users
+  - federated users
+  - iam roles
+  - aws services
 - actions: verb; What the principal is attempting to do
   - via console its known as an ACTION
   - via cli/sdk its known as an OPERATION
@@ -316,6 +323,11 @@
 
 ### Access Control
 
+- most versatile strategy is to use both RBAC + ABAC
+  - roles split out users by functions
+  - attributes split out roles by context
+    - reduces the number of roles required, as a role can be based the context of user attributes
+
 #### Tags
 
 - Tags enable customizable key-value pairs, such as a project name or an environment type, to identify IAM principals and AWS resources.
@@ -329,6 +341,9 @@
 
 - implemented via tags attached to users, roles and resources
 - policies can be designed to allow operations when the principal's tag matches the resource tag
+- benefits
+  - scalable
+  -
 
 ### Access History
 
@@ -375,6 +390,15 @@
 ## integrations
 
 - basically every other AWS service uses IAM for authNZ
+
+### organizations
+
+- weird its kept in [managementGovernance dir](../mgmtGovernance/organizations.md)
+
+### STS
+
+- create and provide trusted IAM users or users that you authenticate (federated users) with temporary security credentials that can control access to your AWS resources
+- [security token service](./iam-sts.md)
 
 ### cli
 

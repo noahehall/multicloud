@@ -8,27 +8,47 @@
 - [condition: global keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html)
 - [organizations: managed policies example](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
 
-## policy syntax
+## policy elements
 
 - version: seems to always be `2012-10-17`
-- statement
+
+### Statement elements
+
+- the `NOT*` keys help you specify exceptions to policies
+  - should only be used with Deny policies
+    - i.e. DENY if NotPrincipal: superDuperRooter
+  - you can still add an allow but in a separate statement
+- Some services do not let you specify actions for individual resources
+  - actions that you list in the Action or NotAction element apply to all resources in that service.
+  - In these cases, you use the wildcar `*` in the Resource element.
+- keys
   - effect: allow/deny
   - action: the aws service and a potentially a filtered set of api calls that are allowed/denied
     - `serviceName:*` this specifies all actions (api calls) for this service
     - `serviceName:*blah` anything ending in blah
-  - NotAction: should only be used with Deny effects
-    - you must still allow actions that you want to allow, but in a separate statement
+  - NotAction: matches everything except the specified list of actions.
+    - can result in a shorter policy by listing only a few actions that should not match
+    - use to provide scope for the policy
   - resource: ARN denoting resource(s) this policy covers
     - `resource: "*"` indicates all resources for this service
-  - NotResource: should only be used with Deny effects
-  - Principal: an account, user, role, or service
-  - NotPrincipal: should only be used with Deny effects
+  - NotResource: matches every resource except those specified
+    - can result in a shorter policy by listing only a few resources that should not match
+    - never use with the "Effect": "Allow" and "Action": `*` elements together.
+      - it would allow all actions in AWS on all resources except the resource specified in the policy.
+  - Principal: an account, federated user, user, role, or service
+  - NotPrincipal: applies to everyone except this person or account
     - also specify the account ARN of the not denied principal, else risk denying access to the entire account
+    - help ensure that only necessary parties can access a resource.
     - can only be used with trust policies for IAM roles and in resource-based policies
+    - do not use NotPrincipal in the same policy statement as "Effect": "Allow".
+      - Doing so allows all principals except the one named in the NotPrincipal element.
   - conditions: conditions that control when a policy is in effect
     - compare keys in the request context to the key-values in the policy
     - service specific: prefixed with the service id, e.g. `ec2:InstanceType`
     - global: prefixed with `aws:`
+    - condition keys:
+      - service-specific: contain the services ID in the key, e.g. ec2:InstanceType
+      - global
   - sid: unique description of the permission
 
 ## examples
@@ -43,11 +63,24 @@
     {
       "Sid": "someUniqueDescription", // required in some services
       "Effect": "Allow",
-      "Action": ["dynamodb:PutItem"],
+      "Action": [
+        "dynamodb:PutItem",
+        "sts:AssumeRole" // required if service is a principal and a trust policy doesnt exist
+      ],
       "Principal": {
         "Service": ["lambda.amazonaws.com"], // this service can assume this role
+        "Federated": [
+          "www.amazon.com", // web identities
+          "arn:aws:iam::account-id:saml-provider/SomeProvider" // or SAML users
+        ],
         "AWS": [
-          "arn:aws:iam:account-id:user/MyName" // or this specific user in account-id
+          // or any user in this specific account id
+          "ACCOUNT-iD",
+          // or this specific user in account-id
+          // user name is case-sensitive; cannot use a wildcard (*) to mean "all users."
+          "arn:aws:iam::account-id:user/MyName",
+          // or this role
+          "arn:aws:iam::account-id:role/RoleName"
         ]
       },
       "Resource": ["arn:aws:dynamodb:us-west-2:###:table/test"], // on these resources
@@ -72,7 +105,7 @@ apigateway:*
 dynamodb:PutItem
 execute-api:Invoke
 iam:GetUser
-iam:PassRole # can pass role to a service
+iam:PassRole # this identity can pass role to a service
 kms:{En,De}crypt
 logs:Create* # cloudwatch logs: any action starting with Create
 organizations:{describe*,list*}
@@ -111,33 +144,37 @@ For{Any,All}Value:OTHER_OPERATOR
 NumericLessThan
 String{NotEquals,Equals,Like}
 
-### Condition Keys
-#### global condition keys
-# date format: YYYY-MM-DDTHH:MM:SSz
-aws:{Current,Epoch,TokenIssue}Time
-aws:CalledVia ordered list of services that made requests on behalf of a user
+### Condition Keys:will determine the appropriate value
+#### global condition keys: not supported by all services
+aws:{Epoch,TokenIssue}Time # date format: YYYY-MM-DDTHH:MM:SSz
+aws:CurrentTime #  limit access to a certain period of time
+aws:CalledVia # ordered list of services that made requests on behalf of a user
 aws:CalledVia{First,Last}
 aws:MultiFactorAuth{Present,Age}
-aws:Principal{Account,Arn,OrgId,OrgPaths,Type,Tag}
-aws:Requested{Region}
-aws:RequestTag #  tag resources with only a specific key-value pair
-aws:Resource{Tag}
+aws:Principal{Account,OrgId,OrgPaths,Type,Tag}
+aws:PrincipalArn # the ARN for the principal making the request.
+aws:RequestedRegion
+aws:Referer
+aws:RequestTag/SomeTagName # restrict resource tags to this tag with the optional values
+aws:ResourceTag
 aws:SecureTransport # ensure the request was made via SSL/TLS
-aws:Source{Account,Arn,Ip,Vpc,Vpce}
-aws:TagKeys # keys without any values
-aws:User{Agent}
+aws:Source{Account,Arn,Vpc,Vpce}
+aws:SourceIp # the IP address range used by the requester.
+aws:TagKeys # checks the tags being used in the request
+aws:UserAgent
 aws:user{id,name}
 aws:ViaAWSService #  control access during a service-to-service call.
 aws:VpcSourceIp
 IpAddress
 
 #### iam condition keys
-iam:{AWSServiceName,PolicyARN}
+iam:AWSServiceName # control access for a specific service role
+iam:PolicyARN # control how users can apply AWS managed and customer managed policies
 iam:AssociatedResourceArn # the ARN of the destination service resource that a role can be associated with
 iam:PassedToService # the service to which a role can be passed
-iam:PermissionsBoundary # value should be the arn of a specific policy
-iam:ResourceTag/tagName: someValue
-
+iam:PermissionsBoundary # the specified policy is attached as a permissions boundary on the IAM principal resource.
+iam:ResourceTag/SomeTagName # checks the resource tag SomeTagName is attached to the resource
+iam:OrganizationsPolicyId #  provides the IAM entity access to specific SCPs
 #### sts condition keys
 sts:RoleSessionName
 

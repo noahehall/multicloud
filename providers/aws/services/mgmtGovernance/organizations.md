@@ -13,6 +13,7 @@
 ## links
 
 - [landing page](https://aws.amazon.com/organizations/?did=ap_card&trk=ap_card)
+- [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
 
 ## best practices
 

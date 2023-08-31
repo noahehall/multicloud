@@ -7,7 +7,7 @@
 
 ## links
 
-- [landing page](some url)
+- [landing page](https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html)
 - [saml: intro](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)
 - [saml: relying party and claims](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_relying-party.html)
 - [saml: roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_saml.html)
@@ -47,6 +47,11 @@
   - access key id: identifies the temporary credentials
   - secret: signs api calls
   - session/security token: passed to the destination service for it to valdate the request
+- use cases
+  - identity federation: manage your users in an external system outside AWS and grant them access to perform AWS tasks and access your AWS resources
+  - cross account access: Using roles and cross-account access, you can define user identities in one account and use those identities to access AWS resources in other accounts that belong to your organization.
+  - roles for ec2: provide temporary security credentials to your instances when you launch them.
+    - available to all applications that run on the instance,
 
 ### AssumeRole
 
@@ -54,6 +59,15 @@
   - This enables you to practice the principle of least privilege.
 - can be used within/across accounts
 - assumeRole request: check the docs for the parameters available when making the request, its highly configurable
+  - durationSeconds: defaults to 1 hr
+  - Policy: iam policy for use as a inline session policy
+  - PolicyArns.member.N: ARNs of the IAM managed policies that you want to use as managed session policies.
+    - policies must exist in the same account as the role
+    - up to 10
+  - Tags.member.N: the session tags that you want to pass with the role
+  - MFA parameters
+    - SerialNumber:
+    - TokenCode:
 - assumeRole response: contains the creds
   - assumedRoleUser: the ARN of the issued temp creds and the unique identifer of the role ID
   - credentials: contains the access key id, secret, and security/session token
