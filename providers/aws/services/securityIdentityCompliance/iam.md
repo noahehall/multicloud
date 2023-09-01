@@ -4,6 +4,7 @@
 - authnz for:
   - IAM users and groups: humans logging into an account and signing API calls
   - IAM roles: assumed by an entity (humans/machines) for temporary access to AWS credentials
+- theres a lot of crossover in the STS file
 
 ## my thoughts
 
@@ -42,6 +43,7 @@
 - [ec2: iam](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-iam.html)
 - [systemsManager profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
 - [vpc: reachability analyzer perms](https://docs.aws.amazon.com/vpc/latest/reachability/security_iam_required-API-permissions.html)
+- [Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
 
 ### API
 
@@ -147,7 +149,15 @@
   - determines what service A can do within a service boundary
 - passing roles: the user passing the role must have permissions to pass the role
   - ensure that only approved users can configure a service with a role that grants permissions
-  -
+- check the STS file as well
+
+#### role chaining
+
+- occurs when you use a role to assume a second role through the AWS CLI or API
+- assume one role and then use the temporary credentials to assume another role and continue from session to session
+- set session tags as transitive so they pass from role to role
+  - ensures that those session tags pass to subsequent sessions in a role chain.
+- especially useful when you want to impose guardrails against yourself or an administrator in order to prevent something accidental.
 
 #### service roles:
 
@@ -250,7 +260,7 @@
 
 - inline permissions policy that creates a session policy when assuming a role
   - by default: all users assuming the same role get the same permissions for their role session
-  - this allows you to create distinctive role session permissions or to further restrict overall permissions
+  - this allows you to create distinctive role session permissions to further restrict overall permissions
     - Restricts/limits permissions for assumed roles and federated users
     - Reduce the number of roles they need to create because multiple users can assume the same role yet have unique session permissions.
     - Set permissions for users to perform only those specific actions for that session
@@ -261,6 +271,22 @@
   - specify the ARN of the user or role as a principal
   - The session policy limits the total permissions granted by the resource based policy and the Identity Based policy
   - The effective permissions are the intersection of the session policies and either the resource based policy or the Identity Based policy.
+
+###### role session names
+
+- always provide a role session name to:
+  - uniquely identify users
+  - target users/apply policies via condition keys,
+    - e.g. always requiring a role session name that matches the user name
+  - track users via cloudtrail logs
+- depends on the method used to assume a role
+  - aws service:
+    - AWS may set the role session name on your behalf
+  - SAML based:
+    - AssumeRolewithSAML API: AWS sets the role session name value to the attribute provided by the identity provider
+  - user defined: you provide the role session name when assuming the IAM role
+    - assuming an IAM role with APIs such as AssumeRole or AssumeRoleWithWebIdentity
+      - the role session name is a required input
 
 #### policy evaluation order
 

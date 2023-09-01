@@ -112,6 +112,7 @@ organizations:{describe*,list*}
 sts:AssumeRole # allows the stated principals to assume the rule
 sts:AssumeRolewithSAML
 sts:AssumeRoleWithWebIdentity
+sts:TagSession # able to add session tags
 
 ## principals: generally its an ARN, can also use the following values
 *  # for everyone, and can then be used with other policies
@@ -175,8 +176,9 @@ iam:PassedToService # the service to which a role can be passed
 iam:PermissionsBoundary # the specified policy is attached as a permissions boundary on the IAM principal resource.
 iam:ResourceTag/SomeTagName # checks the resource tag SomeTagName is attached to the resource
 iam:OrganizationsPolicyId #  provides the IAM entity access to specific SCPs
+
 #### sts condition keys
-sts:RoleSessionName
+sts:RoleSessionName controls how IAM principals and applications name their role sessions when they assume an IAM role
 
 #### variables, can be used to match against values in the request context
 ${aws:SomeKeyFromContext}

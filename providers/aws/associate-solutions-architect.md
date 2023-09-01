@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Deep Dive with Security: AWS Identity and Access Management (IAM) > Managing Role Sessions
+    - Deep Dive with Security: AWS Identity and Access Management (IAM) > Federating Users in AWS
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics
