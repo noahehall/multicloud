@@ -354,6 +354,8 @@
 ### Endpoints
 
 - privately connect a VPC to supported AWS services and other endpoint services via PrivateLink
+  - are virtual devices that scale horizontally, are highly available, and redundant
+  - EAST-WEST traffic between VPC and AWS services without creating availability risks or bandwidth constraints on your network traffic.
 - is a security product first
   - Traffic between the VPC and a service does not leave the Amazon network.
   - e.g. compliance requirements that prevent connectivity between a VPC and a public-facing service endpoint
@@ -366,16 +368,36 @@
 - destinations that are reachable from within a VPC through prefix-lists within the VPC’s route table.
 - used for traffic destined to DynamoDB or S3
 - Instances dont require public IP addresses to communicate with VPC endpoints because interface endpoints use local IP addresses within the consumer VPC
+- benefits
+  - no charge for gateway endpoints
+  - uses endpoint policies
+  - Reduce data transfer charges resulting from outbound network communication between VPC and services that require public AWS services, such as S3
+  - Security in depth using IAM, Gateway Endpoint policies, and S3 bucket policies
+- setup
+  - create a gateway endpoint
+  - add a route table route
+    - destination: service prefix
+    - target: endpoint ID
+  - any request to s3/dynamodb is routed through that endpoint
+  - subnets associated with the route table automatically granted access to the endpoint
+    - any security groups in use must add a specific rule that allows outbound traffic to the endpoint.
 
 #### Interface Endpoints
 
-- Powered by AWS PrivateLink
 - an elastic network interface with a private IP address from the IP address range of your subnet
 - serves as an entry point for traffic destined to a supported AWS service or a VPC endpoint service.
+- extend your on-premises networks to connect to your VPC and S3
+  - on-premises applications can send data to the private IP of an interface endpoint.
+- benefits
+  - costs MO MONEY MO MONEY MO
+  - Uses endpoint policies and security groups
+  - Reduce data transfer charges resulting from outbound network communication between VPC and services that require public AWS services
+  - Applications in an Amazon VPC can securely access AWS PrivateLink endpoints across AWS Regions using inter-Region VPC peering
+  - Reduce the need to build self-managed proxy servers with private IPs for S3 access from on-premises applications
+  - Can be accessed from on-premises and across Regions
 
 #### Gateway Load Balancer Endpoints
 
-- powered by AWS PrivateLink.
 - an elastic network interface with a private IP address from the IP address range of your subnet.
 - serves as an entry point to intercept traffic and route it to a service that you've configured using Gateway Load Balancers
 - specify a Gateway Load Balancer endpoint as a target for a route in a route table

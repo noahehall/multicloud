@@ -38,7 +38,7 @@
   - the keys never leave KMS
   - set usage policies on these keys that determine which users can use them to encrypt and decrypt data
 
-### Customer Master Keys
+### Customer Master Keys CMK
 
 - aws managed
   - creation: AWS
@@ -54,6 +54,11 @@
   - scope of use: controlled via KMS / IAM policy
   - key access policy: you decide
   - user access management: IAM policy
+- benefits of CMKs
+  - You manage the rotation of the keys
+  - Easier to manage a few primary keys as opposed to billions of data keys
+  - Centralized access and auditing
+  - Performs better for large datasets
 
 ## considerations
 

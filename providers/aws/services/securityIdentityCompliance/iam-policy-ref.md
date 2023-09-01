@@ -12,7 +12,7 @@
 
 - version: seems to always be `2012-10-17`
 
-### Statement elements
+### Statement array
 
 - the `NOT*` keys help you specify exceptions to policies
   - should only be used with Deny policies
@@ -21,7 +21,7 @@
 - Some services do not let you specify actions for individual resources
   - actions that you list in the Action or NotAction element apply to all resources in that service.
   - In these cases, you use the wildcar `*` in the Resource element.
-- keys
+- object definition
   - effect: allow/deny
   - action: the aws service and a potentially a filtered set of api calls that are allowed/denied
     - `serviceName:*` this specifies all actions (api calls) for this service
@@ -158,7 +158,7 @@ aws:RequestedRegion
 aws:Referer
 aws:RequestTag/SomeTagName # restrict resource tags to this tag with the optional values
 aws:ResourceTag
-aws:SecureTransport # ensure the request was made via SSL/TLS
+aws:SecureTransport # the request was made via SSL/TLS
 aws:Source{Account,Arn,Vpc,Vpce}
 aws:SourceIp # the IP address range used by the requester.
 aws:TagKeys # checks the tags being used in the request

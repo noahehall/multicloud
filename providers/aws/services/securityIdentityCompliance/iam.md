@@ -209,10 +209,10 @@
 
 - policies that are primarily used to grant access
 
-##### Identity Based Policy
+##### Identity Based Policy (aka iam policies)
 
 - policies attached to an Identiy that Impacts IAM principal permissions
-  - identity policies do not have a principal element because they are already attached to the principal
+  - identity policies do not have a principal element because they are directly attached to the principal
 - identity: user, group or role
 - types
   - AWS managed
@@ -225,6 +225,10 @@
     - strict one-to-one relationship between a service and principal
     - embedded directly into a single user, group or role
     - not recommended
+- size elements: for all policies attached to an entity
+  - User 2kb
+  - Role 10kb.
+  - Group 5kb.
 
 ##### resource based policies
 
@@ -319,8 +323,7 @@
 - IAM validates the principals authorization against the requested actions
   - all attached Identity Based permissions
   - all resource based policies attached to the resource
-    - trumps identity based policies
-- IAM evaluates allow/deny rules
+- IAM evaluates allow/deny rules: explicity denies override explicit allows
   - deny by default if no explicit allow/deny
   - allow if explicitly allowed and no explicit denial
     - a permissions boundary, AWS Organizations SCP, or session policy can implicitly deny and override any explicit allows
@@ -467,6 +470,15 @@
 ### access analyzer
 
 - continuously monitors policies for changes
+
+#### for s3
+
+- monitors and evaluates policies & For each public or shared bucket, you receive findings that report the source and level of public or shared access.
+  - can download as a CSV report.
+- review all buckets that grant public/shared access
+- bucket access control lists (ACLs)
+- bucket policies,
+- access point policies
 
 ### Config
 

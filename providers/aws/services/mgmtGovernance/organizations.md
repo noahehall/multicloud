@@ -13,7 +13,9 @@
 ## links
 
 - [landing page](https://aws.amazon.com/organizations/?did=ap_card&trk=ap_card)
-- [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
+- [service control policies: examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
+- [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+- [organization policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies.html)
 
 ## best practices
 
@@ -28,9 +30,15 @@
 
 ### pricing
 
-## terms
-
 ## basics
+
+### Security
+
+#### Authnz
+
+##### Service Control Policies
+
+- see the IAM file
 
 ## considerations
 

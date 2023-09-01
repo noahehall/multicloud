@@ -5,6 +5,10 @@
 - [high level cmds](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-commands.html)
 - [low level cmds](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-s3-apicommands.html)
 
+### cmds
+
+- [put public access block](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3api/put-public-access-block.html)
+
 ## basics
 
 - high level cmds: enable you to manage the contents of Amazon S3 within itself and with local directories
