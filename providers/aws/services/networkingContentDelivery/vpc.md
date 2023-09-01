@@ -39,6 +39,7 @@
 - [route tables: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html)
 - [route tables: walkthrough](https://docs.aws.amazon.com/vpc/latest/userguide/WorkWithRouteTables.html)
 - [route tables](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Route_Tables.html)
+- [s3: vpc endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html)
 - [s3](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-s3.html)
 - [security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.html)
 - [subnets: intro](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html)
@@ -370,7 +371,7 @@
 - Instances dont require public IP addresses to communicate with VPC endpoints because interface endpoints use local IP addresses within the consumer VPC
 - benefits
   - no charge for gateway endpoints
-  - uses endpoint policies
+  - uses ONLY endpoint policies
   - Reduce data transfer charges resulting from outbound network communication between VPC and services that require public AWS services, such as S3
   - Security in depth using IAM, Gateway Endpoint policies, and S3 bucket policies
 - setup
@@ -395,12 +396,33 @@
   - Applications in an Amazon VPC can securely access AWS PrivateLink endpoints across AWS Regions using inter-Region VPC peering
   - Reduce the need to build self-managed proxy servers with private IPs for S3 access from on-premises applications
   - Can be accessed from on-premises and across Regions
+- security groups
+  - associated with the endpoint network interface.
+  - rules control the traffic to the endpoint network interface from resources in your VPC
+- using private DNS and endpoint-specific hostnames
+  - keeps the traffic destined for the service contained securely within the Amazon network.
+  - all traffic to the service is directed to the interface endpoint instead of through a default route
 
 #### Gateway Load Balancer Endpoints
 
 - an elastic network interface with a private IP address from the IP address range of your subnet.
 - serves as an entry point to intercept traffic and route it to a service that you've configured using Gateway Load Balancers
 - specify a Gateway Load Balancer endpoint as a target for a route in a route table
+
+#### Endpoint Policies
+
+- resource policies attached to endpoints: controlling access from the endpoint to the specified service.
+  - manage permissions from the endpoint policy
+    - you should set the s3 bucket policy to only accept connections from the endpoint
+    - that way you dont need to manage TWO different policies in TWO different places
+- controls the requests, users, or groups that are allowed access through the endpoint.
+- default policy:
+  - allows full access to the AWS service
+  - If a service does not support endpoint policies, the endpoint allows full access to the service.
+- custom policy
+  - explicitly denies access to any actions not listed in the policy.
+  - does not override or replace IAM user policies or service-specific policies (such as S3 bucket policies).
+  - cannot attach more than one policy to an endpoint.
 
 ### VPNs
 

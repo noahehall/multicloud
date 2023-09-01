@@ -1,7 +1,7 @@
 # Guard Duty
 
 - Protect your AWS accounts with intelligent threat detection
-- analyzes continuous streams of metadata generated from your account and network activity found in CloudTrail events, Amazon Virtual Private Cloud (Amazon VPC) flow logs, and Domain Name System (DNS) logs
+- analyzes continuous streams of metadata generated from your account and network activity found in CloudTrail events, VPC flow logs, and Domain Name System (DNS) logs
 - uses integrated threat intelligence such as known malicious IP addresses, anomaly detection, and machine learning to identify threats more accurately.
 
 ## my thoughts
@@ -13,6 +13,7 @@
 - [visualize guard duty findings](https://aws.amazon.com/blogs/security/how-to-visualize-amazon-guardduty-findings-serverless-edition/)
 - [multi account guardduty youtube](https://www.youtube.com/watch?v=t80i_B-7G1M)
 - [integrate with AWS partner network products youtube](https://www.youtube.com/watch?v=DygpSx1e3Dg)
+- [s3: integration](https://docs.aws.amazon.com/guardduty/latest/ug/s3_detection.html)
 
 ## best practices
 
@@ -90,3 +91,7 @@
 ### Security Hub
 
 ### EventBridge
+
+### s3
+
+- monitors object-level, Amazon S3 data events and analyzes them for malicious and suspicious activity

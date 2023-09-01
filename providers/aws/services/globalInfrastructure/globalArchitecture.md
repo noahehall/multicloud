@@ -126,12 +126,34 @@
   - account/team/organization/etc
   - ABAC/RBAC
 
-##### Cost Allocation Tags
+#### Cost Allocation Tags
 
 - must be enabled; AWS uses the tags to organize your resource costs on your cost allocation report.
 - Once you have created and applied the user-defined tags, you can activate them by using the Billing and Cost Management console for cost allocation tracking.
 - Cost Allocation Tags appear on the console after enabling AWS Cost Explorer, AWS Budgets, AWS Cost and Usage reports, or legacy reports.
 - After you activate the AWS services, they appear on your cost allocation report. You can then use the tags on your cost allocation report to track your AWS costs
+
+#### s3 tags
+
+##### Bucket tags
+
+- label buckets with AWS-generated tag or user-defined tag
+  - generated: AWS defines, creates, and applies the AWS-generated tag, createdBy,
+  - user defined: whatever you want
+
+##### object tags
+
+- a way to categorize and query your storage
+- up to 10 tags per object
+- keys can be up to 128 characters in length
+- values can be up to 255 characters in length
+- Key and tag values are case sensitive
+
+##### tag sets
+
+- all of the tags that are assigned to a bucket or object, up to 50
+  - keys must be unique
+- to modify tag sets via api: download all > modify > upload all
 
 ## well architected framework
 

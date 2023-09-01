@@ -1,11 +1,13 @@
 # Macie
 
 - uses machine learning to automatically discover, classify, and protect sensitive data like PII/IP
-- such as personally identifiable information (PII) or intellectual property and provides you with dashboards and alerts that give visibility into how this data is being accessed or moved
+- monitors data usage, PII, and IP, inventory of S3 buckets and their access control and encryption settings
+- provides you with dashboards and alerts that give visibility into how this data is being accessed or moved
 
 ## my thoughts
 
 - seems to be entirely focused on data stored in s3
+- yea its an s3 addon service
 
 ## links
 
@@ -30,28 +32,25 @@
 
 ### pricing
 
-- charged based on three dimensions
-  - the number of Amazon Simple Storage Service (S3) buckets evaluated for bucket inventory and monitoring
-  - the number of Amazon S3 objects monitored for automated data discovery
-  - the quantity of data inspected for automated and targeted sensitive data discovery.
-
-## terms
+- the number of s3 buckets evaluated for bucket inventory and monitoring
+- the number of S3 objects monitored for automated data discovery
+- the quantity of data inspected for automated and targeted sensitive data discovery.
 
 ## basics
+
+- scans s3 buckets for
+  - bucket and object resources
+  - configuration and security attributes
+  - Read, write, and delete actions on Amazon S3
+  - IAM users, roles, and access policies associated with the S3 resources
+  - buckets and objects with certain keywords
+  - objects containing certain type of data
 
 ## considerations
 
 ## integrations
 
-### s3
-
-- scanning s3 for
-  - bucket and object resources
-  - configuration and security attributes
-  - Read, write, and delete actions on Amazon S3
-  - AWS Identity and Access Management (IAM) users, roles, and access policies associated with the Amazon S3 resources
-  - buckets and objects with certain keywords
-  - objects containing certain type of data
+### CloudTrail
 
 ### Cloudwatch
 
@@ -60,3 +59,8 @@
 ### eventbridge
 
 - As security findings are generated, they are pushed out to Amazon EventBridge
+
+### GuardDuty
+
+- integrate with both CloudTrail and Amazon GuardDuty to help monitor the permission and security of the buckets
+- CloudTrail data about access and permissions is limited to account-level and bucket-level settings and doesn’t reflect object-level settings

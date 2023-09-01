@@ -159,7 +159,8 @@ aws:Referer
 aws:RequestTag/SomeTagName # restrict resource tags to this tag with the optional values
 aws:ResourceTag
 aws:SecureTransport # the request was made via SSL/TLS
-aws:Source{Account,Arn,Vpc,Vpce}
+aws:Source{Account,Arn,Vpc}
+aws:SourceVpce # source VPC endpoint
 aws:SourceIp # the IP address range used by the requester.
 aws:TagKeys # checks the tags being used in the request
 aws:UserAgent

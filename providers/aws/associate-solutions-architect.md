@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Securing and Protecting Your Data in Amazon Simple Storage Service (Amazon S3) > Access control using endpoint policies
+    - Amazon Simple Storage Service (Amazon S3) Cost Optimization
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics
