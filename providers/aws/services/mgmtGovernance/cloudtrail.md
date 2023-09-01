@@ -86,6 +86,8 @@
 
 ## integrations
 
+- cloudtrail is a fundamental service and integrates with everything
+
 ### IAM
 
 - particularly useful in seeing why an api called failed

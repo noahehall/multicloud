@@ -108,6 +108,7 @@
 - for identities stored outside AWS.
 - a system of trust between two parties for the purpose of authenticating users and conveying information needed to authorize their access to resources
 - identity provider: (IdP) is responsible for user authentication
+  - the metadata passed from IdP to AWS can be used in ABAC
 - service provider: such as a service or an application, controls access to resources
 - logical workflow
   - a trust relationship is configured between an IdP and a service provider
@@ -115,10 +116,12 @@
   - after authenticating a user, the IdP returns an `assertion` containing the users data
   - the service provider uses the assertion data for creating a session and determining the scope of authorization within its service boundary
     - the service provider provides the user with credentials
-- federation protocols
-  - SAML 2.0: Security Assertion Markup Language
-  - OIDC: OpenID Connect
-  - OAuth 2.0:
+
+##### federation protocols
+
+- SAML 2.0: Security Assertion Markup Language
+- OIDC: OpenID Connect
+- OAuth 2.0
 
 ##### corporate identity federation
 
@@ -154,12 +157,16 @@
 #### role chaining
 
 - occurs when you use a role to assume a second role through the AWS CLI or API
-- assume one role and then use the temporary credentials to assume another role and continue from session to session
-- set session tags as transitive so they pass from role to role
-  - ensures that those session tags pass to subsequent sessions in a role chain.
-- especially useful when you want to impose guardrails against yourself or an administrator in order to prevent something accidental.
+- assume one role and then use temporary STS creds to assume another role and continue from session to session
 
-#### service roles:
+##### Transitive Tags
+
+- tags that persist through multiple sessions, e.g. when role chaining
+- use cases
+  - impose guardrails against yourself or an administrator in order to prevent something accidental
+    - e.g. require an admin role to assume a lesser privileged role; instead of creating a totally new admin role
+
+#### service roles
 
 - iam roles that can be assumed by an AWS service
 - must include a trust policy
@@ -272,7 +279,7 @@
   - The session policy limits the total permissions granted by the resource based policy and the Identity Based policy
   - The effective permissions are the intersection of the session policies and either the resource based policy or the Identity Based policy.
 
-###### role session names
+###### session names
 
 - always provide a role session name to:
   - uniquely identify users
@@ -287,6 +294,24 @@
   - user defined: you provide the role session name when assuming the IAM role
     - assuming an IAM role with APIs such as AssumeRole or AssumeRoleWithWebIdentity
       - the role session name is a required input
+
+###### Session Tags
+
+- attributes passed in an IAM role session when you assume a role or federate a user using the AWS CLI or AWS API
+  - Session tags are principal tags that you specify while requesting a session.
+- use cases
+  - access control in IAM policies
+  - use SAML attributes for access control in AWS (e.g. for federated users)
+  - monitoring: view the principal tags for your session, including its session tags, in the AWS CloudTrail logs.
+  - control the tags that can be passed into a subsequent session.
+  - define unique permissions based on user attributes without having to create and manage multiple roles and policies
+- requirements
+  - you must have the sts:TagSession action allowed in your IAM policy
+  - must follow the rules for naming tags in IAM and AWS STS
+  - New session tags override existing assumed role or federated user tags with the same tag key, regardless of case.
+  - cannot pass session tags using the AWS Management Console.
+  - valid for only the current session and are not stored in AWS (only in the session)
+  - pass a maximum of 50 session tags.
 
 #### policy evaluation order
 
@@ -367,9 +392,14 @@
 
 - implemented via tags attached to users, roles and resources
 - policies can be designed to allow operations when the principal's tag matches the resource tag
-- benefits
-  - scalable
-  -
+
+#### cross-account delegation
+
+- a trust policy must first exist between the two accounts
+  - trusting account owns the resource to be accessed
+  - trusted account contains the users who need access to the resource
+- create one set of long-term credentials in one account.
+  - Then, you use temporary security credentials to access all the other accounts by assuming roles in those accounts.
 
 ### Access History
 
@@ -423,13 +453,24 @@
 
 ### STS
 
-- create and provide trusted IAM users or users that you authenticate (federated users) with temporary security credentials that can control access to your AWS resources
+- create and provide trusted IAM users/federated users with temporary security credentials that can control access to your AWS resources
 - [security token service](./iam-sts.md)
 
-### cli
+### Identity Center
 
-- [see markdown](../devtools/cli.md)
-  - everything from named profiles, sso, etc
+- manages SSO
+
+### Cognito
+
+- web and mobile apps authN
+
+### access analyzer
+
+- continuously monitors policies for changes
+
+### Config
+
+- e.g. monitoring unused IAM roles
 
 ### lambda
 

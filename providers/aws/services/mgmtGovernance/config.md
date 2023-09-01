@@ -12,6 +12,7 @@
 - [s3: monitoring buckets](https://aws.amazon.com/blogs/security/how-to-use-aws-config-to-monitor-for-and-respond-to-amazon-s3-buckets-allowing-public-access/)
 - [open source rules](https://aws.amazon.com/blogs/security/announcing-the-aws-config-rules-repository-a-new-community-based-source-of-custom-rules-for-aws-config/)
 - [evaluating resources with rules](https://docs.aws.amazon.com/config/latest/developerguide/evaluate-config.html)
+- [blog: monitoring unused iam roles](https://aws.amazon.com/blogs/security/continuously-monitor-unused-iam-roles-aws-config/)
 
 ## best practices
 

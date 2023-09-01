@@ -27,11 +27,12 @@
 - [pillar: reliability whitepaper](https://wa.aws.amazon.com/wat.question.REL_6.en.html)
 - [serverless application lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/wellarchitected-serverless-applications-lens.pdf?810a2056-c993-4832-af32-11286cad694c)
 - [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
+- [FAQS](https://aws.amazon.com/well-architected-tool/faqs/)
 
 ### tools
 
 - [WAT: well architected tool](https://aws.amazon.com/well-architected-tool/)
-- [WAT: user guide](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
+- [WAT: user guide PDF](https://docs.aws.amazon.com/wellarchitected/latest/userguide/wellarchitected-ug.pdf)
 - [cloud adoption framework](https://aws.amazon.com/cloud-adoption-framework/)
 
 ### guide
@@ -136,6 +137,12 @@
 
 - helps you understand the pros and cons of decisions you make while building systems on AWS
 - best practices for designing and operating reliable, secure, efficient, and cost-effective systems in the cloud
+- self-service tool that helps customers review AWS workloads at any time without the need for an AWS solutions architect.
+- general process
+  - define your workload by answering a series of architectural questions
+  - responses are evaluated against the 5 pillars
+  - creates an improvement plan with a prioritized list of issues to resolve
+  - generate a summary report
 
 ### Operational Excellence
 

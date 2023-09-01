@@ -11,6 +11,7 @@
 - [saml: intro](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_saml.html)
 - [saml: relying party and claims](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml_relying-party.html)
 - [saml: roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_saml.html)
+- [saml: creating identity providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_saml.html)
 - [IdP: creating identity proviers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create.html)
 - [saml: federated access with ABAC](https://aws.amazon.com/blogs/aws/new-for-identity-federation-use-employee-attributes-for-access-control-in-aws/)
 - [web identity federation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc.html)
@@ -72,51 +73,6 @@
   - assumedRoleUser: the ARN of the issued temp creds and the unique identifer of the role ID
   - credentials: contains the access key id, secret, and security/session token
   - packedPolicySize: if this value is greater than 100% the request is rejected
-
-#### naming sessions
-
-- Each IAM role session is uniquely identified by a role session name
-- Administrators can rely on the role session name to track user actions when viewing AWS CloudTrail logs
-- applying a name to a session depends on the method used to assume a role
-  - aws service: AWS sets the role session name on your behalf, generally its the ID of the resource
-  - saml-based: when using AssumeRolewithSAML; AWS sets the role session name value to the attribute provided by the identity provider
-  - user-defined: the role session name is a required input parameter that you set when making the API request.
-
-#### cross-account delegation
-
-- a trust policy must first exist between the two accounts
-  - trusting account owns the resource to be accessed
-  - trusted account contains the users who need access to the resource
-- create one set of long-term credentials in one account.
-  - Then, you use temporary security credentials to access all the other accounts by assuming roles in those accounts.
-
-#### Session Tags
-
-- attributes passed in an IAM role session when you assume a role or federate a user using the AWS CLI or AWS API
-  - Session tags are principal tags that you specify while requesting a session.
-- use cases
-  - access control in IAM policies
-  - use SAML attributes for access control in AWS (e.g. for federated users)
-  - monitoring: view the principal tags for your session, including its session tags, in the AWS CloudTrail logs.
-  - control the tags that can be passed into a subsequent session.
-  - define unique permissions based on user attributes without having to create and manage multiple roles and policies
-- requirements
-  - you must have the sts:TagSession action allowed in your IAM policy
-  - must follow the rules for naming tags in IAM and AWS STS
-  - New session tags override existing assumed role or federated user tags with the same tag key, regardless of case.
-  - cannot pass session tags using the AWS Management Console.
-  - valid for only the current session and are not stored in AWS (only in the session)
-  - pass a maximum of 50 session tags.
-
-##### Transitive Tags
-
-- tags that persist through multiple sessions
-- role chaining: occurs when you use a role to assume a second role through the AWS CLI or API
-  - assume one role and then use the temporary credentials to assume another role and continue from session to session
-  - tags marked as transitive persist across sessions for each role jump
-- use cases
-  - impose guardrails against yourself or an administrator in order to prevent something accidental
-    - e.g. require an admin role to assume a lesser privileged role; instead of creating a totally new admin role
 
 ### AssumeRoleWithSAML
 
