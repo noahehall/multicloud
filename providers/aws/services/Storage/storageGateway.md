@@ -1,6 +1,6 @@
 # Storage Gateway
 
-- hybrid solution that connects an on-premises software appliance with cloud-based storage.
+- hybrid solution that connects an on-premise data centers with cloud-based storage.
 - services
   - hardware appliance: kept in this file with general information
   - [file gateway](./storageGateway-fileGateway.md)

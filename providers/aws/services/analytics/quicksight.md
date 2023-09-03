@@ -1,12 +1,13 @@
 # QuickSight
 
-- Unified business intelligence at hyperscale for analytic needs from the same source of truth through modern interactive dashboards, paginated reports, embedded analytics, and natural language queries.
+- BI at hyperscale providing modern interactive dashboards, paginated reports, embedded analytics, and natural language queries.
 
 ## my thoughts
 
 ## links
 
 - [landing page](https://aws.amazon.com/quicksight/?did=ap_card&trk=ap_card)
+- [video: intro to quicksight](https://youtu.be/2V1bHRLRG-w)
 
 ## best practices
 
@@ -31,6 +32,18 @@
 
 ## basics
 
+### Dashboards
+
+- a collection of charts, graphs, and insights.
+- When you view a dashboard, you're seeing the most recently received data
+  - any changes you make only change your view of the dashboard, and no one else's.
+
 ## considerations
 
 ## integrations
+
+### s3
+
+- storage class analysis:
+  - uses S3 analytics data to gain insight into your data usage and growth patterns.
+  - Pre-built visuals are provided to help you understand the storage access patterns of your buckets.

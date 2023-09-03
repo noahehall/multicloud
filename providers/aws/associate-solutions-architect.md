@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Amazon Simple Storage Service (Amazon S3) Cost Optimization
+    - Amazon Simple Storage Service (Amazon S3) Cost Optimization > Monitoring with Amazon CloudWatch
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

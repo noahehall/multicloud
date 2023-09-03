@@ -43,3 +43,8 @@
 ## considerations
 
 ## integrations
+
+### s3
+
+- activate S3 Storage Lens trusted access using your AWS Organizations management
+- collects metrics and usage data for all AWS accounts that are part of your AWS Organization's hierarchy.
