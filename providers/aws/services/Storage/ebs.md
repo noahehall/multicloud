@@ -35,6 +35,21 @@
   - Create a separate AWS account for backups.
     - To copy EBS snapshots to a different account, you share the snapshots with that account by modifying the permissions.
   - protect backups from being renamed or encrypted by unauthorized users
+- controlling costs:
+  - Delete inactive or unattached EBS volumes when appropriate.
+  - Avoid provisioning EBS volumes larger than required.
+  - Avoid over-sizing provisioned performance options.
+  - Use newer volume types when appropriate.
+  - Use lower-cost volume types when appropriate.
+  - opportunities with EBS Snapshots
+    - Design your DLM policies to keep only the snapshots that you need to keep.
+    - Use EBS Snapshots Archive to create archival snapshots.
+    - Use AWS Backup to create backup copies of your data to maintain archival data copies rather than keeping additional snapshots.
+- volume types support provisioning IOPS performance separately from the volume size
+  - io1, io2, and gp3
+- to calculate minimum volume size to support a sustained IOPS target for General Purpose and Provisioned IOPS volumes
+  - Required minimum sustained IOPS
+  - IOPS-to-volume capacity ratio
 
 ### anti patterns
 
@@ -55,6 +70,7 @@
 ### pricing
 
 - FYI: the pricing structure is insane to calculate, use the pricing calculator
+  - haha if they this shiz on the test your going to fail bro ;)~
 - volume type, provisioned volume size, and the provisioned IOPS and throughput performance
   - general purpose ssd: storage, iops, throughput, or regular volumes
   - provisioned IOPS ssd: storage, iops, or regular volumes
@@ -70,6 +86,12 @@
 - theres additional costs for other operations
   - fast snapshot restore
   - direct apis
+- decision tree
+  - first consider your latency and data durability requirements
+  - Then you can consider your performance requirement
+    - performance profile requirement for IOPS?
+    - performance profile requirement for throughput?
+    - performance profile requirement for IOPS?
 
 ## basics
 
@@ -92,6 +114,12 @@
   - expand the size of a volume
   - move volumes across Availability Zones
   - backup and retention
+
+#### Snapshots Archive
+
+- store archival copies of your snapshots for retention purposes
+- billed based on the amount of data in GB that your snapshots consume and the AWS Region
+  - approximately one quarter of the cost of standard EBS Snapshot storage costs.
 
 #### multi-volume snapshots
 
@@ -200,11 +228,13 @@
     - Larger volumes have higher baseline performance levels and accumulate I/O credits faster.
   - minimum of 100 IOPS at 33.33 GiB and below to a maximum of 16,000 IOPS at 5,334 GiB and above.
   - volume size can range from 1 GiB to 16 TiB.
+  - Your costs are based on the provisioned volume capacity.
 - GP3: scale IOPS and throughput independent from the volume size.
   - workloads performing small, random I/O.
   - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
   - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
   - estimated to be appropriate for up to 80 percent of the workloads.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS above 3,000 IOPS and provisioned throughput above 125 MB/s.
 
 ##### provisioned IOPS
 
@@ -215,9 +245,16 @@
 - io1:
   - 99.8–99.9 percent volume durability with an AFR no higher than 0.2 percent
   - available for all Amazon EC2 instance types.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
+    - Provisioned IOPS are charged at a flat rate up to the maximum of 64,000 IOPS.
 - io2: the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
   - 99.999 percent volume durability with an AFR no higher than 0.001 percent
   - available for all EC2 instances types, with the exception of R5b.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
+    - Provisioned IOPS are charged using a tiered structure.
+      - Tier 1 is up to 32,000 IOPS.
+      - Tier 2 is 32,001 to 64,000 IOPS,
+      - Tier 3 is over 64,000 IOPS.
 - io2 block express: abcd
 - EBS multi attach: only for io1 & io2 volume types
   - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
@@ -323,3 +360,7 @@
 
 - Snapshot events are tracked through CloudWatch events
 - An event is generated each time you create a single snapshot or multiple snapshots, copy a snapshot, or share a snapshot.
+
+### compute optimizer
+
+- Once your EBS volumes are in operation, monitor them and verify that your volumes are providing optimal performance and cost effectiveness using AWS Compute Optimizer.

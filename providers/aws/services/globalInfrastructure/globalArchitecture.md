@@ -261,6 +261,12 @@
 - data transfer charges are often overlooked
   - no charge for inbound data transfer across all services in all Regions
   - data transfer from AWS to the internet is charged per service, with rates specific to the originating Region.
+- design principles
+  - implement cloud financial management: dedicate necessary time to truly adopt cloud expenditure managemnet
+  - adopt a consumption model: pay only for the computing resources you consume; avoid all other payment models
+  - measure overall efficiency: measure the business output of the workload and the costs associated with delivery
+  - stop spendig money on undifferentiated heavy lifting: focus on customers and projects rather than IT infrastructure
+  - analyze and attribute expenditure: accurately identify the cost and usage of workloads
 
 #### sustainability
 

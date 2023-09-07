@@ -4,8 +4,8 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Deep Dive: Designing for Availability and Durability in Amazon Elastic Block Store (Amazon EBS)
-    - Deep Dive: Amazon Elastic Block Store (Amazon EBS) Cost Optimization > AWS Well-Architected Cost Optimization Pillar
+    - Deep Dive: Designing for Availability and Durability in Amazon Elastic Block Store (Amazon EBS) > Intro
+    - Introduction to Database Migration
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

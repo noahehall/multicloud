@@ -1,6 +1,6 @@
 # Compute Optimizer
 
-- recommendations to optimize use of:
+- recommendations for optimizing the use of:
   - EC2 instance types and autoscaling groups
   - EBS volumes
   - ECS on AWS Fargate
