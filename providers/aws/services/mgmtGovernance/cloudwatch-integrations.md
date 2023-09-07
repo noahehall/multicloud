@@ -31,6 +31,7 @@
 - [vpc: traffic mirror metrics](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirror-cloudwatch.html)
 - [vpc: transit gateway metrics](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html)
 - [vpc: transit gateway monitoring](https://docs.aws.amazon.com/vpc/latest/tgw/monitoring-cloudwatch-metrics.html)
+- [s3: metrics](https://docs.aws.amazon.com/AmazonS3/latest/userguide/metrics-dimensions.html)
 
 ## basics
 
@@ -183,3 +184,13 @@
 - use EventBridge and these events to write rules that take actions,
 
 ## neptune
+
+## s3
+
+- request metrics: api request level stuff
+  - available at 1 minute intervals
+  - billed at the same rate as custom metrics
+- replication metrics: pending replication, total size pending, max replication time
+- daily storage metrics: total & size of objects sans S3 glacier class
+  - free and enabled by default
+  - avalable in a report once per day

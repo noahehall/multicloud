@@ -1,9 +1,7 @@
 # cloudwatch
 
 - centralized solution to monitor resources and applications on AWS, on premise and other clouds
-  - Collect and track metrics, collect and monitor log files, and set alarms.
-- CloudWatch Metrics: monitoring & billing, observability
-- CloudWatch Logs: aggregator
+- Collect and track metrics, collect and monitor log files, and set alarms.
 
 ## links
 
@@ -55,10 +53,11 @@
 - alarms
   - the time period should be for a sustaind amount of time, and not short bursts/temporary spikes in metrics
   - recommended alarms
-    - API call is performed to create, update, or delete a VPC customer or internet gateway.
-    - API call is performed to create, update, or delete a network ACL.
-    - API call is performed to create, update, or delete a security group.
-    - API call is made to create, update, or delete a CloudTrail trail or when the logging process defined by a trail is stopped or started.
+    - create, update, or delete a:
+      - VPC customer or internet gateway.
+      - network ACL.
+      - security group.
+      - CloudTrail trail or when the logging process defined by a trail is stopped or started.
     - every time an AWS root account is used.
     - alarm is created and configured for the metric filter attached to the VPC Flow Logs CloudWatch log group to receive notifications when IP packets are rejected inside the specified VPC
       - Ensure that a metric filter that matches the pattern of the rejected traffic is created for the CloudWatch log group assigned to VPC Flow Logs.
@@ -109,12 +108,12 @@
 ## basics
 
 - general workflow
-  - most resources automatically/require minimumal configuration to publish to cloudwatch
+  - most services automatically/require minimumal configuration to publish to cloudwatch
     - for application-level metrics, you'll need to do this yourself
   - once log data is in cloudwatch
     - setup a metric filter
-    - define an alarm
-    - define an action
+    - create alarms
+    - create actions
 
 ### dashboards
 
@@ -127,16 +126,17 @@
 
 ### metrics
 
+- REGION SPECIFIC time-ordered set of data points
+  - cannot be deleted, but automatically expire after 15 months if no new data is published to them.
 - metrics become events become alarms
 - custom metrics enable you to post application-level metrics to cloudwatch
-- you can run `math metrics` across metrics, e.g. errors/invocations
+- you can run `math metrics` across metrics e.g. errors/invocations
 - namespaces
   - Each namespace contains data and each different namespace holds different data
     - service namespaces: AWS/{NetworkManager,TransitGateway,InsertServiceNameHere}
     - CloudWatch agent: CWAgent
   - create custom namespaces to collect data on your applications and system
     - `AWS/Blah` is reserved for AWS
-- dimensions: separate your data points for different measurements
 - retention:
   - the longer CloudWatch data is stored, the less information is available, due to aggregation of those data points.
   - Data points with a period of
@@ -145,6 +145,12 @@
     - 1 minute are available for 15 days
     - 5 minutes are available for 63 days
     - 1 hours are available for 455 days (15 months)
+
+#### dimensions
+
+- a name/value pair that is part of the identity of a metric
+  - assign up to 10 dimensions to a metric.
+- separate your data points for different measurements
 
 #### Metrics Explorer
 
@@ -183,9 +189,10 @@
 
 ##### metric filters
 
+- allow you to sort groups of related objects within a single bucke
+  - filter by object key name prefix or by the object tag.
 - how cloudwatch turns log data into numerical cloudwatch metrics that you can graph and use on dashboards or set an alarm on.
-- are assigned to log groups and all of the filters assigned to a log group are applied to their log streams.
-- define the terms and patterns to look for in log data as it is sent to CloudWatch Logs
+- are assigned to log groups, all of the filters assigned to a log group are applied to their log streams.
 
 #### log agent
 
