@@ -1,6 +1,6 @@
 # Cloud Development Kit (CDK)
 
-- Define your cloud application resources using familiar programming languages
+- defining cloud infrastructure in code and provisioning it through AWS CloudFormation.
 
 ## my thoughts
 
@@ -13,6 +13,11 @@
 ### anti patterns
 
 ## features
+
+- Use logic (if statements, for-loops, etc.) when defining your infrastructure.
+- Organize your project into logical modules.
+- Share and reuse your infrastructure as a library.
+- Use your existing code review workflow.
 
 ### pricing
 

@@ -12,20 +12,18 @@
 
 ## links
 
-- [landing page](https://aws.amazon.com/cloudformation/?did=ap_card&trk=ap_card)
-- [docs](https://docs.aws.amazon.com/cloudformation/)
-- [getting started: step by step guides](https://aws.amazon.com/cloudformation/getting-started/)
-- [cloudformation designer](https://console.aws.amazon.com/cloudformation/designer)
 - [available sdks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sdk-general-information-section.html)
-- [resources](https://aws.amazon.com/cloudformation/resources/)
-
-### user guide
-
-- [intro](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
+- [cloudformation designer](https://console.aws.amazon.com/cloudformation/designer)
 - [deletion policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
+- [docs](https://docs.aws.amazon.com/cloudformation/)
+- [drift detection](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html)
+- [getting started: step by step guides](https://aws.amazon.com/cloudformation/getting-started/)
+- [intro](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
+- [landing page](https://aws.amazon.com/cloudformation/?did=ap_card&trk=ap_card)
 - [modifying a stack template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-get-template.html)
 - [quotas](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html)
 - [resource & property types](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html)
+- [resources](https://aws.amazon.com/cloudformation/resources/)
 - [sample templates for common uses cases](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-sample-templates.html)
 - [stack updates](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks.html)
 - [template anatomy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html)

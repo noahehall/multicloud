@@ -734,18 +734,23 @@
 
 ### Consideration
 
-- decision tree: characteristics that will lead you toward the best storage solution
+- characteristics that will lead you toward the best storage solution
   - Type of access method (block, file, or object)
     - storage access protocols: applications are often developed based on specific operating systems
+    - How much storage capacity is required for each type
   - Patterns of access (random or sequential)
   - Required throughput
-  - Frequency of access (online, offline, archival)
-  - Frequency of update (WORM, dynamic)
+    - How should you configure your volumes?
+    - What are the recommended block sizes? What are the cache sizes?
+    - Frequency of access (online, offline, archival)
+    - Frequency of update (WORM, dynamic)
   - Availability and durability constraints
+    - Is there temporary data that does not need to persist?
+    - Does data need to be shared? which services need to share the data? How does it need to be shared?
 - optimization: identify constraints & service options for improvement
   - understand the performance profile for each of your workloads
   - performance analysis to measure input/output operations per second (IOPS), throughput, and other variables
-  - metrics improvement strategies as part of a data-driven approach, benchmarkin/load testing
+  - metrics improvement strategies as part of a data-driven approach, benchmarking/load testing
     - Define your storage performance requirements
     - Identify your workload’s most important storage performance metrics
 - Q/A

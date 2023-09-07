@@ -38,16 +38,6 @@
   - cost allocation report
   - detailed billing report
 
-### Cost Allocation Tags
-
-- specific to billing and track your AWS costs on a detailed level.
-- must be enabled; AWS uses the tags to organize your resource costs on your cost allocation report.
-- Cost Allocation Tags appear on the console after you've enabled Cost Explorer, Budgets, AWS Cost and Usage Reports, or legacy reports.
-- tag types
-  - AWS Generated: automatically applied on a best-effort basis; enable in the Billing and Cost Management console.
-    - available only in the Billing and Cost Management console and reports, and doesn't appear anywhere else in the AWS console, including the AWS Tag Editor.
-  - User Defined: tags that you define, create, and apply to resources.
-
 ## considerations
 
 ## integrations

@@ -1,10 +1,11 @@
 # Common AWS Architecture
 
-- TODOs
-  - theres bunches of stuff in here that should be non-AWS specific files
+- AWS comprises over 150 services: happy hunting ;)~
 
 ## links
 
+- [AAA: Reference Architecture Diagrams](https://aws.amazon.com/architecture/reference-architecture-diagrams)
+- [AAA: Solutions and Implementations](https://aws.amazon.com/solutions/)
 - [10 things serverless architects should know](https://aws.amazon.com/blogs/architecture/ten-things-serverless-architects-should-know/)
 - [aws samples repo](https://github.com/aws-samples)
 - [blog: api gateway category](https://aws.amazon.com/blogs/compute/category/application-services/amazon-api-gateway-application-services/)

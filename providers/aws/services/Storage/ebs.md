@@ -4,7 +4,7 @@
 
 ## my thoughts
 
-- determine up front if you need multi-attach to share data across EC2s as it depends on volume type
+- determine up front if you need multi attach to share data across EC2s as it depends on volume type
 - remember there is a size limit for ebs, unlike S3
 
 ## links
@@ -18,6 +18,12 @@
 - [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
 - [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
 
+### tools
+
+- [Flexible IO: load tester](https://github.com/axboe/fio)
+- [io meter: load tester](http://www.iometer.org/doc/downloads.html)
+- [sysbench: load tester](https://github.com/akopytov/sysbench)
+
 ## best practices
 
 - required for immutable infrastructure with EC2s
@@ -27,6 +33,7 @@
 - With Elastic Volumes,
   - volume sizes can only be increased within the same volumes
   - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
+- use Snapshots with automated lifecycle policies to back up your data to s3
 
 ### anti patterns
 
@@ -35,11 +42,9 @@
 - designed for scaling high performance workloads
 - high availability, replication in/across AZs, 5 9s durability: automatically replicated in its availability zone
 - build SAN in the cloud for i/o intensive apps
-- data store for any type database
+- data store for any database type
 - runtime flexible: modify volume type/size, IOPS configuration, resize clusters for big data analytics engines
-- data persists and is not attached to EC2 lifecycle
 - opt-in data encryption for all volume types
-- use Snapshots with automated lifecycle policies to back up your volumes to s3 while ensuring geographic protection of your data and business continuity.
 - use cases: non/relational databases, enterprise/containerized applications, big data analytics engines, file systems, and media workflows.
   - operating systems: boot and root volumes can be used to store an OS
   - databases: the storage layer fo a DB running on EC2 that will scaled with performance needs
@@ -168,14 +173,15 @@
 - Annual Failure Rate: AFR; 0.1 to 0.2 percent
 - availabilty: 99.8-99.9:
 - data is replicated across multiple servers in a single Availability Zone
-- attach multiple volumes: during/after EC2 instance creation you can attach multiple EBS volumes
+- attach multiple EBS volumes during/after EC2 instance creation within the SAME AZ
 - burstability
   - operate within your normal baseline range, you accumulate burst credits.
   - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
   - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
-- elastic volumes: increase capacity, tune performance, and change the type of any new or existing current generation volume dynamically, with no downtime or performance impact.
+- elastic volumes:
+  - increase and decrease provisioned performance settings
   - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
-  - increase volume size: a provisioned EBS volume size can be increased via settings
+  - hange from one volume type to a different volume type.
 
 #### SSD backed
 
@@ -197,6 +203,7 @@
   - workloads performing small, random I/O.
   - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
   - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
+  - estimated to be appropriate for up to 80 percent of the workloads.
 
 ##### provisioned IOPS
 
@@ -211,10 +218,10 @@
   - 99.999 percent volume durability with an AFR no higher than 0.001 percent
   - available for all EC2 instances types, with the exception of R5b.
 - io2 block express: abcd
-- EBS multi-attach
+- EBS multi attach: only for io1 & io2 volume types
   - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
   - to achieve higher application availability for applications that manage storage consistency from multiple writers
-  - Applications using Multi-attach need to provide I/O fencing for storage consistency.
+  - Applications using multi attach need to provide I/O fencing for storage consistency.
 
 #### HDD backed
 
@@ -247,13 +254,13 @@
 
 #### Encryption
 
-- seamless encryption of EBS data volumes, boot volumes, and snapshots
 - encryption can be enabled by default at the account level
   - any new volumes will be automatically encrypted
 - the encryption data key is stored on-disk with your encrypted data,
   - but not before EBS encrypts it with your CMK
-  - Your data key never appears on disk in plaintext.
-  - data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots
+  - data key
+    - never appears on disk in plaintext.
+    - is shared by snapshots of the volume and any subsequent volumes created from those snapshots
 - at rest: using KMS or customer managed keys
   - data volumes, boot volumes, and snapshots
 - in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS

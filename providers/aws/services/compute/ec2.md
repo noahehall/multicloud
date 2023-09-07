@@ -174,7 +174,7 @@
 
 ### Instance Store
 
-- consists of one or more instance store volumes exposed as block devices
+- consists of one or more volumes exposed as block devices
 - ephemeral storage used as an internal, directly attached ephemeral data volume with submillisecond latencies; e.g. a laptops internal harddrive
 - positives
   - i/o is faster than attaching an ebs volume due to the close proximity of the physical storage to the physical ec2 server
@@ -186,7 +186,11 @@
   - its lifecycle is tied to the lifecycle of the ec2 instance; once the ec2 is down, the data on the instance store is lost
   - not replicated or spread across multiple devices to improve durability and availability
 - lifecycle
-  - persists on ec2 reboot, destroyed in all other events
+  - persists on ec2 reboot, destroyed in all other events:
+    - The underlying disk drive fails.
+    - The instance stops.
+    - The instance hibernates.
+    - The instance terminates.
 
 ### launch templates
 

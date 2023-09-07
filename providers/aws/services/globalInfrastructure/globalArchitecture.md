@@ -11,7 +11,6 @@
 - [EU GDPR](https://gdpr.eu/what-is-gdpr/)
 - [shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/)
 - [aws repost: user community forum](https://repost.aws/)
-- [well architected framework](https://aws.amazon.com/architecture/well-architected/)
 - [top 10 security items](https://aws.amazon.com/blogs/security/top-10-security-items-to-improve-in-your-aws-account/)
 - [tags: conventions and rules](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
 - [tags: best practices](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
@@ -23,11 +22,16 @@
 ### well architected
 
 - [AAA landing page](https://aws.amazon.com/architecture/well-architected/)
+- [FAQS](https://aws.amazon.com/well-architected-tool/faqs/)
+- [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
+- [pillar: operational excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html?ref=wellarchitected-wpp)
+- [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html?ref=wellarchitected-wp)
 - [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
 - [pillar: reliability whitepaper](https://wa.aws.amazon.com/wat.question.REL_6.en.html)
+- [pillar: reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html?ref=wellarchitected-wp)
+- [pillar: cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
+- [pillar: security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html?ref=wellarchitected-wp)
 - [serverless application lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/wellarchitected-serverless-applications-lens.pdf?810a2056-c993-4832-af32-11286cad694c)
-- [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
-- [FAQS](https://aws.amazon.com/well-architected-tool/faqs/)
 
 ### tools
 
@@ -126,6 +130,16 @@
   - account/team/organization/etc
   - ABAC/RBAC
 
+#### Cost Allocation Tags
+
+- specific to billing and track your AWS costs on a detailed level.
+- must be enabled; AWS uses the tags to organize your resource costs on your cost allocation report.
+- Cost Allocation Tags appear on the console after you've enabled Cost Explorer, Budgets, AWS Cost and Usage Reports, or legacy reports.
+- tag types
+  - AWS Generated: automatically applied on a best-effort basis; enable in the Billing and Cost Management console.
+    - available only in the Billing and Cost Management console and reports, and doesn't appear anywhere else in the AWS console, including the AWS Tag Editor.
+  - User Defined: tags that you define, create, and apply to resources.
+
 #### s3 tags
 
 ##### Bucket tags
@@ -159,12 +173,7 @@
   - creates an improvement plan with a prioritized list of issues to resolve
   - generate a summary report
 
-### Operational Excellence
-
-- running and monitoring systems to deliver business value and continually improving processes and procedures
-- Define your metrics, set target goals, define and enforce your tagging strategy
-
-### security
+### security pillar
 
 - the ability to protect data, systems, and assets while delivering business value through risk assessments and mitigation strategies
 - dimensions: All AWS security services can be categorized by these five domains
@@ -224,9 +233,16 @@
   - centralizing privilege management
   - reducing or even eliminating reliance on long-term credentials
 
-### reliability
+### Operational Excellence pillar
 
-- ability to prevent and quickly recover from failures to meet demand
+- running and monitoring systems to deliver business value and continually improving processes and procedures
+- Define your metrics, set target goals, define and enforce your tagging strategy
+- automating changes, responding to events, and defining standards to manage daily operations.
+
+### reliability pillar
+
+- ensuring that a workload performs its intended function correctly and consistently when it’s expected to
+- resliency: ability to prevent and quickly recover from failures to meet demand
 - 5 phases
   - generate: data through monitoring, gathering metrics and establishing thresholds
   - aggregate: creation of a complete view from multiple resources
@@ -234,11 +250,11 @@
   - storage: data managent and retention policies; e.g. where and for how long logs are stored
   - analyze: analytics; dashboards, reports, and useful insights
 
-### performance efficiency
+### performance efficiency pillar
 
 - using IT and compute resources efficiently
 
-### Cost Optimization
+### Cost Optimization pillar
 
 - measure and monitor your infrastructure and ensure cost-allocations are accurate
   - tagging is critical: use cost allocation tags
@@ -246,7 +262,7 @@
   - no charge for inbound data transfer across all services in all Regions
   - data transfer from AWS to the internet is charged per service, with rates specific to the originating Region.
 
-### sustainability
+#### sustainability
 
 - recommendations and strategies to use when designing cloud architectures that maximize efficiency and reduce waste
 
