@@ -2,7 +2,7 @@
 
 - by Roberto Vitillo
   - reading: done
-  - copying: 103 > dynamo-style data stores
+  - copying: 118 > top of page somewhere after multi-version concurrnecy control
 - a group of nodes that cooperate by exchanging messages over communication links to achieve some task
 - the emergence of an application requiring high availability and resilience against single node failures
 
@@ -325,6 +325,20 @@
 - before a request can be resolved, the service must confirm that its copy of the data is up to date with a quorom of nodes
   - this confirmation step considerable increases the time required to serve a request
 
+#### Causal Consistency
+
+- might be another term for Sequential consistency
+- is stronger than eventual consistency but weaker than strong consistency
+  - strong consistency imposes a GLOBAL order that all processes must agree with
+- solves the happened-before order problem of eventual consistency
+- benefits
+  - for many applications: causal consistnecy is `consistent enough` and easier to work with than eventual consistency
+  - is provably the strongest consistency model that enables building systems that are also available and partition tolerant
+    - CAP boomshakalaka
+- algorithm imposes a partial order on operations
+  - requires that processes agree on the order of causally related operations
+  - processes can disagree on on the order of unreleated operations
+
 #### Sequential Consistency
 
 - ensures operations occur in the same order for all observers but doesnt provide any real-time gurantees about when an operations side effects becomes visible
@@ -340,7 +354,8 @@
 #### Eventual Consistency
 
 - allows clients to read from any follower to increase availability but sacrifices consistency
-  - a client can send two reads that are resolved by different followers each having different views of the state
+  - the happened before problem
+    - a client can send two reads that are resolved by different followers each having different views of the state
 - the only guarantee this provides is that all followers will eventual converge on the same state
 - requirments
   - eventual delivery: guarantee that every update applied at a replica is eventually applied to all replicas
@@ -388,6 +403,31 @@
 - each represent consistency, availability and partitions as binary choices, but really its a spectrum
 - its really a choice between the amount of consistency and performance required by a system, relative to the required availability
 
+### CALM Theorem
+
+- states that a program has a consistent, coordination-free distribution implemnetation if an only if it is monotonic
+
+#### monotonic:
+
+- when new inputs further refine the output and cant tae back any prior output
+- e.g. a program that computes the union of a set
+  - once an element (input) is added to the set (output) it cant be rmeoved
+  - CRDTs are monotonic
+- monotonic programs TRUMP the CAP thereom by being all three a the same time
+  - consistent: lol not the same C in CAP (lineariability)
+    - consistency in CALM focuses on the programs output (application level)
+      - a consistent program is one that produces the same output:
+        - no matter in which order the imputs are processed
+        - despite any conflicts
+    - consistency in CAP focuses on reads and writes (storage level)
+  - available
+  - partition tolerant
+
+#### non-monotonic:
+
+- when a new input can retract a prior output
+- e.g. variable assignment is a non-monotonic operation since it overwrites the variables prior value
+
 ### Data types
 
 - Conflict-free replicated data type: CRDT; a data type with specific requirements for when
@@ -414,7 +454,97 @@
   - issues:
     - the client application must contain logic to resolve any conflicts
 
+## Transactions
+
+- provide the illusion that either all the operations within a group complete successfully or none of them do
+  - i.e. as if the group of operations were atomic
+- transactions are straight forward within a single DB, but complicated with distributed DBs
+
+### ACID
+
+#### Atomic
+
+- guarantees that partial failures arent possible
+- either all operations in the transactions succeed or none do
+
+#### Consistency
+
+- guarantees that application level invariants must always be trust
+- i.e. transactions can only transition a DB from one correct state to another correct state
+- this shiz is funny because this isnt a DB-level requirement, but a developer-level requirement
+  - Joe Hellerstein said he through the C in to make the acronym work!
+  - has nothing to do with the C (consistency) in other acronyms in this file
+
+#### Isolation
+
+- guarantees that a transaction appears to run in isolation as if no othe transactions are executing
+- i.e. like a synchronous operation that isnt susceptible to race conditions
+- easiest way to guarantee isolation is to execute transactions serially one after the other using a global lock
+
+##### race conditions: issues with concurrent transactions
+
+- dirty write: when a transaction overwrites the value written by another transaction that hasnt comitted
+- dirty read: when a transaction observes a write form a transaction that hasnt completed yet
+- fuzzy read: when a transaction reads an objects value twice but sees a different value in each read
+  - because another transaction updated the value between the two reads
+- phantom read: when a transaction reads a group of objects matching a specific condition while another transaction concurrently adds/updates/deletes objects matching the same condition
+
+##### race conditions: solutions via isolation levels
+
+- protects against one/more types of race conditions
+  - there are more isolation levels that the ones listed below
+- serializable: forbids phantom reads and everything below it
+  - the only isolation level that protects against al possible race conditions
+  - strict serializability: adds a real-time requirement on the order of transactions
+    - combines serializable guarnatees with lineraizability guarantees
+    - when a transaction completes, its side effects become immediately visible to all future transaction
+- repeatable read: forbids fuzzy read
+- read comitted: forbids dirty reads
+  - e.g. postgres' default isolation level
+- read uncommitted: forbid dirty writes
+
+##### Concurrency Control Protocols
+
+- Serializability: i.e. the best isolation level (see above somewhere)
+- the challenge becomes maximizing concurrency while still preserving the appearance of serial execution
+- pessimistic concurrency control protocol
+  - uses locks to block other transactions from accessing an object
+  - 2PL: two-phase locking: has two types of LOGICAL locks
+    - READ locks: can be shared by multiple transactions that acess the object in read only mode
+    - WRITE locks: can be held by a single transactions only
+    - issues with 2PL
+      - deadlocks: when two transactions are waiting for a lock the other transaction holds
+      - read only transactions might wait for a long time to acquire a shared lock
+- optimistic concurrency control protocol
+  - executes a transaction without blocking based on the assumption that conflicts are rare and transactions are short lived
+  - OCC: Optimistic Concurrency Control: lol a protocol that uses the type of protocol as the name for the protocol
+    - a transaction writes to a local workspace without modifying the actual data store
+    - when the transaction wants to commit
+      - the data store compares the transctions workspace to see whether any conflicts exist with its state
+      - if no conflicts exist (some serializability algorithm) the local workspace is committed to the datastores workspace
+      - if conflicts do exist: the transaction is thrown away
+      - issues
+        - when conflicts exist transactions are wasted
+        - ready only transactions may be aborted because the value that was rad has been overwritten
+    - uses physical locks: i.e. locks that exist at the storage level and not the DB-program level
+      - this might not be the best summarization of the book
+- optimistic vs pessimistic protocols
+  - optimistic: better for read-heavy workloads
+    - avoid the overhead pessimistic protocols: i.e. no need to acquire or manage logical locks
+  - pessimistic: more efficient for conflict-heavy workloads since they avoid wasting work
+- multi-version concurrency control: maintains an older version of the data store to overcome the issues with 2PL and OCC
+  - optimizes for read-only transactions by ensuring they
+    - can never block becaue of awaiting a lock
+    - conflict because the previous value was overwritten by a concurrent write
+  -
+
+#### Durability
+
+- guarantees that once the DB commits the transaction, the changes are persisted on durable storage s othat db doesnt lose the cnages if it subsequently crashes
+
 ## Implementations
+
+- of various things discussed in this file
 
 ### Paxos
 
@@ -457,4 +587,26 @@
 
 ### Dynamo-style Data stores
 
-- abcd
+- in the author's opinion: the best known design of an eventually consistent and highly available key-value store
+- many other key-value stores have been inspired by it: e.g. cassandra and Riak Kv
+- novelty
+  - every replica can accept write and read requests
+  - write quorum: when a clients sents a write entry to the data store:
+    - it sends the request to N replicas in parallel
+    - waits for an acknowledgment from only W replicas
+  - read quorum: when a client wants to read an entry from the data store:
+    - it sends the request to all replicas
+    - waits for just R replies
+    - returns the most recent entry
+  - to resolve conflicts
+    - entries behave like LWW or MV registers depending on the implementatoin behavior
+  - when W + R > N: the write quorum and the read quorum must intersect with each other
+    - i.e. at least one read will return the latest version
+    - read heavy workloads: benefit form a smaller R;
+      - i.e. less read-replicas need to agree on what the most recent entry is
+  - when W + R < N: for maximum performance at the expense of consistency
+- read repair: a mechanism that clients implement to help bring replicas back in sync whenever they perform a read
+  - basically a client that sends a read request, but fails to get a read quorom
+  - it resends its latest write request to bring out-of-sync replicas back in sync
+- replica synchronization: continous backgorund mechanism that runs on every replica and periodically communicates with others to identify and repair inconsisistencies
+-
