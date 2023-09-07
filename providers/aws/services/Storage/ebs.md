@@ -262,7 +262,9 @@
     - never appears on disk in plaintext.
     - is shared by snapshots of the volume and any subsequent volumes created from those snapshots
 - at rest: using KMS or customer managed keys
-  - data volumes, boot volumes, and snapshots
+  - data volumes:
+  - boot volumes: by default are NOT encrypted; enable when creating the AMI/modify default settings
+  - snapshots:
 - in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS
 - snapshot encryption rules:
   - Snapshots of encrypted volumes are automatically encrypted.
