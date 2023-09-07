@@ -26,14 +26,15 @@
 
 ## best practices
 
-- required for immutable infrastructure with EC2s
-  - you can keep app state on the EBS and server state on the EC2 instance store
-  - the EBS life cycle isnt related to the EC2/instance store lifecycle
 - ensure your taking regular snapshots, and removing old snapshots
 - With Elastic Volumes,
   - volume sizes can only be increased within the same volumes
   - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
 - use Snapshots with automated lifecycle policies to back up your data to s3
+- logically separate your backup data from your EBS volumes.
+  - Create a separate AWS account for backups.
+    - To copy EBS snapshots to a different account, you share the snapshots with that account by modifying the permissions.
+  - protect backups from being renamed or encrypted by unauthorized users
 
 ### anti patterns
 

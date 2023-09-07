@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Deep Dive: Designing an Amazon Elastic Block Store (Amazon EBS) Strategy for your Organization > AWS Organizations Overview > AWS Organization building blocks
+    - Deep Dive: Designing for Availability and Durability in Amazon Elastic Block Store (Amazon EBS)
     - Deep Dive: Amazon Elastic Block Store (Amazon EBS) Cost Optimization > AWS Well-Architected Cost Optimization Pillar
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
