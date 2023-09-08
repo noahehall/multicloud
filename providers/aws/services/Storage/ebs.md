@@ -230,6 +230,7 @@
   - volume size can range from 1 GiB to 16 TiB.
   - Your costs are based on the provisioned volume capacity.
 - GP3: scale IOPS and throughput independent from the volume size.
+  - lowest cost SSD volume
   - workloads performing small, random I/O.
   - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
   - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
@@ -249,13 +250,14 @@
     - Provisioned IOPS are charged at a flat rate up to the maximum of 64,000 IOPS.
 - io2: the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
   - 99.999 percent volume durability with an AFR no higher than 0.001 percent
+    - all other volume types provide 99.8-99.9 % durability with an AFR of between 0.1–0.2 percent.
   - available for all EC2 instances types, with the exception of R5b.
   - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
     - Provisioned IOPS are charged using a tiered structure.
       - Tier 1 is up to 32,000 IOPS.
       - Tier 2 is 32,001 to 64,000 IOPS,
       - Tier 3 is over 64,000 IOPS.
-- io2 block express: abcd
+- io2 block express: highest perf ssd volume
 - EBS multi attach: only for io1 & io2 volume types
   - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
   - to achieve higher application availability for applications that manage storage consistency from multiple writers

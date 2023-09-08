@@ -1,9 +1,7 @@
 # multicloud
 
 - [databases](./databases.md)
-- TODOs:
-  - some of this stuff should be in [distributedSystems.md](./distributedSystems.md)
-    - we really need to define the boundaries between these two files
+  - likely want to continue splitting this out into multiple files
 
 ## links
 
@@ -116,7 +114,36 @@
 
 ### gRPC
 
-## high availability
+## Uptime
+
+- To design for availability and durability
+  - understand the requirements of your workloads
+  - the level of service that you've promised to your business operation teams.
+
+### SLAs:
+
+- service level agreements that outline acceptable/promised downtime
+- RTO: recovery time objective; time it takes to restore an application or system to operational status
+  - the maximum acceptable delay between the interruption of service and restoration of service.
+  - determines what is considered an acceptable time window when service is unavailable
+- RPO: recovery point objective; how far back an application or system can be restored from backup or snapshot, usually measured in hours.
+  - the maximum acceptable amount of time since the last data recovery point
+  - determines what is considered an acceptable loss of data between the last recovery point and the interruption of service, or how many hours of data loss is acceptable
+- tier 1 SLA: Mission critical services: Outages have a severe impact on business operations.
+  - usually require four to 5 nines or better of availability.
+  - Usually include customer facing sites, revenue, or order processing systems
+- Tier 2 SLA: Business critical services: Outages have a significant impact on business during operational hours.
+  - Usually three nines of availability
+  - Short outages may affect revenue but are not catastrophic
+  - Any application that isn't driving revenue but that supports Tier 1 applications
+- Tier 3 SLA: Business-operational, non-critical services: Workloads support internal business operations but are not customer facing.
+  - Two nines of availability
+  - Low impact workloads such as analytics
+- Tier 4 SLA: Administrative non-critical services: Office productivity. There is no impact to customers if these workloads are down.
+  - Uptime of 90 percent or better
+  - Internal applications
+
+### high availability
 
 - horizontal scaling: in/out; increasing the total number of load balanced resources
 - vertical scaling: up/down; increasing perf characteristics of existing resources
@@ -143,14 +170,41 @@
         - push state into a load balancer that fronts the fleet of resources
       - scalability: since multiple resources share load you need _horizontal scaling_
         - automation is key; adding and removing resources should match demand in near real-time
-- redundancy: strategy for increasing availability
-  - its all about duplicating data & servers across infrastructure in isolated geographic locations
-  - challenges
-    - replication process: keeping data, configuration, etc in sync across primary and secondary resources
-    - failover: redirecting traffic from primary to secondary on failure
-      - DNS strategy: updating an IP addr to point to a different DNS record
-        - be careful of DNS caching and the time it takes to propagate DNS changes
-      - Load balancing strategy: the IP points to a load balancer that routes requests to health checked resources
+
+### Durability
+
+- systems that can perform its responsibilities even in the presence of failures
+- the capability of a system to handle failures (hardware, networking, regional power loss) while protecting data from deletion or loss.
+- durable storage: stores data reliably without data loss even during component failures
+
+### redundancy
+
+- strategy for increasing durability and availabliity
+- its all about duplicating data & servers across infrastructure in isolated geographic locations
+- challenges
+  - replication process: keeping data, configuration, etc in sync across primary and secondary resources
+  - failover: redirecting traffic from primary to secondary on failure
+    - DNS strategy: updating an IP addr to point to a different DNS record
+      - be careful of DNS caching and the time it takes to propagate DNS changes
+    - Load balancing strategy: the IP points to a load balancer that routes requests to health checked resources
+
+### Disaster Recovery
+
+- spectrum of strategies ranging from backup & Restore to multi-site active/active
+
+#### Backup and Restore
+
+- Using a pure backup and restore strategy is associated with longer recovery time and recovery point objectives
+- results in longer downtime and greater loss of data between when the disaster event occurs and the recovery of the systems.
+- the easiest and least expensive strategy to implement.
+- use cases
+  - tier 3 and 4 SLAs
+
+#### Pilot Light
+
+#### Warm Standby
+
+#### Multi-site active/active
 
 ## virtualization
 
