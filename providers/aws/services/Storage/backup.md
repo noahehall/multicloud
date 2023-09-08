@@ -1,12 +1,15 @@
 # Backup
 
 - centralize and automate data protection across AWS accounts, services and regions to managed S3 Buckets
+- removes the need to create custom scripts and manual processes.
+- create backup policies called backup plans that enable you to define your backup requirements and then apply them to the AWS resources you want backed up.
 
 ## my thoughts
 
 ## links
 
 - [landing page](https://aws.amazon.com/backup/?did=ap_card&trk=ap_card)
+- [audit manager](https://docs.aws.amazon.com/aws-backup/latest/devguide/aws-backup-audit-manager.html)
 
 ## best practices
 
@@ -30,10 +33,10 @@
 
 ### pricing
 
-- backup storage you use
-- backup data transferred between AWS Regions
-- backup data you restore
-- backup evaluations
+- storage you use
+- data transferred between AWS Regions
+- data you restore
+- evaluations
 
 ## basics
 
@@ -95,6 +98,13 @@
 - a central and secure way to control access to your backups across AWS services
 - resource-based access policies on Backup Vaults across all users, rather than having to define permissions for each user
 
+### Audit Manager
+
+- set retention policies, which you can use to automatically remove old snapshots
+- provides built-in compliance controls and allows you to customize those controls to define your data protection policies.
+- automatically detect violations of your defined data protection policies and prompt you to take corrective actions
+- continuously evaluate backup activity and generate audit reports
+
 ### Security
 
 - resource-based access policies for your backup vaults
@@ -135,4 +145,4 @@
 
 ### EBS
 
-- backing up your EBS volumes.
+- backing up your EBS volume snapshots to an aws managed s3 bucket

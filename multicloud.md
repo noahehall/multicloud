@@ -144,10 +144,9 @@
   - Uptime of 90 percent or better
   - Internal applications
 
-### high availability
+### availability
 
-- horizontal scaling: in/out; increasing the total number of load balanced resources
-- vertical scaling: up/down; increasing perf characteristics of existing resources
+- the percentage of time a system is accessible.
 - availability is expressed as a percentage of uptime in a given year or as a number of nines
   - one nine: 90% uptime, 36.53 downtime
   - two nines: 99% uptime, 3.65 days downtime
@@ -171,6 +170,9 @@
         - push state into a load balancer that fronts the fleet of resources
       - scalability: since multiple resources share load you need _horizontal scaling_
         - automation is key; adding and removing resources should match demand in near real-time
+- strategies
+  - horizontal scaling: in/out; increasing the total number of load balanced resources
+  - vertical scaling: up/down; increasing perf characteristics of existing resources
 
 ### Durability
 

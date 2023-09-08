@@ -33,7 +33,7 @@
 - With Elastic Volumes,
   - volume sizes can only be increased within the same volumes
   - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
-- use Snapshots with automated lifecycle policies to back up your data to s3
+- use Snapshots with DKM lifecycle policies to back up your data to s3
 - logically separate your backup data from your EBS volumes.
   - Create a separate AWS account for backups.
     - To copy EBS snapshots to a different account, you share the snapshots with that account by modifying the permissions.
@@ -124,11 +124,11 @@
   - Any information in memory or any transactions not committed to disk at the time of the snapshot are discarded.
 - application consistent: ensure that the application transactions are completed and written to the volume before the snapshot is taken
   - include data from pending transactions between these applications and the disk
-- multi-volume, crash consistent: create multi-volume snapshots, which are point-in-time snapshots for all EBS volumes attached to an EC2 instance
+- multi volume, crash consistent: create multi volume snapshots, which are point-in-time snapshots for all EBS volumes attached to an EC2 instance
   - typically restored as a set.
     - recommend tagging your multiple-volume snapshots to manage them collectively during restore, copy, or retention
   - After the snapshots are created, each snapshot is treated as an individual snapshot.
-  - Multi-volume snapshots support up to 40 EBS volumes per instance.
+  - multi volume snapshots support up to 40 EBS volumes per instance.
 
 #### Snapshots Archive
 
@@ -136,7 +136,7 @@
 - billed based on the amount of data in GB that your snapshots consume and the AWS Region
   - approximately one quarter of the cost of standard EBS Snapshot storage costs.
 
-#### multi-volume snapshots
+#### multi volume snapshots
 
 - critical workloads that spans across multiple EBS volumes
 - take exact point-in-time, data-coordinated, and crash-consistent snapshots
@@ -191,7 +191,7 @@
     - One AMI is created that includes snapshots of all of the volumes that are attached to the target instance.
 - resource type: Defines the type of resources that are targeted by the policy.
   - Use VOLUME to create snapshots of individual volumes
-  - use INSTANCE to create multi-volume snapshots of all of the volumes that are attached to an instance
+  - use INSTANCE to create multi volume snapshots of all of the volumes that are attached to an instance
 - target tags: must be assigned to an EBS volume or an Amazon EC2 instance for it to be targeted by the policy.
 - Schedules: start times and intervals for creating snapshots or AMIs.
   - operation starts within one hour after the specified start/schedule time
@@ -316,10 +316,6 @@
 
 - previous-generation EBS volume type that is still in use in some customer production environments and available on AWS Management Console.
 
-### Data Lifecycle Manager
-
-- automated ebs snapshot management
-
 ### Security
 
 #### Encryption
@@ -387,6 +383,11 @@
 ### Backup
 
 - centralize and automate data protection across multiple Amazon EBS volumes
+- backup vs DLM
+  - dlm: use DLM when you want to automate the creation, retention, and deletion of EBS snapshots.
+    - creates lifecycle policies to remove old snapshots.
+  - use AWS Backup to manage and monitor backups across the AWS services you use, including EBS volumes, from a single place.
+    - set a retention policy to remove old snapshots.
 
 ### Cloudwatch
 
