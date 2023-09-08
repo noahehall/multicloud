@@ -9,14 +9,17 @@
 
 ## links
 
-- [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
-- [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
-- [faq](https://aws.amazon.com/ebs/faqs/)
+- [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
+- [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
+- [dlm: landing page](https://aws.amazon.com/ebs/data-lifecycle-manager/)
+- [eks: EBS CSI driver github](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
 - [eks: EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
 - [eks: managing EBS CSI Addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi-self-managed-add-on.html)
-- [eks: EBS CSI driver github](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
-- [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
-- [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
+- [faq](https://aws.amazon.com/ebs/faqs/)
+- [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
+- [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
+- [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
+- [snapshots: crash consistent](https://aws.amazon.com/blogs/storage/taking-crash-consistent-snapshots-across-multiple-amazon-ebs-volumes-on-an-amazon-ec2-instance/)
 
 ### tools
 
@@ -115,6 +118,18 @@
   - move volumes across Availability Zones
   - backup and retention
 
+#### consistency
+
+- crash consistent: contains all transactions that were written to the volume before the snapshot was taken
+  - Any information in memory or any transactions not committed to disk at the time of the snapshot are discarded.
+- application consistent: ensure that the application transactions are completed and written to the volume before the snapshot is taken
+  - include data from pending transactions between these applications and the disk
+- multi-volume, crash consistent: create multi-volume snapshots, which are point-in-time snapshots for all EBS volumes attached to an EC2 instance
+  - typically restored as a set.
+    - recommend tagging your multiple-volume snapshots to manage them collectively during restore, copy, or retention
+  - After the snapshots are created, each snapshot is treated as an individual snapshot.
+  - Multi-volume snapshots support up to 40 EBS volumes per instance.
+
 #### Snapshots Archive
 
 - store archival copies of your snapshots for retention purposes
@@ -144,13 +159,13 @@
 - copy any accessible snapshot that has a completed status.
 - the copy receives an ID that is different from the ID of the original snapshot.
 
-#### deleting snapshots
+#### deleting
 
 - delete any snapshot whether it is a full or incremental snapshot.
   - removes only the data not needed by any other snapshot.
 - All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
 
-#### restoring snapshots
+#### restoring
 
 - the new volume begins as an exact replica of the original volume
 - data is loaded into the new replicated volume in the background
@@ -195,6 +210,21 @@
   - lifecycle policies: fast snapshot restore settings
   - cross-Region copy rules
   - tags: automatically assigned to the snapshots or AMIs that are created
+
+#### Fast Snapshot Restore (FSR)
+
+- create a volume from a snapshot that is fully initialized at creation, eliminating the latency when accessing it for the first time
+- must be explicitly enabled per snapshot per AZ; else the volume is lazy loaded with data from the snapshot
+- enable up to 50 snapshots for FSR per Region.
+  - applies to snapshots that you own and snapshots that are shared with you
+- volume creation credits
+  - Volumes created from an FSR-enabled snapshot are fully initialized.
+  - there are limits on the number of volumes that can be created with immediate full performance.
+    - A single volume create operation consumes a single credit.
+    - The number of credits is a function of the FSR-enabled snapshot size.
+    - Credits refill over time.
+    - The maximum credit bucket size is 10.
+    - credits are not shared between snapshots
 
 ### volume types
 

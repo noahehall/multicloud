@@ -119,6 +119,7 @@
 - To design for availability and durability
   - understand the requirements of your workloads
   - the level of service that you've promised to your business operation teams.
+- business continuity: the ability of an organization to provide useful services in the event of failure
 
 ### SLAs:
 

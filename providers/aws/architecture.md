@@ -686,10 +686,24 @@
 
 ### cost management
 
-- expenses and usage: AWS Cost Explorer, the AWS Billing and Management Console, AWS Budgets, AWS Trusted Advisor
+- in AWS
+  - expenses and usage:
+    - AWS Cost Explorer,
+    - the AWS Billing and Management Console
+    - AWS Budgets
+    - AWS Trusted Advisor
 
 ## Security
 
 ### Compliance
 
-- check the compliance category and programs links up top
+- check the compliance service category and programs links up top
+
+### Disaster Recovery
+
+- in AWS
+  - Snapshots: most services offer this
+  - DLM: Data Lifecycle Manager:
+    - automates procedures to back up Amazon EBS volumes using lifecycle policies
+    - automate the creation, retention, and deletion of EBS snapshots and Amazon EBS-backed AMIs.
+  - Backup: centralizes compliance and policy control for managing EBS volume backups
