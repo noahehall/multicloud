@@ -333,6 +333,19 @@
   - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
   - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
 
+### Compliance
+
+- check the compliance service category and programs links up top
+
+### Disaster Recovery
+
+- in AWS
+  - Snapshots: most services offer this
+  - DLM: Data Lifecycle Manager:
+    - automates procedures to back up Amazon EBS volumes using lifecycle policies
+    - automate the creation, retention, and deletion of EBS snapshots and Amazon EBS-backed AMIs.
+  - Backup: centralizes compliance and policy control for managing EBS volume backups
+
 ## Networking
 
 - Foundational Services
@@ -589,7 +602,7 @@
     - Snowmobile: Exabyte-scale data transfer service used to move extremely large amounts of data to AWS
       - its a big fucking truck
 
-#### migration
+#### data migration
 
 - in AWS
   - Application Migration Service: MGN; migrating applications to the AWS Cloud, AWS GovCloud (US), and AWS Outposts.
@@ -693,17 +706,12 @@
     - AWS Budgets
     - AWS Trusted Advisor
 
-## Security
+## Databases
 
-### Compliance
-
-- check the compliance service category and programs links up top
-
-### Disaster Recovery
+### Db migration
 
 - in AWS
-  - Snapshots: most services offer this
-  - DLM: Data Lifecycle Manager:
-    - automates procedures to back up Amazon EBS volumes using lifecycle policies
-    - automate the creation, retention, and deletion of EBS snapshots and Amazon EBS-backed AMIs.
-  - Backup: centralizes compliance and policy control for managing EBS volume backups
+  - DMS: Database Migration Service
+    - from non/aws db engines to aws dbs
+  - SCT: Schema Conversion Tool
+    - this is part of DMS, but focuses specifically on conversion schema and code across heterogeneous db engines

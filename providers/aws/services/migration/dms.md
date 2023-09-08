@@ -1,13 +1,16 @@
-# DMS: Database Migration Service
+# Database Migration Service (DMS)
 
+- data migration
 - assess, convert and migrate databse and analytic workloads to AWS
 
 ## links
 
-- [landing page](https://aws.amazon.com/dms/?did=ap_card&trk=ap_card)
 - [data sources](https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Source.html)
-- [SCT: landing page](https://aws.amazon.com/dms/schema-conversion-tool/?nc=sn&loc=2&refid=ap_card)
-- [SCT: user guide](https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html)
+- [landing page](https://aws.amazon.com/dms/?did=ap_card&trk=ap_card)
+- [resources & playbooks](https://docs.aws.amazon.com/dms/)
+- [sct: extension pack](https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_ExtensionPack.html)
+- [sct: landing page](https://aws.amazon.com/dms/schema-conversion-tool/?nc=sn&loc=2&refid=ap_card)
+- [sct: user guide](https://docs.aws.amazon.com/SchemaConversionTool/latest/userguide/CHAP_Welcome.html)
 
 ## best practices
 
@@ -15,7 +18,7 @@
 
 ## features
 
-- migrate non aws databases to dynamodb, rds, aurora, etc
+- migrate non/aws databases to other aws databases across regions and AZs
 - maintain high availability and minimal downtime during the migration with multi-az and ongoing data replication and monitoring
 - supports hetero/homogeneous db migrations
 - Create redundancies of business-critical databases and data stores to minimize downtime and protect against any data loss.
@@ -42,12 +45,32 @@
   - DMS/you create the target tables and begins the migration
     - Loads the tables with data without any foreign keys or constraints
 
-### AWS Schema Conversion Tool
+### AWS Schema Conversion Tool (SCT)
 
+- object migration
 - for heterogenous migrations to translate the source schema to the target schema
 - Identifies the issues, limitations, and actions for the schema conversion
-- Generates the target schema scripts, including foreign keys and constraints
-- Converts code such as procedures and views from source to target and applies the code on the target.
+  - catalogues the physical and logical components of the existing system
+- provide a detailed report on each engine, and you can choose the best target for your particular use case.
+  - shows you what AWS SCT can convert automatically, which objects need manual remediation, and which objects require significant remediation.
+  - include which features are not supported by your target database, and recommendations on how to translate
+- converts source schema & code to Generatee the target schema scripts, including
+  - foreign keys and constraints
+  - convert tables and indexes, stored procedures and functions, database packages, and views and triggers
+  - anything that cant be converted is marked for manual conversion
+- use AWS SCT to extract SQL statements that are embedded in your application code.
+  - will track all the places where SQL is present, convert the SQL to work with the target database, and rebuild your application program with the converted code.
+
+#### Extension Pack
+
+- add-on module that emulates functions present in the source database that are required when converting objects to the target database.
+- Before you can install the AWS SCT Extension Pack, you need to convert your database schema.
+
+### Migration Playbooks
+
+- currently offers five migration playbooks and will release more over time.
+- a series of guides focused on best practices for creating successful blueprints for heterogeneous database migration.
+- its all about determining the appropriate pattern when the target db doesnt support some feature in the source db
 
 ## considerations
 

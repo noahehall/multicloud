@@ -44,9 +44,9 @@
   - recoverability
   - security: data security patterns and a clear mapping of these patterns to Cloud security controls
 
-### multi-cloudnative and open source
+### multiloud, cloudnative and open source
 
-- opensource: conflicts with proprietary cloudnative services
+- opensource: conflicts with responsibilities proprietary cloudnative services
   - configuring VMS
   - updating operating systems
   - installing application runtime
@@ -56,6 +56,7 @@
   - data storage
 - multicloud
   - requires attention to the network latency introduced for request pipelines that traverse cloud networking boundaries
+  - pay attention to vendor locking if utilizing proprietary services
 
 ### server-based vs serverless architectures
 
@@ -83,7 +84,7 @@
   - purpose driven architectures and application flexibility
   - quick to market
 
-## migration patterns
+### cloud migration patterns
 
 - refactor/migration: service by service is moved to the cloud into a new architecture
 - lift and shift: aka rehost; copy pasta legacy into cloud services to save on hosting costs

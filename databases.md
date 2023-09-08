@@ -176,8 +176,55 @@
   - systems that generate so much disparate data, the primary goal is to store all of it for later use and analysis, without having any immediate goals
   - makes the data and the analytics tools available to more of your users, across more lines of business enabling them to get the business insights they need, whenever they need them.
 
-## migration planning
+## migration
 
 - homogenous migrations: migrating from/to the same db engine
 - heterogeneous migrations: migration from/to different db engines
 - back-fill: porting data from one place to another, often used in db migrations to port data between two timestamps
+- use cases
+  - modernization: legacy dbs to modern db engines
+  - platform switching
+  - replication: frequenlty copying of data to share with other users or environments
+
+### migration planning
+
+- not all steps are applicable to each migration
+
+#### envisioning and assessment
+
+- understand the scope of work required based on your database schema, data volumes, data types, resources, and stakeholders.
+  - assess your current environment, evaluate any known risks, and create a business case for the migration.
+- determine availability of integrated tools that support the project plan and automate the migration as much as possible.
+
+#### db schema conversion
+
+- convert your database objects from the source engine to the target engine.
+- includes converting your tables, indexes, constraints, foreign keys, triggers, and stored procedures.
+  - but NOT migrating the actual data records in your database.
+- for features not supported by the target db
+  - you will need to recode the objects using design patterns based on the target engine’s capabilities.
+
+#### application conversion and remediation
+
+- process of porting application code, written in languages such as Java or C, to your new target database.
+- arguably the most complex aspect of a migration process.
+  - applications running against your database maybe developed long ago by resources who are no longer available.
+  - These applications are often mission critical and may be difficult to rewrite without extensive research and testing.
+
+#### scripts conversion
+
+#### integration with third party services
+
+#### data migration
+
+#### functional system tests
+
+#### performance testing
+
+#### integration and deployment
+
+#### training and knowledge transfer
+
+#### documentation and version control
+
+#### post-production support
