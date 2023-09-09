@@ -20,7 +20,6 @@
 - [security, identity & compliance best practices](https://aws.amazon.com/architecture/security-identity-compliance/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all)
 - [serverless apps Lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html)
 - [serverless express (check examples dir)](https://github.com/vendia/serverless-express)
-- [serverless](https://aws.amazon.com/serverless/)
 - [service search](https://aws.amazon.com/products/)
 - [youtube: databases on aws](https://www.youtube.com/watch?v=WE8N5BU5MeI&t=9s)
 
@@ -50,8 +49,8 @@
 ### service categories
 
 - [application integration](https://aws.amazon.com/products/application-integration/)
-- [compliance](https://aws.amazon.com/compliance/)
 - [compliance programs](https://aws.amazon.com/compliance/programs/)
+- [compliance](https://aws.amazon.com/compliance/)
 - [compute](https://aws.amazon.com/products/compute/)
 - [cost management](https://aws.amazon.com/aws-cost-management/)
 - [data lakes and analytics](https://aws.amazon.com/big-data/datalakes-and-analytics/)
@@ -67,6 +66,7 @@
 - [premium support programs](https://aws.amazon.com/premiumsupport/technology-and-programs/)
 - [securing enterprise grade serverless apps video](https://www.youtube.com/watch?v=tYhUWbDZ4-8)
 - [security, identity and compliance](https://aws.amazon.com/products/security/)
+- [serverless](https://aws.amazon.com/serverless/)
 - [storage](https://aws.amazon.com/products/storage/)
 
 ### Quickstart Partner Solutions
@@ -117,10 +117,9 @@
   - orchestration (happy path + rollbacks) with step functions
 - in AWS:
   - APIs: API Gateway, appsync
-  - compute: lambda, ecs, eks,
-  - dbs: dynamodb, neptune, timestream, qldb
+  - compute: lambda, ecs fargate
+  - dbs: dynamodb, neptune, timestream, qldb, rds proxy, aurora, redshift, opensearch
   - messaging: sns, sqs, kinesis, eventbridge
-  - events: cloudwatch
   - networking: cloudfront, route53
   - dev tools: SAM cli, cdk, cloudformation
   - storage: s3, efs
@@ -129,7 +128,7 @@
     - real time analysis: kinesis data streams/dynamodb streams
     - historical trends: batch, AWS glue + s3 > athena/redshift spectrum
 
-### ci/cd/testing
+## ci/cd/testing
 
 - you should also invest time in setting up localstack
 - in AWS

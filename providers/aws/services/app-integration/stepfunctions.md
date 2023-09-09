@@ -1,5 +1,6 @@
 # Step Functions
 
+- serverless orchestration
 - low-code visual workflow service used to orchestrate AWS services, automate business processes, and build serverless applications.
 
 ## my thoughts
@@ -48,30 +49,56 @@
 
 ## basics
 
+- centrally manages a workflow by breaking it into multiple steps, adding flow logic, and tracking the inputs and outputs between the steps.
+- maintains the application state, tracking exactly which workflow step your application is in, and stores an event log of data that is passed between application components
+
 ### tasks
 
-- perform work using lambdas, fargate, batch/etc or passing parameters to API actions of other services
-- wait states: you dont incure charges for awaited lambdas; you incur charges for transitions, not time within a state
-- callback tasks: pause a workflow indefinitely until a task token is returned
+- is a state in a workflow that represents a single unit of work that another AWS service performs
+  - referred to by its name, can be any unique string within the scope of the entire state machine.
+  - Each step in a workflow is a state.
+- perform work using aws services or passing parameters to API actions of other services
+- use cases
+  - Perform some work in your state machine.
+  - Make a choice between branches of activity.
+  - Stop an activity with a failure or success.
+  - Simply pass its input to its output or inject some fixed data.
+  - Provide a delay for a certain amount of time or until a specified time or date.
+  - Begin parallel branches of activity.
+  - Dynamically iterate steps.
 
-### activities and workers
+#### states
 
-- activities: your application
-- activity workers: execute application code and report success/failure
-
-### states
-
-- The States Language defines a set of built-in strings that name well-known errors, all beginning with the States. prefix.
-- ALL: catchall state
-- Retry:
-- Catch:
+- wait: delays the state machine from continuing for either a duration or timestamp
+  - charges
+    - you incur charges for transitions, not time within a state
+    - you dont incur charges for awaited lambdas;
+- pass: passes its input to its output without performing any other work
+  - useful when constructing and debugging state machines
+- task: represents a single unit of work performed by:
+  - an activity
+  - lambda fn
+  - passing params to API actions of other aws services
+- choice: adds branching logic to a state machine
+- succeed: stops an activity successfully
+  - useful target for Choice state branches that dont do anything except stop the activity
+- fail: stops and marks the activity as a failure unless its caught by a Catch block
+- parallel: create parallel branches of activity
+  - invokes multiple branches of steps using the SAME input
+- map: run a set of steps for each element in an input array
+- terminal states: have no `Next` field, nor need an `End` field
+  - succeed
+  - fail
 
 ```jsonc
+// The States Language defines a set of built-in strings that name well-known errors, all beginning with the `States.` prefix
+// callback: pause a workflow indefinitely until a task token is returned
+// ALL, Retry, Catch
 {
   "startAt": "thisThing",
   "States": {
     "ThisThing": {
-      "Type": "Task",
+      "Type": "Task", // state type
       "Resource": "arn:aws:SERVICE:us-east-1-abcd:etc:etc",
       "End": false,
       "Catch": [
@@ -93,6 +120,11 @@
   }
 }
 ```
+
+### activities and workers
+
+- activities: your application
+- activity workers: execute application code and report success/failure
 
 ### integration patterns
 
