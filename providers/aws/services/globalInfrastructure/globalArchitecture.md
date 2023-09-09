@@ -18,20 +18,27 @@
 - [billing and cost management](https://docs.aws.amazon.com/account-billing/index.html)
 - [billing: user guide](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html)
 - [billing: consolidated](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
+  [Title](https://docs.aws.amazon.com/wellarchitected/latest/framework/sustainability.html)
 
 ### well architected
 
 - [AAA landing page](https://aws.amazon.com/architecture/well-architected/)
+- [AAA: review process](https://docs.aws.amazon.com/wellarchitected/latest/framework/the-review-process.html)
 - [FAQS](https://aws.amazon.com/well-architected-tool/faqs/)
+- [lens: all of them](https://aws.amazon.com/architecture/well-architected/?wa-lens-whitepapers.sort-by=item.additionalFields.sortDate&wa-lens-whitepapers.sort-order=desc&wa-guidance-whitepapers.sort-by=item.additionalFields.sortDate&wa-guidance-whitepapers.sort-order=desc)
+- [lens: custom](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses-custom.html)
+- [lens: intro](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses.html)
+- [lens: SaaS](https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/saas-lens.html)
+- [lens: serverless](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html)
+- [lens: financial services industry (FSI)](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/general-design-principles.html)
 - [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
+- [pillar: cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
 - [pillar: operational excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html?ref=wellarchitected-wpp)
 - [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html?ref=wellarchitected-wp)
-- [pillar: performance efficiency](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/welcome.html)
 - [pillar: reliability whitepaper](https://wa.aws.amazon.com/wat.question.REL_6.en.html)
 - [pillar: reliability](https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html?ref=wellarchitected-wp)
-- [pillar: cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
 - [pillar: security](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/welcome.html?ref=wellarchitected-wp)
-- [serverless application lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/wellarchitected-serverless-applications-lens.pdf?810a2056-c993-4832-af32-11286cad694c)
+- [pillar: sustainability](https://docs.aws.amazon.com/wellarchitected/latest/framework/sustainability.html)
 
 ### tools
 
@@ -167,13 +174,11 @@
 - helps you understand the pros and cons of decisions you make while building systems on AWS
 - best practices for designing and operating reliable, secure, efficient, and cost-effective systems in the cloud
 - self-service tool that helps customers review AWS workloads at any time without the need for an AWS solutions architect.
-- general process
-  - define your workload by answering a series of architectural questions
-  - responses are evaluated against the 5 pillars
-  - creates an improvement plan with a prioritized list of issues to resolve
-  - generate a summary report
+- base Framework questions: foundational questions from the Framework that you review before applying any industry-specific questions in a lens review.
 
-### security pillar
+### Pillars
+
+#### security
 
 - the ability to protect data, systems, and assets while delivering business value through risk assessments and mitigation strategies
 - dimensions: All AWS security services can be categorized by these five domains
@@ -217,13 +222,13 @@
     - tools and access in place ahead of a security incident
     - practice incident response through game days
 
-#### CIA Triad
+##### CIA Triad
 
 - Confidentiality: limiting information access and disclosure to authorized users (the right people) and preventing access by unauthorized people.
 - Integrity: maintaining the consistency, accuracy, and trustworthiness of data over its entire life cycle
 - Availability: the readiness of information resources. a system that is not available when you need it is almost as useless as not having a system in the first place
 
-#### Principle of Least Privelege
+##### Principle of Least Privelege
 
 - giving a user or system only those privileges that are essential to perform its intended function
 - grant access as needed: start with denying access to everything and grant access as needed based on job role.
@@ -233,13 +238,13 @@
   - centralizing privilege management
   - reducing or even eliminating reliance on long-term credentials
 
-### Operational Excellence pillar
+#### Operational Excellence
 
 - running and monitoring systems to deliver business value and continually improving processes and procedures
 - Define your metrics, set target goals, define and enforce your tagging strategy
 - automating changes, responding to events, and defining standards to manage daily operations.
 
-### reliability pillar
+#### reliability
 
 - ensuring that a workload performs its intended function correctly and consistently when it’s expected to
 - resliency: ability to prevent and quickly recover from failures to meet demand
@@ -250,11 +255,11 @@
   - storage: data managent and retention policies; e.g. where and for how long logs are stored
   - analyze: analytics; dashboards, reports, and useful insights
 
-### performance efficiency pillar
+#### performance efficiency
 
 - using IT and compute resources efficiently
 
-### Cost Optimization pillar
+#### Cost Optimization
 
 - measure and monitor your infrastructure and ensure cost-allocations are accurate
   - tagging is critical: use cost allocation tags
@@ -274,14 +279,67 @@
 
 ### Well architected tool
 
-- free self-service tool to review AWS workloads, potential risks in your architectures and identify steps for improvement.
+- a central place to perform and organize your framework reviews
 - general process
   - define your workload by answering a series of architectural questions
-  - the tool evaluates your responses against the 6 pillars of the well architected framework
-  - provides an improvement plan with:
+  - select the pillars to evaluate
+    - Consider each pillar and its importance to your business context.
+    - your responses are evaluated against the pillars
+  - select the base framework questions
+    - at this point you can also select the an industry/tech specific lens
+  - identify best practices you are following
+    - at this point you can also identify lens-specific best practices as well
+  - creates a summary report and an improvement plan with:
     - prioritized list of issues/recommendations
     - links to videos and documentation concerning best practices
     - generated report that summarizes your workload review
+  - make improvements and measure progress
+    - Create a project plan for adopting the improvements.
+
+#### Lenses
+
+- provide a way for you to consistently measure your architectures against best practices and identify areas for improvement
+- A workload can have one or more lenses applied. Each lens has its own set of questions, best practices, notes, and improvement plan.
+- pick a lens that matches your industry and workload type, or add a custom lens
+  - each extends the guidance offered by the Framework to specific industry and technology domains
+
+##### AWS Well-Architected Framework Lens
+
+- automatically applied to all workloads
+
+##### Serverless Lens
+
+- focuses on designing, deploying, and architecting your serverless application workloads in the AWS Cloud
+- covers scenarios such as RESTful microservices, mobile app backends, stream processing, and web applications
+
+##### SaaS Lens
+
+- focuses on designing, deploying, and architecting your software as a service (SaaS) workloads in the AWS Cloud
+
+##### Custom Lens
+
+- abcd
+
+##### Financial Services Industry (FSI) Lens
+
+- is based on design principles and best practices that AWS has developed from working with financial institutions around the world
+- financial services industry has a unique set of risks and regulatory requirements
+- design principles
+  - documented operational planning
+    - establish clear roles and responsibilities across management domains (operation, risk, compliance, auditors, etc)
+  - automated infrastructure and application deployment
+  - security by design
+    - implement security baselines, configurations, and audit capabilities
+  - automated governance
+    - includes account provisioning, enforcing and monitoring budgets, and managing security, risk and compliance
+- common workloads and scenarios
+  - accessing financial data
+  - simplifying regulatory reporting
+  - using AI/ML
+
+##### Data Analytics Lens
+
+- abcd
 
 ## Cloud Adoption Framework (CAF)
 
