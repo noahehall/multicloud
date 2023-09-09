@@ -1,6 +1,6 @@
 # Step Functions
 
-- Visual workflows for distributed applications
+- low-code visual workflow service used to orchestrate AWS services, automate business processes, and build serverless applications.
 
 ## my thoughts
 
