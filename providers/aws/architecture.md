@@ -715,3 +715,12 @@
     - from non/aws db engines to aws dbs
   - SCT: Schema Conversion Tool
     - this is part of DMS, but focuses specifically on conversion schema and code across heterogeneous db engines
+
+## Devops
+
+### IaC
+
+- in AWS: manage all your AWS resources programmatically.
+  - cloudformation: terraform for aws
+  - CDK: sdk for various programming languages to interact with the AWS control plane API
+  - opsworks: create, configure, and manage your database servers.

@@ -213,18 +213,74 @@
 
 #### scripts conversion
 
+- looks at batch scripts used for:
+  - extract, transform, and load (ETL) processes;
+  - database maintenance;
+  - disaster recovery;
+  - etc
+- scripts may not directly relate to the applications using the database, but require analysis to ensure that they work on the new database engine.
+
 #### integration with third party services
+
+- when you have to support databases for third-party applications, or have third-party applications access their database.
+- applications like third-party business intelligence and ETL tools
+- identify these third-party applications, and validate that they continue to work post-migration
+- process may involve upgrading the third-party tools, or changing adapters or APIs to connect to your new databases.
+- Other third-party applications might be tightly coupled to a third-party database.
+  - consider whether you will maintain a legacy database for these applications, or whether you want to migrate from them.
 
 #### data migration
 
+- the process of moving data records from the source to the target.
+- challenging if you are dealing with large data volumes and have to keep the source and target systems in sync until you can “cut over” your applications to the target system.
+- if you’re changing the type of your target database, then you will have to translate most (if not all) data values to conform to the target system requirements.
+
 #### functional system tests
+
+- confirm that the migration went as planned
+- ensure that all applications interacting with the database perform as before, from a functional perspective.
+- typically involves business stakeholders and analysts who understand user-facing applications and can drive test cases that exercise system boundaries.
 
 #### performance testing
 
+- confirm that the migration is working correctly
+- applications have specified performance criteria to meet as part of functional testing
+- sometimes occurs in parallel with functional testing. This activity involves both business stakeholders and technical personnel.
+- When a performance issue is discovered, each system level is checked for bottlenecks,
+  - the user-facing application,
+  - the SQL statements prepared by the application,
+  - the database engine
+  - associated storage layer
+
 #### integration and deployment
+
+- process of cutting over to your new database system
+- typically involves a series of steps detailing how applications will be cut over to the new database system.
+- Depending on business needs, the deployment may require:
+  - minimized downtime.
+  - specified time window
+  - be performed in phases, where individual applications are cut over one by one.
+- it is important to plan for what to do in case you need to roll back changes
+  - test this plan in your preproduction environment as well, so the team is ready for any issues that occur during the rollout.
 
 #### training and knowledge transfer
 
+- Training is a critical aspect in deploying any new system.
+- ensure that db/system/application changes are documented, and share that knowledge with team members who support and maintain the application.
+- the move to new technologies also changes the relative status of people within the team.
+  - introducing undercurrents of organizational politics into the process.
+- develop features to manage the new environment, such as monitoring and paging.
+  - Many of the features you used previously may not be available for your new database.
+
 #### documentation and version control
 
+- documentation is one of the most important tasks prior to putting a system into production.
+- document all changes that have been made to the system, and how the new system operates.
+- this is a good opportunity to automate all manual steps.
+  - consider treating all of these artifacts as code.
+
 #### post-production support
+
+- Once the migrated application is running, you will need at least some support
+- automate backups and other support tasks, but it is a good idea to plan for support your application might need
+- Ensure that automated tasks are occasionally checked, and that you have personnel for tasks that are not automated.

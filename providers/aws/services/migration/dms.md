@@ -44,8 +44,36 @@
   - DMS manages and runs replication tasks, providing you with updates
   - DMS/you create the target tables and begins the migration
     - Loads the tables with data without any foreign keys or constraints
+    - select which schemas or tables to include in the migration, filter out unwanted data records, and transform names to conform to your particular naming conventions
+  - Data validation is an option that you can choose to add to your replication task
+    - For relational migrations: DMS can validate the migrated data
+    - tracks the progress of the migration and incrementally validates new data as it is written to the target.
+- endpoints: databases that reside within AWS
+  - The only requirement to use AWS DMS is that one of the endpoints is on an AWS service
 
-### AWS Schema Conversion Tool (SCT)
+### full-load migration
+
+- perform a one-time copy of the source data to the target.
+- existing data from the source is moved to the target,
+- AWS DMS loads data from tables on the source data store to tables on the target data store.
+
+### change data capture (CDC)
+
+- data replication: keeps your target in sync with a transactionally active source
+
+### Integration and deployment
+
+- integration: Use AWS DMS to perform a full-load migration, and then set up ongoing replication for change data capture
+- deployment: verify that data is flowing correctly,
+  - change the application to talk to the new database.
+  - stop stop the replication task
+
+### Monitoring migrations
+
+- monitor the migration process and check the health of your migration resources via the AWS DMS console.
+- A migration task runs on a replication instance (EC2) configured with the DMS application
+
+## AWS Schema Conversion Tool (SCT)
 
 - object migration
 - for heterogenous migrations to translate the source schema to the target schema
@@ -61,12 +89,12 @@
 - use AWS SCT to extract SQL statements that are embedded in your application code.
   - will track all the places where SQL is present, convert the SQL to work with the target database, and rebuild your application program with the converted code.
 
-#### Extension Pack
+### Extension Pack
 
 - add-on module that emulates functions present in the source database that are required when converting objects to the target database.
 - Before you can install the AWS SCT Extension Pack, you need to convert your database schema.
 
-### Migration Playbooks
+## Migration Playbooks
 
 - currently offers five migration playbooks and will release more over time.
 - a series of guides focused on best practices for creating successful blueprints for heterogeneous database migration.

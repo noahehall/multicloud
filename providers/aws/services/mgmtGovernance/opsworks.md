@@ -1,5 +1,6 @@
 # opsworks
 
+- AWS OpsWorks is reaching End of Life and is not accepting new customers
 - automate operations with chef and puppet
 - configuration management service; managed instances of chef & puppet
 
