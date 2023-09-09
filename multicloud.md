@@ -76,6 +76,7 @@
 
 #### serverless
 
+- abstracting away the compute infrastructure to the point you have no responsibilties for servers on which your code runs
 - key characteristics: any cloud providers fully managed service can be part of a serverless architecture
   - infrastructure externally managed
   - high availability
@@ -84,8 +85,52 @@
 - use cases/considerations
   - purpose driven architectures and application flexibility
   - quick to market
+- serverless architecture: thinking in terms of patterns and applications, rather than in terms of individual functions or resources
+  - migration strategies
+  - types of compute and data stores you can select
+  - application architecture patterns you can use
+- application design: choose services and patterns that suit your workloads based on characteristics such as
+  - expected throughput
+  - service limits
+  - cost
+  - SLO, SLAs
+- cost comparisons with other architecture models
+  - infrastructure cost to run workloads: e.g. server provisioning vs invocation costs
+  - upfront development cost: dev effort to plan, architect and provision resources
+  - maintainence cost:
+- value comparisons with other architecture models
+  - increased speed and agility: of course this comes after the initial learning curve
+  - cost allocation: much easier to allocate costs to customers and events vs to servers
+    - i.e. the costs occur when events occur
+- think through how to observe and react to events in your distributed services
+  - each component should scale independently
+  - implement circuit breakers to restrict the blast radius of failed services
 
-### cloud migration patterns
+### cloud migration
+
+- two broad domains: how do you
+  - implement compute infrastructure:
+    - capacity processes and cost models: reflects the three general ways of operating infrastructure
+      - server based
+      - containerized
+      - APIs and microservices
+  - approach application dev and deployment: operational processes and development models
+    - simple move to the cloud: but lacks flexible build and deploy processes
+    - api driven microservice-based applications with the most flexibility but requires the most rewrite of legacy tech stac
+- considerations: its all about documentation, planning and strategy
+  - what does each application do and how are the components organized
+  - how can you break up data based on CQRS? you have to strangle the database along with the microservices
+    - what belongs to the control plane?
+    - what belongs to the data plane?
+    - once the data is distributed, which set of db engines match the throughput, consistency, access patterns, etc reqirements
+  - how does the application scale, and which components drive the capacity you need?
+    - should you migrate leaf components first? or those with the most demanding capacity requirements
+  - do you have scheduled based tasks?
+  - do you have workers listening to a queue?
+  - where can you refactor/enhance functionality without impacting the current implementing
+    - perfect for load balancers and API gateway
+
+#### migration patterns
 
 - refactor/migration: service by service is moved to the cloud into a new architecture
 - lift and shift: aka rehost; copy pasta legacy into cloud services to save on hosting costs
@@ -94,6 +139,82 @@
 - replatform: lift and shift then replacement/refactor
   - this is more incremental then a pure lift and shift
   - you will need to connect the remaining legacy services with the new cloud services until everything is fully migrated
+- leap frog: from legacy on-premise monoliths straight to serverless cloud architecture
+- organic: migration with a lift-and-shift approach
+  - e.g. servers to EC2s, perhaps some ECS/lambdas thrown in, but limited rewrites
+  - the goal is to get things into the cloud, and experiment with serverless & microservices
+- strangler: incrementally and systematically decomposes monolithic applications by creating APIs and building event-driven components that gradually replace components of the legacy application.
+  - Distinct API endpoints point to old and to new components and safe deployment options (such as canary deployments) let you point back to the legacy version with very little risk.
+
+### scaling
+
+- strategize for the current scale requirements in addition to the anticipated growth
+  - know the capabilities and service limits of the services that you’re integrating
+    - especially the service limits, e.g. api gateay 10mb vs SQS 256kb
+  - select patterns that optimize your application for the scale you need to support
+    - timeouts, retry behavior, throughput, payload size, etc
+
+#### demand
+
+- both compute + data
+- organic demand
+- merger and acquisition: increases dramatically within a short period
+
+#### complexity
+
+- management
+- performance
+- security
+
+#### scaling reliably with tests
+
+- increased need for more effective load tests since you can scale/tweak the perf of individual components
+  - you need to have a solid understanding of peak load capacity
+- best practices
+  - load test with authentic data with appropriate volumes that exercise each integration point with production access patterns
+  - spin a production like environment, never load test locally
+  - identify the bottlenecks/failure points, modify perf characteristcs and iterate
+    - this may move the bottleneck to other integration points
+      - you need to know where the bottleneck is most appropriate, based on your workload and business requirements
+  - choose a percentile that reflects the business need when monitoring
+    - build in error handling logic to handle failures that are outliers
+  - dont mock services you cant control
+    - when you're load testing, you need the real beef
+
+#### managing scale through monitoring
+
+- components should output appropriate signals
+- monitor by percentile, and not just avg/raw numbers
+- log efficiently and effectively
+
+### deploying
+
+- strategy for deploying new application versions and infrastructure are equally important
+- QA, qa, Qa, qA ;)~
+- standardization and optimation
+- auditing and reacting to changes
+- halt/rollback mechanisms
+- managing configuration changes
+  - similar in terraform how you can consume deployed artifacts (e.g. ARN, ips, etc)
+    - bake it into the deployment package: refrain from this as much as possible
+    - 12factor it: the easiest, but should atleast be encrypted; however its difficult to share/update across nodes
+    - load at runtime from some secrets manager: the most robust (and complex) option
+
+#### strategies
+
+- all at once: 100% of traffic goes to the new version
+- traffic shifting strategies
+  - canary deployment: e.g. 20% goes to new versio for 20 mins, and then once validated 100% goes to new version
+  - linear deployment: e.g. 10% of traffic goes to new version every 20 minutes until 100% is shifted
+
+### testing
+
+- testing: you generally need a test account that mirrors the production account
+- local tests within the dev environment
+  - unit tests focusing on business logic
+  - cloud native code is generally more difficult to test locally (see localstack)
+- integration tests: targeting remote test accounts with prod parity
+- automated integration and accepted tests against other envornments providing gates for production deployments
 
 ## APIs
 

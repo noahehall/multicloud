@@ -3,8 +3,16 @@
 ## best practices
 
 - use purpose built dbs instead of general purpose
+  - refrain from having a single, shared general purpose db
   - purpose built DBS excel in as peicfic domain with unmatched performance relative to general purpose dbs
   - deploy mulitple DB engines for specific needs and run analytics across a data warehouse
+  - match the data store to the business need and the type of transactions it needs to support
+- model your data stores into transactional vs query needs using concepts from CQRS to design for the type of work the db needs to do
+- using multiple dbs requires
+  - managing distributed transactions/partial execution failures with business logic/step functinos
+  - source of truth is scatterred across data stores and must be shared with other domains
+  - embrace eventual consistency
+  - choose the right ETL pattern
 
 ## basics
 
