@@ -19,6 +19,7 @@
 - [billing: user guide](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html)
 - [billing: consolidated](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
   [Title](https://docs.aws.amazon.com/wellarchitected/latest/framework/sustainability.html)
+- [compliance center: research papers](https://aws.amazon.com/financial-services/security-compliance/compliance-center/?country-compliance-center-cards.sort-by=item.additionalFields.headline&country-compliance-center-cards.sort-order=asc&awsf.country-compliance-center-master-filter=*all)
 
 ### well architected
 
@@ -30,7 +31,7 @@
 - [lens: intro](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses.html)
 - [lens: SaaS](https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/saas-lens.html)
 - [lens: serverless](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html)
-- [lens: financial services industry (FSI)](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/general-design-principles.html)
+- [lens: financial services industry (FSI)](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/welcome.html)
 - [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
 - [pillar: cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
 - [pillar: operational excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html?ref=wellarchitected-wpp)
@@ -281,10 +282,9 @@
 
 - a central place to perform and organize your framework reviews
 - general process
-  - define your workload by answering a series of architectural questions
-  - select the pillars to evaluate
+  - define your workload
+  - select the pillars to evaluate: each pillar provides a different set of questions
     - Consider each pillar and its importance to your business context.
-    - your responses are evaluated against the pillars
   - select the base framework questions
     - at this point you can also select the an industry/tech specific lens
   - identify best practices you are following
@@ -332,10 +332,19 @@
     - implement security baselines, configurations, and audit capabilities
   - automated governance
     - includes account provisioning, enforcing and monitoring budgets, and managing security, risk and compliance
-- common workloads and scenarios
-  - accessing financial data
-  - simplifying regulatory reporting
-  - using AI/ML
+- common workloads and best practices
+  - accessing financial data: historical and real-time market data, alternative data, and buying decisions.
+    - Strict requirements around user entitlements and data redistribution
+    - low latency requirements
+    - Reliable network connectivity for market data providers and exchanges
+  - simplifying regulatory reporting: Building a reporting data lake on AWS and using the rich set of services
+    - Data quality, integrity, and lineage into the ingest and processing pipelines
+    - Data encryption at rest and in transit requirements
+    - Mask or tokenize personally identifiable information (PII) data
+  - using AI/ML: tools to enhance customer interactions through chatbots, improve surveillance, detect fraud, gather trading ideas from unstructured data, and customize product offerings.
+    - Secure architecture to protect code and model artifacts
+    - CI/CD pipeline integrated with change-control systems for model deployment
+    - Automated end-to-end evidence capture of the entire model development lifecycle
 
 ##### Data Analytics Lens
 
