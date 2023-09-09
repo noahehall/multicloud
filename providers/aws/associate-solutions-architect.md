@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Getting Started with AWS CloudFormation
+    - Introduction to AWS Step Functions Version 2.0
     - AWS Backup Primer
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager

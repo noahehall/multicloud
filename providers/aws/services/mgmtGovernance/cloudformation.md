@@ -1,17 +1,21 @@
 # CloudFormation
 
 - IaaC provisioning tool for modeling aws resources and automating provisioning and upgrades
+- [template ref](./cloudformation-templateRef.md)
+- [aws cli tools](../devtools/cli-cfn.md)
 - [bookmark](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html)
 
 ## my thoughts
 
-- you should prefer terraform because: known cloudformation limitations
+- known cloudformation limitations
   - there are quotas
   - not all features are available in every region
-- however, you must know cloudformation to pass the aws certs
+  - shiz isnt 100% free
+- you must know cloudformation to pass the aws certs
 
 ## links
 
+- [AAA: cfn github](https://github.com/aws-cloudformation)
 - [available sdks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/sdk-general-information-section.html)
 - [cloudformation designer](https://console.aws.amazon.com/cloudformation/designer)
 - [deletion policy](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html)
@@ -30,6 +34,14 @@
 - [updating stacks using change sets](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html)
 - [user guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/index.html)
 - [working with stacks](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html)
+
+### cfn-guard
+
+- [intro](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html)
+
+### cfn-lint
+
+- [github](https://github.com/aws-cloudformation/cfn-lint)
 
 ### API
 
@@ -58,19 +70,24 @@
 
 ### pricing
 
+- You are only charged for the resources you create and the API calls that CloudFormation performs on your behalf.
 - using registry extensions
   - incur charges per handler operation
     - CRUD/LIST actions on a resource type
     - CUD actions for a hook type
 - resource providers in the following namespaces `AWS::*, Alexa::*, and Custom::*`
   - free, but you pay for the underlying resources
-
-## terms
+- manage third-party resources
+  - charged per operation
 
 ## basics
 
 - cloudformation can only perform actions that you have permissions (IAM) to do
   - the permissions required is 100% dependent on actions required to instantiate a stack from a template
+
+### Resources
+
+- anything you can create on AWS
 
 ### templates
 
@@ -82,29 +99,24 @@
   - the bucket is accessible to anyone with s3 perms in your aws account
     - you can instead create your own bucket and manage its permissions and specify the s3 url of a template file
 
-```yaml
-AWSTemplateFormatVersion: 2010-09-09
-Description: Some Template
-Resources:
-  MyEC2:
-    Type: 'AWS::EC2::Instance' # all service namespaces follow this pattern
-    Properties: # you'll mainly be in here
-      ImageId: ami-abcdefg
-      InstanceType: t2.micro
-      ...
-  MyEIP:
-    Type: 'AWS::EC2::EIP'
-    Properties:
-      InstanceId: !Ref MyEC2 # link resources with Ref
-```
+#### Third Party/Private Resources
+
+- Model, provision, and manage third-party application resources
+- Use the open source CloudFormation CLI to build your own CloudFormation resource providers (native AWS types published as open source).
 
 ### stacks
 
-- provision aws resources from a template
+- provisioned aws resources realized from a template
+  - you can create stacks from the CLI/Console
 - collection of AWS resources that you can managed as a single unit
 - deleting stacks
   - delete: all the resources are deleted
   - deletion policy: you can retain some of the resources
+
+### StackSets:
+
+- named set of stacks that use the same template, but applied across different accounts and Regions
+- used to create, update, or delete stacks across multiple AWS accounts and Regions with a single operation.
 
 #### change sets
 
@@ -115,23 +127,34 @@ Resources:
   - updating an un-updatable resource
   - insufficient permissions
 
+### Registry
+
+### tools
+
+#### cfn guard
+
+- open-source, general-purpose, policy-as-code evaluation tool.
+- use CLI commands to validate structured hierarchical JSON or YAML data against those rules. Guard also provides a built-in unit testing framework to verify that your rules work as intended.
+
+#### cfn lint
+
+- Validate AWS CloudFormation yaml/json templates against the AWS CloudFormation Resource Specification and additional checks.
+- Includes checking valid values for resource properties and best practices.
+
 ## considerations
 
 ## integrations
 
 ### cfn-cli
 
-- [see markdown](../devtools/cli-cfn.md)
-
 ### cdk
-
-- [see markdown](../devtools/cdk.md)
 
 ### SAM
 
-- [see markdown](../devtools/cli-sam.md)
-
 ### vpc privatelink
 
-- [see markdown](../networkingContentDelivery/vpc-privateLink.md)
-  - creating a VPC endpoint for cloudformation to use
+- creating a VPC endpoint for cloudformation to use
+
+### CodePipeline
+
+### Config
