@@ -285,7 +285,7 @@
 
 ## Cloud Adoption Framework (CAF)
 
-- review and summarize the link up top
+- TODO: review and summarize the link up top
 
 ### Security Perspective
 
