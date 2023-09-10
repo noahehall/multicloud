@@ -73,7 +73,7 @@
 ## Non Relational
 
 - NoSQL: un/semistructured, lacking the ACID mechanisms of relational dbs
-- NewSQL: un/semistructured, gaining traction on the ACID mechanisms of relational DBs
+- NewSQL: un/semistructured, gaining traction with implementing ACID mechanisms similar to that of relational DBs
 - Denormalized document, wide column, or key-value
 - Optimized for compute
 - best scaled horizontally

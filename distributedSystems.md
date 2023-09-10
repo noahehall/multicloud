@@ -2,7 +2,7 @@
 
 - by Roberto Vitillo
   - reading: done
-  - copying: 118 > top of page somewhere after multi-version concurrnecy control
+  - copying: 145 > http caching
 - a group of nodes that cooperate by exchanging messages over communication links to achieve some task
 - the emergence of an application requiring high availability and resilience against single node failures
 
@@ -55,6 +55,8 @@
   - how to guard `against snooping
 - coordination
   - especially in the presence of failures
+    - and failures are unavoidable
+  - is always expensive to implement
 - scalability
   - in terms of efficiently handling load, i.e. the consumption of system resources
   - an increase in load sholuld not degrade a service's performance
@@ -218,10 +220,12 @@
 
 ### consensus
 
-- a group of processes has to decide a value so that
+- general consensus: a group of processes has to decide a value so that
   - every non-faulty process eventually agrees on a value
   - the final decision of every non-faulty process is the same everywhere
   - the value that has been agreed on has been proposed by a process
+- uniform consensus: when all processes have to a agree on a value, even fault ones
+  - e.g. when atomically commiting a distributed transaction
 
 ## Replication
 
@@ -438,6 +442,7 @@
   - how each replica converges to the same state
     - its local state is a semilattice (partially ordered)
     - its merge operation produces a state that is idempotent, commutative and associative
+  - guarantees a lower form of consistency but doesnt have to pay the cost of expensive coordination
 - examples
   - registers
   - counters
@@ -466,6 +471,36 @@
 
 - guarantees that partial failures arent possible
 - either all operations in the transactions succeed or none do
+  - partial failures require guaranteeing that the successes are rolled back
+
+##### Write Ahead Logs (WAL)
+
+- a log thats persisted to disk before changing state in the actual data store
+- each log entry records the:
+  - identifier of the transaction making the change
+  - identifier of the object being modified
+  - both the old and new values of the object
+- if a transaction is aborted/system crashes, the WAL contains enough info to redo changes
+  - ensures atomicity and durability within a single data store
+    - the WAL isnt shared across processes
+
+##### Two Phase commit (2PC)
+
+- synchronous protocol used to implement atomic transaction commits across multiple processes
+  - often combined with a blocking concurrency control protocol like 2PL to provide isolation
+    - i.e. participants are holding locks while waiting for the coordinator, blocking other transactions acessing the same objects from making progress
+- it requires
+  - cooridnator process: orchestrates the actions of other processes
+    - when the coordinator wants to commit a transaction it sends a `prepare` request to the participants
+    - if all processes are prepared, it then sends a `commit` request ordering them to do so
+    - if any process is unprepared/doesnt reply, it sends a abort request
+  - participants: the other processes
+- assumptions
+  - the coordinator and the participants are always available
+  - the duration of any transaction is short-lived
+- issues with 2PC
+  - requires multiple round trips for a transaction to complete
+  - if the coordinator/any participant fails, transactions are blocked
 
 #### Consistency
 
@@ -532,21 +567,62 @@
   - optimistic: better for read-heavy workloads
     - avoid the overhead pessimistic protocols: i.e. no need to acquire or manage logical locks
   - pessimistic: more efficient for conflict-heavy workloads since they avoid wasting work
-- multi-version concurrency control: maintains an older version of the data store to overcome the issues with 2PL and OCC
-  - optimizes for read-only transactions by ensuring they
-    - can never block becaue of awaiting a lock
+- multi version concurrency control: MVCC; maintains an older version of the data store to overcome the issues with 2PL and OCC
+  - optimizes for read-only transactions by ensuring it always reads an immutable and consistent snapshot of the data store without blocking or aborting due to a conflict with a write transaction
+    - can never block because of awaiting a lock
     - conflict because the previous value was overwritten by a concurrent write
-  -
+  - for write tranactions it falls back to either 2PL or OCC
 
 #### Durability
 
 - guarantees that once the DB commits the transaction, the changes are persisted on durable storage s othat db doesnt lose the cnages if it subsequently crashes
+
+### Asynchronous Transactions
+
+- whenever you need to update apply transactions across multiple data stores
+- outbox pattern:
+  - the first data store sends its sucessfully committed local transactions to some temporary store
+  - the temporary store is monitored by some relay service and replays those transactions in the other data stores
+  - conceptually similar to state machine replication
+- Saga pattern:
+  - each saga is a distributed transaction composed of a set of local transactions
+  - each local transaction is paired with an `undo` transaction
+  - if all transactions in a saga succeed, then continue, else call the undo transactions to rollback
+  - its generally a good idea for a saga to be implemented with
+    - an orchestrator: manages the execution of the local transactions across the processes involved
+    - semantic locks: any data the saga modifies is marked with a dirty flag, which is only cleared at the end of the transaction
+
+## Scalability
+
+- the ability for a system to perform its purpose without performance degradations as load increases
+- vertical scaling: scaling up: making a system use its resources more efficiently, or providing more resources to be consumed
+- key strategies for scalability
+  - functional decomposition
+  - partitioning
+  - replication
+
+### functional decomposition
+
+- breaking a system into distinct components with well defined boundaries and responsibilities
+- then each component can be scaled individually
+
+### partitioning
+
+- splitting data into partitions and distributing them among nodes
+- then no single node takes the full force of load
+
+### replication (horizontal scaling)
+
+- replicating functionality or data across nodes, i.e. horizontal scaling
+- the only long-term solution to increase a systems capacity
 
 ## Implementations
 
 - of various things discussed in this file
 
 ### Paxos
+
+- state machine replication protocol
 
 ### Raft
 
@@ -609,4 +685,11 @@
   - basically a client that sends a read request, but fails to get a read quorom
   - it resends its latest write request to bring out-of-sync replicas back in sync
 - replica synchronization: continous backgorund mechanism that runs on every replica and periodically communicates with others to identify and repair inconsisistencies
--
+
+### Google Spanner
+
+- arguable one of the most sucessful NewSQL data stores
+- breaks key-value pairs into partitions in order to scale
+- each partition is replicated across a group of nodes in different data centers using the Paxos protocol
+- uses 2PC to support transactions that span multiple partitions
+- uses MVCC combined with 2PL to guarantee isolation between transactions
