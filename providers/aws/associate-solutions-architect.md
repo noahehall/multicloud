@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - Introduction to AWS Step Functions Version 2.0 > Why Use AWS Step Functions?
+    - Introduction to AWS Step Functions Version 2.0 > States Language > Common State Fields
     - AWS Backup Primer
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager

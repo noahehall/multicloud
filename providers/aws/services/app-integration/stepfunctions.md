@@ -1,7 +1,6 @@
 # Step Functions
 
-- serverless orchestration
-- low-code visual workflow service used to orchestrate AWS services, automate business processes, and build serverless applications.
+- serverless orchestration: any computational problem or business process that can be subdivided into a series of steps
 
 ## my thoughts
 
@@ -44,17 +43,34 @@
 
 ### pricing
 
-- charged based on the number of state transitions required to execute a workflow
-- charged for the total number of state transitions across all state machines, including retries
+- do not pay for idle time, regardless of how long each state persists (up to one year).
+- pay for each transition from one state to the next
+  - metered by state transition
+  - charged based on the number of state transitions required to execute a workflow
+  - charged for the total number of state transitions across all state machines, including retries
 
 ## basics
 
 - centrally manages a workflow by breaking it into multiple steps, adding flow logic, and tracking the inputs and outputs between the steps.
 - maintains the application state, tracking exactly which workflow step your application is in, and stores an event log of data that is passed between application components
+- high level
 
-### tasks
+### Scaling
 
-- is a state in a workflow that represents a single unit of work that another AWS service performs
+- automatic scaling: scales the operations and underlying compute to run the steps of your application for you in response to changing workloads
+
+### availability
+
+- built-in fault tolerance and maintains service capacity across multiple Availability Zones in each region
+
+### Workflows
+
+- a collection of states that can do work (Task states)
+- determine which states to transition to next (Choice states), or stop an activity with an error (Fail states), and so on
+
+#### States
+
+- task: is a state in a workflow that represents a single unit of work that another AWS service performs
   - referred to by its name, can be any unique string within the scope of the entire state machine.
   - Each step in a workflow is a state.
 - perform work using aws services or passing parameters to API actions of other services
@@ -67,7 +83,7 @@
   - Begin parallel branches of activity.
   - Dynamically iterate steps.
 
-#### states
+#### State Primitives
 
 - wait: delays the state machine from continuing for either a duration or timestamp
   - charges
@@ -90,14 +106,22 @@
   - succeed
   - fail
 
+#### States Language
+
+- a JSON-based, structured language used to define your state machine
+- States can have multiple incoming transitions from other states. The process repeats itself until it reaches a terminal state, a Success or Fail state, or until a runtime error occurs.
+- All non-terminal states must have a Next field, except for the Choice state
+  - Next fields must be identical to state keys
+
 ```jsonc
-// The States Language defines a set of built-in strings that name well-known errors, all beginning with the `States.` prefix
 // callback: pause a workflow indefinitely until a task token is returned
 // ALL, Retry, Catch
 {
-  "startAt": "thisThing",
+  "Comment": "about this workflow",
+  "startAt": "This Task", // initial state
   "States": {
-    "ThisThing": {
+    "Some other task": {},
+    "This Task": {
       "Type": "Task", // state type
       "Resource": "arn:aws:SERVICE:us-east-1-abcd:etc:etc",
       "End": false,
@@ -121,12 +145,7 @@
 }
 ```
 
-### activities and workers
-
-- activities: your application
-- activity workers: execute application code and report success/failure
-
-### integration patterns
+#### integration patterns
 
 - sequential: Iterates through each state in your state machine in sequential order
 - parallel: Used to create parallel branches in your state machine
@@ -136,7 +155,7 @@
 - sagas: manage failures where each step in a distributed workflow includes compensating transactions that undo changes made by its predessor
   - its all about faking ACID across datastores: e.g. in a purchase workflow, if any step fails, there needs to be logic to rollback changes made by previous steps
 
-### failure management
+#### failure management
 
 - its often preferred to
   - handle retry and backoff logic via step functions (looping) vs in application logic
@@ -147,20 +166,56 @@
   - when a step reports an error, it will look through the catchers for a matching error and transitions to the state named in Next field
   - each catcher can specify multiple errors to handle
 
+#### activities and workers
+
+- activities: your application
+- activity workers: execute application code and report success/failure
+
+#### Express Workflows
+
+- support event rates greater than 100,000 per second
+- coordinate AWS Lambda function invocations, AWS IoT Rules Engine actions, and Amazon EventBridge events.
+
 ## considerations
 
 ## integrations
+
+- includes SDK integrations to call over two hundred AWS services
 
 ### lambdas
 
 - for tasks <= 15 minutes; best to use with wait states
 
-### fargate
+### ECS
 
-- tasks 15 minutes
+- fargat etasks 15 minutes
+
+### EKS
 
 ### batch
 
 - for batch jobs
 
 ### dynamodb
+
+### SNS
+
+### SQS
+
+### Athena
+
+### Glue
+
+### EMR
+
+### sagemaker
+
+### API Gateway
+
+### cloudwatch
+
+### cloudtrail
+
+### EventBridge
+
+### IoT
