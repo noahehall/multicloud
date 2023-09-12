@@ -1,6 +1,6 @@
 # Tape Gateway
 
-- Back up and archive on-premises data to virtual tapes in AWS
+- Back up and archive on-premises data to S3 archive tiers for long-term retention.
 
 ## my thoughts
 

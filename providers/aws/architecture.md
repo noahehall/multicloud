@@ -59,6 +59,7 @@
 - [databases](https://aws.amazon.com/products/databases/)
 - [frontend and mobile](https://aws.amazon.com/products/frontend-web-mobile/)
 - [hpc: high performance computing](https://aws.amazon.com/hpc/)
+- [hybrid cloud](https://aws.amazon.com/hybrid/)
 - [iot](https://aws.amazon.com/iot/)
 - [machine learning](https://aws.amazon.com/machine-learning/)
 - [management and governance](https://aws.amazon.com/products/management-and-governance/)

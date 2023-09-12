@@ -1,6 +1,8 @@
 # Storage Gateway
 
-- hybrid solution that connects an on-premise data centers with cloud-based storage.
+- hybrid solution that connects an on-premise data centers with cloud-based storage and services
+  - Some workloads cannot easily migrate to the cloud.
+  - constantly passing data to and from the cloud is too slow, too resource intensive, or not permitted.
 - services
   - hardware appliance: kept in this file with general information
   - [file gateway](./storageGateway-fileGateway.md)
@@ -13,6 +15,8 @@
 
 - [landing page](https://aws.amazon.com/storagegateway/?nc=sn&loc=0)
 - [hardware appliance](https://aws.amazon.com/storagegateway/hardware-appliance/?nc=sn&loc=2&dn=5)
+- [hardware appliance: available regions](https://docs.aws.amazon.com/general/latest/gr/sg.html#sg-hardware-appliance)
+- [service endpoints & quotas](https://docs.aws.amazon.com/general/latest/gr/sg.html)
 
 ## best practices
 
@@ -26,6 +30,7 @@
   - moving backups to the cloud
   - using on-premises file shares backed by cloud storage
   - providing low-latency access to locally-cached data in AWS for on-premises applications.
+- Optimized data transfers to storage in AWS to reduce transfer costs
 
 ### pricing
 
@@ -35,18 +40,25 @@
 
 ## basics
 
-- for all other gateway services, check one of colocated files
+- Storage: Connect your on premise data centers to storage services
+  - provides public VPC, and Federal Information Processing Standards (FIPS) service endpoints.
+- Management and monitoring via gateway console: manage and monitor your Storage Gateway and its associated resources.
+- storage protocols: NFS, SMB, iSCSI, or iSCSI VTL
 
-### Hardware Appliance
+### Deployment options for the Storage Gateway appliance
+
+- on premises (required for stored volumes)
+  - hardware appliance: see below
+  - VM appliance: Download, deploy, and activate the AWS Storage Gateway VM image on any of the supported host platforms.
+- in AWS Cloud
+  - cached volume: Create an Amazon EC2 instance to deploy your gateway in the AWS Cloud
+
+#### Hardware Appliance
 
 - a physical, standalone, validated server configuration for on-premises deployments
 - pre-loaded with Storage Gateway software, and provides all the required CPU, memory, network, and SSD cache resources for creating and configuring File Gateway, Volume Gateway, or Tape Gateway.
 - out of the box experience that does not require any additional infrastructure, and is managed from the AWS Console or API.
 - use cases: branch offices, research and development departmental workgroups, and laboratory or industrial sites
-
-### Storage Protocols
-
-- connects to your local production or backup applications with NFS, SMB, iSCSI, or iSCSI-VTL
 
 ### Caching
 
@@ -74,12 +86,28 @@
 
 ### cloudwatch
 
+- monitoring
+
 ### IAM
 
+- secure access to the service and resources
+
 ### KMS
+
+- for encrypting data
+
+### Cloudtrail
+
+- activity logging
 
 ### VMware Cloud
 
 - health checks integrated with VMware vSphere High Availability (VMware HA)
 - Storage Gateway deployed in a VMware environment on-premises, or in VMware Cloud on AWS,
   - automatically recover from most service interruptions in under 60 seconds
+
+### EventBridge
+
+### VPC
+
+- DirectConnect

@@ -33,6 +33,7 @@
 - [vpc: traffic mirror metrics](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirror-cloudwatch.html)
 - [vpc: transit gateway metrics](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html)
 - [vpc: transit gateway monitoring](https://docs.aws.amazon.com/vpc/latest/tgw/monitoring-cloudwatch-metrics.html)
+- [storageGateway: volume gateway metrics](https://docs.aws.amazon.com/storagegateway/latest/vgw/monitoring-volume-gateway.html)
 
 ## basics
 

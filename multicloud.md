@@ -45,6 +45,13 @@
   - recoverability
   - security: data security patterns and a clear mapping of these patterns to Cloud security controls
 
+### Hybrid cloud
+
+- existing application that must run on premises, that uses databases or files, or that must perform backups, and you want to use cloud resources and scalability.
+- fast, local access to data, but you also want to take advantage of cloud compute and analytics engines.
+- years’ worth of security and compliance requirements, supported by processes and procedures in disparate systems on premises. And you want to use cloud management and monitoring capabilities, ideally from a single pane of glass.
+- many physical locations to manage with data and applications and you want reliable connectivity and simplified maintenance.
+
 ### multiloud, cloudnative and open source
 
 - opensource: conflicts with responsibilities proprietary cloudnative services

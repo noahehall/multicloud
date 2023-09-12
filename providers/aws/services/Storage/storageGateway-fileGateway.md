@@ -30,10 +30,11 @@
 
 ### FSx File gateway
 
-- provides low-latency, on-premises access to fully managed file shares in FSx Windows File Server.
+- solution for replacing on-premises NAS, such as end-user home directories and departmental or group servers, with cloud storag
+  - user or team file shares, and file-based application migrations like web content management, and media workflows.
+  - migrate and consolidate on-premises file-based application data stored on NAS arrays or file server virtual machines into FSx
+- provides low-latency, on-premises access to fully managed file shares & home directories in FSx Windows File Server.
   - store and access file data with Windows-native compatibility, including full NTFS support, shadow copies, and access control lists (ACLs).
-- user or team file shares, and file-based application migrations like web content management, and media workflows.
-- migrate and consolidate on-premises file-based application data stored on NAS arrays or file server virtual machines into FSx
 
 ## considerations
 
