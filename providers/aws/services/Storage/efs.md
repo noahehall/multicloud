@@ -63,6 +63,10 @@
 - age-off policy of 7,14, 30, 60, or 90 days
 - files automatically move from Amazon EFS Standard storage to EFS Standard-IA storage, or from Amazon EFS One Zone storage to EFS One Zone-IA storage.
 
+### EFS Replication
+
+- abcd
+
 ### Security
 
 - uses a traditional file permissions model, file locking, and hierarchical directory structure using the NFSv4 protocol

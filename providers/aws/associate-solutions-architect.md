@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - AWS Backup Primer > Protecting Data in the Cloud > Understand your usage
+    - AWS Backup Primer > AWS Backup Security
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

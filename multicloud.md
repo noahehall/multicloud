@@ -250,13 +250,12 @@
 
 ### SLAs
 
-- service level agreements that outline acceptable/promised downtime
-- RTO: recovery time objective; time it takes to restore an application or system to operational status
-  - the maximum acceptable delay between the interruption of service and restoration of service.
-  - determines what is considered an acceptable time window when service is unavailable
-- RPO: recovery point objective; how far back an application or system can be restored from backup or snapshot, usually measured in hours.
-  - the maximum acceptable amount of time since the last data recovery point
-  - determines what is considered an acceptable loss of data between the last recovery point and the interruption of service, or how many hours of data loss is acceptable
+- service level agreements that outline acceptable downtime or promised uptime
+  - always includes audit and compliance objectives if stipulated by industry regulation/laws
+- RTO: recovery time objective; maximum allowed time to restore a system to operational status
+  - i.e. if RTO is 6 hrs, engineers have up to 6 hrs to restore a failed system
+- RPO: recovery point objective; the maximum allowed time since the last data recovery point (backup)
+  - i.e. if you backup every 10 hours, the greatest amount of data you can lose is the last 10 hours
 - tier 1 SLA: Mission critical services: Outages have a severe impact on business operations.
   - usually require four to 5 nines or better of availability.
   - Usually include customer facing sites, revenue, or order processing systems
@@ -336,7 +335,14 @@
     - For development and testing?
     - Long-term retention? what are the retention requirements for each workload?
     - Regulatory compliance?
-    - juts in case backups?
+    - just in case backups?
+- Backup granularity: defined by the depth the backup or restore requires.
+  - File-level recovery: e.g. any configuration files needed to restore an application
+  - Application-level recovery: e.g. a specific application version
+  - Application data-level recovery: e.g. a specific database within MySQL
+  - volume-level recovery: e.g. any persistent volumes used across nodes
+  - instance-level recovery: e.g. any VMs or containers
+  - managed-service recovery: e.g. if using some serverless/managed service
 
 #### Backup and Restore
 
