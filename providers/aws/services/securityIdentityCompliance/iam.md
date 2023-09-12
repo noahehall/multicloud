@@ -44,6 +44,7 @@
 - [systemsManager profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
 - [vpc: reachability analyzer perms](https://docs.aws.amazon.com/vpc/latest/reachability/security_iam_required-API-permissions.html)
 - [Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
+- [step functions: advanced permissions](https://docs.aws.amazon.com/step-functions/latest/dg/concept-create-iam-advanced.html)
 
 ### API
 
@@ -549,3 +550,13 @@
 
 - Amazon EC2 instance profiles provide credentials to EC2 instances.
   - works similarly to IAM roles for ECS tasks
+
+### Step Functions
+
+- a user/role/etc can be given access to AWS Step Functions by directly attaching the existing policies defined in the IAM service
+  - AWSStepFunctionsConsoleFullAccess: access policy providing access to the AWS Step Functions console
+    - For a full console experience: a user may need iam:PassRole permission on other IAM roles that can be assumed by the service.
+  - AWSStepFunctionsFullAccess: access policy providingaccess to the AWS Step Functions API.
+  - AWSStepFunctionsReadOnlyAccess: access policy providingread only access to the AWS Step Functions service.
+- AWS Step Functions can invoke code and access AWS resources.
+  - you need to grant Step Functions access to those resources by using an IAM role.

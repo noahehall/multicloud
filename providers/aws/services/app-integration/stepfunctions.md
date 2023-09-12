@@ -19,6 +19,11 @@
 - [handling error conditions](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-handling-error-conditions.html)
 - [lambda service exceptions](https://docs.aws.amazon.com/step-functions/latest/dg/bp-lambda-serviceexception.html)
 - [limits overview](https://docs.aws.amazon.com/step-functions/latest/dg/limits-overview.html)
+- [api: landing page](https://docs.aws.amazon.com/step-functions/latest/apireference/Welcome.html)
+
+### Tools
+
+- [python ML SDK](https://aws-step-functions-data-science-sdk.readthedocs.io/en/stable/index.html#)
 
 ## best practices
 
@@ -48,12 +53,15 @@
   - metered by state transition
   - charged based on the number of state transitions required to execute a workflow
   - charged for the total number of state transitions across all state machines, including retries
+- standard workflows
+  - Priced per state transition: counted each time a step in your run is completed
+- express workflows
+  - Priced by the number of times you run, their duration, and memory consumption.
 
 ## basics
 
 - centrally manages a workflow by breaking it into multiple steps, adding flow logic, and tracking the inputs and outputs between the steps.
 - maintains the application state, tracking exactly which workflow step your application is in, and stores an event log of data that is passed between application components
-- high level
 
 ### Scaling
 
@@ -198,10 +206,56 @@
 - activities: your application
 - activity workers: execute application code and report success/failure
 
-#### Express Workflows
+#### Workflow Types
 
-- support event rates greater than 100,000 per second
-- coordinate AWS Lambda function invocations, AWS IoT Rules Engine actions, and Amazon EventBridge events.
+- In both cases, you define your state machine using the Amazon States Language
+- cannot change the workflow type after you have created your state machine.
+
+##### Standard Workflows
+
+- ideal for long-running, durable, and auditable workflows.
+- start automatically in response to events such as HTTP requests via Amazon API Gateway, IoT rules, or event sources in Amazon EventBridge.
+- 1 year max duration
+- run start rate: Over 2,000 per second
+- start transition rate: Over 4,000 per second per account
+- history
+  - list/describe with step functions api
+  - debugged via console
+  - cloudwatch logs (if enabled)
+- run semantics: Exactly-once workflow run
+- service integrations: Supports all service integrations and patterns.
+- Supports Step Functions activities.
+
+##### Express Workflows
+
+- ideal for high-volume, event-processing workloads such as IoT data ingestion, streaming data processing and transformation, and mobile application backends.
+  - coordinate AWS Lambda function invocations, AWS IoT Rules Engine actions, and Amazon EventBridge events.
+- 5 minute max duration
+- run start rate: support event rates greater than 100,000 per second
+- start transition rate: unlimited
+- history:
+  - cloudwatch logs by default
+- run semantics
+  - async express: at-least once
+  - sync express: at-most once
+- service integrations: Supports all service integrations.
+  - does not support Job-run (.sync) or Callback (.waitForTaskToken) patterns.
+- Does not support Step Functions activities.
+
+###### Async
+
+- Return confirmation that the workflow has started, but do not wait for the workflow to complete.
+- use cases
+  - when you don't require immediate response output, such as messaging services or data processing that other services don't depend on.
+  - started in response to an event by a nested workflow in Step Functions, or by using the StartExecution API Call.
+
+###### Sync
+
+- Start a workflow, wait until it completes, and then return the result.
+- use cases
+  - used to orchestrate microservices;
+    - develop applications without the need to develop additional code to handle errors, retries, or initiate parallel tasks.
+    - Can be invoked from Amazon API Gateway, AWS Lambda, or by using the StartSyncExecution API call.
 
 #### Workflow Studio
 
