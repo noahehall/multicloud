@@ -9,7 +9,9 @@
 ## links
 
 - [landing page](https://aws.amazon.com/backup/?did=ap_card&trk=ap_card)
+- [AAA: Getting started](https://docs.aws.amazon.com/aws-backup/latest/devguide/getting-started.html)
 - [audit manager](https://docs.aws.amazon.com/aws-backup/latest/devguide/aws-backup-audit-manager.html)
+- [audit manager: blog post](https://aws.amazon.com/blogs/aws/monitor-evaluate-and-demonstrate-backup-compliance-with-aws-backup-audit-manager/)
 - [ec2: backup & restore tutorial](<https://aws.amazon.com/getting-started/hands-on/amazon-ec2-backup-and-restore-using-aws-backup)
 - [ebs: backup & restore tutorial](https://aws.amazon.com/getting-started/hands-on/amazon-ebs-backup-and-restore-using-aws-backup/?trk=gs_card)
 - [efs: backup & restore tutorial](https://aws.amazon.com/getting-started/hands-on/amazon-efs-backup-and-restore-using-aws-backup/?trk=gs_card)
@@ -17,6 +19,7 @@
 - [vaults](https://docs.aws.amazon.com/aws-backup/latest/devguide/vaults.html)
 - [restoring a backup](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-a-backup.html)
 - [cross account/region copies](https://docs.aws.amazon.com/aws-backup/latest/devguide/recov-point-create-a-copy.html?icmpid=docs_console_unmapped)
+- [report plans](https://docs.aws.amazon.com/aws-backup/latest/devguide/working-with-audit-reports.html)
 
 ## best practices
 
@@ -134,15 +137,26 @@
 ### Backup Vaults
 
 - a container used for organizing your backups
+  - maintains immutable copies of your backups, preventing any user from altering or deleting your backup data.
+  - enforces a write-once, read-many (WORM) setting for all the backups
 - Use multiple vaults to store, organize, and apply different access policies across your backups
+  - Separate permissions; for example, development, test, and production
+  - unique SNS notification configuration per vault.
 - create up to 100 backup vaults per AWS Region.
-- enforces a write-once, read-many (WORM) setting for all the backups you store and create in a backup vault
-  - preventing inadvertent or malicious deletions or updates that could impact retention requirements.
+- vault names are unique & case sensitive
+  - contain 2–50 alphanumeric characters, hyphens, or underscores.
 
 #### Access Policies
 
 - a central and secure way to control access to your backups across AWS services
 - resource-based access policies on Backup Vaults across all users, rather than having to define permissions for each user
+
+#### Vault Lock
+
+- fortify compliance requirements by protecting your backups and lifecycles against intentional or accidental actions, such as deletions
+- uses a WORM model to make the data immutable
+  - no users—including root, administrators, or bad actors—can delete your backups or change their lifecycle settings such as retention periods and transition to cold storage
+- keeps these backups according to your scheduled retention periods.
 
 ### Audit Manager
 
@@ -150,6 +164,27 @@
 - set retention policies, which you can use to automatically remove old snapshots
 - automatically detect violations of your defined data protection policies and prompt you to take corrective actions
 - continuously evaluate backup activity and generate audit reports
+- control: a procedure designed to audit the adherence of a backup requirement, such as the backup frequency or the backup retention period
+  - resources protected by backup plan: identify gaps in your backup coverage.
+  - minimum frequency and retention: governing how frequently the backup plan should be taking backups and for how long recovery points should be maintained.
+  - prevent recovery point manual deletion: add up to five IAM roles allowed to manually delete recovery points if there are exceptions.
+  - recovery point encryption: evaluates if the backup recovery points are encrypted
+  - recovery point minimum retention: ensuring that resources have valid recovery points and are retained for at least the specified backup recovery point minimum retention period.
+- framework: a collection of controls that can be managed as a single entity
+  - create a freamwork for each regulatory standard/process you must comply with
+
+#### Report plans
+
+- visibility into your backup activities, where you can monitor your operations, identify failures, and take proactive steps to resolve or improve your setup.
+- delivers a daily report in CSV, JSON, or both formats to your Amazon S3 bucket.
+  - can also run an on-demand report anytime.
+  - s3 bucket must already exist
+- maximum of 20 report plans per AWS account.
+- templates: defines the information you want included in your report.
+
+### Events
+
+- supports these events: backup job, copy job, and restore job, and recovery point jobs.
 
 ### Security
 
@@ -157,6 +192,12 @@
   - who has access to the backups
   - for which resources
   - what actions they can take.
+
+#### Encryption
+
+- By default, AWS Backup creates an AWS KMS key with the alias aws/backup
+  - use this or choose a different one
+  - After you create a backup vault and set the AWS KMS encryption key, you can no longer edit the key for that backup vault.
 
 ## considerations
 
@@ -233,8 +274,15 @@
 
 ### Organizations
 
+- organization-wide backup protection and monitoring
 - manage and monitor all of your backups from a single management account
 - deploy data protection (backup) policies to configure, manage, and govern backup activity
+- trusted access
+  - Use the AWS Backup console to view details about the backup, restore, and copy jobs in any of the accounts in your organization
+
+### cloudwatch
+
+- monitor AWS Backup metrics by using the aws/backup namespace.
 
 ### Cloudtrail
 
@@ -277,3 +325,11 @@
 - centrally protect your on-premises VMware and VMware Cloud in AWS environments.
 - built-in controls for VMware backups so you can track backup and restore operations and generate auditor-ready reports.
 - a single-click restore experience so you can restore VMware backups on-premises and in VMware Cloud on AWS.
+
+### SNS
+
+- configure Amazon SNS to notify you of AWS Backup events from the Amazon SNS console.
+
+### EventBridge
+
+- monitor and log AWS Backup events to help support your regulatory compliance reporting obligations and meet your business continuity SLAs.

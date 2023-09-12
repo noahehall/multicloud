@@ -7,6 +7,7 @@
 - [10 things serverless architects should know](https://aws.amazon.com/blogs/architecture/ten-things-serverless-architects-should-know/)
 - [AAA: Reference Architecture Diagrams](https://aws.amazon.com/architecture/reference-architecture-diagrams)
 - [AAA: Solutions and Implementations](https://aws.amazon.com/solutions/)
+- [AAA: prescriptive guidance](https://aws.amazon.com/prescriptive-guidance/?apg-all-cards.sort-by=item.additionalFields.sortDate&apg-all-cards.sort-order=desc&awsf.apg-new-filter=*all&awsf.apg-content-type-filter=*all&awsf.apg-code-filter=*all&awsf.apg-category-filter=*all&awsf.apg-rtype-filter=*all&awsf.apg-isv-filter=*all&awsf.apg-product-filter=*all&awsf.apg-env-filter=*all)
 - [aws samples repo](https://github.com/aws-samples)
 - [aws vpc connectivity options](https://docs.aws.amazon.com/whitepapers/latest/aws-vpc-connectivity-options/welcome.html)
 - [blog: api gateway category](https://aws.amazon.com/blogs/compute/category/application-services/amazon-api-gateway-application-services/)
@@ -22,6 +23,7 @@
 - [serverless express (check examples dir)](https://github.com/vendia/serverless-express)
 - [service search](https://aws.amazon.com/products/)
 - [youtube: databases on aws](https://www.youtube.com/watch?v=WE8N5BU5MeI&t=9s)
+- [backup and recovery approaches on AWS](https://docs.aws.amazon.com/prescriptive-guidance/latest/backup-recovery/welcome.html)
 
 ### Whitepapers
 

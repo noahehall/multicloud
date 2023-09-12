@@ -67,3 +67,13 @@
 
 - review the retry policy with lambda subscribers
 - max 250 filter policies per region per topic
+
+### Backup
+
+- Notifications for failed backup jobs
+- Notifications sent when jobs have been completed or expired
+- supported events
+  - Backup job: BACKUP_JOB_STARTED | BACKUP_JOB_COMPLETED
+  - copy job: COPY_JOB_STARTED | COPY_JOB_SUCCESSFUL or COPY_JOB_FAILED
+  - restore job: RESTORE_JOB-STARTED | RESTORE_JOB_COMPLETED
+  - recovery job: RECOVERY_POINT_MODIFIED

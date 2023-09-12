@@ -1,6 +1,6 @@
-# Event Bridge
+# Event Bridge fka CloudWatch Events
 
-- serverless event bus
+- serverless event bus service that you can use to connect your applications with data from a variety of sources
 
 ## links
 
@@ -8,6 +8,7 @@
 - [user guide](https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-what-is.html)
 - [content filtering with event patterns](https://docs.aws.amazon.com/eventbridge/latest/userguide/content-filtering-with-event-patterns.html)
 - [architectural patterns with eventbridge pipes](https://aws.amazon.com/blogs/compute/implementing-architectural-patterns-with-amazon-eventbridge-pipes/)
+- [backup: events](https://docs.aws.amazon.com/aws-backup/latest/devguide/eventbridge.html)
 
 ## best practices
 
@@ -36,8 +37,11 @@
 
 ### producers
 
-- send events to the bus
-
 ### consumers
 
-## considerations
+## integrations
+
+### Backup
+
+- Backup sends events to EventBridge in a best-effort manner every 5 minutes.
+- EventBridge tracks more changes than the Backup notification API, including changes to backup vaults, copy job state, Region settings, and the number of cold or warm recovery points.
