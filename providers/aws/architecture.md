@@ -467,11 +467,12 @@
 
 ### Data protection
 
-- optional services to meet your data redundancy and disaster requirement needs
+- services to meet your data redundancy and disaster requirement needs
 - in AWS
-  - Backup
-  - Snapshots (native to many services)
-  - DRS Disaster Recovery Service
+  - Backup: centralized, end-to-end policy-based solution whenever you require auditing, reporting, and management,
+  - service native snapshots: offered by the service, e.g. RDS has snapshot features
+    - work best when you have no auditing requirements for the service and you are only required to back up a limited number of AWS services.
+  - Elastic Disaster Recovery Service (DRS): specializes in disaster recovery planning
 
 #### Backup & Archive
 
@@ -488,6 +489,8 @@
 - built into most services, check the docs for the storage service you're using
 
 #### Disaster Recovery Services
+
+- AWS DRS
 
 ## Compute
 

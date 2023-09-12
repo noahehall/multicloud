@@ -235,7 +235,11 @@
 
 ### GraphQL
 
-### gRPC
+### RPC
+
+#### gRPC
+
+#### tRPC
 
 ## Uptime
 
@@ -244,7 +248,7 @@
   - the level of service that you've promised to your business operation teams.
 - business continuity: the ability of an organization to provide useful services in the event of failure
 
-### SLAs:
+### SLAs
 
 - service level agreements that outline acceptable/promised downtime
 - RTO: recovery time objective; time it takes to restore an application or system to operational status
@@ -317,6 +321,22 @@
 ### Disaster Recovery
 
 - spectrum of strategies ranging from backup & Restore to multi-site active/active
+- Backups are an essential component of your business resiliency and operational commitments.
+- developing a backup strategy for services and data
+  - is there documentation on the data, applications and workloads in your environment
+  - What data is required to keep the business running?
+  - What additional data does the business want backed up?
+  - What purpose does this backup data serve?
+    - Is this for disaster recovery planning?
+    - Compliance and audit purposes?
+    - Daily business operations or data recovery?
+    - Ransomware recovery?
+  - How do you intend to use this backed-up data?
+    - Allow users to recover their own files?
+    - For development and testing?
+    - Long-term retention? what are the retention requirements for each workload?
+    - Regulatory compliance?
+    - juts in case backups?
 
 #### Backup and Restore
 
