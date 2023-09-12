@@ -102,29 +102,56 @@
 - parallel: create parallel branches of activity
   - invokes multiple branches of steps using the SAME input
 - map: run a set of steps for each element in an input array
-- terminal states: have no `Next` field, nor need an `End` field
-  - succeed
-  - fail
 
 #### States Language
 
 - a JSON-based, structured language used to define your state machine
+  - alternatively you can use the visual workflow designer in the console
 - States can have multiple incoming transitions from other states. The process repeats itself until it reaches a terminal state, a Success or Fail state, or until a runtime error occurs.
+- terminal states: dont require a `Next` field or an `End` field
+  - succeed
+  - fail
 - All non-terminal states must have a Next field, except for the Choice state
   - Next fields must be identical to state keys
+- json path expressions: each state receives input `$` as state and can filter and pass it to the next state
+  - InputPath
+  - OutputPath
+  - ResultPath
+  - Parameters
+  - ResultSelector
+- intrinsic functions: help Payload Builders process the data going to and from Task Resources
+  - States.Format
+  - States.StringToJson
+  - States.JsonToString
+  - States.Array
+- known errors:
+  - States.Timeout
 
 ```jsonc
 // callback: pause a workflow indefinitely until a task token is returned
 // ALL, Retry, Catch
 {
   "Comment": "about this workflow",
-  "startAt": "This Task", // initial state
+  "startAt": "This State", // initial state
   "States": {
-    "Some other task": {},
-    "This Task": {
+    "Some other state": {},
+    "This State": {
       "Type": "Task", // state type
-      "Resource": "arn:aws:SERVICE:us-east-1-abcd:etc:etc",
-      "End": false,
+      "Resource": "arn:aws:SERVICE:REGION:ACCOUNT_ID:etc:etc",
+      "Next": "Some other state", // receives OutputPath as input
+      "End": false, // required for all non-terminal states
+      "TimeoutSeconds": 100, // fails with States.Timeout error
+      // $ === entire input pass to the state
+      // alternatively you can extract a subset of the input as output
+      "OutputPath": "$.Payload", // defaults to $
+      // alternativey you
+      "InputPath": "$", // extract a subset of the input for processing by this task
+      "ResultPath": "$",
+      "ResultSelector": "$",
+      "Parameters": {
+        // payload becomes: {"greeting": "Welcome to John Doe's playlist."}
+        "greeting.$": "States.Format('Welcome to {} {}\\'s playlist.', $.firstName, $.lastName)"
+      },
       "Catch": [
         {
           "ErrorEquals": ["abc", "defg"],
@@ -176,11 +203,30 @@
 - support event rates greater than 100,000 per second
 - coordinate AWS Lambda function invocations, AWS IoT Rules Engine actions, and Amazon EventBridge events.
 
+#### Workflow Studio
+
+- low-code visual workflow designer for Step Functions
+- States Browser: drag n drop onto the convas
+  - Actions Panel: list of AWS apis, each being a task state
+  - Flow Panel: list of flow states
+- canvas panel: visually create a workflow graph
+- inspector panel: configure the workflow
+  - flow mode: properties for each state
+  - definition mode: the states language code
+- info panel: information about a selected API
+
+### Security
+
 ## considerations
 
 ## integrations
 
 - includes SDK integrations to call over two hundred AWS services
+
+### IAM
+
+- step funcs reuqire credentials that AWS can use to authenticate your requests
+- the credentials should have the appropriate policies attached for whatever the step fn does
 
 ### lambdas
 
