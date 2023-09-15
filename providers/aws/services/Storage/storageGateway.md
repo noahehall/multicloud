@@ -17,6 +17,7 @@
 - [hardware appliance](https://aws.amazon.com/storagegateway/hardware-appliance/?nc=sn&loc=2&dn=5)
 - [hardware appliance: available regions](https://docs.aws.amazon.com/general/latest/gr/sg.html#sg-hardware-appliance)
 - [service endpoints & quotas](https://docs.aws.amazon.com/general/latest/gr/sg.html)
+- [api ref](https://docs.aws.amazon.com/storagegateway/latest/APIReference/API_Operations.html)
 
 ## best practices
 
@@ -44,6 +45,9 @@
   - provides public VPC, and Federal Information Processing Standards (FIPS) service endpoints.
 - Management and monitoring via gateway console: manage and monitor your Storage Gateway and its associated resources.
 - storage protocols: NFS, SMB, iSCSI, or iSCSI VTL
+- The primary resource of the Storage Gateway is a gateway.
+  - sub-resources: don't exist unless they are associated with a gateway.
+  - such as volumes or Internet Small Computer System Interface (iSCSI) targets
 
 ### Deployment options for the Storage Gateway appliance
 
@@ -69,6 +73,7 @@
 ### Security
 
 - offers Federal Information Processing Standard (FIPS) 140-2 compliant endpoints in AWS GovCloud (US-East) and AWS GovCloud (US-West).
+-
 
 #### Encryption
 

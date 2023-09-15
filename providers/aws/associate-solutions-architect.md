@@ -4,7 +4,7 @@
 - bookmark:
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
-    - AWS Storage Gateway Deep Dive: Volume Gateway > Secure and Monitor Volume Gateway Overview
+    - AWS Storage Gateway Deep Dive: Amazon S3 File Gateway > intro
     - skipped courses: video only, no transcript or speed adjust
       - AWS Systems Manager
       - Amazon Route 53 - Amazon Route 53 - Basics

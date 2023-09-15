@@ -207,3 +207,27 @@
   - Recovery points: e.g. Track the number of deleted and warm and cold recovery points in each backup vault.
     - metrics: Number of warm and cold recovery points across each state
     - dimensions: Resource type, vault name
+
+## storage gateway - volume gateway
+
+- AvailabilityNotifications Number of availability-related notifications sent by the volume.
+- CacheHitPercent Percent of application read operations from the volume that are served from cache.
+- CachePercentDirty The volume's contribution to the overall percentage of the gateway's cache that isn't persisted to AWS.
+- CachePercentUsed The volume's contribution to the overall percent use of the gateway's cache storage.
+- CloudBytesUploaded The total number of bytes that the gateway uploaded to AWS during the reporting period.
+- CloudBytesDownloaded The total number of bytes that the gateway downloaded from AWS during the reporting period.
+- HealthNotifications The number of health notifications sent by the volume.
+- IoWaitPercent Percent of time that the gateway is waiting on a response from the local disk.
+- ReadBytes The total number of bytes read from your on-premises applications in the reporting period.
+- WriteBytes The total number of bytes written to your on-premises applications in the reporting period.
+- important metrics:
+  - Analyze the CloudBytesDownloaded and CloudBytesUploaded metrics to understand throughput between your gateway and the AWS Cloud.
+  - Use the ReadTime and WriteTime metrics with the Average statistic to measure latency.
+  - Monitor performance of your Storage Gateway by monitoring metrics like CachePercentDirty.
+    - The higher the percentage of dirty cache > the lower the space available for low-latency data.
+  - Use the ReadBytes and WriteBytes metrics with the Sum statistic to measure throughput from your on-premises applications coming into the gateway.
+- important alarms:
+  - High IO wait: IoWaitPercent >= 20 for 3 datapoints in 15 minutes
+  - Cache percent dirty: CachePercentDirty > 80 for 4 datapoints within 20 minutes
+  - Availability notifications: AvailabilityNotifications >= 1 for 1 datapoints within 5 minutes
+  - Health notifications: HealthNotifications >= 1 for 1 datapoints within 5 minutes

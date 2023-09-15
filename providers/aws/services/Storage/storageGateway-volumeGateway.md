@@ -28,6 +28,7 @@
   - consider creating a separate gateway for the high-throughput application
   - as a general rule, you should not use one gateway for all of your high-throughput applications and another gateway for all of your low-throughput applications.
   - To measure your volume throughput, use the ReadBytes and WriteBytes metrics.
+- CHAP configuration is optional but AWS recommends using CHAP for secure exchange between host initiator and target.
 
 ### anti patterns
 
@@ -77,6 +78,7 @@
 - range from 1 gibibyte (GiB) to 32 tebibytes (TiB) in size
   - support up to 32 volumes for a total maximum storage volume of 1,024 TiB [1 pebibyte (PiB)].
 - Local disks are needed for cache storage and an upload buffer for a cached volume gateway.
+- Data that is written to the Storage Gateway cache, but has not been uploaded to AWS, is referred to as dirty.
 - use cases
   - Custom file shares
   - Migrating application data into Amazon S3 and transitioning to Amazon EC2
@@ -186,6 +188,7 @@
 
 - provides protection against man-in-the-middle and playback attacks by periodically verifying the identity of an iSCSI initiator as authenticated to access a storage volume target
 - For each volume target, you can define one or more CHAP credentials.
+- To set up CHAP, you must configure it both on the Storage Gateway console and in the iSCSI initiator software that you use to connect to the target.
 
 ### iSCSI protocol
 
@@ -206,6 +209,16 @@
 - For Volume Gateway, the iSCSI targets are volumes.
 
 ### security
+
+- As a Storage Gateway user, your clients will be using a local mounted storage device, but the gateway appliance will authenticate to AWS and write your volume data to Amazon S3.
+
+#### Encryption
+
+- Your data is encrypted in transit and in the AWS Cloud. Data that is in the gateway cache is not encrypted.
+- All data stored by Storage Gateway in Amazon S3 is encrypted server-side with either of the following:
+  - Amazon S3 server-side encryption (S3-SSE) (default)
+  - AWS Key Management Service (AWS KMS)
+- EBS snapshots are encrypted at rest using Advanced Encryption Standard (AES-256),
 
 ## considerations
 
@@ -236,3 +249,12 @@
 
 - supports backup and restore of both cached and stored volumes
 - helps you centralize backup management, reduce your operational burden, and meet compliance requirements.
+
+### cloudtrail
+
+- Set up API and user activity logging with AWS CloudTrail.
+
+### cloudwatch
+
+- monitor your gateway and associated resources in CloudWatch by using Storage Gateway health and performance logs and metrics.
+- Gateway management console provides a consolidated view of CloudWatch metrics and any CloudWatch alarms you have configured.

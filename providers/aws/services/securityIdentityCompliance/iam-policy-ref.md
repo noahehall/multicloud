@@ -8,6 +8,10 @@
 - [condition: global keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html)
 - [organizations: managed policies example](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
 
+## basics
+
+- check the API Reference for a particular service to see available actions and such
+
 ## policy elements
 
 - version: seems to always be `2012-10-17`

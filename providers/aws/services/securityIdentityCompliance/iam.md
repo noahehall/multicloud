@@ -45,6 +45,7 @@
 - [vpc: reachability analyzer perms](https://docs.aws.amazon.com/vpc/latest/reachability/security_iam_required-API-permissions.html)
 - [Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
 - [step functions: advanced permissions](https://docs.aws.amazon.com/step-functions/latest/dg/concept-create-iam-advanced.html)
+- [policies: access](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
 
 ### API
 
