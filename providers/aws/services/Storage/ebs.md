@@ -20,6 +20,7 @@
 - [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
 - [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
 - [snapshots: crash consistent](https://aws.amazon.com/blogs/storage/taking-crash-consistent-snapshots-across-multiple-amazon-ebs-volumes-on-an-amazon-ec2-instance/)
+- [snapshots: deleting](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-deleting-snapshot.html)
 
 ### tools
 

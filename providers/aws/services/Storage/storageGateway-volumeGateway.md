@@ -9,15 +9,25 @@
 - [landing page](https://aws.amazon.com/storagegateway/volume/?nc=sn&loc=2&dn=4)
 - [storage sizing](https://docs.aws.amazon.com/storagegateway/latest/vgw/ManagingLocalStorage-common.html)
 - [CHAP](https://docs.aws.amazon.com/storagegateway/latest/vgw/GettingStartedConfigureChap.html)
+- [isci: connecting initiators](https://docs.aws.amazon.com/storagegateway/latest/vgw/initiator-connection-common.html)
+- [isci: settings](https://docs.aws.amazon.com/storagegateway/latest/vgw/initiator-connection-common.html#recommendediSCSISettings)
 
 ## best practices
 
-- volume sizes must be steady and predictable?
-  - Volume resizing for the gateway is not supported
+- volume sizes must be steady and predictable
   - To decrease the storage capacity: create a new gateway and migrate your data to the new gateway
   - To increase storage capacity: add new disks to the gateway instead of expanding disks previously allocated.
-- stored mode
-  - processes that require reading all of the data on the entire volume such as virus scans?
+- Volume storage is billed for only the amount of data stored on the volume, not the size of the volume you create.
+  - delete older volumes and snapshots that are no longer needed.
+  - Check for snapshots that are more than 30 days old and delete them to reduce storage costs.
+- optimize iSCSI settings on your iSCSI initiator to achieve higher I/O performance
+  - recommend choosing 256 KiB for MaxReceiveDataSegmentLength and FirstBurstLength, and 1 MiB for MaxBurstLength
+- When you provision gateway disks
+  - don't provision local disks for the upload buffer and cache storage that use the same underlying physical storage disk
+- if a volume is used for a high-throughput application
+  - consider creating a separate gateway for the high-throughput application
+  - as a general rule, you should not use one gateway for all of your high-throughput applications and another gateway for all of your low-throughput applications.
+  - To measure your volume throughput, use the ReadBytes and WriteBytes metrics.
 
 ### anti patterns
 
@@ -51,9 +61,12 @@
   - cache volumes: use the Console, API, or SDKs to provision storage volumes backed by Amazon S3
 - mounting the volumes for your application to access: for both stored & cached volume mode
   - mounted as iSCSI devices.
-- Using the iSCSI protocol, clients (called initiators) send Small Computer System Interface (SCSI) commands to storage devices (called targets) on remote servers
-  - on-premises applications write data to and read data from a gateway's storage volume
-  - this data is stored and retrieved from the volume's assigned disk.
+- expanding volume size: Automatic resizing of a volume is not supported with Volume Gateway.
+  - Create a snapshot of the volume you want to expand and then use the snapshot to create a new volume of a larger size.
+  - Use the cached volume you want to expand to clone a new volume of a larger size.
+- volume status: available, bootstrapping, creating, deleting, irrecoverable, pass through, restoring, restoring passthrough, upload buffer not configured,
+- attachment status: attached, detached, detaching
+- volume actions: creating an on-demand backup plan with AWS Backup, create an EBS snapshot, edit the snapshot schedule, configure CHAP authentication, delete a volume, connect the volume to the client (iSCSI initiator), and add optional tags.
 
 #### Cached Volume mode
 
@@ -75,6 +88,11 @@
 - When applications performs I/O on a volume, the gateway saves the data to the cache storage for low-latency access
 - when applications requests data from a volume, the gateway first checks the cache storage for the data before downloading the data from AWS.
 
+##### cached Reads: read-through cache
+
+- if the data is in the cache volume: it is served locally from the cache and there is no latency. Everything happens directly inside your data center.
+- If the data is not in the cache: Storage Gateway service retrieves the compressed data from Amazon S3 and sends it to the gateway appliance.
+
 #### stored Volume mode
 
 - primary data is stored locally
@@ -89,18 +107,57 @@
   - Cloud-based disaster recovery
   - applications with lots of random reads and writes, and you need full access to the data at low latency at all times.
 
+##### Stored reads
+
+- One hundred percent of the data on your volumes is stored locally. Therefore, any reads to this data come directly from the virtual appliance or SAN from that local disk.
+
+#### Volume Recovery Options
+
+- volume clone: create a new volume from any existing cached volume in the same AWS Region
+  - created from the most recent recovery point of the selected volume.
+  - Cloning from an existing volume is faster and more cost effective than creating an Amazon EBS snapshot
+- ebs snapshot: a point-in-time copy of the volume at the time the snapshot is requested.
+  - cached volume:
+  - stored volume:
+
+#### snapshots
+
+- volumes are asynchronously backed up as Amazon EBS snapshots and stored in an S3 service bucket
+  - NOT of a customer bucket: they do not showup in the s3 console
+  - are ONLY accessible from the Storage Gateway and Amazon EBS management console
+- use it for disaster recovery using EBS snapshots or cached volume clones.
+- one-time snapshot: back up your storage volume immediately without waiting for the next scheduled snapshot.
+- snapshot schedule: by default assigned a snapshot schedule of once a day
+  - can be edited by specifying either the time the snapshot occurs each day or the frequency (every 1, 2, 4, 8, 12, or 24 hours), or both.
+  - doesn't create a default snapshot schedule for cached volumes.
+    - because your data is durably stored in Amazon S3.
+  - can't remove the default snapshot schedule for stored volumes, as they require at least one snapshot schedule.
+
+#### rate limiting bandwidth
+
+- By default, an activated gateway has no rate limits on upload or download
+- You can limit/throttle the upload throughput from the gateway to AWS or the download throughput from AWS to your gateway.
+- rate limit: helps you to control the amount of network bandwidth used by your gateway.
+  - The minimum rate for download is 100 Kilobits (Kib) per second
+  - the minimum rate for upload is 50 Kib per second.
+- rate limit schedule: assign bandwidth rate limits on a schedule
+
 ### upload buffer
 
 - Both cached volume and storage volume gateway deployments require upload buffer storage.
 - provides a staging area for the data before the gateway uploads the data to Amazon S3
 - the gateway uploads this buffer data over an encrypted SSL connection to AWS.
 
-### snapshots
+#### cached writes: write-back cache
 
-- volumes are asynchronously backed up as Amazon EBS snapshots and stored in an S3 service bucket
-  - NOT of a customer bucket: they do not showup in the s3 console
-  - are ONLY accessible from the Storage Gateway and Amazon EBS management console
-- use it for disaster recovery using EBS snapshots or cached volume clones.
+- Data written gets stored in the local volume cache in its native format
+- Volume Gateway then compresses and encrypts the data as it moves the data from the cache into the upload buffer.
+- From the upload buffer, the data is then transferred to AWS.
+
+#### stored writes
+
+- data writes happen directly to that disk where they are immediately acknowledged locally.
+- When you create a snapshot of one of your volumes, the data will then be moved to AWS
 
 ### Service Endpoints
 
@@ -121,10 +178,34 @@
 - UDP 123: Storage gateway vm -> NTP server
 - iSCI 3260: iSCI initiators -> storage gateway vm
 
+#### data transfers
+
+- Volume Gateway routes your block storage data through the on-premises Volume Gateway appliance to and from either storage area network (SAN) or virtual volumes.
+
 ### Challenge-Handshake Authentication Protocol (CHAP)
 
 - provides protection against man-in-the-middle and playback attacks by periodically verifying the identity of an iSCSI initiator as authenticated to access a storage volume target
 - For each volume target, you can define one or more CHAP credentials.
+
+### iSCSI protocol
+
+- an IP-based storage networking standard for linking data storage facilities
+- SCSI: Small Computer System Interface
+- provides block-level access to storage devices by carrying SCSI commands over a TCP/IP network using the default port 3260
+- used to facilitate data transfers over intranets and to manage storage over long distances
+
+#### initiators
+
+- applications that send SCSI commands to targets
+  - Connect only one iSCSI initiator to each iSCSI target.
+- Storage Gateway only supports software (linux/windows) initiators.
+
+#### Targets
+
+- storage devices on remote servers that receive data from initiators
+- For Volume Gateway, the iSCSI targets are volumes.
+
+### security
 
 ## considerations
 
