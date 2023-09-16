@@ -5,7 +5,7 @@
 ## links
 
 - [igw: user guide](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
-- [natg: user guide](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
+- [ng: user guide](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
 - [tgw: faqs](https://aws.amazon.com/transit-gateway/faqs/)
 - [tgw: intro](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-network-manager.html)
 - [tgw: landing page](https://aws.amazon.com/transit-gateway/?did=ap_card&trk=ap_card)
@@ -53,6 +53,10 @@
 ## nat gateways (NG)
 
 - for private subnet resources to initiate contact with services outside a VPC (but not the other way around)
+  - put the NAT gateway in a public subnet, and add a route targeting it in a private subnets route table
+  - are subnet components, unlike IGWs which are VPC components
+- performs NAT for resources assigned private IPv4 addrs
+- highly available within the AZ of the subnet
 - public nat gateway: can reach out to the internet, but cant be reached from the internet
   - create it in a public subnet and assign an elastic ip
   - internet access: route traffic from the nat gateway to the vpc's internet gateway
@@ -72,6 +76,15 @@
     - can reach out to the internet via an internet gateway
   - private
     - can be attached to an internet gateway, but it will drop outbound internet traffic
+
+### best practices
+
+#### gotchas
+
+- you cannot route traffic to a NAT gateway through a:
+  - VPC peering connection
+  - site-to-site VPN connection
+  - Direct Connect
 
 ## virtual private gateway (VPG)
 

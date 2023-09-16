@@ -2,6 +2,7 @@
 
 - regionally isolated software defined virtual private network
 - [all gateway types](./vpc-gateways.md)
+- [VPC security groups](./securitygroups.md)
 
 ## my thoughts
 
@@ -90,6 +91,30 @@
 - flow logs
   - can quickly grow into the hundreds of gigabytes.
 - tag your reachability analysis to keep track of the cost
+
+### VPC decision tree
+
+- communicate between TWO VPCs
+  - vpc peering
+    - no overlapping CIDR ranges and DONT need transitive peering communication
+- communicate between other VPCs or on premise using VPN
+  - EC2 running VPN software
+    - you manage/responsible for
+      - both ends of the VPN connection
+      - implementing high availability for the VPN endpoints
+      - networking bottlenecks
+      - pay for IGW in each VPC
+  - DirectConnect
+    - AWS manages/responsible for
+      - managing VPN endpoints
+      - multi datacenter redundancy
+      - automatic failover
+    - you want
+      - a dedicated connection
+      - simplified network management
+- sharing services between VPCs across AWS Account
+  - VPC PrivateLink
+    - you dont want traffic to traverse the public internet
 
 ### anti patterns
 
@@ -271,12 +296,21 @@
 ### security groups
 
 - control access at the resource level; specifically the elastic network interfaces (ENIs)
-- see [markdown file](./securitygroups.md)
+- see the sibling markdown file
+
+### Gateways
+
+- see the sibling markdown file
 
 ### Peering
 
 - enables 1:1 encrypted, highly available communication between TWO isolated VPCs using their private IP address without traversing the public internet
   - an uncomplicated and cost-effective way to share resources between Regions or replicate data for geographic redundancy.
+- requirements
+  - you must add a route in the respective VPC route tables
+    - destination: the other VPCs cidr range
+    - target: the VPC peering connection
+  - the two VPCs CIDR ranges cannot overlap
 - peers can span accounts and regions and There is no bandwidth bottleneck or single point of failure
 - inter-Region VPC peering: peering VPCs across different AWS Regions
   - permits VPC resources that run in different AWS Regions to communicate securely with each other

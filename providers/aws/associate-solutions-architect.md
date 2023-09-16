@@ -5,7 +5,7 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - Understanding AWS Networking Gateways
+      - Understanding AWS Networking Gateways > virtual private gateways
       - AWS Systems Manager
       - AWS Foundations: Cost Management
       - Migration Evaluator Overview for Customers
