@@ -16,12 +16,17 @@
 
 - [landing page](https://aws.amazon.com/storagegateway/?nc=sn&loc=0)
 - [hardware appliance](https://aws.amazon.com/storagegateway/hardware-appliance/?nc=sn&loc=2&dn=5)
-- [hardware appliance: available regions](https://docs.aws.amazon.com/general/latest/gr/sg.html#sg-hardware-appliance)
 - [service endpoints & quotas](https://docs.aws.amazon.com/general/latest/gr/sg.html)
 - [api ref](https://docs.aws.amazon.com/storagegateway/latest/APIReference/API_Operations.html)
 - [pricing](https://aws.amazon.com/storagegateway/pricing/)
 
 ## best practices
+
+- When deploying to VMware, Microsoft Hyper-V, and Linux KVM, you must
+  - synchronize the VM's time with the host time before you can successfully activate your gateway.
+  - Make sure that your host clock is set to the correct time and synchronize it with an NTP server.
+- allocate at least one local disk for Cache storage with a minimum capacity of 150 GiB.
+  - The maximum supported size of the local cache for a gateway running on a VM is 64 TiB
 
 ### anti patterns
 
@@ -57,11 +62,14 @@
 
 ### Deployment options for the Storage Gateway appliance
 
-- on premises (required for stored volumes)
-  - hardware appliance: see below
-  - VM appliance: Download, deploy, and activate the AWS Storage Gateway VM image on any of the supported host platforms.
-- in AWS Cloud
-  - cached volume: Create an Amazon EC2 instance to deploy your gateway in the AWS Cloud
+- on premise
+  - virtual machine (VM) appliance: download and deploy to:
+    - VMware ESXi Hypervisor: Integrates with VMware vSphere High Availability (VMware HA)
+    - Microsoft Hyper-V
+    - Linux Kernel-based Virtual Machine (KVM)
+  - purchase a hardware appliance
+- aws:
+  - deploy in the cloud as an Amazon Machine Image (AMI) in Amazon EC2
 
 #### Hardware Appliance
 
@@ -89,7 +97,6 @@
 ### Security
 
 - offers Federal Information Processing Standard (FIPS) 140-2 compliant endpoints in AWS GovCloud (US-East) and AWS GovCloud (US-West).
--
 
 #### Encryption
 
@@ -100,6 +107,17 @@
   - or use your own encryption keys through Storage Gateway's integration with KMS
 
 ## considerations
+
+- general steps for all storage gateway types
+  - setup gateway: deploy on premise (hardware / VM) or in the cloud
+  - connect to AWS: connect your gateway appliance to the Storage Gateway service
+    - You need the service endpoints, connection options, and IP address of the appliance for the connection.
+  - activate gateway: Review and confirm the gateway settings
+    - gateway details
+    - connection settings
+  - configure gateway: settings for the local cache store, CloudWatch log group, CloudWatch alarms, and optional tags
+  - continue with gateway specific configurations
+    - will differ based on s3, fsx, volume, or tape gateway
 
 ## integrations
 

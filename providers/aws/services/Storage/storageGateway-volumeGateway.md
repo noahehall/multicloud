@@ -218,11 +218,7 @@
   - stored: the full dataset is needed on premise
 - gateway appliance location
   - on premise: required for stored volumes
-    - virtual machine (VM) appliance: download and deploy to:
-      - VMware ESXi Hypervisor: Integrates with VMware vSphere High Availability (VMware HA)
-      - Microsoft Hyper-V
-      - Linux Kernel-based Virtual Machine (KVM)
-    - purchase a hardware appliance
+    - virtual machine (VM) appliance: download and deploy to one of the supported host VMs
   - aws: available for cached volumes
     - deploy in the cloud as an Amazon Machine Image (AMI) in Amazon EC2
 - sizing considerations
