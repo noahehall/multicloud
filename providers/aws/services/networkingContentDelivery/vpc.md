@@ -1,6 +1,7 @@
 # Virtual Private Cloud (VPC)
 
 - regionally isolated software defined virtual private network
+- [all gateway types](./vpc-gateways.md)
 
 ## my thoughts
 
@@ -23,14 +24,12 @@
 - [flow logs: guide](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
 - [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
 - [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
-- [internet gateways](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
 - [intro](https://docs.aws.amazon.com/vpc/latest/userguide/how-it-works.html)
 - [lambda: access to vpc resources](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html)
 - [lambda: vpc endpoints](https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc-endpoints.html)
 - [landing page](https://aws.amazon.com/vpc/?did=ap_card&trk=ap_card)
 - [monitoring](https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html)
 - [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
-- [nat gateways](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
 - [peering: intro](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
 - [reachability analyzer for AWS whitepaper pdf](https://d1.awsstatic.com/whitepapers/Security/Reachability_Analysis_for_AWS-based_Networks.pdf)
 - [reachability: analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
@@ -232,72 +231,6 @@
     - allows connectivity between the subnets in the same VPC
   - you can add a VPC endpoint for private connection between your VPC and other AWS services
   - you can have a route for VPC peering connection between your databases and other VPCs so that the traffic just communicates over private IPv4 address.
-
-### Gateways
-
-- horizontally scaled, redundant, and highly available VPC component
-
-#### internet gateway (IGW)
-
-- allows communication between resources in a VPC and the internet.
-- features
-  - Provide a target in route tables to connect to the internet
-  - Perform network address translation (NAT) for resources that have been assigned public IPv4 addresses
-- setup
-  - each VPC can have a single internet gateway that works across ALL availability zones
-    - sits on the edge of your Amazon VPC, the AWS Public Zone, and the internet to manage the traffic between your Amazon VPC, the AWS Public Zone, and the internet
-    - makes a subnet public by performing a type of Network Address Translation (NAT) called static NAT
-  - a subnet's route table must contain a route that directs Internet-bound traffic to the Internet gateway
-    - can scope the route to all destinations not explicitly known to the route table (0.0.0.0/0 for IPv4)
-    - can scope the route to a narrower range of IP addresses; e.g. only specific public IPv4 addresses instead 0.0.0.0/0
-    - can scope the route to specific IPs of other aws resources outside your VPC
-
-#### Customer Gateway (CG)
-
-- physical/software appliance you own/manage in your onpremise network
-
-#### VPN Gateway (VPNG)
-
-- gateway on the AWS side of a site-to-site VPN connection
-
-#### Direct Connect Gateway (DCG)
-
-- establishes connections that spans VPCs across multiple regions
-
-#### nat gateways (NG)
-
-- for private subnet resources to initiate contact with services outside a VPC (but not the other way around)
-- public nat gateway: can reach out to the internet, but cant be reached from the internet
-  - create it in a public subnet and assign an elastic ip
-  - internet access: route traffic from the nat gateway to the vpc's internet gateway
-  - private access: route traffic from the nat gateway to a transit/virtual private gateway
-    - this connects it to other VPCs or on premise networks
-- private nat gateway: can reach out to other VPCs/on-premise networks; but not the other way around
-  - route traffic from the nat gateway to a transit/virtual private gateway
-  - you cannot associate an elastic ip
-- public vs private NAT gateways
-  - both
-    - map the source private Ipv4 address of rsources to the private IPv4 address of the nat gateway
-      - public: any associated internet gateway will then map the nat gateways IP address to the associated elastic ip
-        - this is why public nat gateways can reach out to the internet, but private nat gateways cant
-      - private: any associated internet gateway will drop outbound connections
-  - public:
-    - can attach an elastic ip
-    - can reach out to the internet via an internet gateway
-  - private
-    - can be attached to an internet gateway, but it will drop outbound internet traffic
-
-#### Transit Gateway (TG)
-
-- see [markdown file](./transitGateway.md)
-
-#### virtual private gateway (VPG)
-
-- logical edge routing device that sits at the edge of a VPC
-- allows resources outside of your mesh network to communicate with resources inside the mesh network
-- can be used with DirectConnect and VPNs
-  - act as a VPN concentrator on the AWS side of a site-to-site VPN connection
-  - create a VPC connection to a private network (e.g your office corporate network) enabling access to vpc resources
 
 ### route tables
 
