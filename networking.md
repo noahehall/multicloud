@@ -315,3 +315,19 @@
 - Optimize network configuration based on metrics
   - collected and analyzed data to make informed decisions about optimizing your network configuration
   - Measure the impact of those changes and use the impact measurements to make future decisions.
+
+## DNS
+
+- registrant: buy domain names from resellers or registrars
+- reseller: third party company (e.g. aws) providing domain name registration services through ICANN accredited registrars
+- ICANN: Internet Corporation for Assigned Names and Numbers
+- registrar: organization that interfaces between registrant and registry
+  - sell domain names, provide registration and other services applicable to domain names
+- registry: organization that contains the authoritative name servers and hosted zones of one/more top level domains
+  - authority is given to the registry from ICANN
+
+### hosted zones
+
+- a container for records
+- records: contain information about routing for a specific domain and its subdomains
+- anycast: broadcasts queries to all endpoints
