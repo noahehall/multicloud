@@ -19,12 +19,12 @@
 
 ### features
 
-- Provide a target in route tables to connect to the internet
-  - this makes the subnet a public subnet
+- public vs private subnets
+  - public: a route table with a route targeting an IGW providing acces to the public internet
 - ingress routing: associate a route table directly with the IGW
   - segments VPC traffic
   - redirects in/outbound VPC traffic through virtual appliances
-    - e.g. deploying a firewall at the IGW would be a virtual appliance
+    - e.g. deploying a firewall on a EC2 > all IGW traffic is then routed through that firewall (the virtual appliance)
 - Perform network address translation (NAT) for resources that have been assigned public IPv4 addresses
   - i.e. private IPs are translated into public IPs
 
