@@ -5,8 +5,6 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - Differences Between Security Groups and NACLs
-      - Protecting Your Instance with Security Groups
       - Amazon Route 53 - Amazon Route 53 - Basics
       - Understanding AWS Networking Gateways
       - AWS Systems Manager

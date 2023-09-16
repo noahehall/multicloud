@@ -1,6 +1,7 @@
 # Security groups
 
 - stateful firewall at the resource level: you enable ingress traffic and egress is autoamatically allowed
+- resource security at the port, protocol and ip range
 
 ## links
 
@@ -11,8 +12,15 @@
 - enable one/more port & ip range per security group
 - cannot explicit deny IP address, all ingress is denied by default
   - This means that anything that is not explicitly allowed is denied.
-- attached to the elastic network interface of resources in a subnet.
 - rules are processed all at once, there is no order
+- attached to the elastic network interface of resources in a subnet.
+- security groups vs subnet NACLs
+  - nacls: applied at VPC subnet
+    - stateless: define both ingress and egress at the subnet level
+    - only traffic crossing a subnet boundary is filtered
+  - security groups: applied at resources
+    - stateful: define ingress
+    - all traffic entering the resource is filtered
 
 ### security group types
 
@@ -22,7 +30,7 @@
 
 #### Database
 
-- attaches to rds instance
+- attaches to rds/etc instance
 
 #### VPC
 
@@ -48,10 +56,6 @@
     - Incoming traffic is allowed based on the private IP addresses of the network interfaces that are associated with the source security group
       - not the public IP or Elastic IP addresses
   - etc
-
-#### outbound rules
-
-- abcd
 
 ## integrations
 
