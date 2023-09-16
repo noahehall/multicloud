@@ -161,16 +161,6 @@
 - data writes happen directly to that disk where they are immediately acknowledged locally.
 - When you create a snapshot of one of your volumes, the data will then be moved to AWS
 
-### Service Endpoints
-
-- When Storage Gateway is deployed, it must communicate back to the Storage Gateway service for both management and data movement.
-- Public endpoint: Storage Gateway connects to a public endpoint over the internet.
-- VPC endpoint: Storage Gateway connects to Storage Gateway VPC endpoints over a private connection to AWS
-  - via AWS Direct Connect or AWS VPN
-- FIPS 140-2 compliant endpoints: Storage Gateway connects to a public endpoint over the internet.
-  - Federal Information Processing Standards
-  - This endpoint complies with FIPS standards, to further protect sensitive information for regulated workloads in AWS GovCloud (US) Regions.
-
 #### Required Network Ports
 
 - TCP 443: storage gateway VM -> AWS

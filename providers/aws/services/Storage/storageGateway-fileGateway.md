@@ -1,4 +1,4 @@
-# service name
+# File Gateway: s3 & FSx
 
 - Store and access SMB and NFS file data with local caching
 - S3 and FSx file gateways
@@ -13,6 +13,10 @@
 
 ## best practices
 
+- s3 vs FSx file gateways
+  - s3: move your file data into an object format that is highly durable and cost efficient
+  - FSx: keep it stored natively as file data
+
 ### anti patterns
 
 ## features
@@ -24,12 +28,40 @@
 ### s3 file gateway
 
 - used to store NFS and SMB files as s3 objects for data lakes, backups, and ML workflows.
-- accessbile over NFS, SMB and or directly via s3 API
-- POSIX-style metadata: including ownership, permissions, and timestamps, are durably stored in Amazon S3 in the user-metadata of the object associated with the file.
+  - accessbile over NFS, SMB and or directly via s3 API
+  - POSIX-style metadata: including ownership, permissions, and timestamps, are durably stored in Amazon S3 in the user-metadata of the object associated with the file.
+  - Use up to 64 TB of cache per gateway, and set up automatic cache refresh at 5-minute intervals.
 - objects transferred to S3, are managed as native S3 objects.
+- supports data lakes, backups, and ML workflows
+- storage is made accessible to database and application servers as locally mountable file shares, using industry-standard file protocols:
+  - Linux clients: NFS (versions 3 and 4.1)
+  - Windows clients: SMB (versions 2 and 3)
+
+#### Files
+
+- When files are transferred to Amazon S3, they can be managed as native S3 objects.
+  - access your data directly in S3.
+  - implement storage management capabilities, such as versioning, lifecycle management, and cross-Region replication.
+- cache refresh: refresh the inventory of objects that your gateway is aware of
+  - find objects in the S3 bucket that were added, removed, or replaced since the gateway last listed the bucket's contents and cached the results
+  - can configure automated cache refresh based on a timer value between 5 minutes and 30 days.
+    - can also be refreshed using the RefreshCache API operation
+
+#### s3 hardware appliance
+
+- provides access to objects in Amazon S3 as files using NFS or SMB protocols.
+- The gateway provides a local point of presence through a cache that stores data for low-latency access.
+- is configured with a file share
+  - Each file share is paired with a single S3 bucket and uses the appliance's local cache
+  - A specific S3 File Gateway appliance can have multiple NFS and SMB file shares.
+- Files written to the file share become objects in the S3 bucket, with a one-to-one mapping between files and objects.
+  - Metadata, such as ownership and timestamps, are stored with the object
+  - File paths become part of the object's key, and thus maintain consistent name space
+  - Objects in Amazon S3 appear as files to the on-premises clients.
 
 ### FSx File gateway
 
+- provides your applications a file interface to seamlessly and durably store files as objects in Amazon S3.
 - solution for replacing on-premises NAS, such as end-user home directories and departmental or group servers, with cloud storag
   - user or team file shares, and file-based application migrations like web content management, and media workflows.
   - migrate and consolidate on-premises file-based application data stored on NAS arrays or file server virtual machines into FSx
@@ -43,3 +75,7 @@
 ### Backup
 
 ### Cloudwatch
+
+- S3 File Gateway also publishes audit logs for SMB file share user operations to CloudWatch.
+- can send a notification through CloudWatch Events when all files written to your file share up to that point in time have been uploaded
+  - can then be used to activate cloud workflows after the files are uploaded, e.g. SNS notification / lambda fn
