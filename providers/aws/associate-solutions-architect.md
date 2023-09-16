@@ -5,7 +5,6 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - Amazon Route 53 - Amazon Route 53 - Basics > private hosted zones
       - Understanding AWS Networking Gateways
       - AWS Systems Manager
       - AWS Foundations: Cost Management
