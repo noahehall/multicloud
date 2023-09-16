@@ -9,6 +9,7 @@
 - [content filtering with event patterns](https://docs.aws.amazon.com/eventbridge/latest/userguide/content-filtering-with-event-patterns.html)
 - [architectural patterns with eventbridge pipes](https://aws.amazon.com/blogs/compute/implementing-architectural-patterns-with-amazon-eventbridge-pipes/)
 - [backup: events](https://docs.aws.amazon.com/aws-backup/latest/devguide/eventbridge.html)
+- [storageGateway: processing events](https://aws.amazon.com/blogs/storage/processing-file-upload-notifications-from-aws-storage-gateway-on-amazon-s3/)
 
 ## best practices
 

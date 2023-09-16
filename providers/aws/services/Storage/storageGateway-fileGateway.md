@@ -28,11 +28,12 @@
 - write objects directly from a file share to the S3 Standard storage class and use a lifecycle policy to transition the objects to other storage classes
 - multiple gateways or file shares write to the same S3 bucket, unpredictable results might occur.
   - Configure your S3 bucket so that only one file share can write to it.
+    - Permit multiple Network File System (NFS) clients to write to the same S3 bucket through a single S3 File Gateway.
     - S3 bucket policy that denies all roles, except the role used for the specific file share, to put or delete objects in the bucket and attach this policy to the S3 bucket.
     - best practice for secondary gateways is to either use an IAM role that is prevented from writing to the bucket or permit the export of file shares as read-only
   - If you want to write to the same Amazon S3 bucket from multiple file shares, you must prevent the file shares from trying to write to the same objects simultaneously
     - configure a separate, unique object prefix for each file share
-    - each file share will only write to objects with its corresponding prefix
+      - each file share will only write to objects with its corresponding prefix
 
 ### anti patterns
 
@@ -132,6 +133,22 @@
 
 ### security
 
+- To restrict file access for your NFS and SMB clients, you can edit the file share access setting within the Storage Gateway console.
+  - nfs: By default, any client on your network can mount to your file share
+    - Limit access to specific NFS clients or networks by IP address.
+    - Permit read-only or read-write access.
+    - Activate user permission squashing.
+  - smb: set the security level for your gateway by doing the following:
+    - Limiting access for Active Directory users only or providing authenticated guest access to users
+    - Setting file share visibility for your file share to one of the following: read-only / read-write
+    - Controlling file or directory access by POSIX, or, for fine grained permissions, using Windows ACLs
+      - If you configure guest access authentication, POSIX is used for permissions.
+- Access to Amazon S3: The gateway uses an S3 bucket. The content of this bucket can also be accessed by other workflows
+  - IAM User Policies
+  - bucket policies
+  - s3 block public access
+  - activating S3 Object Lock and setting Guess MIME type and requester pays.
+
 #### encryption
 
 - All data transferred between the gateway and Amazon Web Services (AWS) storage is encrypted using SSL
@@ -160,3 +177,13 @@
 - S3 File Gateway also publishes audit logs for SMB file share user operations to CloudWatch.
 - can send a notification through CloudWatch Events when all files written to your file share up to that point in time have been uploaded
   - can then be used to activate cloud workflows after the files are uploaded, e.g. SNS notification / lambda fn
+
+### EventBridge
+
+- get notified when file operations are done: Storage Gateway events indicate a change
+- Storage Gateway generates events that EventBridge uses.
+- EventBridge receives the event and applies a rule to route the event to a target.
+
+### cloudtrail
+
+- track user activity

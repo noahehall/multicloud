@@ -34,6 +34,7 @@
 - [vpc: transit gateway metrics](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html)
 - [vpc: transit gateway monitoring](https://docs.aws.amazon.com/vpc/latest/tgw/monitoring-cloudwatch-metrics.html)
 - [storageGateway: volume gateway metrics](https://docs.aws.amazon.com/storagegateway/latest/vgw/monitoring-volume-gateway.html)
+- [storageGateway: file gateway metrics](https://docs.aws.amazon.com/filegateway/latest/files3/monitoring-file-gateway.html)
 
 ## basics
 
@@ -208,7 +209,7 @@
     - metrics: Number of warm and cold recovery points across each state
     - dimensions: Resource type, vault name
 
-## storage gateway - volume gateway
+## storage gateway
 
 - AvailabilityNotifications Number of availability-related notifications sent by the volume.
 - CacheHitPercent Percent of application read operations from the volume that are served from cache.
