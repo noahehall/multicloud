@@ -1,6 +1,7 @@
 # Outposts
 
 - Run AWS infrastructure and services on premises for a consistent hybrid experience
+- rack that AWS fully assembles and ships to you, ready to plug n play
 
 ## my thoughts
 
@@ -32,8 +33,26 @@
 
 ## basics
 
-- a pool of AWS compute and storage capacity deployed at a site
-- AWS operates, monitors, and manages this capacity as part of an AWS Region
+- a pool of AWS compute and storage capacity deployed at your site
+- AWS operates, monitors, and manages this capacity as part of an existing AWS Region
+
+### networking
+
+- everything you do in AWS cloud you can do on the infra running in the outposts rack
+- resources deployed to outpotsts an comms with each other even if they are in different outpost subnets
+  - even with other resources within the same VPC, but hosted in the cloud
+  - remember: outposts merely extends the existing AWS infra to your on premise site via the outposts rack
+- of course you can lock this all down via standard networking tools
+  - security groups
+  - NACLs
+  - route tables
+  - etc
+
+#### outposts lan
+
+- link aggregation: link aggregation control protocol (LACP)
+- service link vlan: connectivity for outposts back to the aws region
+- lgw vlan: connectivity to the local customer network
 
 ### Security
 
@@ -52,7 +71,7 @@
 - deletion
   - All data is deleted when instances are terminated in the same way as in the AWS Region.
 
-### configuration
+## configuration
 
 - choose from a range of pre-validated Outposts configurations
 - contact AWS to create a customized configuration designed for your unique application needs.
@@ -60,7 +79,7 @@
   - extend your Amazon VPC on premises and connect to a broad range of services available in the AWS Region.
   - you can access all Regional AWS services in your private VPC environment through interface endpoints, gateway endpoints, or their Regional public endpoints.
 
-#### Form Factor
+### Form Factor
 
 - outposts rack: 42U
   - 80 inches tall, 24 inches wide, and 48 inches deep. Inside are hosts, switches, a network patch panel, a power shelf, and blank panels.
@@ -81,13 +100,13 @@
   - meet the facility, networking, and power requirements
   - consists of physical hardware that provides access to the AWS Outposts service. It includes racks, servers, switches, and cabling that AWS owns and manages.
 
-#### Networking
+### Networking
 
 - requires connectivity to an AWS Region.
 - service link: a network route that enables communication between your Outpost and its associated AWS Region.
 - Each Outpost is an extension of an Availability Zone and its associated Region.
 
-##### VPC
+#### VPC
 
 - extend your existing VPC to your Outpost in your on-premises location.
 - subnets
@@ -98,22 +117,22 @@
   - use to connect your Outpost resources with your on-premises network
   - enables low latency connectivity between the Outpost and any local data sources, users, local machinery, and equipment, or local databases.
 
-#### VPN (Outposts Private Connectivity)
+### VPN (Outposts Private Connectivity)
 
 - establish a service link VPN connection from your Outposts to the AWS Region over AWS Direct Connect.
 - minimizes public internet exposure and removes the need for special firewall configurations.
 
-##### ELB ALB
+#### ELB ALB
 
 - automatically distribute incoming HTTP and HTTPS traffic across multiple targets on your Outposts.
   - Targets include as Amazon EC2 instances, containers, and IP addresses.
 - fully managed, operates in a single subnet, and scales automatically up to the capacity available on the Outposts rack.
 
-##### AppMesh
+#### AppMesh
 
-#### Storage
+### Storage
 
-##### ebs
+#### ebs
 
 - offers local instance storage and EBS gp2 volumes for persistent block storage.
 - gp2 volumes for boot or data volumes
@@ -129,19 +148,19 @@
     - on-premises data protection solution for residency requirements
     - migrate workloads from any source directly onto Outposts, or from one Outpost to another
 
-##### s3 on outposts
+#### s3 on outposts
 
 - [s3 on outposts](../Storage/s3-outposts.md)
 
-#### Databases
+### Databases
 
-##### RDS
+#### RDS
 
-##### Elasticache redis/memcached
+#### Elasticache redis/memcached
 
-#### Compute
+### Compute
 
-##### EC2
+#### EC2
 
 - the latest generation Intel powered EC2 instance types with or without local instance storage.
 - General purpose: M5/M5d; a balance of compute, memory, and network resources
@@ -152,14 +171,18 @@
 - also supports C6g, M6g, and R6g
 - [builds ontop of ec2 nitro](../compute/ec2-nitro.md)
 
-##### ECS
+#### ECS
 
-##### EKS
+#### EKS
 
-#### Analytics
+### Analytics
 
-##### EMR
+#### EMR
 
 ## considerations
 
 ## integrations
+
+### VPC
+
+- check the vpc-gateway docs for local gateway section

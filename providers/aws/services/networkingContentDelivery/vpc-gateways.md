@@ -13,6 +13,25 @@
 - [tgw: route analyzer](https://docs.aws.amazon.com/vpc/latest/tgw/route-analyzer.html)
 - [tgw:network manager scenarios](https://docs.aws.amazon.com/vpc/latest/tgw/network-manager-scenarios.html)
 
+## basics
+
+- regional components: VPG, TG, IG, NG
+- global components: DCG
+- local resources: CG, LG
+- route tables:
+  - can be directly attached to: VPG, IG, TG
+  - a local gateway default route table is created as part of the installation process of Outposts
+- use cases per gateway type
+  - S2S VPN:
+    - customer side: always a CG,
+    - AWS side: either VPG (1 active tunnel) or attached to a transit gateway (2 active tunnels)
+  - Direct Connect: 3 options
+    - VPG only
+    - DCG + VPG
+    - DCG + TG: enables east-west traffic across VPCs
+  - TG: only way to connect more than 2 VPCs together without leveraging VPC peering
+  - Outposts: cuz our startup is making so much fkn money you bought AWS and brought it home in a bag
+
 ## internet gateway (IGW)
 
 - regional component attached to a VPC allowing communication between resources in a VPC and the internet.
@@ -73,7 +92,7 @@
 
 ## virtual private gateway (VPG)
 
-- regional, logical edge routing device that sits at the edge of a VPC
+- regional, logical edge routing device that sits inside the boundary of a VPC
   - the VPG is the router on the AWS side of a VPN/DirectConnect connection
 - allows resources outside of your mesh network to communicate with resources inside the mesh network
   - create a VPC connection to a private network (e.g your office corporate network) enabling access to vpc resources
@@ -83,8 +102,10 @@
 - one virtual VPG per VPC:
   - VPCs cant share VPG connections: use a transit gateway instead
 
-## Transit Gateway
+## Transit Gateway (TG)
 
+- regional resource that lives outside the boundary of any specific VPC acting as a regional router between attachments
+  - encrypts data automatically and never traveres over the public internet
 - connect to multiple VPCs, Direct Connect, VPNs and Software-Defined Wide Area Network (SD-WAN) appliances
   - All Amazon VPCs, Site to Site VPN Connections, and Direct Connect gateways can attach to an AWS Transit Gateway hosted in their region.
   - AWS Transit Gateways in each region can be connected using peering connections that allow traffic exchange between resources and systems in different regions.
@@ -126,22 +147,44 @@
 - hybrid network configurations
   - a Direct Connect
   - AWS Site to Site VPN connection
-- attachments (i.e. connection types)
-  - One or more VPCs
-  - compatible Software-Defined Wide Area Network (SD-WAN) appliance
-  - Direct Connect gateway
+
+#### attachments (i.e. connection types)
+
+- remember the TG is the hub, and the attachments are the spokes
+  - the big deal with TG is that it enables connections to transit the hub into the spokes
+- One or more VPC attachments
+- transit gateway
+  - connect attachment: any compatible SD-WAN appliance
+    - removes S2S vpn between HUB VPC and TG
+    - dynamic routing (BGP) between SD-WAN and TG reduces routing complexity
   - peering connection with another transit gateway
-  - VPN connection to a transit gateway
+- Direct Connect gateway
+- S2S VPN connection to a transit gateway
 - MTU by connection type
   - 8,500 bytes for: VPC, direct connect, peering
   - 1,500 bytes for VPN connections.
-- route table: can be be associated with many attachments, but an attachment can only be associated with a single route table
-  - default route table and can optionally have additional route tables.
-  - dynamic and static routes that decide the next hop based on the destination IP address of the packet.
-  - target of these routes can be any transit gateway attachment.
-- route propagation
-  - dynamic: A VPC, VPN connection, or Direct Connect gateway
+
+#### attachment association:
+
+- the route table used to route packets coming from an attachment
+- the route table can be be associated with many attachments, but an attachment can only be associated with a single route table
+- default route table and custom route tables (up to 20 per TG)
+  - every new attachment is automatically associated with the TG's default route table
+  - on the other end, you need to go into the attachments VPC route table and add a target back to the TGs route table
+- dynamic and static routes that decide the next hop based on the destination IP address of the packet.
+
+#### route propagation:
+
+- the route table where the attachments routes are installed
+  - dynamic using BGP: VPC, S2S VPN connection, or Direct Connect gateway
   - static: VPC, peering
+- on the TG side: either static or dynamic route table entries
+- on the attachment side: only the VPC requires inserting static routes, all other permit dynamic routes using BGP
+- path selection behavior
+  - most specific route (longest prefix match)
+  - static route entries, including static S2S vpn routes
+  - BGP-propagated routes from Direct Connect gateway
+  - BGP-propagated routes from S2S VPN
 
 #### OSI Model
 
@@ -223,6 +266,9 @@
 ##### Transit Gateway Peering
 
 - a simpler network design and more consolidated management than vpc peering
+- transit gateway peering connects TWO transit gateways across accounts and regions
+- can open comms over the transit gatewy peering connections to all attachments
+  - this will be the simplest network architecture if you have many disparate VPCs, DirectConnect and/or VPN networks
 
 ##### Inter-region peering
 
@@ -246,9 +292,13 @@
 
 ### with TG
 
-- enables east-west traffic flow across VPCs
+- regional resource that lives outside of a VPC boundary
+- enables east-west traffic flow across accounts, regions and VPCs
+  - over one VIF and BGP peering
+- manage east-west traffic via the route table of the transit gateway
+  - e.g. VPC-A -> VPC-B but not VPC-B -> VPC-A
 
-## Site to Site VPN
+## Site to Site VPN (S2S)
 
 ### Customer Gateway (CG)
 
@@ -280,3 +330,24 @@
 - redundant
   - IPSec tunnels
   - routers across two AZs
+
+## Local Gateways (LG)
+
+- when you require low latency access to on premise systems or to on premise data processing
+
+### with Outposts
+
+- only local gateway per outpost rack (you can have up to 96 racks)
+- provides a target in VPC route tables for traffic destined to onpremise stuff
+- performs NAT for instances that have been assigned addresses from your customer-owned IP pool
+
+#### route tables
+
+- aws creates a local gateway for each outpost rack and a local gateway route table as part of the installation process
+- can only associate one local gateway route table with subnets that reside in the outpost
+
+#### virtual interfaces
+
+- aws creates one VIF for each link aggregation group (LAG)
+  - then associates the VIF with the default local gateway route table
+- the default route table has a defaiult route to the two VIFs for local network connectivity
