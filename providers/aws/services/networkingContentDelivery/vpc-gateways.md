@@ -16,9 +16,6 @@
 ## internet gateway (IGW)
 
 - regional component attached to a VPC allowing communication between resources in a VPC and the internet.
-
-### features
-
 - public vs private subnets
   - public: a route table with a route targeting an IGW providing acces to the public internet
 - ingress routing: associate a route table directly with the IGW
@@ -37,18 +34,6 @@
   - can scope the route to all destinations not explicitly known to the route table (0.0.0.0/0 for IPv4)
   - can scope the route to a narrower range of IP addresses; e.g. only specific public IPv4 addresses instead 0.0.0.0/0
   - can scope the route to specific IPs of other aws resources outside your VPC
-
-## Customer Gateway (CG)
-
-- physical/software appliance you own/manage in your onpremise network
-
-## VPN Gateway (VPNG)
-
-- gateway on the AWS side of a site-to-site VPN connection
-
-## Direct Connect Gateway (DCG)
-
-- establishes connections that spans VPCs across multiple regions
 
 ## nat gateways (NG)
 
@@ -83,21 +68,25 @@
 
 - you cannot route traffic to a NAT gateway through a:
   - VPC peering connection
-  - site-to-site VPN connection
+  - Site to Site VPN connection
   - Direct Connect
 
 ## virtual private gateway (VPG)
 
-- logical edge routing device that sits at the edge of a VPC
+- regional, logical edge routing device that sits at the edge of a VPC
+  - the VPG is the router on the AWS side of a VPN/DirectConnect connection
 - allows resources outside of your mesh network to communicate with resources inside the mesh network
-- can be used with DirectConnect and VPNs
-  - act as a VPN concentrator on the AWS side of a site-to-site VPN connection
   - create a VPC connection to a private network (e.g your office corporate network) enabling access to vpc resources
+- ingress routing: associates a route table with a VPG
+  - redirects in/outgoing traffic VPC traffic through virtual appliances
+  - segments VPC traffic
+- one virtual VPG per VPC:
+  - VPCs cant share VPG connections: use a transit gateway instead
 
 ## Transit Gateway
 
 - connect to multiple VPCs, Direct Connect, VPNs and Software-Defined Wide Area Network (SD-WAN) appliances
-  - All Amazon VPCs, Site-to-Site VPN Connections, and Direct Connect gateways can attach to an AWS Transit Gateway hosted in their region.
+  - All Amazon VPCs, Site to Site VPN Connections, and Direct Connect gateways can attach to an AWS Transit Gateway hosted in their region.
   - AWS Transit Gateways in each region can be connected using peering connections that allow traffic exchange between resources and systems in different regions.
 - consolidating and centrally managing routing between VPCs with a hub-and-spoke network architecture.
 - provides a single global view of your private network to visualize and monitor the health of your Amazon VPCs, Transit Gateways, Direct Connect, and VPN connections to branch locations and on-premises networks.
@@ -136,7 +125,7 @@
 - create 1:M peering connections between VPCs, accounts, DirectConnect and on premise networks in a centralized gateway hub
 - hybrid network configurations
   - a Direct Connect
-  - AWS Site-to-Site VPN connection
+  - AWS Site to Site VPN connection
 - attachments (i.e. connection types)
   - One or more VPCs
   - compatible Software-Defined Wide Area Network (SD-WAN) appliance
@@ -179,7 +168,7 @@
   - must be in the same AWS account as your global network
   - objects auto included within registration
     - VPCs
-    - Site-to-Site VPN connections
+    - Site to Site VPN connections
     - AWS Direct Connect gateways
     - Transit Gateway Connect
     - Transit gateway peering connections: you can view the peer transit gateway but not its attachments
@@ -242,4 +231,52 @@
 - connects AWS Transit Gateways together using the AWS global network
   - automatic encryption for your data that never traverses the public internet.
 
-## integrations
+## Direct Connect Gateway (DCG)
+
+- a global resource that establishes connections that spans VPCs across multiple accounts and regions
+
+### with VPG
+
+- connect (associates) up to 10 VPGs globally and across accounts
+  - allows north-south traffic flow
+    - NOT east-east across VPCs: use a transit gateway
+  - the VPG is still restricted to one region (duh, because its regional!)
+- one BGP peering per DCG per direct connect connection
+- 50 maximum VIFs (virtual interface) per direct connect connection
+
+### with TG
+
+- enables east-west traffic flow across VPCs
+
+## Site to Site VPN
+
+### Customer Gateway (CG)
+
+- a physical/software appliance on the customer side of a VPN connection
+  - the device is represented in AWS by creating a customer gateway resource
+  - the same device can be reused with multiple VPN connections
+- two redundant IPSec tunnels for automatic failover
+  - both tunnels must be configured on the customer gateway to work with the VPN connection
+  - each tunnel contains an
+    - Internet Key Exchange (IKE) security association
+    - IPSec security association
+    - BGP peering for dynamic routing
+
+### VPN Gateway (VPNG)
+
+- gateway on the AWS side of a Site to Site VPN connection
+
+### with VPG
+
+- VPG acts as a VPN concentrator on the AWS side of a Site to Site VPN connection
+  - connect up to 10 VPN (sites) connections to a single VPG
+  - consists of two tunnels, which are encrypted links supporting IPSec
+    - only one tunnel can be active at anytime
+    - carries a maximum of 1.25GB/sec
+  - aws side: each tunnel terminates in a different AZ
+    - dont forget to add a route in the VPC route table pointing to the VPG
+  - customer side: both tunnels must terminate in the same customer gateway
+- Border Gateway Protocol (BGP) or static routes
+- redundant
+  - IPSec tunnels
+  - routers across two AZs
