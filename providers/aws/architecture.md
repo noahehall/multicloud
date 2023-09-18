@@ -47,6 +47,7 @@
 - [serverless multi-tier architectures (PDF)](https://d1.awsstatic.com/whitepapers/AWS_Serverless_Multi-Tier_Architectures.pdf)
 - [service overview (PDF)](https://docs.aws.amazon.com/pdfs/whitepapers/latest/aws-overview/aws-overview.pdf)
 - [whitepapers](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
+- [cost optimization](https://aws.amazon.com/architecture/cost-optimization/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all)
 
 ### service categories
 
@@ -560,15 +561,6 @@
 
 - tagging resources is foundational to all analytical services
 
-### cost management
-
-- in AWS
-  - expenses and usage:
-    - AWS Cost Explorer,
-    - the AWS Billing and Management Console
-    - AWS Budgets
-    - AWS Trusted Advisor
-
 ## Databases
 
 ### Db migration
@@ -587,3 +579,23 @@
   - cloudformation: terraform for aws
   - CDK: sdk for various programming languages to interact with the AWS control plane API
   - opsworks: create, configure, and manage your database servers.
+
+## Cloud Financial Management (CFM)
+
+- everything stems from cost allocation tags and organizations
+  - once you
+    - allocate costs back to specific services
+    - use organizations and accounts effectively to segment your activities
+    - enforce a consistent policy and strategy across organizations and tag implementations
+  - you can utilize other tools to automate the process of reporting
+- in AWS
+  - expenses and usage:
+    - AWS Cost Explorer
+    - Cost and Usage reports (must be enabled?)
+    - the AWS Billing and Management Console
+    - AWS Budgets
+    - AWS Trusted Advisor
+    - Compute Optimizer
+  - governance
+    - organizations
+    - Control Tower

@@ -5,7 +5,6 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - AWS Foundations: Cost Management
       - Migration Evaluator Overview for Customers
       - AWS Systems Manager
       - exam prep

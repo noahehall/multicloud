@@ -1060,3 +1060,182 @@
   - compliance is not security, but Security is a big part of compliance.
   - You can be compliant but not secure because compliance doesn’t always achieve security.
 - Becoming secure and compliant means securing information assets, preventing damage, protecting it, and detecting theft
+
+## Cloud Financial Management (CFM)
+
+- set of activities that enable organizations to measure, optimize and plan costs as you grow your adoption of cloud services
+- outcomes: CFM goals
+  - reduce unit costs as you scale
+  - reinvest wasteful spend and increase business agility
+  - improve financial predictability
+  - establish cost aware behaviors and culture
+- FinOps: cross functional finance and technology team
+
+### capabilities
+
+- guage your organizations maturity in the following domains
+- maturity level: 1 novice -> 5 expert
+  - only the expert level is listed, fk the rest
+
+#### ownership and accountability
+
+- who is responsible for driving CFM across the entire organization
+  - identify an owner (SME) or establish a cross-functional team with finance, technology and others
+  - define common goals and targets
+- expert level
+  - active owner with goals graded against targets
+  - consistent executive sponsorship
+  - programmatic CFM activities
+
+#### finance and tech cooperation
+
+- establish strong partnerships between finance and tech
+  - financial stakeholders become more cloud & technology savvy
+    - understand how technology is being used to drive growth
+  - technology stakeholders become more finance savvy
+    - participating in finance activities like spend reviews, forecasting exercises and budget discussions
+  - initiate short, periodic meetings between all stakeholders
+    - weekly meetings, weekly email summarizing activities and latest metrics, etc
+  - spread awareness and publicize CFM activities across the organization
+  - Share knowledge across members of the CFM team
+- expert level
+  - formal partnership between finance and technology
+  - finance org utilize each cloud providers financial toolset from an operational perspective
+    - they can pull latest metrics and stats relevant to finance activities in real time
+  - tech org is aware of and participates in finance organization activities
+    - tech supports finance initiatives
+  - finance and/or tech orgs educate external audiences
+    - the CFM team can present their activities in detail to relevant external stakeholders
+
+#### cost allocation
+
+- mechanisms to allocate consumption of cloud services back to the actual consumer of the cloud
+  - identify the most important dimensions for your specific business
+    - e.g. categorizing based on teams, lines of business, cost center, etc
+  - define a strategy for accounts and tags
+    - atleast separate accounts by env (prod, dev, etc)
+    - publish, evangelize and govern resource tagging across accounts
+  - allocate shared costs
+    - e.g. containers, clusters, storage, etc can all be allocated based on resource consumption
+- expert level
+  - account segmentation strategy and tagging policy exists and enforced
+  - full account and tag governance
+  - cost allocations for discounts and shared resources
+    - there are always cross-cutting concerns that spans accounts, but still need to be allocated effectively
+  - special tag handling
+
+#### cost visibility
+
+- visibility into cloud spend
+  - define KPIs based on unit costs of cloud resources (e.g. X per hour, Y per transaction)
+    - set KPI goals and targets, and automate alarms to detect anomalies
+  - enable stakeholders: across finance and organization teams provide reports in a digestable manner
+    - some people need details, other people need summaries
+    - provide training to enable usage of reporting tools
+  - can trace spend back to resource usage across different dimensions
+  - tools and processes in place to view and analyze spend
+  - regularly report on cloud activities how they relate to KPIs to stakeholder groups
+  - data is used to influence technology group activities
+- expert level
+  - custom dashboards utilizing each cloud providers APIs to generate reports specifically for cost and usage metrics
+  - stakeholders activtely use the dashboards
+  - efficiency KPIs drive decision making related to cloud adoption and consumption activities
+
+#### cost optimization
+
+- reduce existing costs and avoid unnecessary costs through upfront workload design and embedding cost optimization in all operational processes
+  - effective consumption planning
+    - avoid on-demand prices by utilizing purchase plans, commitment based discounts and other provider cost models
+  - right-size your resources: you must know your workload
+  - use automation to clean up waste: shutdown unused/idle resources
+  - prioritize high ROI investments: architect for cost optimization
+  - design fault-tolerant systems and use cloud services that scale horizontally
+- expert level
+  - commitment based discounts, purchase plans and other non ondemand cost models are utilized for prod, dev and other workloads
+  - proactive optimization through design, architecture and resource selection
+    - not only identifying what you can do, but actively implementing strategies to reduce costs across the organization
+    - you must bake cost optimization into the design phase of the tech organization
+  - continuous and increased level of automated optimization
+
+#### forecasting
+
+- mechanisms for forecasting future costs in order to improve the business and financial predictability
+  - use trend based forecasting for consistant usage
+  - use driver based forecasting to capture business changes
+  - track actuals vs forecast and understand variance drivers
+  - establish a period variance mitigation process and publish results to key stakeholders
+    - root cause analysis
+    - named stakeholders
+    - publish results to the org
+- expert level
+  - trend and driver based forecasting
+  - recurring detailed variance analysis
+  - standard operating procedure or well defined playbook for mitigating variances
+  - high forecasting accuracy
+
+### 4 pillars of CFM
+
+- see: measurement and accountability
+- save: cost optimization
+- plan: planning and forecasting
+- run: financial operations
+
+#### Measurement and Accountability (see)
+
+- activities that establish cost and visibility to ensure transparency and accountability for spend
+
+##### account and tagging strategy
+
+##### cost reporting and monitoring processes
+
+##### cost show/chargeback
+
+##### efficiency/value KPIs
+
+#### Cost Optimization (save)
+
+- activities that ensure your organization pays only for resources it needs
+
+##### cost aware architecture
+
+###### design and service selection
+
+##### match capacity with demand
+
+##### purchase model selection
+
+##### identifying waste resources
+
+#### Planning and Forecasting (plan)
+
+- activities that allow your organization to better undertand costs associated with future cloud workloads
+
+##### budgeting & forcasting
+
+###### variable cloud usage
+
+##### POC based cost estimation
+
+##### business case
+
+###### value articulation
+
+##### strategic fit
+
+#### Financial Operations (run)
+
+- activites that enable your organization to scale CFM
+
+##### secure executive sponsorship
+
+##### Finance + Tech cooporation
+
+- partnership between finance and technology organizations
+
+##### People, Governance, Tools
+
+- investing in the right things
+
+##### Accomplishments
+
+- celebrating, rewarding and promoting good practices
