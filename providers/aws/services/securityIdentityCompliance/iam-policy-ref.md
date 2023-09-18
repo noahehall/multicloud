@@ -101,6 +101,8 @@
 
 ## Quick Ref
 
+- it would be futile to list everything here, check the docs
+
 ```sh
 
 ## actions: SERVICE_ID:SERVICE_ACTION

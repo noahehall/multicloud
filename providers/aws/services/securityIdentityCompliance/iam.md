@@ -41,7 +41,9 @@
 - [policies: access](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
 - [signing aws api requests (sig v4)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html)
 - [step functions: advanced permissions](https://docs.aws.amazon.com/step-functions/latest/dg/concept-create-iam-advanced.html)
-- [systemsManager profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
+- [ssm: profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
+- [ssm: iam](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-iam.html)
+- [ssm: service linked roles](https://docs.aws.amazon.com/systems-manager/latest/userguide/using-service-linked-roles.html)
 - [Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
 - [testing iam policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
 - [tutorial: ABAC via tags](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html)
@@ -561,3 +563,17 @@
   - AWSStepFunctionsReadOnlyAccess: access policy providingread only access to the AWS Step Functions service.
 - AWS Step Functions can invoke code and access AWS resources.
   - you need to grant Step Functions access to those resources by using an IAM role.
+
+### Systems Manager
+
+- FYI:
+  - for hybrid environments you need a service role that grants the agent access to assumeRole
+- required policies
+  - resource groups
+  - tag editor
+  - instance profile role for SSM to manage resources on your behalf
+- optional policies
+  - personal health dashboard
+  - aws Config
+  - cloudwatch logs / cloudwatch agent
+  - s3 buckets

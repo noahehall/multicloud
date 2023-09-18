@@ -21,6 +21,17 @@
 
 ## basics
 
+- dashboard for all your resources
+- group, filter, categorize
+
+### OpsData
+
+- bunches of shiz about resources across accounts and regions and other dimensions
+  - ec2 instances
+  - patch compliance
+  - OpsItems
+  - etc etc
+
 ## considerations
 
 ## integrations

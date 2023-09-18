@@ -20,11 +20,13 @@
 
 ## basics
 
+- aggregates and stadardizes opsItems across services
+
 ### opsItems
 
 - operational issues and their associated metadata
   - event, resource and account details
-  - related ops items
+  - related ops items and resources
   - related AWS config change
   - cloudtrails
   - etc etc, bunches of shiz
