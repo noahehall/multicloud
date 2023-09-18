@@ -1050,6 +1050,14 @@
   - Application performance anomalies: observe application function, collect data on all problems, including supporting infrastructure and application dependencies
   - Web application security anomalies: include any other anomalous or suspicious web application behavior that impacts security such as cross-site scripting attacks or DDoS attacks.
 
+### Incident Response
+
+- broad strategies
+  - use APIs for automation: automate routine tasks that need to be performed, e.g. isolating resources
+  - forensic data analysis: create snapshots of data/configuration to capture the current state for later investigation and before remediation
+  - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
+  - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
+
 ## Compliance
 
 - focuses on the kind of data handled and stored, and studies an organization’s security processes.

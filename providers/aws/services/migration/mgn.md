@@ -1,8 +1,8 @@
-# Application Migration Service (MGN)
+# Application Migration Service (MGN) (fka cloudendure)
 
 - migrate applications to AWS, GovCloud (US), and Outposts.
 - highly automated lift-and-shift (rehost) solution
-- [fka CloudEndure](https://www.cloudendure.com/)
+- [CloudEndure](https://www.cloudendure.com/)
 
 ## my thoughts
 

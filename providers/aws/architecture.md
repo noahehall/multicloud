@@ -1,6 +1,8 @@
 # Common AWS Architecture
 
 - AWS comprises over 150 services: happy hunting ;)~
+- TODOs
+  - some sections still need cleanup
 
 ## links
 
@@ -169,12 +171,14 @@
 - WAF: configure rules to protect against web based attacks
 - Firewall Manager: configure WAF across AWS accounts
 
-### data at rest & in transit
+### encryption
 
-- key management service
-- CloudHSM
-- Certificate Manager
-- Secrets Manager
+- data at rest & in transit
+- in AWS
+  - key management service
+  - CloudHSM
+  - Certificate Manager
+  - Secrets Manager
 
 ### AuthNZ
 
@@ -188,15 +192,14 @@
 
 ### Incident Response
 
-- broad strategies
-  - use APIs for automation: automate routine tasks that need to be performed, e.g. isolating resources
-  - forensic data analysis: create snapshots of data/configuration to capture the current state for later investigation and before remediation
-  - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
-  - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
+- in AWS
+  - abcd
 
 ### Compliance
 
 - check the compliance service category and programs links up top
+- in AWS
+  - abcd
 
 ### Disaster Recovery
 
@@ -209,28 +212,29 @@
 
 ## Networking
 
-- Foundational Services
-  - VPC
-  - Transit Gateway
-  - PrivateLink
-- Edge Networking
-  - CloudFront
-  - Route53
-  - Global Accelerator
-- Network Security
-  - Shield
-  - WAF
-  - Network Firewall
-  - Firewall Manager
-- Application Networking
-  - App Mesh
-  - Api Gateway
-  - Cloud Map
-- Hybrid Connectivity
-  - Direct Connect
-  - Site-to-Site VPN
-  - Client VPN
-  - Cloud WAN
+- in AWS
+  - Foundational Services
+    - VPC
+    - Transit Gateway
+    - PrivateLink
+  - Edge Networking
+    - CloudFront
+    - Route53
+    - Global Accelerator
+  - Network Security
+    - Shield
+    - WAF
+    - Network Firewall
+    - Firewall Manager
+  - Application Networking
+    - App Mesh
+    - Api Gateway
+    - Cloud Map
+  - Hybrid Connectivity
+    - Direct Connect
+    - Site-to-Site VPN
+    - Client VPN
+    - Cloud WAN
 
 ### OSI Model in AWS
 
@@ -599,3 +603,15 @@
   - governance
     - organizations
     - Control Tower
+
+## Migration
+
+- for migrating TO aws
+- in AWS
+  - Analysis
+    - Migration Evaluator: migration assessment for lift and shift
+      - after you life n shift, you can modernize
+    - Migration Hub
+    - Application Discovery Service: realtime analysis of live systems
+  - Migration
+    - Application Migration Service (fka cloudEndure)

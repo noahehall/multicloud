@@ -5,7 +5,7 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - Migration Evaluator Overview for Customers > Migration Evaluator: Overview > 1.5 AWS Migration Journey
+      - Migration Evaluator Overview for Customers > 1.11 how it works
       - AWS Systems Manager
       - exam prep
         - might be able to skip this, think its the same thing in the downloadable PDF
