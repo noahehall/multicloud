@@ -34,11 +34,12 @@
 ## links
 
 - [accessing secrets manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/integration-ps-secretsmanager.html)
-- [security best practices](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-best-practices.html)
-- [state manager user guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html)
-- [faqs](https://aws.amazon.com/systems-manager/faq/)
-- [ssm-agent](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html)
 - [change calendar](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-change-calendar.html)
+- [faqs](https://aws.amazon.com/systems-manager/faq/)
+- [security best practices](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-best-practices.html)
+- [ssm agent: hybrid activations](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html)
+- [ssm agent: intro](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html)
+- [state manager user guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html)
 
 ## best practices
 
@@ -47,6 +48,8 @@
   - OR configure and use the CloudWatch Agent to collect metrics and logs from your instances instead of using Systems Manager Agent (SSM Agent) for these tasks.
   - the CloudWatch Agent gathers more metrics on EC2 instances and on-premises servers than are available using SSM Agent
 - while SSM is split into distinct services, they all highly integrate with eachother
+- run command
+  - you should stagger your command invocations across your fleet of instances
 
 ### anti patterns
 
@@ -58,8 +61,10 @@
 
 ### pricing
 
-- theres a free tier, beyond that it microtransacts you to death
-- use the pricing calculator
+- shiz free yo
+  - run command
+- shiz cost yo
+  - use the pricing calculator
 
 ## basics
 
@@ -68,17 +73,57 @@
 ### SSM Agent
 
 - all other services use the SSM Agent for processing & executing tasks
-- install and configur on servers
-  - makes it possible for Systems Manager to update, manage, and configure the server.
+- install on servers for SSM agent to update, manage, and configure the server.
   - sends status and execution information back to the Systems Manager service by using the Amazon Message Delivery Service (service prefix: ec2messages).
-- managed instances: any server with the SSM installed, configured, and associated with an instance profile
+
+#### Managed Instances
+
+- any server with the SSM installed and associated with an instance profile with required policies
   - AMIs with SSM Agent preinstalled: Windows, Amazon Linux, and Ubuntu Server
+
+##### server registration methods
+
+- basic steps
+  - install and start the SSM Agent
+  - assign an IAM role to the server that has the required policies
+  - verify the server shows up as a Managed Instance, e.g. via the cli/console
+- a new ec2 instance
+  - using an AMI with the SSM agent preintalled
+  - or install the SMS agent yourself via userData script
+  - in instance details config section, assign the role with the instance proflie policies
+- an existing ec2 isntance
+  - ssh into the instance and install & start the SSM agent
+  - configure an IAM role with the instance profile that has the required policies
+    - e.g. in the console > instance settings > attach IAM ROle
+    - can also be done using a cli/sdk
+- an arbitrary server: e.g. on premise / other cloud provider
+  - create a managed instance activation
+    - e.g. in console > hybrid activations > create activation
+      - this is where you assign the IAM Role, access expiration, etc
+      - access expiration is when new registrations will no longer be accepted, but existing servers will still contiue to work
+    - retrieve the activation code & ID
+      - up to 1000 servers can reuse the same code & id
+    - install & start the SSM Agent using the activation code & ID,
+      - check the docs for the registration cmd
+- or use cloudformation to automate the process
+- benefits of using Quick Setup: alternative to the manual processes above but only for EC2 instances
+  - the server is now managed by the SSM service
+  - one-time installation and configuration of cloudwatch agent
+    - monthly update of the cloudwatch agent
+  - scheduled
+    - biweekly update of the SSM agent
+    - collection of inventory (servers) metadata every 30 minutes
+    - daily scan of inventory to identify missing patches
 
 #### Documents
 
-- an operational playbook containing a series of steps to be executed in sequence
 - where you define and configure tasks to be executed by the SSM agent
-- versioned and shared across accounts
+  - all SSM services generally require a Document
+- an operational playbook containing a series of steps to be executed in sequence
+  - versioned and shared across accounts
+- managed documents: predefined documents created by AWS for common tasks
+  - e.g. RunShellScript is a managed document
+- custom documents: !managedDocuments
 
 ### Resource Groups
 
@@ -88,38 +133,78 @@
 
 - how resources are grouped
 
-### console
+### State Manager
 
-- view operational data from multiple services and automate operational tasks across resources.
+- secure and scalable state management service
+  - state as in server state
+  - basically is Run Command on a schedule
+- control how/when configurations are applied to managed instances
+  - e.g. bootstrapping instances, OS/Software settings, download/update agents on a schedule, network configuration, patching, run scripts, etc
+- use cases
+  - enforce enterprise wide compliance against a set of running servers
+  - toggling system-level services
+  - scheduling recurring tasks, e.g. ensuring a port is always closed, system scans, etc
+  - collecting inventory
+  - running arbitrary scripts at specific lifecycle events
+  - etc
 
-#### State Manager
-
-- secure and scalable configuration management service
-- e.g. bootstrapping instances, download/update agents on a schedule, network configuration, patching, run scripts, etc
-
-#### Run Command
+### Run Command
 
 - way of executing tasks without connecting remotely to instances
-- replacing the need for bastion hosts, SSH, or remote PowerShell.
-- e.g. software updates, systems monitoring, or any OS/software configuration changes
+  - replaces the need for bastion hosts, SSH, or remote PowerShell.
+  - e.g. software updates, systems monitoring, or any OS/software configuration changes
+- use cases: basically any scriptable task to be executed against a set of managed instances
+  - system monitoring
+  - joining instances to active domain
+  - on-demand patching
+  - deploying code to instances
+  - process management
+  - application bootstrap scripts
+  - user and account management
+- key benefits
+  - fully managed instances at no additional cost
+  - single view of configuration change
+  - no need for SSH/RDP/etc
+  - auditability!
+  - native integration with IAM
 
-#### Distributor
+#### Commands
+
+- any action you want to perform on a specific set of instances
+- command configuration
+  - document: the actual script to run, etc
+  - targets: method for matching instances
+    - matching tags
+    - manual selection
+    - resource groups
+  - runtime parameters
+  - rate control: how you stagger cmd invocations,
+    - concurrency: e.g. execute at most 10% at a time
+    - error threshold: e.g. X errors will stop cmd
+  - output options
+    - cloudwatch logs
+    - send to s3
+  - SNS notifications
+
+### Distributor
 
 - centrally store and systematically distribute software packages while you maintain control over versioning
 - create and distribute software packages and then install them using Systems Manager Run Command and State Manager
 - use IAM policies to control who can create or update packages in your account
 
-#### Change Calendar
+### Change Calendar
 
 - setup date and time ranges when SSM actions may/not be executed
 
-#### Dashboards
+### Dashboards
 
-##### Compliance
+- view operational data from multiple services and automate operational tasks across resources.
+
+#### Compliance
 
 - automatically aggregates and displays operational data for each resource group through a dashboard
 
-##### Inventory
+#### Inventory
 
 - query & collect information about system configurations and installed applications
 - applications, files, network configurations, Windows services, registries, server roles, updates, and any other system properties
@@ -151,9 +236,8 @@
 
 ### EC2
 
-- see your ec2 instances, any on-premises servers, or virtual machines in your hybrid environment, communicating with ec2messages. endpoints.
-- information about executions, commands, scheduled actions, errors, and health statuses to log files on each instance.
-- Logs files by manually connecting to an instance or automatically send logs to CloudWatch Logs.
+- also integrates with auto scaling groups
+- manage your EC2 instances at scale
 
 ### VPC
 
@@ -163,6 +247,7 @@
 ### Cloudtrail
 
 - audit everything SSM does
+- can send TRAIL logs to CLOUDWATCH logs so you can query the actions taken
 
 ### CloudWatch
 

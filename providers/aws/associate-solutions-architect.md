@@ -5,7 +5,7 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - AWS Systems Manager > 2.8
+      - AWS Systems Manager > 5.2
       - exam prep
         - might be able to skip this, think its the same thing in the downloadable PDF
       - badge readiness assessment
