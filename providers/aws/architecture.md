@@ -612,6 +612,6 @@
     - Migration Evaluator: migration assessment for lift and shift
       - after you life n shift, you can modernize
     - Migration Hub
-    - Application Discovery Service: realtime analysis of live systems
+    - Application Discovery Service: realtime analysis of live systems, app depending mapping, etc
   - Migration
     - Application Migration Service (fka cloudEndure)

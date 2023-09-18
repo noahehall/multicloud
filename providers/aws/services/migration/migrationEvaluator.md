@@ -6,6 +6,8 @@
 
 ## my thoughts
 
+- you have to request an assessment from your AM or on the landing page
+
 ## links
 
 - [landing page](https://aws.amazon.com/migration-evaluator/?did=ap_card&trk=ap_card)
@@ -16,8 +18,12 @@
 
 ### anti patterns
 
-- evaluator does not support application dependency mapping
-  - but does support environment groups: e.g. prod vs dev which can drive cost optimization decisions
+- evaluator does not
+  - support application dependency mapping
+    - but does support environment groups: e.g. prod vs dev which can drive cost optimization decisions
+    - use application discovery service for depending mapping
+  - right size storage: 500 gb on premise will be evaluated at 500gb EBS
+    - but does right size servers
 - evaluator is not a good fit for
   - servers on non-x86 architecture or non-server hardware
     - e.g. SAN/NAS storage, mainframes, routers, Solaris, AIX

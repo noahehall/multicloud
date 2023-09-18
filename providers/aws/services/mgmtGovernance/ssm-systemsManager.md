@@ -35,21 +35,21 @@
 - maintain security and compliance by scanning your managed instances and reporting on (or taking corrective action on) any policy violations it detects
 - operations hub for your AWS applications and resources, and is broken into four core feature groups.
   - operations Management
-    - [explorer](./systemsManager-explorer.md)
-    - [opsCenter](./systemsManager-opsCenter.md)
-    - [incident manager](./systemsManager-incidentManager.md)
+    - [explorer](./ssm-explorer.md)
+    - [opsCenter](./ssm-opsCenter.md)
+    - [incident manager](./ssm-incidentManager.md)
   - application management
-    - [application manager](./systemsManager-applicationManager.md)
-    - [app config](./systemsManager-appConfig.md)
-    - [parameter store](./systemsManager-parameterStore.md)
+    - [application manager](./ssm-applicationManager.md)
+    - [app config](./ssm-appConfig.md)
+    - [parameter store](./ssm-parameterStore.md)
   - change management
-    - [automation](./systemsManager-automation.md)
-    - [change manager](./systemsManager-changeManager.md)
-    - [maintenance windows](./systemsManager-maintenanceWindows.md)
+    - [automation](./ssm-automation.md)
+    - [change manager](./ssm-changeManager.md)
+    - [maintenance windows](./ssm-maintenanceWindows.md)
   - node management
-    - [fleet manager](./systemsManager-fleetManager.md)
-    - [session manager](./systemsManager-sessionManager.md)
-    - [patch manager](./systemsManager-patchManager.md)
+    - [fleet manager](./ssm-fleetManager.md)
+    - [session manager](./ssm-sessionManager.md)
+    - [patch manager](./ssm-patchManager.md)
 - other services
   - Connect with ITSM and ITOM Software: its some kind of JIRA integration
 

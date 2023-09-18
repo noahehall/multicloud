@@ -5,10 +5,10 @@
   - Exam Prep (With practice material) > module 1
   - Solutions Architect - Knowledge Badge Readiness Path
     - skipped courses: video only, no transcript or speed adjust
-      - Migration Evaluator Overview for Customers > 1.11 how it works
-      - AWS Systems Manager
+      - AWS Systems Manager > 1.2
       - exam prep
         - might be able to skip this, think its the same thing in the downloadable PDF
+      - badge readiness assessment
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
 - todos
   - FYI: just by opening a lab marks it as completed, check the completed list and figure out which ones you still need to do
