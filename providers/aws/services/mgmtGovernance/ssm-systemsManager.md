@@ -115,6 +115,14 @@
     - collection of inventory (servers) metadata every 30 minutes
     - daily scan of inventory to identify missing patches
 
+#### Resource Groups
+
+- a way to logically group managed instances in a specific account across regions
+
+### SSM Services Configuration
+
+- Most SSM services utilize the same components
+
 #### Documents
 
 - where you define and configure tasks to be executed by the SSM agent
@@ -124,16 +132,61 @@
 - managed documents: predefined documents created by AWS for common tasks
   - e.g. RunShellScript is a managed document
 - custom documents: !managedDocuments
+- configuration: depends on the document type
+  - commands: what to execute
+  - working directory
+  - execution timeout
 
-### Resource Groups
+#### Targets
 
-- a way to logically group resources in a specific account across regions
+- most SSM services allow you to specify the target of service execution
+- method for matching managed instances
+  - matching tags
+  - manual selection
+  - resource groups
+
+#### Schedules
+
+- most SSM services allow you to specify the schedule of document execution
+- how often the document should be executed against targets
+- depends on the service type, bug generally
+  - On Schedule: execute as defined
+    - CRON
+    - rate
+    - Cron/Rate expression
+  - No Schedule: execute only once
+
+#### Compliance Severity
+
+- most SSM services allow you to specify status of execution failure
+- determines what happens when document execution fails
+  - e.g. flag this execution as Critical
+- depends on the service type, but generally
+  - Critical
+  - High
+  - Medium
+  - Low
+
+#### Rate Control
+
+- most SSM services allow you to roll out document execution againt targets
+- how you stagger cmd invocations
+  - concurrency: e.g. execute at most 10% at a time
+  - error threshold: e.g. X errors will stop cmd
+
+#### Outpot Options
+
+- most SSM services enable you to specify what to do what document exection logs
+  - cloudwatch logs
+  - send to s3
 
 #### Tag Editor
 
 - how resources are grouped
 
-### State Manager
+### SSM Services
+
+#### State Manager
 
 - secure and scalable state management service
   - state as in server state
@@ -148,7 +201,17 @@
   - running arbitrary scripts at specific lifecycle events
   - etc
 
-### Run Command
+##### Associations
+
+- define a state to apply to a set of matching targets
+  - i.e. for SSM service X, apply document Y to matching managed instances
+  - most SSM services allow you to create associations, and they will show up in state manager
+- configuration
+  - Document: where you define the state, see elsewhere
+  - targets: of the document execution, see elseware
+  - schedule: of document execution, see elseware
+
+#### Run Command
 
 - way of executing tasks without connecting remotely to instances
   - replaces the need for bastion hosts, SSH, or remote PowerShell.
@@ -168,47 +231,54 @@
   - auditability!
   - native integration with IAM
 
-#### Commands
+##### Commands
 
 - any action you want to perform on a specific set of instances
 - command configuration
-  - document: the actual script to run, etc
-  - targets: method for matching instances
-    - matching tags
-    - manual selection
-    - resource groups
+  - document: the actual script to run, see elsware
+  - targets: method for matching instances; see elseware
   - runtime parameters
-  - rate control: how you stagger cmd invocations,
-    - concurrency: e.g. execute at most 10% at a time
-    - error threshold: e.g. X errors will stop cmd
-  - output options
-    - cloudwatch logs
-    - send to s3
+  - rate control: how you stagger cmd invocations; see elsware
+  - output options: usually either s3 or cloudwatch: see elsware
   - SNS notifications
 
-### Distributor
+#### Distributor
 
 - centrally store and systematically distribute software packages while you maintain control over versioning
 - create and distribute software packages and then install them using Systems Manager Run Command and State Manager
 - use IAM policies to control who can create or update packages in your account
 
-### Change Calendar
+#### Change Calendar
 
 - setup date and time ranges when SSM actions may/not be executed
 
-### Dashboards
+#### Dashboards
 
 - view operational data from multiple services and automate operational tasks across resources.
 
-#### Compliance
+##### Compliance
 
 - automatically aggregates and displays operational data for each resource group through a dashboard
 
 #### Inventory
 
-- query & collect information about system configurations and installed applications
-- applications, files, network configurations, Windows services, registries, server roles, updates, and any other system properties
+- query & collect information about OS and instance level details
 - manage application assets, track licenses, monitor file integrity, discover applications not installed by a traditional installer, and more.
+- integrates with AWS Config to add additional inventory logic
+  - you send inventory information to config, where config can execute compliance management
+  - blacklist applications/configurations/etc
+  - automate remiediation actions
+- configuration
+  - targets
+  - schedule
+  - parameters: define type of data to gather
+    - e.g. applications, files, file paths, network configurations, Windows services, registries, server roles, updates, billing info, and any other system properties
+    - custom inventory (e.g. on premise managed instances)
+
+##### Resource Data Sync
+
+- aggregates data collected by Inventory and stores it in a s3 bucket
+- once its in the s3 bucket you can visualize it
 
 ## Security
 
@@ -254,3 +324,11 @@
 - events for tracking state and changes
 
 ### CloudFormation
+
+### Athena
+
+- visualize logs output to s3 buckets
+
+### License Manager
+
+- apply licensing policies to managed instances based on the info pulled from inventory

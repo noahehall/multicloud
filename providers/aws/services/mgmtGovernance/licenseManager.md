@@ -28,3 +28,7 @@
 ## considerations
 
 ## integrations
+
+### SSM
+
+- once you collect inventory on managed instances, you can manage the retrieved license info in license manager

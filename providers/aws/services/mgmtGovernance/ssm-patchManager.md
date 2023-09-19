@@ -7,9 +7,11 @@
 
 ## links
 
-- [landing page](some url)
+- [Patch Policies](https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager-policies.html)
 
 ## best practices
+
+- Patch Policies just rolled out, use that
 
 ### anti patterns
 
@@ -23,6 +25,10 @@
   - auto-approve categories of patches to be installed, such as operating system or high severity patches
   - specify a list of patches that override these rules and are automatically approved or rejected.
 - schedule maintenance windows: patches are only applied during preset times
+
+### Patch Policies
+
+- the new and recommended method for configuring your patching operations
 
 ## considerations
 

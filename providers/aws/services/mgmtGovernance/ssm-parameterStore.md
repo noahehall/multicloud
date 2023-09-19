@@ -1,6 +1,6 @@
 # Parameter Store
 
-- integrates with secrets manager and IAM so you can retrieve secrets in a secure manner
+- integrates with secrets manager and IAM so you can programmatically retrieve secrets in a secure manner
 - a stateless reference to stuff in secrets manager
 
 ## my thoughts
@@ -35,6 +35,8 @@
 ## considerations
 
 ## integrations
+
+- can be integrated into most things to retrieve secrets programmatically
 
 ### lambda
 
