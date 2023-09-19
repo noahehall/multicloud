@@ -584,6 +584,12 @@
   - CDK: sdk for various programming languages to interact with the AWS control plane API
   - opsworks: create, configure, and manage your database servers.
 
+### Self Service
+
+- in AWS
+  - Service Catalogue
+  - SSM Automation
+
 ## Cloud Financial Management (CFM)
 
 - everything stems from cost allocation tags and organizations

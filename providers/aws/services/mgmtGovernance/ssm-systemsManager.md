@@ -3,12 +3,11 @@
 - a unified interface for a set of cloudnative, fully managed services for resources on AWS and in multicloud and hybrid environments
   - automated configuration management
   - track and resolve opertional issues
-- the following services are split into separate files
+- Main Services (TODO: move them all in here)
   - operations Management
     - [explorer](./ssm-explorer.md)
       - customizable dashboard for resources with an aggregated view of ops data
-    - [opsCenter](./ssm-opsCenter.md)
-      - centralized ops/IT dashboard & task management for cloud resources
+    - OpsCenter
     - [incident manager](./ssm-incidentManager.md)
   - application management
     - [application manager](./ssm-applicationManager.md)
@@ -16,16 +15,12 @@
     - [parameter store](./ssm-parameterStore.md)
       - hierarchical store for configuration & secret data
   - change management
-    - [automation](./ssm-automation.md)
-      - simplifies any scriptable/automation task via workflows and playbooks
-      - use custom/predefined playbooks to enable AWS resource management across multiple accounts and AWS Regions.
+    - automation
     - [change manager](./ssm-changeManager.md)
-    - [maintenance windows](./ssm-maintenanceWindows.md)
-      - define a time window / schedule for patch manager, run command and other disruptive tasks
+    - Maintenance Windows
   - node management
     - [fleet manager](./ssm-fleetManager.md)
-    - [session manager](./ssm-sessionManager.md)
-      - auditable user access to servers through a webshell/ssh/cli without requiring inbound network ports
+    - session manager
     - [patch manager](./ssm-patchManager.md)
       - select & deploy OS and software packages across instances
   - other services
@@ -48,12 +43,16 @@
   - the dashboard
   - Documents
   - State Manager
+  - Automation
+  - Secrets Manager + Parameter Store
 - configure the SSM Agent to automatically send its log data to a log group in CloudWatch Logs for analysis
   - OR configure and use the CloudWatch Agent to collect metrics and logs from your instances instead of using Systems Manager Agent (SSM Agent) for these tasks.
   - the CloudWatch Agent gathers more metrics on EC2 instances and on-premises servers than are available using SSM Agent
 - while SSM is split into distinct services, they all integrate with each other and other AWS services
+  - get creative, especially on SSM integrating with other AWS services
 - run command
   - you should stagger your command invocations across your fleet of instances
+- many SSM log output contain sensitive data, you should encrypt the log data in the service settings
 
 ### anti patterns
 
@@ -126,6 +125,8 @@
 
 - a way to logically group managed instances in a specific account across regions
 
+## SSM Services
+
 ### SSM Services Configuration
 
 - Most SSM services utilize the same components
@@ -134,11 +135,32 @@
 
 - where you define and configure tasks to be executed by the SSM agent
   - all SSM services generally require a Document
+  - can pretty much invoke any AWS API Action
 - an operational playbook containing a series of steps to be executed in sequence
   - versioned and shared across accounts
 - managed documents: predefined documents created by AWS for common tasks
   - e.g. RunShellScript is a managed document
+  - you can see the document content and use it for a custom document
 - custom documents: !managedDocuments
+  - builder: specify document attributes in input fields
+    - role: by default documents are executed in user context, but supply a role for users without the appropriate permissions
+      - you can then give users IAM access to the document, instead of the underlying resource
+    - input parameters
+    - outputs: for use in other processes
+    - target type
+    - document tags
+    - steps: serial execution for workflows
+      - name
+      - action type: theres bunches of different types
+        - run a script
+        - wait on a resource
+        - invoke AWS API actions
+        - assert/change a resource state
+        - pause for manual approval
+        - etc
+  - editor: specify document attributes as json
+    - IMO more powerufl than the builder, you can switch back n forth between modes
+    - e.g. you can copypasta managed document content then edit
 - configuration: depends on the document type
   - commands: what to execute
   - working directory
@@ -158,9 +180,9 @@
 - how often the document should be executed against targets
 - depends on the service type, bug generally
   - On Schedule: execute as defined
-    - CRON
+    - CRON schedule builder: wyswyg
     - rate
-    - Cron/Rate expression
+    - Cron Rate expression: cron syntax
   - No Schedule: execute only once
 
 #### Compliance Severity
@@ -191,9 +213,7 @@
 
 - how resources are grouped
 
-### SSM Services
-
-#### State Manager
+### State Manager
 
 - secure and scalable state management service
   - state as in server state
@@ -208,7 +228,7 @@
   - running arbitrary scripts at specific lifecycle events
   - etc
 
-##### Associations
+#### Associations
 
 - define a state to apply to a set of matching targets
   - i.e. for SSM service X, apply document Y to matching managed instances
@@ -218,7 +238,7 @@
   - targets: of the document execution, see elseware
   - schedule: of document execution, see elseware
 
-#### Run Command
+### Run Command
 
 - way of executing tasks without connecting remotely to instances
   - replaces the need for bastion hosts, SSH, or remote PowerShell.
@@ -238,7 +258,7 @@
   - auditability!
   - native integration with IAM
 
-##### Commands
+#### Commands
 
 - any action you want to perform on a specific set of instances
 - command configuration
@@ -249,25 +269,25 @@
   - output options: usually either s3 or cloudwatch: see elsware
   - SNS notifications
 
-#### Distributor
+### Distributor
 
 - centrally store and systematically distribute software packages while you maintain control over versioning
 - create and distribute software packages and then install them using Systems Manager Run Command and State Manager
 - use IAM policies to control who can create or update packages in your account
 
-#### Change Calendar
+### Change Calendar
 
 - setup date and time ranges when SSM actions may/not be executed
 
-#### Dashboards
+### Dashboards
 
 - view operational data from multiple services and automate operational tasks across resources.
 
-##### Compliance
+#### Compliance
 
 - automatically aggregates and displays operational data for each resource group through a dashboard
 
-#### Inventory
+### Inventory
 
 - query & collect information about OS and instance level details
 - manage application assets, track licenses, monitor file integrity, discover applications not installed by a traditional installer, and more.
@@ -282,10 +302,90 @@
     - e.g. applications, files, file paths, network configurations, Windows services, registries, server roles, updates, billing info, and any other system properties
     - custom inventory (e.g. on premise managed instances)
 
-##### Resource Data Sync
+#### Resource Data Sync
 
 - aggregates data collected by Inventory and stores it in a s3 bucket
 - once its in the s3 bucket you can visualize it
+
+### Maintenance Windows
+
+- define a time window / schedule for patch manager, run command and other disruptive tasks
+  - SSM Patch Manager,
+  - SSM Run Command,
+  - SSM Automation,
+  - Lambda Fns,
+  - Step Fns
+  - scheduling tasks in other supports resources, e.g. S3, SNS, etc
+  - etc
+- configuration
+  - schedule
+  - duration: how long the maintenance window lasts
+  - targets: tags, resource groups, etc
+    - allow unregistered targets: whether instances that meet the targeting criteria in the future should be in cluded
+  - tasks:
+
+### Automation
+
+- safely automate & share common and repetitive IT operations and management tasks across multiple accounts and Regions
+- simplifies any scriptable/automation task via workflows and playbooks
+- track the execution of each step, require approvals, incrementally roll outs, and automatically halt if errors occur.
+- use cases
+  - creation & maintanence of AMIs
+  - one-click configuration tasks, e.g. applying configuration
+  - workflow tasks with manual approvals
+  - remediation tasks
+  - self-service actions via Service Catalogue
+- architecture
+  - assumes current user context by defualt
+    - optionally can specify a service role
+  - create custom automation playbooks
+  - run the automation playbook
+
+#### Playbooks (documents)
+
+- works across multiple accounts and AWS Regions.
+- can be scheduled in a maintenance window, AWS/multicloud/onpremise resource events, or executed directly through the AWS Management Console, CLIs, and SDKs.
+- share automation documents across accounts
+- managed playbooks: created by AWS, you just specify the input params
+  - are segmented by categories, theres bunches
+  - you should dive into how the managed documents are configured before creating your own
+- custom playbooks: automation pretty much any AWS API Action
+  - dynamic parameters
+  - conditionally branch based on step results
+  - configure approvals as part of workflow
+
+### Session Manager
+
+- auditable, interactive webshell via one-click/CLI/SDK and remote desktop access to AWS/hybrid/onpremise servers
+  - the SSM agent creates an outbound connection to the SSM service so you dont have to open up firewall ports
+- use cases
+  - centralized access control (resources, root, nonroot) via IAM
+  - auditable: send logs to s3, cloudwatch, cloudtrail
+  - no need for inbound ports, ssh keys, or bastion hosts
+  - enable connections to servers without internet access
+  - port forwarding/redirection (e.g. for RDP, SSH, webservers, etc) via SSM Documents (check the cli docs)
+- console
+  - see live sessions
+  - terminate sessions
+  - preferences: e.g. KMS, log output, etc
+    - run cmds as user: define a tag, apply it to the user, and the tags value will be the user for the ssh session
+      - the tag value must be a user on the managed instance
+  - connected to instances, audit session cmds, etc etc
+
+### OpsCenter
+
+- centralized ops/IT dashboard & task management for cloud resources
+- view, investigate, and resolve operational issues related to resources on AWS, multicloud and hybrid environments using the Systems Manager console or via the Systems Manager OpsCenter APIs.
+- aggregates and stadardizes opsItems across services
+
+#### opsItems
+
+- operational issues and their associated metadata
+  - event, resource and account details
+  - related ops items and resources
+  - related AWS config change
+  - cloudtrails
+  - etc etc, bunches of shiz
 
 ## Security
 
@@ -328,7 +428,8 @@
 
 ### CloudWatch
 
-- events for tracking state and changes
+- logs for tracking state and changes
+- events for notifications when patterns/specific actions take place
 
 ### CloudFormation
 
@@ -339,3 +440,18 @@
 ### License Manager
 
 - apply licensing policies to managed instances based on the info pulled from inventory
+
+### Service Catalogue
+
+- create self-service actions that execute automation playbooks
+- give users automation access at the playbook level, without permissions to the underlying resource
+
+### Config
+
+- most SSM services integrate with config for compliance management, enhanced logic and automation steps
+
+### EC2
+
+- SSM is all about managing EC2 servers, but also important
+  - connect to any managed instance via Session manager without ssh keys
+  - bunch of automation stuff
