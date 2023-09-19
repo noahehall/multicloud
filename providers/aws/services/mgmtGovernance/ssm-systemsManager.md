@@ -33,21 +33,25 @@
 
 ## links
 
-- [accessing secrets manager](https://docs.aws.amazon.com/systems-manager/latest/userguide/integration-ps-secretsmanager.html)
 - [change calendar](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-change-calendar.html)
+- [documents: intro](https://docs.aws.amazon.com/systems-manager/latest/userguide/documents.html)
 - [faqs](https://aws.amazon.com/systems-manager/faq/)
+- [inventory: tutorials](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-inventory-walk.html)
 - [security best practices](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-best-practices.html)
 - [ssm agent: hybrid activations](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html)
 - [ssm agent: intro](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html)
-- [state manager user guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html)
+- [user guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html)
 
 ## best practices
 
-- become one with the dashboard
+- become one with:
+  - the dashboard
+  - Documents
+  - State Manager
 - configure the SSM Agent to automatically send its log data to a log group in CloudWatch Logs for analysis
   - OR configure and use the CloudWatch Agent to collect metrics and logs from your instances instead of using Systems Manager Agent (SSM Agent) for these tasks.
   - the CloudWatch Agent gathers more metrics on EC2 instances and on-premises servers than are available using SSM Agent
-- while SSM is split into distinct services, they all highly integrate with eachother
+- while SSM is split into distinct services, they all integrate with each other and other AWS services
 - run command
   - you should stagger your command invocations across your fleet of instances
 
@@ -63,8 +67,11 @@
 
 - shiz free yo
   - run command
+  - Patch Manager
+    - ec2 instances
+    - on premise OS patches
 - shiz cost yo
-  - use the pricing calculator
+  - everything else
 
 ## basics
 

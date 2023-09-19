@@ -16,6 +16,7 @@
 - [cloudformation: securing passwords](https://aws.amazon.com/blogs/infrastructure-and-automation/securing-passwords-in-aws-quick-starts-using-aws-secrets-manager/)
 - [rotating ssh keys](https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/)
 - [securing severless apps](https://aws.amazon.com/blogs/apn/keeping-the-security-and-scalability-of-serverless-apps-problem-free-with-aws-secrets-manager/)
+- [paramator store integration](https://docs.aws.amazon.com/systems-manager/latest/userguide/integration-ps-secretsmanager.html)
 
 ## best practices
 

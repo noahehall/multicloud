@@ -45,4 +45,6 @@
 
 ## Integrations
 
-- should be able to analyze any AWS resource where iam policies can be applied
+### Config
+
+- most SSM services can be pushed to config for additional compliance management
