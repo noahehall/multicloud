@@ -139,6 +139,7 @@
 - you should also invest time in setting up localstack
 - in AWS
   - cloudformation, sam, codecommit, codebuild, codedeploy, codepipeline
+  - SSM distributor
 
 ## Security
 
@@ -193,13 +194,15 @@
 ### Incident Response
 
 - in AWS
-  - abcd
+  - SSM OpsCenter Remdiation/task management
 
 ### Compliance
 
 - check the compliance service category and programs links up top
 - in AWS
-  - abcd
+  - Config
+  - SSM Inventory, PatchManager, etc
+  - Events + SNS + Lambda
 
 ### Disaster Recovery
 

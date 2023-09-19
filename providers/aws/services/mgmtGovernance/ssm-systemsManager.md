@@ -271,9 +271,22 @@
 
 ### Distributor
 
-- centrally store and systematically distribute software packages while you maintain control over versioning
-- create and distribute software packages and then install them using Systems Manager Run Command and State Manager
+- versioned package repostory tightly integrated with IAM
+- centrally store and distribute versioned software packages
+  - software agents
+  - applications
+  - drivers
 - use IAM policies to control who can create or update packages in your account
+
+#### Packages
+
+- location: s3 bucket
+- file types: any file, e.g. deb, rpm, etc
+- requirements: platform, version, architecture
+- can install
+  - ondemand: via Run Command
+  - schedule/automatically on new instances: via State Manager
+- can uninstall: via arbitrary script
 
 ### Change Calendar
 
@@ -374,7 +387,7 @@
 
 ### OpsCenter
 
-- centralized ops/IT dashboard & task management for cloud resources
+- centralized ops/IT dashboard & remediation task management for cloud resources
 - view, investigate, and resolve operational issues related to resources on AWS, multicloud and hybrid environments using the Systems Manager console or via the Systems Manager OpsCenter APIs.
 - aggregates and stadardizes opsItems across services
 
@@ -382,10 +395,18 @@
 
 - operational issues and their associated metadata
   - event, resource and account details
-  - related ops items and resources
-  - related AWS config change
+  - related ops items and aws resources
+  - related AWS config changes
   - cloudtrails
   - etc etc, bunches of shiz
+- can be created from:
+  - cloudwatch events
+  - console or API
+- can be integrated with external task management products via SNS
+
+#### Remediation
+
+- uses SSM Documents to automate OpsItem remediation
 
 ## Security
 
@@ -455,3 +476,5 @@
 - SSM is all about managing EC2 servers, but also important
   - connect to any managed instance via Session manager without ssh keys
   - bunch of automation stuff
+
+### SNS
