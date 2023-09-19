@@ -5,8 +5,7 @@
   - track and resolve opertional issues
 - Main Services (TODO: move them all in here)
   - operations Management
-    - [explorer](./ssm-explorer.md)
-      - customizable dashboard for resources with an aggregated view of ops data
+    - explorer
     - OpsCenter
     - [incident manager](./ssm-incidentManager.md)
   - application management
@@ -211,7 +210,50 @@
 
 #### Tag Editor
 
-- how resources are grouped
+- how Resource Groups are created
+
+#### Resource Data Sync
+
+- aggregates data across accounts & regions collected by Inventory, Explorer, and other SSM services and stores it in a s3 bucket
+- once its in the s3 bucket you can visualize it
+- configuration
+  - accounts: for each sync, you can specify which accounts are included in the aggregation
+  - regions: see above but for regions
+
+### Dashboards
+
+- view operational data from multiple services and automate operational tasks across resources.
+
+#### Compliance
+
+- automatically aggregates and displays operational data for each resource group through a dashboard
+
+#### Explorer
+
+- customizable Ops dashboard for monitoring resources with an aggregated view of ops data across accounts and regions
+  - reports, insights and analysis into the operational health and performance of your AWS/hybrid environment
+- group, filter, categorize in the console/api
+- uses Resource Data Sync to aggregate additional data across accounts & regions
+- basic workflow
+  - specify IAM role: enables creation of OpsItems from cloudwatch events
+  - configure opscenter rules
+    - rules that automatically create OpsItems from cloudwatch events
+  - configure opsdata sources
+  - specify tags for reporting: additional dimensions for categorizing & filtering OpsData
+  - setup resource data sync for aggregation across accounts & regions
+  - setup data export
+    - s3 bucket
+    - SNS topics
+  - create dashboards
+
+##### OpsData
+
+- bunches of shiz about resources across accounts and regions and other dimensions
+  - ec2 instances
+  - System Manager patch compliance
+  - OpsCenter OpsItems
+  - etc etc
+- can be exported to s3 and synchronized across Organization accounts
 
 ### State Manager
 
@@ -291,14 +333,24 @@
 ### Change Calendar
 
 - setup date and time ranges when SSM actions may/not be executed
+- create & share open/closed calendars for important business events with white/blacklisted time ranges
+- organizations can create a single master change calendar for events across all accounts
+- general workflow
+  - create calendar
+  - add scheuled events
+  - query calendar state using Automation/API
+    - with Automation you need to add a step that checks the calendar before the Automation executes the Document
+    - if open, take action
+    - if closed, block/reschedule actions
+  - create approval-based override actions
 
-### Dashboards
+#### Calendar
 
-- view operational data from multiple services and automate operational tasks across resources.
-
-#### Compliance
-
-- automatically aggregates and displays operational data for each resource group through a dashboard
+- open: allow event actions by default; except during an existing event
+  - e.g. general change management
+- closed: disallow event actions by defualt; except during a prescheduled event
+  - e.g. CI/CD pipelines
+- events: schedule potentially disruptive events based on the Calendar state (open/closed)
 
 ### Inventory
 
@@ -314,11 +366,7 @@
   - parameters: define type of data to gather
     - e.g. applications, files, file paths, network configurations, Windows services, registries, server roles, updates, billing info, and any other system properties
     - custom inventory (e.g. on premise managed instances)
-
-#### Resource Data Sync
-
-- aggregates data collected by Inventory and stores it in a s3 bucket
-- once its in the s3 bucket you can visualize it
+- utilizes Resource Data Sync
 
 ### Maintenance Windows
 
@@ -389,7 +437,7 @@
 
 - centralized ops/IT dashboard & remediation task management for cloud resources
 - view, investigate, and resolve operational issues related to resources on AWS, multicloud and hybrid environments using the Systems Manager console or via the Systems Manager OpsCenter APIs.
-- aggregates and stadardizes opsItems across services
+- aggregates and stadardizes opsItems rules across services
 
 #### opsItems
 

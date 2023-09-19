@@ -134,13 +134,6 @@
     - real time analysis: kinesis data streams/dynamodb streams
     - historical trends: batch, AWS glue + s3 > athena/redshift spectrum
 
-## ci/cd/testing
-
-- you should also invest time in setting up localstack
-- in AWS
-  - cloudformation, sam, codecommit, codebuild, codedeploy, codepipeline
-  - SSM distributor
-
 ## Security
 
 - security value chain
@@ -592,6 +585,14 @@
 - in AWS
   - Service Catalogue
   - SSM Automation
+
+### ci/cd/testing
+
+- you should also invest time in setting up localstack
+- in AWS
+  - cloudformation, sam, codecommit, codebuild, codedeploy, codepipeline
+  - SSM distributor: system-level artifact repository
+  - Change Manager: define & share calendars containing windows for change management
 
 ## Cloud Financial Management (CFM)
 
