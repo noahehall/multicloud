@@ -45,19 +45,9 @@
 
 ### Focus
 
-> IMO: based on the sample questions, these are recurring themes
-> (1) service integration not isolation
-> (2) preferred use cases and anti-patterns
-> (3) best practices
-
-#### additional sections
-
-> these were mentioned in the exam preps but not in the PDF
+> IMO: these are recurring themes
 
 - global architecture
-  - ARN: Resource Names
-  - availability zones
-  - well architected framework
 - SDKs
   - Python (boto3)
   - local credentials (~/.aws/credentials)
@@ -70,7 +60,7 @@
     - deploy
     - errors
       - Invalid/missing template file
-- Trusted Advisor (resurce provising best practices)
+- Trusted Advisor
 - Inspector
 - Managed Streaming for Apache Kafka (MSK)
 

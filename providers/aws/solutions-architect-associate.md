@@ -2,11 +2,14 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
-  - Exam Prep (With practice material) > module 1 > Introduction to Solutions Architect Associate
+  - Exam Prep: Module 4
   - Exam Prep Official Practice Question Set
   - Examp Prep Enhanced Course
   - Solutions Architect - Knowledge Badge Readiness Path
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
+  - new courses
+    - Architecting on AWS: Online Course Supplement
+    - AWS Technical Essentials
 - todos
   - FYI: just by opening a lab marks it as completed, check the completed list and figure out which ones you still need to do
 
@@ -14,10 +17,15 @@
 
 - [landing page](https://aws.amazon.com/certification/certified-solutions-architect-associate/)
 - [exam guide PDF](https://d1.awsstatic.com/training-and-certification/docs-sa-assoc/AWS-Certified-Solutions-Architect-Associate_Exam-Guide.pdf)
+- [exam: sample questions](https://explore.skillbuilder.aws/files/a/w/aws_prod1_docebosaas_com/1695236400/LWLUBaC6tfrPldPxaDhbug/item/e1e4bbc8acaee3f1ea7f6d62d2b52b4c33145088.pdf)
 
 ## basics
 
 - exam is intended for individuals who perform in a solutions architect role
+- know the exam format
+  - 65 questions
+  - 130 minutes (2 minutes per question)
+  - $150
 
 ### high level
 
@@ -37,15 +45,16 @@
 
 ### Focus
 
-> IMO: based on the sample questions, these are recurring themes
+> IMO: these are recurring themes
 
-- abcd
-
-#### additional sections
-
-> these were mentioned in the exam preps but not in the PDF
-
-- abcd
+- Well Architected Framework & Tool, Global Architecture, Shared Responsibility Model
+- theres no fkn way to ignore EKS, nomad forever!
+- public, private, hybrid and multi-cloud environments
+- AWS Organizations & Accounts
+- which aws services are Global, Regional and Zonal
+- Providing and securing credentials
+- STS, Roles, Federation, Active Directory
+- IAM, Policy types, interpreting policy documents and all policy elements
 
 #### technologies
 

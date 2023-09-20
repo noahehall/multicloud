@@ -24,14 +24,15 @@
 ### well architected
 
 - [AAA landing page](https://aws.amazon.com/architecture/well-architected/)
+- [AAA well architected PDF](https://docs.aws.amazon.com/pdfs/wellarchitected/latest/framework/wellarchitected-framework.pdf)
 - [AAA: review process](https://docs.aws.amazon.com/wellarchitected/latest/framework/the-review-process.html)
 - [FAQS](https://aws.amazon.com/well-architected-tool/faqs/)
 - [lens: all of them](https://aws.amazon.com/architecture/well-architected/?wa-lens-whitepapers.sort-by=item.additionalFields.sortDate&wa-lens-whitepapers.sort-order=desc&wa-guidance-whitepapers.sort-by=item.additionalFields.sortDate&wa-guidance-whitepapers.sort-order=desc)
 - [lens: custom](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses-custom.html)
+- [lens: financial services industry (FSI)](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/welcome.html)
 - [lens: intro](https://docs.aws.amazon.com/wellarchitected/latest/userguide/lenses.html)
 - [lens: SaaS](https://docs.aws.amazon.com/wellarchitected/latest/saas-lens/saas-lens.html)
 - [lens: serverless](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html)
-- [lens: financial services industry (FSI)](https://docs.aws.amazon.com/wellarchitected/latest/financial-services-industry-lens/welcome.html)
 - [network architecture](https://docs.aws.amazon.com/wellarchitected/latest/performance-efficiency-pillar/network-architecture-selection.html)
 - [pillar: cost optimization](https://docs.aws.amazon.com/wellarchitected/latest/cost-optimization-pillar/welcome.html?ref=wellarchitected-wp)
 - [pillar: operational excellence](https://docs.aws.amazon.com/wellarchitected/latest/operational-excellence-pillar/welcome.html?ref=wellarchitected-wpp)
