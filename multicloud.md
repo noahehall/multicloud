@@ -4,6 +4,7 @@
 - [databases](./databases.md)
 - [networking](./networking.md)
 - [security](./security.md)
+- [distributed systems](./distributedSystems.md)
 
 ## links
 

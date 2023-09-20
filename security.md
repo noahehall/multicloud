@@ -1,10 +1,10 @@
 # security
 
+- [check the security dir for more](./security/)
 - web security book
   - reading: done
   - copying: PAGE 152 dont be an accessory
     - categorized as unwitting accomplice
-- [check the security dir for more](./security/)
 
 ## links
 
@@ -33,9 +33,7 @@
 - stuff
   - [checksums](https://en.wikipedia.org/wiki/Checksum)
 
-## basics
-
-### best practices
+## best practices
 
 - mitigation strategy
   - test code in a dedicated and isolated test environment that resembles prod as close as possible
@@ -62,7 +60,7 @@
   - limiting network access between & too applications and processes
     - via firewalls and access control lists on the network
 
-### terminology
+## basics
 
 - safeframe: allows ad network publishers to specify that ads must be run in an iframe, and offers an API that allows the advertiser to overcome some of the native limitations of frames
 - exploit kits: determine whether a particular user agent/operating system is vulnerable before delivering the actual malicious code (the payload)
@@ -115,367 +113,7 @@
       - record & reload state: i.e. keeping state across browser refreshes
         - e.g. in infinite-scroll, you can store the current position in the URI fragment and load & then scroll to the thing
 
-#### internet protocol suite
-
-- internet protocol suite: dictates how computers exchange data over the web
-  - there are over 20 protocols collectively under this umbrella
-- internet protocol layers
-  - network layer
-    - ARP
-    - MAC
-    - NDP
-    - OSPF
-    - PPP
-  - internet layer
-    - IPv4
-    - IPv6
-  - transport layer
-    - TCP
-    - UDP
-  - application Layer
-    - TLS
-    - SSL
-    - SSL
-    - DNS
-    - FTP
-    - HTTP
-    - IMAP
-    - POP
-    - SMTP
-    - SSH
-    - XMPP
-
-##### internet layer
-
-- IP: internet protocol addresses
-  - destination for data packets
-  - unique binary numbers assigned to individual internet-connected computers
-  - IPv4: 2x32 addresses
-  - IPv6: represented as 8 groups of 4 hexadecimal digits separated by colons
-
-##### Transport Layer Protocols
-
-- TCP: transmission control protocol
-  - enables two computers to reliably exchange data over the internet
-  - created in response to ARPANET (predecessor to the internet)
-  - the first msg sent (was on ARPANET) was a LOGIN command destined for a remote computer at stanford university, but crashed after the first two letters (reason for TCP)
-  - high level workflow
-    - messages sent via TCP are split into data packets
-    - the servers that make up the internet push these packets from sender to receiver without having to read the entire msg
-    - the receiver reassembles all the data packets into a usable order according to the sequence number on each packet
-      - each packet the receiver gets, it responds with a receipt back to the sender
-      - without the receipt, the sender will resend the packet
-        - possibly along a different network path
-        - possibly at an adjusted speed based on the speed of consumption by receiver
-    - this send & receipt workflow guarantees msg delivery
-    - TCP doesnt dictate how the data being sent is meant to be interpreted, that occurs at a higher level protocol (e.g. HTTP)
-      - unencrypted TCP data are vulnerable to man in the middle attacks, see TLS for more info
-- UDP: User Datagram Protocol
-  - newer than TCP
-  - commonly used with video/situations where dropped data packets are expected/msg guarantee isnt required, but the data packets can be streamed at a constant rate
-
-##### Application Layer Protocols
-
-- TLS: transport layer security
-  - arguable what fkn layer this is actually in (some say its not the application layer, but a lower layer)
-    - makes sense it would be in the transport layer, (because of the name)
-  - method of encryption that provides both privacy and data integrity
-  - ensures that
-    - privacy: packets intercepted by a third party cant be decrypted without the appropriate encryption keys
-    - data integrity: any attempt to tamper with the packets will be detectable
-  - workflow
-    - HTTPS (http secure) requires the client & server to perform a TLS handshake
-      - both parties agree on an encyption method (cipher) and exchange encryption keys
-    - any subsequent data packets (request & responses) will be opaque to outsiders
-  - TLS Handshake: consists of assymetric and symmetric encryption, and Message Authentication Codes for fingerprinting (see cipher suites)
-    - selection of the cipher used for encryption & decrypting all data packets
-      - user agents will inform servers which cipher suites it supports
-      - and the server replies with the best cipher suite that it also supports, the servers digital certificate and the encryption (public) key
-      - the user agent verifies the authenticity of the certificate with the issueing certificate authority
-      - the user agent generates a session key, encrypts it with the servers public key using the key-exchange algorithm from the chosen cipher suite and sends it to the server
-        - the session key (another large random integer) is used to encrypt all subsequent TLS conversation (data packets) with the block cipher from the cipher suite chosen by the server
-      - now data packets can finally be sent over TLS efficiently using the symmetric block cipher
-      - additional info
-        - the initial phase is to use assymetric encryption to encrypt the block cipher key before passing it to the recipient
-        - this is to prevent theft of the single key used to encrypt & decrypt symmetrically encrypted data
-        - block ciphers: most data packets will be symmetrically encrypted for efficiency, the recipient should already have the encryption & decryption key from the first phase of the handshake
-        - the block ciphers are also tagged with a MAC; so both parties can authenticate messages & detect if ANY packets have been tampered with (data integrity)
-  - cipher suites: each suite is a set of 3 algorithms used to secure communication; always use the latest TLS cipher suite
-    - key-exchange algorithm: the first algorithm; assymetric; used by communicating computers to exchange secret keys
-    - symmetric block cipher: the second algorithm; used for encrypting the content of TCP packets
-    - MAC algorithm: for authenticating the encrypting messages havent been tampered with
-    - e.g. TLS 1.3 offers numerous cipher suites, one of them being ECDHE-ECDSA-AES128-GCM-SHA256
-      - ECDHE-RSA: the key exchange algorithm
-      - AES-128-GCM: the block cipher
-      - SHA-256: the message authentication algorithm
-  - digital certificates: aka public-key certificate; an electronic document issued by third-party certificate authorities to prove which internet domain owns which public encryption key
-    - contains: server domain name, the issueing certificate authority, an encryption public key
-    - that way user agents can confirm the server (some IP) they are communicating with is valid for this domain (e.g. google.com) and this certificate
-    - that way an attacker cant impersonate a domain or a certifcate the UA checks with the certificate authority in the initial phases of the TLS handshake
-    - self signed certificates: digital certs not issued by a certificate authority; useful for internal domains and development environments
-    - Certificate Signing Request: CSR; contain info about the applicant & domain that is all useful in verifying authenticity; often created with openssl on the cli
-      - domain name: distinguished name (DN) or the fully qualified domain name (FWDN)
-      - organizations legal name
-      - physical location
-    - domain verification: process by which a ceritficate authority verifies that someone applying for a certificate for an internet domain does indeed have control of that domain
-      - domain verification is what protects against DNS spoofing attacks; an attacker cnanot apply for a cerificate unless they also have DNS access rights to that domain
-      - Extended validation (EV) certificates: require the certificate authority to collect and verify information about hte legal entity applying for a certificate; popular with large organizations because the name of the org is often displayed alongside the padlock in the browser url
-      - certificates have a finite lifespan (years/months) and can be voluntarily revoked by the owner
-    - general process: is all about having the certificate authority verify ownership of a particular domain, and then giving you a certificate that can be used to decrypt traffic sent to that domain,
-      - generate a key pair: digital file containing randomly generated public and private encryption keys
-      - use the key pair to generate a Certificate Signing Request (CSR) that contains the pulic key and domain your requesting the certificate for
-      - upload the CSR to the certificate authority, and the cert authority will then require you to validate ownership by making some DNS change with values they specify
-      - once ownership is proven: you will be given a digital cert for use on your domain server along with the key pair previously created
-  - HTTP Strict Transport Security: HSTS; policy that ensures sensitive data (e.g. cookies) will not be sent during any initial connection over HTTP, and must wait for the TLS handshake to be completed
-    - when a user agent visits a site it has seen previously, it will automatically send back any cookies the website previously supplied in the Cookie header
-    - if the initial connection was insecure, then the cookies will be sent back insecurely, even if subseqent requests were handled over HTTPS
-- SMTP: simple mail transport protocol
-  - for sending emails
-- XMPP: extensible messaging and presence protocol
-  - instant messaging
-- FTP: file transfer protocol
-  - downloading files from servers
-- HTTP: hypertext transfer protocol
-  - transport webpages and their resources to user agents like web browsers
-  - workflow: general
-    - user agents generate requests for specific resources
-    - web servers expecting those requests, return responses containing either the requested resource, or an error code
-    - both requests & responses are plain text msgs, but can be delivered as compressed &/ encrypted
-    - the majority of web exploits use http in some fashion
-  - authentication: the process of identifyng users when they return to your application
-    - http native authentication is rarely used since you cant customize the login form presented by the browser
-      - to present an authentication challenge, a web server returns a 401 status code in the HTTP respone and adds a `WWW-Authneticate` header describing the preferred authentication method
-      - basic authentication scheme:
-        - the user agent (e.g. a browser) requests a username & password from the user
-        - the browser concatenates the username + password separeted by a colon, e.g. `myname:mypw`
-        - uses the base64 algorithm to encode this strng and sends it back to te server in the `Authorization` header of the http request
-      - Digest authentication scheme:
-        - requires the browser to generate a hash consisting of the username, password, and URL
-    - non-native authentication: generally presented through a custo HTML form, whose action is to POST to some bff
-- DNS: domain name system
-  - a global directory that translated IP addrs to unique human readable domains e.g. nirv.ai
-  - domain registrars: private organizations that register domains before they can be used in DNS
-  - workflow
-    - when a browser encounters a domain for the first time
-      - check the local domain name server (typically hosted by an ISP) to get the associated IP (and various other data) and cache the result
-  - terms
-    - TTL: time to live: how long a domain name server will cache the IP addr associated with a domain
-      - i.e. DNS caching
-    - CNAME: canonical name records
-      - i.e. aliases for domain names
-      - enable multiple domain names to point to the same IP address
-    - MX: mail exchange records
-      - help route email
-
-## http focus
-
-- http requests
-  - method: aka verb; the action that the user agent wants the server to perform
-    - GET: fetch
-    - POST: create/update
-    - PUT: update/upload
-    - PATCH: edit
-    - DELETE: delete
-    - HEAD: retrieves same info as GET, but instructs the server to return the response without a body
-    - CONNECT: initiates two-way comms; e.g. connecting through a proxy
-    - OPTIONS: lets a user agent ask what other methods are supported by a resource
-    - TRACE: will contain an exact copy of the original HTTP request, for the user agent to see what (if any) alterations were made by intermediate servers
-  - URL: universal resource locator: describes the resource being manipulated/fetched
-  - Headers: metadata; e.g. type of content the user agent is expecting/whether it accepts compressed responses
-  - Body: optional component contains any extra data that needs to be sent to the server
-- HTTP responses
-  - protocol:
-  - code: 3 digit status code
-    - 2xx: understood, accepted, and responded to
-    - 3xx: redirect
-    - 4xx: client error; user agent generated an invalid request
-    - 5xx: server error; request was valid, but the server was unable to fullfil the request
-  - msg: status msg
-  - headers: instruct the user agent how to treat the content
-    - content-type
-    - cache-control
-  - body: if a resource was requested
-- stateful connections:
-  - when a client and server perform a handhsake and continue to send packets back n fourth until one of the communicate parties decides to terminate
-
-### encryption
-
-- method of desguising the contents of messages from prying eyes by encoding them during transmission
-- HTTPS: hypertext transfer protocol secure: the most widely used form encryption on the web
-  - obtain a certificate from a ceriticate authority and install it on your server
-- cryptography: the study of methods of encrypting and decrypting data
-- encryption key: a secret used to scramble data
-- decryption key: the corresponding key required to unscramble data
-- encryption algorithm: takes input data and scrambles it by using an encryption key
-  - symmetric encryption: uses the same key to encrypt and decrypt data
-    - usually operate as block ciphers: break the input data into fixed-size blocks that can be individually encrypted
-    - ^ if the last block of input data is undersized, it will be padded to fill out the block size
-    - since there is only one key for both encrypting & decrypting the key must be shared before secure communication can occur
-    - use cases
-      - suitable for processing streams of data, e.g. TCP data packets
-      - suitable for speed
-  - asymmetric encryption: aka public-key cryptography; uses distinct keys for encryption & decryption
-    - developed in response to symmetric algorithms, since they're vulnerable to key theft
-    - encryption key: aka public key; available to the public and enables any user agent to send encrypted messages to any server containing the decryption key
-    - decryption key: aka private key;
-  - hash functions: encryption algorithms whose output cannot be decrypted
-    - hash value: the output of the hash function; is always a fixed size regardless of the size ofth einput data
-    - use cases
-      - data integrity: since you cant decrypt the data, it servers as a fingerprint of the input data and enables you to determine if two separate inputs are the same without storing the raw values, by recalculating the hash value and comparing the results
-      - storing passwords in a db, you store the hash value, and validate against the the stored hash everytime a user reauthenticates
-  - message authentication codes: MAC; map input data of an arbitrary length to a fixed-sized output same as hash functions
-    - messaging authentication code: the output of the MAC function
-    - requires a secret key to compute unlike hash functions; thus only the parties with the secret key can generate/check the validity of messaging authentication codes
-    - both parties exchange the secret key (which should also be encrypted) as part of a TLS handshake
-    - the sender will then generate a MAC for each data packet being sent, and send both the packet & the MAC to the receiver
-    - the receiver (which also has the secret key) will then recalculate the MAC using the data packet as input, and if both MACs match the receiver can be sure the data packet hasnt been tampered with
-    - use cases
-      - ensure that the data packets transmitted cannot be forged or tampered with
-
-### servers
-
-- web servers: computer program (e.g. HAproxy) that validates & routes HTTP requests for dynamic content to application servers, responds directly with static content, and performs low-level TCP functions like HTTPS termination
-  - all HTTP traffic should be rerouted to HTTPS
-  - web server handling HTTPS should terminate (strip, decrypt) the request before proxying the request to application servers
-  - application servers should not be reachable by the public
-  - the application server will fullfil the request, and reply to the web server with the content, and the web server will forward the content back to the user agent that made the request
-- application server: computer program (e.g. nodejs) that hosts application code, and responds to HTTP requests from web servers, generally handles all requests for dynamic http content
-- CDN: content delivery network
-  - will store duplicated copies of static resources in data centers around the world
-  - enables prouction of responsive websites without a massive server expenditure
-  - security issues:
-    - allows a third party to serve content under your security certicate
-- CMS: content management systems
-  - provide authoring tools requiring little/no technial knowedlge to wriet content
-  - cms plugins provide additional tooling, e.g. anlytics
-  - security issues
-    - using a cms/plugins makes you more secure if you utilize high fidelity packages from reputable vendors
-    - but also makes them a high profile target for hackers, e.g. wordpress is always getting fkn hacked
-- http session: the entire conversation (stateless/stateful) between a specific user agent & server
-  - server could send a set-cookie header in the initial HTTP response containing data that identifies the user agent
-    - the user agent will store & send back the same cookie on each subsequent response
-- resources
-  - static: an object thats returned unaltered in HTTP responses
-  - dynamic: an object thats executed/interpreted based on data in HTTP requests and computed before returned in HTTP responses
-    - often the code loads data from a database in order to populate the http response
-    - security issues
-      - the dynamic interpolation of content can be vulnerable to attack
-- databases
-  - database technology predates the web, since the 1960s
-  - SQL databases
-    - are relational, storing data in one/more tables that related to each other in formally prescribed ways
-    - DDL: data definition language
-      - any statement using CREATE, DROP or MODIFY to create, drop and modify table structures
-    - DML: data manipulation language
-      - any statement using SELECT, INSERT, UPDATE, and DELETE for CRUDing records
-  - NoSQL databases
-    - sacriface the strict data integrity requirements of SQL databases to achieve greater scalability
-    - often schemaless, allowing you to add fields to new records with having to upgarde any data structures
-  - distrubed caches
-    - in-memory databases, that load data from disk and stores it in cache
-    - caching refers to the process of storing a copy of data in an easily retrievable form to speed up responding to requests for that data
-- URL resolution
-  - enable any URL to be mapped to a particular static resource
-  - by unlinking the URL from a filepath, you have more freedom in organizing your code
-    - e.g. having each user have a different profile image on disk, but using the same URL path /user/profile/image
-
-### user agents
-
-- web browsers
-  - javascript engine
-  - rendering pipeline
-  - connect with operating system to resolve and cache DNS addresses
-  - interpret and verify security certificates
-  - encode requests in HTTPS
-  - store and transmit cookies according to the web servers instructions
-  - browser security model
-    - dictates
-      - js code must be executed within a sandbox,
-        - disabling the following actions
-          - start new processes/access existing process
-          - read arbitrary chunks of system memory
-          - access the local disk
-          - access the operating systems network layer
-          - call operating system functions
-        - enabling the following actions
-          - read & manipulate the DOM of the current page
-          - listen & respond to user actions via event listeners
-          - make http calls on behalf of the user
-          - open new webpages/refresh the URL of the current page ONLY in response to user actions
-          - write new & navigate between entries in the browser history
-          - ask for users location
-          - ask permission to send desktop notifications
-    - rendering pipeline: software component within a web browser responsible for transforming HTML into its visual representation
-      - parse the HTML
-        - tokenize
-      - generate the DOM
-        - an in-memory data structure that represents the browsers understanding of how the page is structured,
-          - a series of nested elements called DOM nodes, each roughly equivalent to an HTML tag
-        - parse the HTML into a DOM
-          - whenever an external resource is encountered, stop an retrieve it
-            - i.e. script, style, image, font, video, etc tags all stop the rendering pipeline to retrieve the external thing
-          - script tags
-            - ensure the `defer` attribute is added so the script tag doesnt execute until the rendering pipeline is completed
-      - generate the CSSOM
-        - styling rules applied to each DOM element
-          - which correspond to onscreen elemnts
-          - how to paint each element relative to eachother
-          - what styling to apply to each
-      - DRAW/PAINT
-        - draws the webpage on screen
-      - EXECUTE JS
-        - this step is actually interwoven between generation of the DOM and DRAW
-        - the browser will load & execute any JS it comes across as it constructs the DOM
-        - and the JS can dynamically make changes to the DOM and styling rules, either before the page is rendered or in response to user actions
-
-### sessions
-
-- session: HTTP conversation in which the browser sends a series of HTTP requests corresponding to a specific entity (e.g. a user), and the web server recognizes them as corresponding to the same entity; the initial request is usually tagged with an ID, and that ID is sent back in the response
-- session ID: typically a large, randomly generated number: the minimal information the browser needs to transmit with each subsequent HTTP request so the server can continue the HTTP conversation from the previous request
-  - remember, these are generally just random integers
-  - can be transmittd via URL, http header, body of requests
-  - but best practice is to send as a session cookie via the `Set-Cookie` header of the http response
-    - the browser will natively send this cookie & value back on subsequent requests automatically to the server that set it
-- server side sessions: the web server keeps the session state in locally/remotely (e.g. in file/cache/db/etc), and both the server & user agent pass the session ID back n forth
-  - the server stores & retrieves other session state data in a remote/local DB/cache/file of some sort
-  - scalability issues: requires that backend servers have access to other servers session information (e.g. in a load balanced architecture)
-- client side sessions: web servers send the serializes entire session state (and not just the session ID) in the cookie, this alleviates the need to share session state amongst BFF servers
-  - security issues: attackers can manipulate/forge the data stored in the cookie and your BFFs will be none the wiser
-
-### access control
-
-- authentication: authN; correctly identifying a user when they return to th site
-- authorization: authZ; deciding which actions a user should and shouldnt be able to perform after they've identified themselves
-- permission checking: evaluating authorization at the point in time when a user attmpts to perform an action
-- a good access control strategy consists of three stages
-  - designing an authorization model
-    - acess control lists: create a list of permissions that are
-      - gates to each object in your system
-      - assigned to users
-      - e.g. the linux filesystem is the canonical example: each user is granted read,write or execute permissions on each file and directory
-    - white/blacklists: users that can vs cant access each object in your system
-      - e.g. spam filters: you white/black list specific email accounts
-    - role based access control:
-      - grants roles to users or adds users to groups that grant specific roles
-      - policies in the system define how each role can interact with seicfic subjects
-      - subjects are the resources in your system
-      - e.g. AWS IAM and Microsoft Active Dirctory are the canonical RBAC implementation
-    - ownership based access control:
-      - each user has full control over their resources & granting access to other users in the system
-      - e.g. social media platforms
-  - implementing access control
-    - centralize whatever authorization model youve chosen
-    - dont rely on anything in the HTTP request besides the session cookie (an attacker can meddle with everything else)
-    - audit trails: log files or database entries that are recorded whenever a user performs an action
-      - especially important for resources that arent designed to be discoverable
-      - i.e. audit everything whether or not there are inbound links to the resources
-      - useful for troubleshooting and forensic analysis
-  - testing the access control
-    - test authorization via properly vetted identity data in your system
-    - unit tests should make assertions about who can and CANT access every resource type in your system
-    - penetration testing: probing for missing/errneous access control rules that can be abused
-
-## People & their prcoesses
+### People & their prcoesses
 
 - programmers: need to roll out changes in an orderly and discplined fashion
   - however, its common for security vulnerabilities and bugs to creep in over time because of shortcuts taken in the face of deadlines
@@ -525,6 +163,192 @@
         - establish error conditions by picking them out of logs/catpuring & recording them in the code itself
         - many security intrusions exploit badly handled error conditions
   - dependency management: just as important and integral as the SDLC and should be monitored at every phase of the SDLC
+
+### access control
+
+- authnz
+  - authentication: authN; who you are; correctly identifying a user when they return to th site
+  - authorization: authZ; what you can do, e.g. via policies or roles; deciding which actions a user should and shouldnt be able to perform after they've identified themselves
+- north south: into and out of your service boundary
+- east west: within your service boundary
+- permission checking: evaluating authorization at the point in time when a user attmpts to perform an action
+
+#### authnz strategy introduction
+
+- a good access control strategy consists of three stages
+- designing an authorization model
+  - acess control lists: create a list of permissions that are
+    - gates to each object in your system
+    - assigned to users
+    - e.g. the linux filesystem is the canonical example: each user is granted read,write or execute permissions on each file and directory
+  - white/blacklists: users that can vs cant access each object in your system
+    - e.g. spam filters: you white/black list specific email accounts
+  - role based access control:
+    - grants roles to users or adds users to groups that grant specific roles
+    - policies in the system define how each role can interact with seicfic subjects
+    - subjects are the resources in your system
+    - e.g. AWS IAM and Microsoft Active Dirctory are the canonical RBAC implementation
+  - ownership based access control:
+    - each user has full control over their resources & granting access to other users in the system
+    - e.g. social media platforms
+- implementing access control
+  - centralize whatever authorization model youve chosen
+  - dont rely on anything in the HTTP request besides the session cookie (an attacker can meddle with everything else)
+  - audit trails: log files or database entries that are recorded whenever a user performs an action
+    - especially important for resources that arent designed to be discoverable
+    - i.e. audit everything whether or not there are inbound links to the resources
+    - useful for troubleshooting and forensic analysis
+- testing the access control
+  - test authorization via properly vetted identity data in your system
+  - unit tests should make assertions about who can and CANT access every resource type in your system
+  - penetration testing: probing for missing/errneous access control rules that can be abused
+
+#### ABAC
+
+- attribute-based access control
+- authorization strategy that defines permissions based on attributes
+- helpful in environments that are growing rapidly and helps with situations where policy management becomes cumbersome
+
+#### RBAC
+
+- role based access control
+- permissions are defined based on a person's job function
+
+#### principle of least privilege
+
+- giving a user or system only those privileges that are essential to perform its intended function
+- grant access as needed, and for no longer
+- centralizing privilege management
+  - Set expectations on how authority will be delegated down from admins to front line users
+  - avoid long term credentials and prefer temporary creds with expiration
+- enforce separation of duties: with appropriate authorization for each interaction with resources
+
+### encryption
+
+- method of desguising the contents of messages from prying eyes by encoding them during transmission
+- HTTPS: hypertext transfer protocol secure: the most widely used form encryption on the web
+  - obtain a certificate from a ceriticate authority and install it on your server
+- plaintext: unencrypted data, e.g. documents, images, applications, etc
+- ciphertext: encrypted data, output of some algorithm based on the input plaintext and a key
+- cryptography: the study of methods of encrypting and decrypting data
+- encryption key: a secret used to scramble data
+- decryption key: the corresponding key required to unscramble data
+- protect data
+  - at rest: any data you persist/store for any duration
+    - server side: encrypt after you receive it and before saving it to disk
+  - in transit: any data that gets transmitted from one system to another
+    - client side: encrypt before you send it; performed locally and data never leaves the runtime environment unencrypted
+    - SSL/TLS
+    - public/private certificates
+
+#### encryption algorithms
+
+- takes input data and scrambles it by using an encryption key
+- symmetric encryption: uses the same key to encrypt and decrypt data
+  - usually operate as block ciphers: break the input data into fixed-size blocks that can be individually encrypted
+  - ^ if the last block of input data is undersized, it will be padded to fill out the block size
+  - since there is only one key for both encrypting & decrypting the key must be shared before secure communication can occur
+  - use cases
+    - suitable for processing streams of data, e.g. TCP data packets
+    - suitable for speed
+- asymmetric encryption: aka public-key cryptography; uses distinct keys for encryption & decryption
+  - developed in response to symmetric algorithms, since they're vulnerable to key theft
+  - encryption key: aka public key; available to the public and enables any user agent to send encrypted messages to any server containing the decryption key
+  - decryption key: aka private key;
+- hash functions: encryption algorithms whose output cannot be decrypted
+  - hash value: the output of the hash function; is always a fixed size regardless of the size ofth einput data
+  - use cases
+    - data integrity: since you cant decrypt the data, it servers as a fingerprint of the input data and enables you to determine if two separate inputs are the same without storing the raw values, by recalculating the hash value and comparing the results
+    - storing passwords in a db, you store the hash value, and validate against the the stored hash everytime a user reauthenticates
+- message authentication codes: MAC; map input data of an arbitrary length to a fixed-sized output same as hash functions
+  - messaging authentication code: the output of the MAC function
+  - requires a secret key to compute unlike hash functions; thus only the parties with the secret key can generate/check the validity of messaging authentication codes
+  - both parties exchange the secret key (which should also be encrypted) as part of a TLS handshake
+  - the sender will then generate a MAC for each data packet being sent, and send both the packet & the MAC to the receiver
+  - the receiver (which also has the secret key) will then recalculate the MAC using the data packet as input, and if both MACs match the receiver can be sure the data packet hasnt been tampered with
+  - use cases
+    - ensure that the data packets transmitted cannot be forged or tampered with
+
+### cloud security
+
+- the practice of protecting your intellectual property from unauthorized access, use, or modification
+- set of technical systems, tools, and processes to protect and defend the information and technology assets of an organization
+- Confidentiality: limiting information access and disclosure to authorized users (the right people) and preventing access by unauthorized people
+- practices
+  - audit system for changes, unusual access and errors
+  - protect API endpoints
+    - validate request bodies
+    - throttle/rate limits
+  - defense in depth: multiple layers of redundant security
+- areas of focus
+  - network layer
+    - breached network or data breach of personal information
+    - Data loss or destruction
+    - mitigation
+      - network security tools can prevent unauthorized access to the system
+      - Firewalls and content filtering software can also protect data and only allow valid users.
+  - user devices
+    - personal device that connects to your network can inject unknown code into the system
+    - mitigation
+      - Antivirus and endpoint scanning tools can stop attackers from gaining access to the device.
+      - Phishing attacks and viruses have known signatures making them detectable and preventable.
+      - Segmenting access to the network by device, user, and facility limits the spread of malicious software.
+  - users
+    - Most of the time, the user does not know they have been compromised.
+    - mitigatoin
+      - train users to be mindful and limit innocuous actions.
+
+### Network Security Monitoring
+
+- a process of collecting and analyzing information to detect suspicious behavior or unauthorized system changes on your network
+  - security information monitoring (SIM)
+  - security event monitoring (SEM)
+- continual assessment of the overall security architecture to comply with internal security policies, compliance, and governance
+- add protection to your network against malware, unauthorized access, distributed denial of service (DDoS) attacks, man-in-the-middle attacks, Code and SQL injection attacks, privilege escalation, and insider threats.
+- general process
+  - Implement metrics to define which type of behavior will initiate an alert and what action to take.
+  - Protect your network and environment from hackers, malware, disgruntled employees, careless employees, outdated devices and operating systems.
+  - Set up continuous security monitoring to act and automate the monitoring of vulnerabilities, cyber threats, and your organization's risk-management decisions.
+  - Implement real-time visibility in your environment to alert on compromises of security, misconfigurations, and vulnerabilities.
+- security incident response: understand issues and prepare, educate, and train your team before security issues occur
+  - Develop runbooks
+  - Use basic capabilities
+  - Create an initial library of incident response mechanisms to iterate from and improve upon
+- security controls
+  - Directive controls: establish the governance, risk, and compliance models within which the environment operates.
+  - Detective controls: intended to identify and characterize an incident in progress and provide assistance during investigations and audits after the event has occurred
+    - alert the network team, security guards, or police
+    - include security event log monitoring, host and network intrusion detection of threat events, and antivirus identification of malicious code.
+    - Intrusion detection: identifying strange patterns in network traffic that could signal a hack
+  - Preventive controls: designed to prevent an incident from occurring
+    - lock out unauthorized intruders & protect your network and workloads and mitigate threats and vulnerabilities.
+    - include policies, standards, processes, procedures, encryption, firewalls, and physical barriers
+  - Responsive controls: intended to limit the extent of any damage caused by the incident and recover to normal operations.
+    - drive remediation of potential deviations from your security baselines.
+- implementing network security
+  - firewalls: designed to prevent unauthorized access to or from a private network.
+  - Packet Sniffers: used to monitor network traffic.
+    - work by examining streams of data packets that flow between computers on a network and also flow between networked computers and the larger internet.
+    - promiscuous mode lets engineers, end users, or malicious intruders to examine any packet, regardless of destination.
+  - penetration testing: identifying security weaknesses in a network, server, or web application.
+    - useful to identify the unknown vulnerabilities in the software and networking applications that can cause a security breach.
+    - helps to determine the efficacy of the security policies, strategies, and controls in an organization.
+
+#### Anomalie Detection
+
+- anomalies: Changes in metrics that show variance from the baseline
+- anomalie detection: technique used to identify unusual patterns that do not conform to expected behavior, called outliers.
+  - Network anomalies: deviate from what is normal, standard, or expected network behavior.
+  - Application performance anomalies: observe application function, collect data on all problems, including supporting infrastructure and application dependencies
+  - Web application security anomalies: include any other anomalous or suspicious web application behavior that impacts security such as cross-site scripting attacks or DDoS attacks.
+
+### Incident Response
+
+- broad strategies
+  - use APIs for automation: automate routine tasks that need to be performed, e.g. isolating resources
+  - forensic data analysis: create snapshots of data/configuration to capture the current state for later investigation and before remediation
+  - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
+  - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
 
 ## attack vectors
 
@@ -996,118 +820,9 @@
 - mitigation
   - user agents need to always check with a third-party certificate authority that they trust to validate the servers certificate with the info on file
 
-## security
+### Network Attacks
 
-- the practice of protecting your intellectual property from unauthorized access, use, or modification
-- set of technical systems, tools, and processes to protect and defend the information and technology assets of an organization
-- Confidentiality: limiting information access and disclosure to authorized users (the right people) and preventing access by unauthorized people
-- practices
-  - audit system for changes, unusual access and errors
-  - protect API endpoints
-    - validate request bodies
-    - throttle/rate limits
-  - defense in depth: multiple layers of redundant security
-- areas of focus
-  - network layer
-    - breached network or data breach of personal information
-    - Data loss or destruction
-    - mitigation
-      - network security tools can prevent unauthorized access to the system
-      - Firewalls and content filtering software can also protect data and only allow valid users.
-  - user devices
-    - personal device that connects to your network can inject unknown code into the system
-    - mitigation
-      - Antivirus and endpoint scanning tools can stop attackers from gaining access to the device.
-      - Phishing attacks and viruses have known signatures making them detectable and preventable.
-      - Segmenting access to the network by device, user, and facility limits the spread of malicious software.
-  - users
-    - Most of the time, the user does not know they have been compromised.
-    - mitigatoin
-      - train users to be mindful and limit innocuous actions.
-
-### access control
-
-- authnz
-  - authentication: who you are
-  - authorization: what you can do, e.g. via policies or roles
-- north south: into and out of your service boundary
-- east west: within your service boundary
-
-#### ABAC
-
-- attribute-based access control
-- authorization strategy that defines permissions based on attributes
-- helpful in environments that are growing rapidly and helps with situations where policy management becomes cumbersome
-
-#### RBAC
-
-- role based access control
-- permissions are defined based on a person's job function
-
-### encryption
-
-- be careful not to leak secrets, e.g. via logging
-- encrypt data before processing
-- plaintext: unencrypted data, e.g. documents, images, applications, etc
-- ciphertext: encrypted data, output of some algorithm based on the input plaintext and a key
-- symmetric
-- assymetric
-- protect data
-  - at rest: any data you persist/store for any duration
-    - server side: encrypt after you receive it and before saving it to disk
-  - in transit: any data that gets transmitted from one system to another
-    - client side: encrypt before you send it; performed locally and data never leaves the runtime environment unencrypted
-    - SSL/TLS
-    - public/private certificates
-
-### principle of least privilege
-
-- giving a user or system only those privileges that are essential to perform its intended function
-- grant access as needed, and for no longer
-- centralizing privilege management
-  - Set expectations on how authority will be delegated down from admins to front line users
-  - avoid long term credentials and prefer temporary creds with expiration
-- enforce separation of duties: with appropriate authorization for each interaction with resources
-
-### Network Security Monitoring
-
-- a process of collecting and analyzing information to detect suspicious behavior or unauthorized system changes on your network
-  - security information monitoring (SIM)
-  - security event monitoring (SEM)
-- continual assessment of the overall security architecture to comply with internal security policies, compliance, and governance
-- add protection to your network against malware, unauthorized access, distributed denial of service (DDoS) attacks, man-in-the-middle attacks, Code and SQL injection attacks, privilege escalation, and insider threats.
-- general process
-  - Implement metrics to define which type of behavior will initiate an alert and what action to take.
-  - Protect your network and environment from hackers, malware, disgruntled employees, careless employees, outdated devices and operating systems.
-  - Set up continuous security monitoring to act and automate the monitoring of vulnerabilities, cyber threats, and your organization's risk-management decisions.
-  - Implement real-time visibility in your environment to alert on compromises of security, misconfigurations, and vulnerabilities.
-- security incident response: understand issues and prepare, educate, and train your team before security issues occur
-  - Develop runbooks
-  - Use basic capabilities
-  - Create an initial library of incident response mechanisms to iterate from and improve upon
-- security controls
-  - Directive controls: establish the governance, risk, and compliance models within which the environment operates.
-  - Detective controls: intended to identify and characterize an incident in progress and provide assistance during investigations and audits after the event has occurred
-    - alert the network team, security guards, or police
-    - include security event log monitoring, host and network intrusion detection of threat events, and antivirus identification of malicious code.
-    - Intrusion detection: identifying strange patterns in network traffic that could signal a hack
-  - Preventive controls: designed to prevent an incident from occurring
-    - lock out unauthorized intruders & protect your network and workloads and mitigate threats and vulnerabilities.
-    - include policies, standards, processes, procedures, encryption, firewalls, and physical barriers
-  - Responsive controls: intended to limit the extent of any damage caused by the incident and recover to normal operations.
-    - drive remediation of potential deviations from your security baselines.
-- implementing network security
-  - firewalls: designed to prevent unauthorized access to or from a private network.
-  - Packet Sniffers: used to monitor network traffic.
-    - work by examining streams of data packets that flow between computers on a network and also flow between networked computers and the larger internet.
-    - promiscuous mode lets engineers, end users, or malicious intruders to examine any packet, regardless of destination.
-  - penetration testing: identifying security weaknesses in a network, server, or web application.
-    - useful to identify the unknown vulnerabilities in the software and networking applications that can cause a security breach.
-    - helps to determine the efficacy of the security policies, strategies, and controls in an organization.
-
-#### Network Attacks
-
-##### active attacks
+#### active attacks
 
 - one in which an unauthorized change of the system is attempted
   - masquarade attacks
@@ -1116,26 +831,10 @@
   - denial-of-service attacks
 - instead of prevention, it is important to focus more on detective controls, detecting the attacks, and restoring the system afterward.
 
-##### Passive Attacks
+#### Passive Attacks
 
 - when an attacker analyzes traffic and the content of packets.
   - man in the middle attacks
 - information can be obtained regarding your network design, protocols used, information on hosts, and more
 - difficult to detect because they do not involve alteration in data or information
 - more emphasis is given to prevention controls compared to the detection controls.
-
-#### Anomalie Detection
-
-- anomalies: Changes in metrics that show variance from the baseline
-- anomalie detection: technique used to identify unusual patterns that do not conform to expected behavior, called outliers.
-  - Network anomalies: deviate from what is normal, standard, or expected network behavior.
-  - Application performance anomalies: observe application function, collect data on all problems, including supporting infrastructure and application dependencies
-  - Web application security anomalies: include any other anomalous or suspicious web application behavior that impacts security such as cross-site scripting attacks or DDoS attacks.
-
-### Incident Response
-
-- broad strategies
-  - use APIs for automation: automate routine tasks that need to be performed, e.g. isolating resources
-  - forensic data analysis: create snapshots of data/configuration to capture the current state for later investigation and before remediation
-  - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
-  - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
