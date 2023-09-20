@@ -2,7 +2,7 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
-  - Exam Prep: Module 4
+  - Exam Prep: Module 1 > determine appropriate data security controls
   - Exam Prep Official Practice Question Set
   - Examp Prep Enhanced Course
   - Solutions Architect - Knowledge Badge Readiness Path
@@ -47,14 +47,24 @@
 
 > IMO: these are recurring themes
 
-- Well Architected Framework & Tool, Global Architecture, Shared Responsibility Model
-- theres no fkn way to ignore EKS, nomad forever!
-- public, private, hybrid and multi-cloud environments
-- AWS Organizations & Accounts
-- which aws services are Global, Regional and Zonal
-- Providing and securing credentials
-- STS, Roles, Federation, Active Directory
-- IAM, Policy types, interpreting policy documents and all policy elements
+- in general
+  - Well Architected Framework & Tool, Global Architecture, Shared Responsibility Model
+  - theres no fkn way to ignore EKS, nomad forever!
+  - public, private, hybrid and multi-cloud environments
+  - which aws services are Global, Regional and Zonal
+    - determines type of resiliency and applied architecture patterns
+  - cloud security in general, and in relation to specific AWS services
+    - encryption at rest & in transit
+  - networking in general, and in relation to specific AWS services
+- in depth: i mean deeper than deep
+  - STS, Roles, Federation, Active Directory
+  - Providing and securing credentials
+  - VPC and all VPC components
+    - subnets, cidr, protocols, routing
+  - IAM and all IAM services
+    - Policy types, interpreting policy documents and all policy elements
+  - AWS Organizations & Accounts
+  - KMS
 
 #### technologies
 
