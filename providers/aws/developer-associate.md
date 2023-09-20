@@ -2,7 +2,7 @@
 
 - last updated in Q4/2023 for version 1.0 DVA-C02
 - bookmark:
-  - Exam Prep (With practice material) > module 4
+  - Exam Prep (With practice material) > module 4 > domain 2
   - Exam Prep Official Practice Question Set
   - Examp Prep Enhanced Course
   - Serverless Knowledge Badge Assessment

@@ -56,7 +56,7 @@
 
 ### multiloud, cloudnative and open source
 
-- opensource: conflicts with responsibilities proprietary cloudnative services
+- opensource: conflicts with responsibilities of proprietary cloudnative services
   - configuring VMS
   - updating operating systems
   - installing application runtime
@@ -66,7 +66,7 @@
   - data storage
 - multicloud
   - requires attention to the network latency introduced for request pipelines that traverse cloud networking boundaries
-  - pay attention to vendor locking if utilizing proprietary services
+  - pay attention to vendor lock-in if utilizing proprietary services
 
 ### server-based vs serverless architectures
 

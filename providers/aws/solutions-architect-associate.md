@@ -2,7 +2,7 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
-  - Exam Prep: Module 1 > determine appropriate data security controls
+  - Exam Prep: Module 2
   - Exam Prep Official Practice Question Set
   - Examp Prep Enhanced Course
   - Solutions Architect - Knowledge Badge Readiness Path
@@ -47,24 +47,53 @@
 
 > IMO: these are recurring themes
 
-- in general
-  - Well Architected Framework & Tool, Global Architecture, Shared Responsibility Model
-  - theres no fkn way to ignore EKS, nomad forever!
-  - public, private, hybrid and multi-cloud environments
-  - which aws services are Global, Regional and Zonal
-    - determines type of resiliency and applied architecture patterns
-  - cloud security in general, and in relation to specific AWS services
-    - encryption at rest & in transit
-  - networking in general, and in relation to specific AWS services
-- in depth: i mean deeper than deep
+#### in general
+
+> especially how these domains map to specific AWS services
+
+- Well Architected Framework & Tool, Global Architecture, Shared Responsibility Model
+- theres no fkn way to ignore EKS, nomad forever!
+- public, private, hybrid and multi-cloud environments
+- which aws services are Global, Regional and Zonal
+  - determines type of resiliency and applied architecture patterns
+- security
+  - cloud, on premise, at rest, in transit
+  - encryption
+- networking
+- data protection, disaster recovery, backups & replication
+- analytics, observability
+  - performance
+    - load testing at scale
+- cloud storage
+- availability
+- durabilty
+- fault tolerance
+- scalability
+
+#### in depth
+
+> i mean deeper than deep with a focus on performance, security, service comparison & integration
+
+- VPC and all VPC components
+  - subnets, cidr, protocols, routing,
+  - etc
+- IAM and all IAM services
+  - Policy types, interpreting policy documents and all policy elements
   - STS, Roles, Federation, Active Directory
   - Providing and securing credentials
-  - VPC and all VPC components
-    - subnets, cidr, protocols, routing
-  - IAM and all IAM services
-    - Policy types, interpreting policy documents and all policy elements
-  - AWS Organizations & Accounts
-  - KMS
+  - etc
+- AWS Organizations & Accounts, ControlTower
+- security specific services
+  - KMS, CloudHSM
+  - Shield, WAF, Secrets Manager, Parameter Store
+- Cloudwatch, cloudtrail, X-Ray
+- remaining services in Systems Manager
+- Service Catalog
+- Artifact
+- Backup
+- all of AWS storage services: EBS, S3, EBS, storage gateway, FSx, EFS
+  - lol dont skip over the fsx windows shiz ;)~
+- most of AWS DB services: RDS, Aurora, neptune, documentdb, dynamodb
 
 #### technologies
 
