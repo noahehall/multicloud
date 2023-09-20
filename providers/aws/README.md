@@ -10,9 +10,9 @@
 
 ## Associate level exams
 
-- [developer](./associate-developer.md)
-  - establishes everything need to take the exam, pretty much a copypasta from AWS
-  - however it will inform you on which files in the services directory you need to review
-    - everything is there, but perhaps not deep enough to take the exam just yet
-- [solutions architect](./associate-solutions-architect.md)
-  - in progress
+- [developer](./developer-associate.md)
+  - exam: establishes everything need to take the exam, pretty much a copypasta from AWS
+  - services: everything is there, but perhaps could go deeper in the specific service files
+- [solutions architect](./solutions-architect-associate.md)
+  - exam: establishes everything need to take the exam, pretty much a copypasta from AWS
+  - services: everything is there, but perhaps could go deeper in the specific service files

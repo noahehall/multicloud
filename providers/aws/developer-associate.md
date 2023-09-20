@@ -1,15 +1,15 @@
 # developer associate
 
-- last updated in 2023 for version 1.0 DVA-C02
+- last updated in Q4/2023 for version 1.0 DVA-C02
 - bookmark:
   - Exam Prep (With practice material) > module 4
+  - Exam Prep Official Practice Question Set
+  - Examp Prep Enhanced Course
+  - Serverless Knowledge Badge Assessment
+  - Block Storage Knowledge Badge Assessment
   - take the exam
     - [offical online practice exam](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14196/aws-certified-developer-associate-official-practice-exam-dva-c02-english)
     - [schedule the exam](https://aws.amazon.com/certification/certified-developer-associate/)
-- know the exam format
-  - 65 questions
-  - 130 minutes (2 minutes per question)
-  - $150
 
 ## links
 
@@ -21,6 +21,11 @@
 - [worshop labs](https://catalog.us-east-1.prod.workshops.aws/)
 
 ## basics
+
+- know the exam format
+  - 65 questions
+  - 130 minutes (2 minutes per question)
+  - $150
 
 ### high level
 
@@ -40,17 +45,17 @@
 
 ### Focus
 
-> based on the sample questions, these are recurring themes (IMO) to fucus on:
+> IMO: based on the sample questions, these are recurring themes
 > (1) service integration not isolation
 > (2) preferred use cases and anti-patterns
 > (3) best practices
 
 #### additional sections
 
-> these were mentioned in the exam preps but not in the tech section below
+> these were mentioned in the exam preps but not in the PDF
 
 - global architecture
-  - ARN: Amazon Resource Names
+  - ARN: Resource Names
   - availability zones
   - well architected framework
 - SDKs
@@ -74,16 +79,16 @@
 > These servicies and technologies are recommended by AWS
 
 - Analytics
-  - Amazon Athena
-  - Amazon Kinesis
-  - Amazon OpenSearch Service
+  - Athena
+  - Kinesis
+  - OpenSearch Service
 - Application integration
   - AWS AppSync
     - underlying graphql architecture it uses
-  - Amazon EventBridge (Amazon CloudWatch Events)
+  - EventBridge (CloudWatch Events)
     - Events (near realtime stream)
-  - Amazon Simple Notification Service (Amazon SNS)
-  - Amazon Simple Queue Service (Amazon SQS)
+  - Simple Notification Service (SNS)
+  - Simple Queue Service (SQS)
   - AWS Step Functions
     - activity workers
     - tasks
@@ -93,7 +98,7 @@
       - timeouts
       - error handling
 - Compute
-  - Amazon EC2
+  - EC2
     - Auto Scaling Group
   - AWS Elastic Beanstalk
     - ebextensions folder
@@ -127,14 +132,14 @@
     - also check the SAM CLI section
 - Containers
   - AWS Copilot
-  - Amazon Elastic Container Registry (Amazon ECR)
-  - Amazon Elastic Container Service (Amazon ECS)
+  - Elastic Container Registry (ECR)
+  - Elastic Container Service (ECS)
     - tasks
-  - Amazon Elastic Kubernetes Services (Amazon EKS)
+  - Elastic Kubernetes Services (EKS)
 - Cost and capacity management
 - Database
-  - Amazon Aurora
-  - Amazon DynamoDB (NoSQL)
+  - Aurora
+  - DynamoDB (NoSQL)
     - table
       - change triggers
       - encryption
@@ -153,14 +158,14 @@
     - encryption & protecting data
       - client side
       - end to end encryption (for in transit and at rest)
-  - Amazon ElastiCache (NoSQL)
+  - ElastiCache (NoSQL)
     - For Redis
       - storing session state across devices
     - For Memcached
       - Lazy Loading Strategy
       - write-through strategy
-  - Amazon MemoryDB for Redis
-  - Amazon RDS
+  - MemoryDB for Redis
+  - RDS
     - High Availability / Failover Strategies
       - Multi-AZ
         - standby replica
@@ -177,7 +182,7 @@
   - AWS CodeCommit
   - AWS CodeDeploy
     - appspec.yml
-  - Amazon CodeGuru
+  - CodeGuru
   - AWS CodePipeline
   - AWS CodeStar
   - AWS X-Ray (instrumentation)
@@ -195,7 +200,7 @@
   - AWS CloudFormation
   - AWS CloudTrail (api monitor)
     - event history (governance, compliance and risk auditing)
-  - Amazon CloudWatch
+  - CloudWatch
     - agent
     - native & custom metrics
       - filters
@@ -205,7 +210,7 @@
         - relative workload
         - troubleshooting specific services
     - alarms
-  - Amazon CloudWatch Logs
+  - CloudWatch Logs
     - streaming
     - export to s3
     - which services support cloudwatch logs
@@ -216,7 +221,7 @@
       - SecureStrings (for encryption at rest)
       - restricting access
 - Networking and content delivery
-  - Amazon API Gateway
+  - API Gateway
     - Rest API
     - WebSocket API
     - Stages
@@ -227,19 +232,19 @@
     - optimizing complex API calls & dependencies
       - db integration
         - reusing db connections
-  - Amazon CloudFront
+  - CloudFront
   - Elastic Load Balancing
     - sticky session cookies
     - application load balancer
       - routing to different environments
       - listener rules
       - target groups
-  - Amazon Route 53
-  - Amazon VPC
+  - Route 53
+  - VPC
 - Security, identity, and compliance
   - AWS Certificate Manager (ACM)
   - AWS Certificate Manager Private Certificate Authority
-  - Amazon Cognito
+  - Cognito
   - AWS Identity and Access Management (IAM)
   - AWS Key Management Service (AWS KMS)
     - Envelope Encryption
@@ -251,37 +256,11 @@
   - AWS Security Token Service (AWS STS)
   - AWS WAF
 - Storage
-  - Amazon Elastic Block Store (Amazon EBS)
+  - Elastic Block Store (EBS)
     - integration with ec2
-  - Amazon Elastic File System (Amazon EFS)
-  - Amazon S3
-  - Amazon S3 Glacier
-
-#### out of scope
-
-- AWS Application Discovery Service
-- Amazon AppStream 2.0
-- Amazon Chime
-- Amazon Connect
-- AWS Database Migration Service (AWS DMS)
-- AWS Device Farm
-- Amazon Elastic Transcoder
-- Amazon GameLift
-- Amazon Lex
-- Amazon Machine Learning (Amazon ML)
-- AWS Managed Services (AMS)
-- Amazon Mobile Analytics
-- Amazon Polly
-- Amazon QuickSight
-- Amazon Rekognition
-- AWS Server Migration Service (AWS SMS)
-- AWS Service Catalog
-- AWS Shield Standard
-- AWS Shield Advanced
-- AWS Snow Family
-- AWS Storage Gateway
-- Amazon WorkMail
-- Amazon WorkSpaces
+  - Elastic File System (EFS)
+  - S3
+  - S3 Glacier
 
 ## Domains
 
@@ -335,9 +314,9 @@
 - Cloud storage options (for example, file, object, databases)
 - Database consistency models (for example, strongly consistent, eventually consistent)
 - Differences between query and scan operations
-- Amazon DynamoDB keys and indexing
+- DynamoDB keys and indexing
 - Caching strategies (for example, write-through, read-through, lazy loading, TTL)
-- Amazon S3 tiers and lifecycle management
+- S3 tiers and lifecycle management
 - Differences between ephemeral and persistent data storage patterns
 - Serializing and deserializing data to provide persistence to a data store
 - Using, managing, and maintaining data stores
@@ -349,17 +328,17 @@
 #### implement authnz for apps & aws services
 
 - Identity federation (for example, Security Assertion Markup Language [SAML], OpenID
-  Connect [OIDC], Amazon Cognito)
+  Connect [OIDC], Cognito)
 - Bearer tokens (for example, JSON Web Token [JWT], OAuth, AWS Security Token Service [AWS
   STS])
-- The comparison of user pools and identity pools in Amazon Cognito
+- The comparison of user pools and identity pools in Cognito
 - Resource-based policies, service policies, and principal policies
 - Role-based access control (RBAC)
 - Application authorization that uses ACLs
 - The principle of least privilege
 - Differences between AWS managed policies and customer-managed policies
 - Identity and access management (IAM)
-- Using an identity provider to implement federated access (for example, Amazon Cognito, AWS Identity and Access Management [IAM])
+- Using an identity provider to implement federated access (for example, Cognito, AWS Identity and Access Management [IAM])
 - Securing applications by using bearer tokens
 - Configuring programmatic access to AWS
 - Making authenticated calls to AWS services
@@ -409,7 +388,7 @@
 - Lambda versions and aliases
 - Testing deployed code by using AWS services and tools
 - Performing mock integration for APIs and resolving integration dependencies
-- Testing applications by using development endpoints (for example, configuring stages in Amazon API Gateway)
+- Testing applications by using development endpoints (for example, configuring stages in API Gateway)
 - Deploying application stack updates to existing environments (for example, deploying an AWS
   SAM template to a different staging environment)
 
@@ -448,7 +427,7 @@
 #### root cause analysis
 
 - Logging and monitoring systems
-- Languages for log queries (for example, Amazon CloudWatch Logs Insights)
+- Languages for log queries (for example, CloudWatch Logs Insights)
 - Data visualizations
 - Code analysis tools
 - Common HTTP error codes
@@ -477,7 +456,7 @@
 
 - Caching
 - Concurrency
-- Messaging services (for example, Amazon Simple Queue Service [Amazon SQS], Amazon Simple Notification Service [Amazon SNS])
+- Messaging services (for example, Simple Queue Service, Simple Notification Service)
 - Profiling application performance
 - Determining minimum memory and compute power for an application
 - Using subscription filter policies to optimize messaging
