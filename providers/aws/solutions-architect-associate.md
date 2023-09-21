@@ -2,6 +2,8 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
+  - Architecting on AWS: Online Course Supplement > Module 1
+  - AWS Technical Essentials
   - review the
     - service categories in depth
     - whitepaper related to best practices
@@ -9,9 +11,6 @@
   - Examp Prep Enhanced Course
   - Solutions Architect - Knowledge Badge Assessment
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
-  - new courses
-    - Architecting on AWS: Online Course Supplement
-    - AWS Technical Essentials
 
 ## links
 
