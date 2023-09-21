@@ -22,6 +22,13 @@
 
 ## best practices
 
+- read replicas vs multi-az
+  - read replicas: for scalability
+    - provide both performance & availability benefits
+    - you still need to implement a cache for appropriate requests
+  - multi-az: for high availability
+    - doesnt scale reads, since the standby cant be accessed directly
+
 ### anti patterns
 
 ## features

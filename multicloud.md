@@ -83,7 +83,7 @@
   - infrastructure externally managed
   - high availability
   - horizontaly scales
-  - redundant and fault-tolerant
+  - redundant and fault tolerant
 - use cases/considerations
   - purpose driven architectures and application flexibility
   - quick to market
@@ -295,8 +295,15 @@
       - be careful of DNS caching and the time it takes to propagate DNS changes
     - Load balancing strategy: the IP points to a load balancer that routes requests to health checked resources
 
+### Fault Tolerance
+
+- designing for 0 downtime
+  - unlike with high Availability, where some downtime is acceptable
+- systems that continue to operate even when dependent services are faulty
+
 ### Disaster Recovery
 
+- systems that operate through and recovery from disaster
 - spectrum of strategies ranging from backup & Restore to multi-site active/active
 - Backups are an essential component of your business resiliency and operational commitments.
 - developing a backup strategy for services and data
@@ -321,6 +328,22 @@
   - volume-level recovery: e.g. any persistent volumes used across nodes
   - instance-level recovery: e.g. any VMs or containers
   - managed-service recovery: e.g. if using some serverless/managed service
+
+#### Data Protection
+
+- designed to restore/preserve a copy of data from a desired point in time
+- goals
+  - Restore data in a timeframe meeting Recovery Objectives
+  - recovery: protect it in case of a disaster, accident, or malicious action.
+  - compliance: theres bunches of regulations depending on the industry and type of data stored
+- Recovery Point Objectives: RPO; recovering to a specific point in time, usually measured in milliseconds
+- Recovery Time Objectives: RTO; time it takes to recover, usually measured in minutes
+- backups: creating efficient and cost-effective data copies
+  - incremental
+  - frequency of backups
+  - capacity limits
+  - expiration
+- disaster recovery drills
 
 #### Backup and Restore
 
@@ -661,22 +684,6 @@
   - systems require additional space for operation overhead, especially for write operations.
 - actual: business requirements + allocated:
 
-### Data Protection
-
-- designed to restore/preserve a copy of data from a desired point in time
-- goals
-  - Restore data in a timeframe meeting Recovery Objectives
-  - recovery: protect it in case of a disaster, accident, or malicious action.
-  - compliance: theres bunches of regulations depending on the industry and type of data stored
-- Recovery Point Objectives: RPO; recovering to a specific point in time, usually measured in milliseconds
-- Recovery Time Objectives: RTO; time it takes to recover, usually measured in minutes
-- backups: creating efficient and cost-effective data copies
-  - incremental
-  - frequency of backups
-  - capacity limits
-  - expiration
-- disaster recovery drills
-
 ## analytics
 
 - key domains
@@ -913,7 +920,7 @@
   - right-size your resources: you must know your workload
   - use automation to clean up waste: shutdown unused/idle resources
   - prioritize high ROI investments: architect for cost optimization
-  - design fault-tolerant systems and use cloud services that scale horizontally
+  - design fault tolerant systems and use cloud services that scale horizontally
 - expert level
   - commitment based discounts, purchase plans and other non ondemand cost models are utilized for prod, dev and other workloads
   - proactive optimization through design, architecture and resource selection

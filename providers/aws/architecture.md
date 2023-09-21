@@ -296,6 +296,9 @@
   - operating system overhead
 - allocated: billed for the capacity you reserve
 - consumed: billed for the actual capacity used
+- ebs vs efs
+  - efs scales automatically
+  - ebs supports live configuration changes
 
 ### Core Storage Services
 
