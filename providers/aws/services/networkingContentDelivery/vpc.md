@@ -3,6 +3,8 @@
 - regionally isolated software defined virtual private network
 - [all gateway types](./vpc-gateways.md)
 - [VPC security groups](./securitygroups.md)
+- [direct connect](./VPC-directConnect.md)
+- [vpn](./vpc-vpn.md)
 
 ## my thoughts
 
@@ -306,6 +308,7 @@
 
 - enables 1:1 encrypted, highly available communication between TWO isolated VPCs using their private IP address without traversing the public internet
   - an uncomplicated and cost-effective way to share resources between Regions or replicate data for geographic redundancy.
+  - each connection can accept up to 125 connections
 - requirements
   - you must add a route in the respective VPC route tables
     - destination: the other VPCs cidr range
@@ -393,7 +396,7 @@
 
 ### VPNs
 
-- [see markdown file](./vpn.md)
+- see the sibling markdown file
 
 ### Networking Tools
 

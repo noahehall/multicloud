@@ -3,6 +3,7 @@
 - Connect your on-premises networks and remote workers to the cloud
 - client VPN: fully managed, elastic VPN service that automatically scales up or down based on user demand
 - site-to-site VPN: creates a secure connection between your data center or branch office and your AWS cloud resources
+- vpn cloudhub: hub & spoke communication between multiple site-to-site locations
 
 ## my thoughts
 
@@ -11,6 +12,7 @@
 - [landing page](https://aws.amazon.com/vpn/?did=ap_card&trk=ap_card)
 - [site to site VPN](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html)
 - [client vpn](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/what-is.html)
+- [cloudhub](https://docs.aws.amazon.com/vpn/latest/s2svpn/VPN_CloudHub.html)
 
 ## best practices
 
@@ -64,6 +66,8 @@
 - vpn client application: the software application that you use to connect to the Client VPN endpoint and establish a secure VPN connection.
 - client vpn configuration file: includes information about the Client VPN endpoint and the certificates required to establish a VPN connection.
   - You load this file into your chosen VPN client application.
+
+### CloudHub
 
 ## considerations
 

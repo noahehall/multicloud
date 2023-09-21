@@ -7,6 +7,8 @@
 - [common AWS architecture notes](./architecture.md)
 - [aws services by category](./services/)
   - [global architecture is pretty good](./services/globalInfrastructure/globalArchitecture.md)
+- [schedule an exam](https://aws.amazon.com/certification/certification-prep/testing/?ch=tile&tile=getstarted)
+- [certification sign in](https://www.aws.training/certification/?ch=tile&tile=getstarted)
 
 ## Associate level exams
 

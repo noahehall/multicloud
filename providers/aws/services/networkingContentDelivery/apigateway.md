@@ -58,6 +58,7 @@
 - full https support for encryption in transit
 - simple request validation against a type definition at the method level
 - create apis by importing openApi/swagger docs
+- automatic protection against DDOS (layer 7) and SYN floods (layer 3) attacks
 
 ### pricing
 

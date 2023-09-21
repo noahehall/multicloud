@@ -1,6 +1,9 @@
 # RDS
 
 - distributed relational database supporting 7 different RDBMDS's like postgres, mysql, oracle, mariadb and sql server
+- [aurora](./rds-aurora.md)
+- [custom](./rds-custom.md)
+- [proxy](./rds-proxy.md)
 
 ## my thoughts
 
@@ -22,12 +25,15 @@
 
 ## best practices
 
-- read replicas vs multi-az
+- read replicas vs multi-az vs scaling
   - read replicas: for scalability
     - provide both performance & availability benefits
     - you still need to implement a cache for appropriate requests
+    - can be more cost effective than scaling out/up db instances
   - multi-az: for high availability
     - doesnt scale reads, since the standby cant be accessed directly
+  - horizontal scaling
+  - vertical scaling
 
 ### anti patterns
 

@@ -1,6 +1,7 @@
 # Aurora
 
-- serverless managed mysql/postgresql special built by AWS to take advantage of aws cloud scalability and durability
+- managed mysql/postgresql special built by AWS to take advantage of aws cloud scalability and durability
+- also has a serverless option
 
 ## my thoughts
 
@@ -39,6 +40,14 @@
 ## terms
 
 ## basics
+
+- aurora's base architecture is different from other RDS options
+  - core component is a cluster
+    - shared cluster volume for storage providing faster provisioning, improved readability and performance
+  - read replicas provide benefits of both read replicas and multi-az deployments
+    - i.e. increased read performance & availability
+- aurora vs aurora serverless
+  - abcd
 
 ### storage
 

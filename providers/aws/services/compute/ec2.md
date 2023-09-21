@@ -4,7 +4,7 @@
 
 ## my thoughts
 
-- factoring in savings plans & spot instances, ec2 pricing can be competitive with container services & serverless
+- any service backed by ec2 will have the slowest elasticity
 
 ## links
 

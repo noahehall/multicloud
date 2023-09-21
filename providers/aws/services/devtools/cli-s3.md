@@ -15,6 +15,7 @@
 - low level cmds: provide direct access to the Amazon S3 APIs, enabling operations not exposed in the high-level s3 commands.
   - are generated from JSON models that directly imitate the APIs of other AWS services that provide API-level access.
   - allow a significantly more granular amount of control over your buckets when using the CLI.
+- all aws s3 cmds automatically perform resumable multipart upload/download based on the file size
 
 ```sh
 ##################### high level cmds

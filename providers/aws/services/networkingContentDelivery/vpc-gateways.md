@@ -57,6 +57,7 @@
 ## nat gateways (NG)
 
 - for private subnet resources to initiate contact with services outside a VPC (but not the other way around)
+  - i.e. egress only, not ingress
   - put the NAT gateway in a public subnet, and add a route targeting it in a private subnets route table
   - are subnet components, unlike IGWs which are VPC components
 - performs NAT for resources assigned private IPv4 addrs

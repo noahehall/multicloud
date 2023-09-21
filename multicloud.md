@@ -548,6 +548,13 @@
 - websockets: create persistent connections between client and server
   - ideal for streaming/requests that require more than one response
 
+### Data ingestion
+
+- homogeneous: EL; move the data in the same format from source to target
+  - foucs is on speeed of transfer, data protection & integrity, and automation for live data
+- heterogenous: ETL; move the data in a different format from source to target
+  - focus is on transformation of the data to meet destination requirements & running calculations/ML for derived output & new attributes
+
 ## Storage
 
 - Network File System: FNS; generally linux based systems
@@ -607,6 +614,20 @@
 - throughput: statistical storage measurement used to measure the performance associated with reading large sequential data files.
   - Large files, such as video files, must be read from beginning to end.
   - operations are measured in megabytes per second (MB/s).
+
+#### Onpremise capacity calculations
+
+- raw: what you pay for and used calculate the operating costs and data center requirements.
+  - The net usable capacity will vary by manufacturer and by individual system.
+- formatted: raw capacity - hardware failure protection overhead, drive formatting, and operating system overhead.
+  - Hardware failure protection overhead: aka hardware or software redundant array of independent disks (RAID)
+    - protects the data if hardware or a drive fails by creating checksum protection for the data
+    - Depending on the protection level, this can amount 15%–50% overhead
+  - Formatting and operating system overhead: The operating system is then added to the system, which further reduces the available capacity 1%–5%
+- allocated: formatted capacity - data protection services, such as snapshots, and add space for performance overhead
+  - Snapshots can consume more space than your actual data
+  - systems require additional space for operation overhead, especially for write operations.
+- actual: business requirements + allocated:
 
 ### storage types
 
@@ -669,20 +690,6 @@
 - Unlike file storage, object storage does not differentiate between types of data
   - method of storing files in a flat address space based on attributes and metadata.
 - uses cases: data archiving, backup and recovery, rich media; systems requiring file versioning, file tracking, and file retention.
-
-### Onpremise capacity calculations
-
-- raw: what you pay for and used calculate the operating costs and data center requirements.
-  - The net usable capacity will vary by manufacturer and by individual system.
-- formatted: raw capacity - hardware failure protection overhead, drive formatting, and operating system overhead.
-  - Hardware failure protection overhead: aka hardware or software redundant array of independent disks (RAID)
-    - protects the data if hardware or a drive fails by creating checksum protection for the data
-    - Depending on the protection level, this can amount 15%–50% overhead
-  - Formatting and operating system overhead: The operating system is then added to the system, which further reduces the available capacity 1%–5%
-- allocated: formatted capacity - data protection services, such as snapshots, and add space for performance overhead
-  - Snapshots can consume more space than your actual data
-  - systems require additional space for operation overhead, especially for write operations.
-- actual: business requirements + allocated:
 
 ## analytics
 

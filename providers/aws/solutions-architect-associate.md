@@ -2,16 +2,16 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
-  - Exam Prep: > module 4 > domain 3
+  - review the
+    - service categories in depth
+    - whitepaper related to best practices
   - Exam Prep Official Practice Question Set
   - Examp Prep Enhanced Course
-  - Solutions Architect - Knowledge Badge Readiness Path
+  - Solutions Architect - Knowledge Badge Assessment
   - LAB: Deep dive: VPC peering > deep dive 2.pdf
   - new courses
     - Architecting on AWS: Online Course Supplement
     - AWS Technical Essentials
-- todos
-  - FYI: just by opening a lab marks it as completed, check the completed list and figure out which ones you still need to do
 
 ## links
 
@@ -55,8 +55,12 @@
 - security
   - cloud, on premise, at rest, in transit
   - encryption
-- networking
+- dbs: workload types, db types, db engine considerations and comparisons, architectures for availability, durabilty, storage and performance
+- networking:
+  - bandwidth, throughput cidr ranges, latency, jitter, architectures, load balancing
+  - osi model
 - storage: object, block, file
+- data ingestion & transformation: homegenous vs heterogenous
 - analytics, observability
   - performance
     - load testing, benchmarking
@@ -70,12 +74,16 @@
   - multi-tier
   - distributed systems
   - api-driven, event-driven, and data-streaming
+    - rest, graphql etc
   - synchronous vs asynchronous decoupling
 
 #### aws knowledgable
 
+> what they do, main features, compare & contrast
+
 - machine learning services: polly, comprehend
 - basic api (http & cli) calls for most services
+- migration: application discovery service, transfer family, datasync, migration hub, server migration service, cloudendure, migration evaluator, snowball
 
 #### aws in depth
 
@@ -95,18 +103,22 @@
   - launch configuration, EC2 autoscaling vs AWS Autoscaling
   - artifact, backup, service catalog, systems manager
 - most of these service domains
-  - DB: RDS, Aurora, neptune, documentdb, dynamodb, redshift, elasticache
   - security
     - KMS, CloudHSM
     - Shield, WAF, Secrets Manager, Parameter Store
     - inspector, codeguru
-  - networking
-    - VPC and all VPC components
-      - subnets, cidr, protocols, routing, etc
-    - cloudfront, aws global accelerator, route 53, ELB
   - devops: elastic beanstalk, cloudformation, opswork
 - all of these service domains
-  - analytics & obervability: cloudwatch, cloudtrail, xray, eventBridge
+  - networking
+    - VPC and all VPC components
+      - subnets, cidr, protocols, routing, endpoints, etc
+      - public, private and hybrid architectures
+    - cloudfront, global accelerator, route 53, ELB
+    - optimizing network traffic
+  - DB: RDS + Proy + Aurora, neptune, documentdb, dynamodb, redshift, elasticache
+  - analytics, obervability and events: especially metrics related to availability, scalability and performance, automation & alarms
+    - cloudwatch, cloudtrail, xray, eventBridge
+    - kinesis, athena, msk, emr, data pipeline, etc
   - compute: ec2, lambda, eks, ecs
   - storage: EBS, S3, storage gateway, FSx, EFS, snowball
     - lol dont skip over the fsx windows shiz ;)~
@@ -115,6 +127,8 @@
     - lambda, ecs fargate, sqs, sns, eventbridge, stepfunctions, appsync, s3, rds proxy, aurora, dynamodb, api gateway, kinesis
   - disaster recovery & backups:
     - backup, disaster recovery service, AMIs, snapshots,
+  - application integration: step functions, sqs, sns
+  - data ingestion
 
 #### technologies
 

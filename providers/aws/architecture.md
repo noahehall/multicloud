@@ -3,6 +3,7 @@
 - AWS comprises over 150 services: happy hunting ;)~
 - TODOs
   - some sections still need cleanup
+  - you need to flush this out before the exam
 
 ## links
 
@@ -36,6 +37,7 @@
 - [compute services](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
 - [cost optimization tools](https://docs.aws.amazon.com/whitepapers/latest/cost-optimization-laying-the-foundation/reporting-cost-optimization-tools.html)
 - [cost optimization](https://aws.amazon.com/architecture/cost-optimization/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all)
+- [data ingestion](https://docs.aws.amazon.com/whitepapers/latest/building-data-lakes/data-ingestion-methods.html)
 - [disaster recovery architecture pt1](https://aws.amazon.com/blogs/architecture/disaster-recovery-dr-architecture-on-aws-part-i-strategies-for-recovery-in-the-cloud/)
 - [disaster recovery architecutre pt2](https://aws.amazon.com/blogs/architecture/disaster-recovery-dr-architecture-on-aws-part-ii-backup-and-restore-with-rapid-recovery/)
 - [disaster recovery options](https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html)
@@ -52,6 +54,7 @@
 - [security](https://docs.aws.amazon.com/whitepapers/latest/introduction-aws-security/security-of-the-aws-infrastructure.html)
 - [serverless multi-tier architectures (PDF)](https://d1.awsstatic.com/whitepapers/AWS_Serverless_Multi-Tier_Architectures.pdf)
 - [service overview (PDF)](https://docs.aws.amazon.com/pdfs/whitepapers/latest/aws-overview/aws-overview.pdf)
+- [storage best practices](https://docs.aws.amazon.com/whitepapers/latest/building-data-lakes/building-data-lake-aws.html)
 
 ### service categories
 
@@ -60,6 +63,7 @@
 - [compliance](https://aws.amazon.com/compliance/)
 - [compute](https://aws.amazon.com/products/compute/)
 - [cost management](https://aws.amazon.com/aws-cost-management/)
+- [cost optimization reporting & tools](https://docs.aws.amazon.com/whitepapers/latest/cost-optimization-laying-the-foundation/reporting-cost-optimization-tools.html)
 - [data lakes and analytics](https://aws.amazon.com/big-data/datalakes-and-analytics/)
 - [databases](https://aws.amazon.com/products/databases/)
 - [frontend and mobile](https://aws.amazon.com/products/frontend-web-mobile/)
@@ -210,6 +214,10 @@
 
 ## Networking
 
+- in general
+  - VPNs are more cost effective & simpler than DirectConnect
+  - Peering is more cost effective than Transit Gateway
+  - Gateway Endpoints dont incur costs for transfers within the same region
 - in AWS
   - Foundational Services
     - VPC
@@ -453,6 +461,12 @@
     - emit data from Kinesis Data Streams to other AWS services, such as Amazon S3, Amazon Redshift, Amazon EMR, and AWS Lambda.
   - Amazon partners: use third-party connectors additional Amazon transfer service support.
 
+#### data ingestion
+
+- in AWS:
+  - homogeneous: EMR, Athena, RDS, s3
+  - heterogenous: redshift, kinesis, MSK, glue, rds, s3
+
 #### offline data transfer & migration
 
 - physical storage method to move your data from remote locations to AWS
@@ -503,6 +517,7 @@
 
 ## Compute
 
+- available in 3 forms: instances, functions and containers
 - configuration of
   - OS
   - CPUs
@@ -513,32 +528,34 @@
 
 ### VM instances
 
-- EC2: run anything
-  - the foundational building block of all AWS compute services
 - use cases
   - granular and complete control of infrastructure
   - long running applications, long running computation cycles
   - compute-intensive or memory-intensive applications
   - stateful apps
+- in AWS
+  - EC2: runs anything; the foundational building block of all AWS compute services
 
 ### Containers
 
-- EKS: k8s in the cloud
-- ECS EC2: immutable apps
 - use cases
   - fully managed with performance configurable infrastructure
   - compute-intensive workloads
   - microservices
   - auto scaling
+- in AWS
+  - EKS: k8s in the cloud
+  - ECS EC2: immutable apps; control + data plan access
 
 ### serverless
 
-- lambda: serverless max 15 minute computation cycles
-- ECS Fargate: serverless immutable services
 - use cases
   - fully managed infrastructure with tunable infrastructure performance
   - focus on the code
   - event driven applications
+- in AWS
+  - lambda: serverless max 15 minute computation cycles
+  - ECS Fargate: immutable serverless apps; data plan access
 
 ## Analytics
 
@@ -567,6 +584,22 @@
 - tagging resources is foundational to all analytical services
 
 ## Databases
+
+### engines
+
+- in AWS
+  - RDS
+    - pg, mysql, mariadb
+    - sqlserver, oracle, custom
+    - proxy
+    - Aurora
+  - cache: elasticache redis/memcached
+  - ledger: qldb
+  - graph: neptune
+  - key value: dynamodb
+  - document: documentdb
+  - lakes: s3, redshift spectrum
+  - warehouse: redshift
 
 ### Db migration
 
@@ -608,13 +641,15 @@
     - enforce a consistent policy and strategy across organizations and tag implementations
   - you can utilize other tools to automate the process of reporting
 - in AWS
-  - expenses and usage:
+  - expenses, usage & visibility:
     - AWS Cost Explorer
     - Cost and Usage reports (must be enabled?)
     - the AWS Billing and Management Console
     - AWS Budgets
     - AWS Trusted Advisor
     - Compute Optimizer
+    - Savings Plans
+    - Cloudwatch
   - governance
     - organizations
     - Control Tower
