@@ -1,10 +1,12 @@
-# security
+# security & compliance
 
 - [check the security dir for more](./security/)
 - web security book
   - reading: done
   - copying: PAGE 152 dont be an accessory
     - categorized as unwitting accomplice
+- cyber defense matrix
+  - reading: top of pg 76
 
 ## links
 
@@ -349,6 +351,17 @@
   - forensic data analysis: create snapshots of data/configuration to capture the current state for later investigation and before remediation
   - immutable infrastructure: after capturing snapshots, recreate resources with a clean slate and replace all keys, credentials, etc
   - coordination and orchestration: utilize step functions to stitch together workflows with adaptability
+
+## Compliance
+
+- focuses on the kind of data handled and stored, and studies an organization’s security processes.
+  - ensure regulation of data happens securely and to understand how your organization shares, stores, and receives information
+  - details the security at a single moment in time and compares it to a specific set of regulatory requirements and frameworks from legislation, industry regulations, and standards created from data protection best practices.
+- key mistakes
+  - security and compliance are NOT the same thing
+  - compliance is not security, but Security is a big part of compliance.
+  - You can be compliant but not secure because compliance doesn’t always achieve security.
+- Becoming secure and compliant means securing information assets, preventing damage, protecting it, and detecting theft
 
 ## attack vectors
 

@@ -1,10 +1,12 @@
 # multicloud
 
 - likely want to continue splitting this out into multiple files
+  - this file should only consider public, private, hybrid and multi cloud scenarios
 - [databases](./databases.md)
+- [devops](/devops.md)
+- [distributed systems](./distributedSystems.md)
 - [networking](./networking.md)
 - [security](./security.md)
-- [distributed systems](./distributedSystems.md)
 
 ## links
 
@@ -556,70 +558,6 @@
 - websockets: create persistent connections between client and server
   - ideal for streaming/requests that require more than one response
 
-## devops
-
-- combination of cultural philosophies, practices anbd tools that increases an orgs ability to deliver applications and services at high velocity
-  - evoling and improving products at a faster pace than organizations using trfaditional software dev and infrastructure mgmt processes
-  - cultural philosophies: removng barriers and sharing end-to-end responsibility
-  - processes: developed for speed and quality
-  - tools: align with processes and automate repeatable tasks and focusing on efficiency and reliability
-- technical maturity: often associated with increased levels of abstractions; a first principle of devops
-- devops infinity loop
-  - dev: the people and processes that create software; code, build, test
-    - change quick, release often, measure success by rate of delivery
-  - ops: teams and processes that deliver & monitor software: deploy, operate, monitor
-    - driven by maintaining stability of the application
-    - hence dev & ops have competing goals of releasing fast, and keep stability
-  - test & security: plan, release
-
-### practices
-
-- communication & collaboration:
-  - transparency of information
-  - cross-functional teams own and eveluate their work
-- monitor and observability
-  - assess the effectiveness of changes
-  - monitor performance
-  - short feedback loops help teams react, learn, plan and improve
-  - observable systems genreates enough data from all resources, apps and services in the form of logs, metrics and traces
-    - gain system-wide opreational visibility
-    - logs report on discrete events
-    - metrics capture health and performance
-    - traces report on transactrions and the flow of data across a distributed system
-- continuous integration: regularly merging code changes into a central repo, which trigger automated builds and tests
-- continous
-  - delivery: every code change is built, tested and deployed to a non production testing/staging environment
-    - requires manual deployment to prod
-  - deployment: delivery + automatic deployment to a production environment
-    - deploy to prod is automated
-- microservices architecture: build an application as a set of loosely coupled services
-- infrastructure as code: IaC: infrastructure is provisioned and managed using code and softwaqre dev techniques like CI and git
-
-### pipeline
-
-- a set f stages that mov es code from source to production
-- code > build > test > release > deploy > monitor
-  - code: develop and PRs
-  - build: compile, lint & units, static analysis, dependency management, build images
-  - test: functional, integration, regression, acceptance, load, security
-  - release: prepare and package with a specific verison number
-  - deploy: release to target environments e.g. test, staging, prod, etc
-  - monitor
-
-### tools
-
-- cloud: on demand environments using AWS, GCP, IBM, cloudflare, etc
-- development: IDEs, SDKs, code repositories
-- CI/CD
-  - build: jenkins, travis, codebuild, etc
-  - deploy:
-  - pipeline automation
-- infrastructure
-  - automation: terraform, cloudformation
-  - configuration mgmt: chef, puppet
-- containers and serverless
-- monitoring and observability
-
 ## Storage
 
 - Network File System: FNS; generally linux based systems
@@ -919,17 +857,6 @@
   - storage costs
   - data overload
   - ensuring your system is outputting the correct data
-
-## Compliance
-
-- focuses on the kind of data handled and stored, and studies an organization’s security processes.
-  - ensure regulation of data happens securely and to understand how your organization shares, stores, and receives information
-  - details the security at a single moment in time and compares it to a specific set of regulatory requirements and frameworks from legislation, industry regulations, and standards created from data protection best practices.
-- key mistakes
-  - security and compliance are NOT the same thing
-  - compliance is not security, but Security is a big part of compliance.
-  - You can be compliant but not secure because compliance doesn’t always achieve security.
-- Becoming secure and compliant means securing information assets, preventing damage, protecting it, and detecting theft
 
 ## Cloud Financial Management (CFM)
 

@@ -68,7 +68,7 @@
 - availability
 - durabilty
 - fault tolerance
-- scalability
+- scaling
 
 #### in depth
 

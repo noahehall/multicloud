@@ -416,3 +416,55 @@
 
 - using your chat client (e.g. slack) as part of your operational system
 - push notifications from your systems & process automation cycles into your chat client
+
+# copypasta from some other file
+
+## devops
+
+- combination of cultural philosophies, practices anbd tools that increases an orgs ability to deliver applications and services at high velocity
+  - evoling and improving products at a faster pace than organizations using trfaditional software dev and infrastructure mgmt processes
+  - cultural philosophies: removng barriers and sharing end-to-end responsibility
+  - processes: developed for speed and quality
+  - tools: align with processes and automate repeatable tasks and focusing on efficiency and reliability
+- technical maturity: often associated with increased levels of abstractions; a first principle of devops
+- devops infinity loop
+  - dev: the people and processes that create software; code, build, test
+    - change quick, release often, measure success by rate of delivery
+  - ops: teams and processes that deliver & monitor software: deploy, operate, monitor
+    - driven by maintaining stability of the application
+    - hence dev & ops have competing goals of releasing fast, and keep stability
+  - test & security: plan, release
+
+### practices
+
+- communication & collaboration:
+  - transparency of information
+  - cross-functional teams own and eveluate their work
+- monitor and observability
+  - assess the effectiveness of changes
+  - monitor performance
+  - short feedback loops help teams react, learn, plan and improve
+  - observable systems genreates enough data from all resources, apps and services in the form of logs, metrics and traces
+    - gain system-wide opreational visibility
+    - logs report on discrete events
+    - metrics capture health and performance
+    - traces report on transactrions and the flow of data across a distributed system
+- continuous integration: regularly merging code changes into a central repo, which trigger automated builds and tests
+- continous
+  - delivery: every code change is built, tested and deployed to a non production testing/staging environment
+    - requires manual deployment to prod
+  - deployment: delivery + automatic deployment to a production environment
+    - deploy to prod is automated
+- microservices architecture: build an application as a set of loosely coupled services
+- infrastructure as code: IaC: infrastructure is provisioned and managed using code and softwaqre dev techniques like CI and git
+
+### pipeline
+
+- a set f stages that mov es code from source to production
+- code > build > test > release > deploy > monitor
+  - code: develop and PRs
+  - build: compile, lint & units, static analysis, dependency management, build images
+  - test: functional, integration, regression, acceptance, load, security
+  - release: prepare and package with a specific verison number
+  - deploy: release to target environments e.g. test, staging, prod, etc
+  - monitor

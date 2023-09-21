@@ -88,3 +88,17 @@
 - ubuntu juju: models infrastructure & services together
 - victorops
 - zookeeper
+
+# copypasta from some other file
+
+- cloud: on demand environments using AWS, GCP, IBM, cloudflare, etc
+- development: IDEs, SDKs, code repositories
+- CI/CD
+  - build: jenkins, travis, codebuild, etc
+  - deploy:
+  - pipeline automation
+- infrastructure
+  - automation: terraform, cloudformation
+  - configuration mgmt: chef, puppet
+- containers and serverless
+- monitoring and observability
