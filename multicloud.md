@@ -1,18 +1,9 @@
 # multicloud
 
 - likely want to continue splitting this out into multiple files
-  - this file should only consider public, private, hybrid and multi cloud scenarios
-- [databases](./databases.md)
-- [devops](/devops.md)
-- [distributed systems](./distributedSystems.md)
-- [networking](./networking.md)
-- [security](./security.md)
 
 ## links
 
-- [api: fan out/in integration pattern](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
-- [api: rest](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
-- [api: restful api best practices](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
 - [cap theorem](https://en.wikipedia.org/wiki/CAP_theorem)
 - [database transactions](https://en.wikipedia.org/wiki/Database_transaction)
 - [gcp: what is multicloud](https://cloud.google.com/learn/what-is-multicloud)
@@ -157,47 +148,6 @@
 - strangler: incrementally and systematically decomposes monolithic applications by creating APIs and building event-driven components that gradually replace components of the legacy application.
   - Distinct API endpoints point to old and to new components and safe deployment options (such as canary deployments) let you point back to the legacy version with very little risk.
 
-### scaling
-
-- strategize for the current scale requirements in addition to the anticipated growth
-  - know the capabilities and service limits of the services that you’re integrating
-    - especially the service limits, e.g. api gateay 10mb vs SQS 256kb
-  - select patterns that optimize your application for the scale you need to support
-    - timeouts, retry behavior, throughput, payload size, etc
-
-#### demand
-
-- both compute + data
-- organic demand
-- merger and acquisition: increases dramatically within a short period
-
-#### complexity
-
-- management
-- performance
-- security
-
-#### scaling reliably with tests
-
-- increased need for more effective load tests since you can scale/tweak the perf of individual components
-  - you need to have a solid understanding of peak load capacity
-- best practices
-  - load test with authentic data with appropriate volumes that exercise each integration point with production access patterns
-  - spin a production like environment, never load test locally
-  - identify the bottlenecks/failure points, modify perf characteristcs and iterate
-    - this may move the bottleneck to other integration points
-      - you need to know where the bottleneck is most appropriate, based on your workload and business requirements
-  - choose a percentile that reflects the business need when monitoring
-    - build in error handling logic to handle failures that are outliers
-  - dont mock services you cant control
-    - when you're load testing, you need the real beef
-
-#### managing scale through monitoring
-
-- components should output appropriate signals
-- monitor by percentile, and not just avg/raw numbers
-- log efficiently and effectively
-
 ### deploying
 
 - strategy for deploying new application versions and infrastructure are equally important
@@ -226,31 +176,6 @@
   - cloud native code is generally more difficult to test locally (see localstack)
 - integration tests: targeting remote test accounts with prod parity
 - automated integration and accepted tests against other envornments providing gates for production deployments
-
-## APIs
-
-### best practices
-
-- in any API-based application is to capture and retry a call whenever possible and to handle errors gracefully when a call fails
-
-### REST
-
-- Representational state transfer (REST) refers to architectures that follow six constraints:
-  - Separation of concerns via a client-server model.
-  - State is stored entirely on the client and the communication between the client and server is stateless.
-  - The client will cache data to improve network efficiency.
-  - There is a uniform interface (in the form of an API) between the server and client.
-  - As complexity is added into the system, layers are introduced. There may be multiple layers of RESTful components.
-  - Follows a code-on-demand pattern, where code can be downloaded on the fly (in our case implemented in Lambda) and changed without having to update clients.
-- API-First strategy: where each service within their stack is first and always released as an API
-
-### GraphQL
-
-### RPC
-
-#### gRPC
-
-#### tRPC
 
 ## Uptime
 
@@ -298,7 +223,7 @@
       - statefulness: acceptable since theres only one primary
       - availability: if failover fails, your resources wil be unreachable
       - scalability: since only one resource is considered primary, it will bear the brunt of the load
-        - since the passive resource doesnt share the load; you need _vertical scaling_ to accomodate increased demand
+        - since the passive resource doesnt share the load; you need vertical scaling to accomodate increased demand
         - stop the passive resource > resize and restart > make primary and shift traffic> stop, resize and restart the new secondary
           - you repeat this process when demand decreases
   - active-active: more than one of many resources are considered primary
@@ -310,6 +235,48 @@
 - strategies
   - horizontal scaling: in/out; increasing the total number of load balanced resources
   - vertical scaling: up/down; increasing perf characteristics of existing resources
+
+#### scaling
+
+- strategize for the current scale requirements in addition to the anticipated growth
+  - know the capabilities and service limits of the services that you’re integrating
+    - especially the service limits, e.g. api gateay 10mb vs SQS 256kb
+  - select patterns that optimize your application for the scale you need to support
+    - timeouts, retry behavior, throughput, payload size, etc
+- elasticity: horizontal scaling + automation to match demand
+
+##### demand
+
+- both compute + data
+- organic demand
+- merger and acquisition: increases dramatically within a short period
+
+##### complexity
+
+- management
+- performance
+- security
+
+##### reliably with tests
+
+- increased need for more effective load tests since you can scale/tweak the perf of individual components
+  - you need to have a solid understanding of peak load capacity
+- best practices
+  - load test with authentic data with appropriate volumes that exercise each integration point with production access patterns
+  - spin a production like environment, never load test locally
+  - identify the bottlenecks/failure points, modify perf characteristcs and iterate
+    - this may move the bottleneck to other integration points
+      - you need to know where the bottleneck is most appropriate, based on your workload and business requirements
+  - choose a percentile that reflects the business need when monitoring
+    - build in error handling logic to handle failures that are outliers
+  - dont mock services you cant control
+    - when you're load testing, you need the real beef
+
+##### managing scale through monitoring
+
+- components should output appropriate signals
+- monitor by percentile, and not just avg/raw numbers
+- log efficiently and effectively
 
 ### Durability
 

@@ -1,5 +1,8 @@
 # devops
 
+- [also check the virtualization dir](./virtualization/)
+- [and hashicorp dir](./opensource/hashicorp/)
+
 ## links
 
 - [devops maturity model](https://romesh-mccullough.github.io/devops-maturity-model/)
@@ -8,7 +11,7 @@
 ## best practices
 
 - actualize high intelligence teams
-  - with high intelligence teams: its easier to transition to more complex models, tools, systems & architectures
+  - its easier to transition to more complex models, tools, systems & architectures
 - actualize high performance workflows
   - reduction in time to market is key
   - deployment frequency goes up

@@ -1,18 +1,6 @@
 # databases
 
-- database technology predates the web, since the 1960s
-- SQL databases
-  - are relational, storing data in one/more tables that related to each other in formally prescribed ways
-  - DDL: data definition language
-    - any statement using CREATE, DROP or MODIFY to create, drop and modify table structures
-  - DML: data manipulation language
-    - any statement using SELECT, INSERT, UPDATE, and DELETE for CRUDing records
-- NoSQL databases
-  - sacriface the strict data integrity requirements of SQL databases to achieve greater scalability
-  - often schemaless, allowing you to add fields to new records with having to upgarde any data structures
-- distrubed caches
-  - in-memory databases, that load data from disk and stores it in cache
-  - caching refers to the process of storing a copy of data in an easily retrievable form to speed up responding to requests for that data
+- [also check the databases dir](./databases)
 
 ## best practices
 
@@ -306,3 +294,19 @@
 - Once the migrated application is running, you will need at least some support
 - automate backups and other support tasks, but it is a good idea to plan for support your application might need
 - Ensure that automated tasks are occasionally checked, and that you have personnel for tasks that are not automated.
+
+# copypasta from somewhere else
+
+- database technology predates the web, since the 1960s
+- SQL databases
+  - are relational, storing data in one/more tables that related to each other in formally prescribed ways
+  - DDL: data definition language
+    - any statement using CREATE, DROP or MODIFY to create, drop and modify table structures
+  - DML: data manipulation language
+    - any statement using SELECT, INSERT, UPDATE, and DELETE for CRUDing records
+- NoSQL databases
+  - sacriface the strict data integrity requirements of SQL databases to achieve greater scalability
+  - often schemaless, allowing you to add fields to new records with having to upgarde any data structures
+- distrubed caches
+  - in-memory databases, that load data from disk and stores it in cache
+  - caching refers to the process of storing a copy of data in an easily retrievable form to speed up responding to requests for that data
