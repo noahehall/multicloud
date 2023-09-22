@@ -1,6 +1,8 @@
 # Global Architecture
 
 - fundamental AWS architecture
+- [tags](./tags.md)
+- [local zones](./localZones.md)
 
 ## my thoughts
 
@@ -12,9 +14,6 @@
 - [shared responsibility model](https://aws.amazon.com/compliance/shared-responsibility-model/)
 - [aws repost: user community forum](https://repost.aws/)
 - [top 10 security items](https://aws.amazon.com/blogs/security/top-10-security-items-to-improve-in-your-aws-account/)
-- [tags: conventions and rules](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
-- [tags: best practices](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Using_Tags.html)
-- [tags: resource tagging strategy](https://aws.amazon.com/blogs/mt/implement-aws-resource-tagging-strategy-using-aws-tag-policies-and-service-control-policies-scps/)
 - [billing and cost management](https://docs.aws.amazon.com/account-billing/index.html)
 - [billing: user guide](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html)
 - [billing: consolidated](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/consolidated-billing.html)
@@ -132,47 +131,6 @@
   - if the region fails, your SOOL
 - zone-resilient services: run in a single Availability Zone
   - if that AZ fails, your SOOL
-
-### Tags
-
-- Each tag consists of a key and an optional value
-- the best practice is to tag everything, then you can use those tags for various other things, e.g. fine-grained access control, cost allocation, querying/filtering, lifecycle management, analytics
-- think about
-  - job function/project attributes/cost allocation
-  - account/team/organization/etc
-  - ABAC/RBAC
-
-#### Cost Allocation Tags
-
-- specific to billing and track your AWS costs on a detailed level.
-- must be enabled; AWS uses the tags to organize your resource costs on your cost allocation report.
-- Cost Allocation Tags appear on the console after you've enabled Cost Explorer, Budgets, AWS Cost and Usage Reports, or legacy reports.
-- tag types
-  - AWS Generated: automatically applied on a best-effort basis; enable in the Billing and Cost Management console.
-    - available only in the Billing and Cost Management console and reports, and doesn't appear anywhere else in the AWS console, including the AWS Tag Editor.
-  - User Defined: tags that you define, create, and apply to resources.
-
-#### s3 tags
-
-##### Bucket tags
-
-- label buckets with AWS-generated tag or user-defined tag
-  - generated: AWS defines, creates, and applies the AWS-generated tag, createdBy,
-  - user defined: whatever you want
-
-##### object tags
-
-- a way to categorize and query your storage
-- up to 10 tags per object
-- keys can be up to 128 characters in length
-- values can be up to 255 characters in length
-- Key and tag values are case sensitive
-
-##### tag sets
-
-- all of the tags that are assigned to a bucket or object, up to 50
-  - keys must be unique
-- to modify tag sets via api: download all > modify > upload all
 
 ## well architected framework
 

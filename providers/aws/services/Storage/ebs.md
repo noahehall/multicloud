@@ -1,6 +1,7 @@
 # Elastic Block Store (EBS)
 
 - high performance persistent network attached block storage for EC2 instances supporting throughput and transaction intensive workloads at any scale.
+- [tags](../globalInfrastructure/tags.md)
 
 ## my thoughts
 
@@ -10,16 +11,21 @@
 ## links
 
 - [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
+- [concepts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html)
 - [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
 - [dlm: landing page](https://aws.amazon.com/ebs/data-lifecycle-manager/)
+- [ec2: volume limits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/volume_limits.html)
+- [ecs: using volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html)
 - [eks: EBS CSI driver github](https://github.com/kubernetes-sigs/aws-ebs-csi-driver)
 - [eks: EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
 - [eks: managing EBS CSI Addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi-self-managed-add-on.html)
 - [faq](https://aws.amazon.com/ebs/faqs/)
 - [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
 - [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
-- [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
+- [multi attach](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html)
+- [snapshots: copy](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-copy-snapshot.html)
 - [snapshots: crash consistent](https://aws.amazon.com/blogs/storage/taking-crash-consistent-snapshots-across-multiple-amazon-ebs-volumes-on-an-amazon-ec2-instance/)
+- [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
 - [snapshots: deleting](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-deleting-snapshot.html)
 
 ### tools
@@ -32,7 +38,7 @@
 
 - ensure your taking regular snapshots, and removing old snapshots
 - With Elastic Volumes,
-  - volume sizes can only be increased within the same volumes
+  - volume sizes can only be increased within the same volume
   - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
 - use Snapshots with DKM lifecycle policies to back up your data to s3
 - logically separate your backup data from your EBS volumes.
@@ -54,6 +60,7 @@
 - to calculate minimum volume size to support a sustained IOPS target for General Purpose and Provisioned IOPS volumes
   - Required minimum sustained IOPS
   - IOPS-to-volume capacity ratio
+- separate the root volume from your data volumes so that each can be detached and reattached without them interfering with each other.
 
 ### anti patterns
 
@@ -66,7 +73,7 @@
 - runtime flexible: modify volume type/size, IOPS configuration, resize clusters for big data analytics engines
 - opt-in data encryption for all volume types
 - use cases: non/relational databases, enterprise/containerized applications, big data analytics engines, file systems, and media workflows.
-  - operating systems: boot and root volumes can be used to store an OS
+  - operating systems: boot and root volumes
   - databases: the storage layer fo a DB running on EC2 that will scaled with performance needs
   - enterprise applications: EBS provides high availability and durability for mission critical applicatins
   - big data analytics engines: data persistence, dynamic performance adjustments, and the ability to de/reatch volumes when resizing clusters
@@ -99,14 +106,123 @@
 
 ## basics
 
-### EC2
+### Lifecycle
 
-- you need an EC2 instance in the same AZ to access data on an EBS volume
-  - to associate the ebs with another ec2 instance
-    - stop the current ec2 instance
-    - detach the ebs volume
-    - attach it to a different ec2 instance in the same AZ
-  - this is a 1:M relationship: one ec2 can have multiple attached EBS volumes
+#### Creation
+
+- New volumes are simply raw block devices.
+- you must first format & create a file system on them before use
+  - The formatting process overwrites any existing data and sets up a file system
+- volumes from snapshots
+  - the volume is created in the background so you don't need to wait for all of the data to transfer from Amazon S3 to your Amazon EC2 instance before you can access the volume.
+
+### Block Devices
+
+- root volumes: contains all the necessary data required to boot an instance
+  - are automatically attached to intances
+  - windows instances require EBS volumes as root volumes
+- data volumes: where application data is stored
+- block device mappings: defines the block devices attached to an instance.
+
+#### Lifecycle
+
+##### Termination
+
+- by default, EBS volumes are deleted when the associated ec2 instances are terminated
+  - root volumes: YES
+  - data volumes: NO
+
+### volume types
+
+- cab dynamically change the configuration of a volume attached to an EC2 instance
+- Annual Failure Rate: AFR; 0.1 to 0.2 percent
+- availabilty: 99.8-99.9:
+- data is replicated across multiple servers in a single Availability Zone
+- attach multiple EBS volumes during/after EC2 instance creation within the SAME AZ
+- burstability
+  - operate within your normal baseline range, you accumulate burst credits.
+  - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
+  - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
+- elastic volumes:
+  - increase and decrease provisioned performance settings
+  - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
+  - hange from one volume type to a different volume type.
+
+#### SSD backed
+
+- designed for transactional workloads involving frequent read/write operations with small I/O size, where the dominant performance attribute is IOPS.
+- I/O size is capped at 256 kibibyte (KiB)
+- expected average latency ranges from sub-1 millisecond to single-digit millisecond performance depending on the SSD volume type.
+- handle small or random I/O much more efficiently than HDD volumes
+
+##### general purpose
+
+- designed for large sequential workloads e.g. big data analytics engines, log processing, and data warehousing
+  - balance of price and performance
+  - boot volumes, and dev/test environments, Virtual desktops, medium-sized single instance databases
+- GP2: IOPS performance is tied to volume size,
+  - performance scales linearly at 3 IOPS per GiB of volume size.
+    - Larger volumes have higher baseline performance levels and accumulate I/O credits faster.
+  - minimum of 100 IOPS at 33.33 GiB and below to a maximum of 16,000 IOPS at 5,334 GiB and above.
+  - volume size can range from 1 GiB to 16 TiB.
+  - Your costs are based on the provisioned volume capacity.
+- GP3: scale IOPS and throughput independent from the volume size.
+  - lowest cost SSD volume
+  - workloads performing small, random I/O.
+  - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
+  - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
+  - estimated to be appropriate for up to 80 percent of the workloads.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS above 3,000 IOPS and provisioned throughput above 125 MB/s.
+
+##### provisioned IOPS
+
+- high performance for mission-critical, low-latency, or high-throughput workloads.
+  - particularly database workloads,
+- volume size
+  - 4 GiB to 16 TiB. You can provision 100–64,000 IOPS per volume on instances built on the Nitro System and up to 32,000 on other instances.
+- io1: Highest performance SSD volume; I/O-intensive NoSQL and relational databases
+  - 99.8–99.9 percent volume durability with an AFR no higher than 0.2 percent
+  - available for all Amazon EC2 instance types.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
+    - Provisioned IOPS are charged at a flat rate up to the maximum of 64,000 IOPS.
+- io2: Highest performance and highest durability SSD volume; I/O-intensive NoSQL and relational databases
+  - the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
+  - 99.999 percent volume durability with an AFR no higher than 0.001 percent
+    - all other volume types provide 99.8-99.9 % durability with an AFR of between 0.1–0.2 percent.
+  - available for all EC2 instances types, with the exception of R5b.
+  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
+    - Provisioned IOPS are charged using a tiered structure.
+      - Tier 1 is up to 32,000 IOPS.
+      - Tier 2 is 32,001 to 64,000 IOPS,
+      - Tier 3 is over 64,000 IOPS.
+- io2 block express: highest perf ssd volume; Largest, most I/O-intensive, mission-critical deployments of db engines
+- EBS multi attach: only for io1 & io2 volume types
+  - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
+  - to achieve higher application availability for applications that manage storage consistency from multiple writers
+  - Applications using multi attach need to provide I/O fencing for storage consistency.
+
+#### HDD backed
+
+- I/O size is capped at 1,024 KiB
+- expected average latency is two-digit millisecond performance
+- designed to deliver their provisioned performance 90 percent of the time.
+- volume size can range from 125 GiB to 16 TiB.
+
+##### throughput optimized
+
+- frequently accessed, throughput-intensive workloads
+- st1: low-cost magnetic storage that defines performance in terms of throughput rather than IOPS
+  - support frequently accessed, throughput-intensive workloads
+  - optimized for workloads involving large, sequential I/O; e.g. Amazon EMR, data warehouses, log processing, and extract, transform, and load (ETL) workloads.
+
+##### cold
+
+- throughput-oriented storage for data that is infrequently accessed and scenarios where the lowest storage cost is important.
+- sc1: less frequently accessed workloads
+
+#### Magnetic (standard)
+
+- previous-generation EBS volume type that is still in use in some customer production environments and available on AWS Management Console.
 
 ### snapshots
 
@@ -139,8 +255,15 @@
 
 #### multi volume snapshots
 
-- critical workloads that spans across multiple EBS volumes
-- take exact point-in-time, data-coordinated, and crash-consistent snapshots
+- point-in-time, data-coordinated, and crash-consistent snapshots for all EBS volumes attached to an EC2 instance
+  - support up to 40 EBS volumes per instance.
+  - If any one snapshot for the multi-volume snapshot set fails, all of the other snapshots display an error status and a create a Snapshots CloudWatch event.
+- use cases
+  - critical workloads that spans across multiple EBS volumes
+  - tagging multiple volume snapshots to manage them collectively during restore, copy, or retention
+    - automatically copy tags from source volume to snapshots
+    - set the snapshot metadata, such as access policies, attachment information, and cost allocation, to match the source volume.
+    - snapshots for Amazon EBS volumes that are configured in a RAID array
 
 #### creation
 
@@ -153,18 +276,21 @@
 - modifying the permissions of a snapshot, share it with other AWS accounts
   - use the shared snapshots as the basis for creating their own EBS volumes.
   - can be modified by the authorized user; however, your original snapshot remains unaffected.
+- All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
 
 #### copy
 
-- copy snapshots across/within AWS Regions
-- copy any accessible snapshot that has a completed status.
+- copy snapshots across/within AWS Regions once the status is Completed
+  - i.e. has finished copying to Amazon S3
 - the copy receives an ID that is different from the ID of the original snapshot.
+- S3 server-side encryption (256-bit AES) protects a snapshot's data in transit during a copy operation.
+- multi-volume snapshots
+  - retrieve the snapshots using the tag you applied to the multi-volume snapshot set when you created it. Then, individually copy the snapshots to another Region.
 
 #### deleting
 
 - delete any snapshot whether it is a full or incremental snapshot.
   - removes only the data not needed by any other snapshot.
-- All active snapshots contain all the information needed to restore the volume to the instant at which that snapshot was taken
 
 #### restoring
 
@@ -178,22 +304,25 @@
 - automate the creation, retention, and deletion of snapshots that you use to back up your EBS volumes and EBS-backed AMIs
 - create up to 100 lifecycle policies per AWS Region.
 - add up to 45 tags per resource.
-- Target resource tags are used to identify the resources to back up.
-  - DLM tags are specific tags applied to all snapshots and AMIs created by a lifecycle policy.
-    - distinguish them from snapshots and AMIs created by any other means.
+- make sure you read the tags file as DLM is heavily dependent on tags
 
 ##### Lifecycle Policies
 
-- created using core policy settings to define the automated policy action and behavior.
+- created using policy settings to define the automated policy action and behavior.
 - policy type: Defines the type of resources that the policy can manage.
-  - Snapshot lifecycle policy: target EBS volumes and instances.
-    - Cross-account copy event policy: automate the copying of snapshots across accounts; should be used in conjunction with an EBS snapshot policy that shares snapshots across accounts.
-  - EBS-backed AMI lifecycle policy: can target instances only.
+  - Snapshot lifecycle policy: automate the lifecycle of EBS snapshots.
+    - target EBS volumes and instances.
+  - Cross-account copy event policy: automate the copying of snapshots across accounts
+    - used in conjunction with an EBS snapshot policy that shares snapshots across accounts.
+  - EBS-backed AMI lifecycle policy: automate the lifecycle of EBS-backed AMIs
+    - can target instances only.
     - One AMI is created that includes snapshots of all of the volumes that are attached to the target instance.
 - resource type: Defines the type of resources that are targeted by the policy.
-  - Use VOLUME to create snapshots of individual volumes
-  - use INSTANCE to create multi volume snapshots of all of the volumes that are attached to an instance
-- target tags: must be assigned to an EBS volume or an Amazon EC2 instance for it to be targeted by the policy.
+  - VOLUME: to create snapshots of individual volumes
+  - INSTANCE: to create multi volume snapshots of all of the volumes that are attached to an instance
+- target tags: Specifies the tags that must be assigned to an EBS volume/ec2 instance for it to be targeted by the policy.
+  - target an instance or volume for backup using a single tag.
+  - Multiple tags can be assigned to an instance or volume if you want to run multiple policies on it.
 - Schedules: start times and intervals for creating snapshots or AMIs.
   - operation starts within one hour after the specified start/schedule time
 - retention: retain snapshots or AMIs based on their total count (count-based) or their age (age-based).
@@ -203,8 +332,7 @@
 ##### Policy Schedules
 
 - define when snapshots or AMIs are created by the policy.
-- one mandatory schedule
-- up to three optional schedules.
+- one mandatory & up to three optional schedules.
   - create snapshots or AMIs at different frequencies using the same policy
 - for each schedule
   - frequency
@@ -226,96 +354,6 @@
     - Credits refill over time.
     - The maximum credit bucket size is 10.
     - credits are not shared between snapshots
-
-### volume types
-
-- cab dynamically change the configuration of a volume attached to an EC2 instance
-- Annual Failure Rate: AFR; 0.1 to 0.2 percent
-- availabilty: 99.8-99.9:
-- data is replicated across multiple servers in a single Availability Zone
-- attach multiple EBS volumes during/after EC2 instance creation within the SAME AZ
-- burstability
-  - operate within your normal baseline range, you accumulate burst credits.
-  - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
-  - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
-- elastic volumes:
-  - increase and decrease provisioned performance settings
-  - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
-  - hange from one volume type to a different volume type.
-
-#### SSD backed
-
-- designed for transactional workloads
-- I/O size is capped at 256 kibibyte (KiB)
-- expected average latency ranges from sub-1 millisecond to single-digit millisecond performance depending on the SSD volume type.
-- handle small or random I/O much more efficiently than HDD volumes
-
-##### general purpose
-
-- designed for large sequential workloads e.g. big data analytics engines, log processing, and data warehousing
-  - balance of price and performance
-- GP2: IOPS performance is tied to volume size,
-  - performance scales linearly at 3 IOPS per GiB of volume size.
-    - Larger volumes have higher baseline performance levels and accumulate I/O credits faster.
-  - minimum of 100 IOPS at 33.33 GiB and below to a maximum of 16,000 IOPS at 5,334 GiB and above.
-  - volume size can range from 1 GiB to 16 TiB.
-  - Your costs are based on the provisioned volume capacity.
-- GP3: scale IOPS and throughput independent from the volume size.
-  - lowest cost SSD volume
-  - workloads performing small, random I/O.
-  - 3,000 IOPS and 125 megabytes per second (MB/s) of throughput
-  - independently provision additional performance up to a total of 16,000 IOPS and 1,000 MB/s throughput for an additional cost.
-  - estimated to be appropriate for up to 80 percent of the workloads.
-  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS above 3,000 IOPS and provisioned throughput above 125 MB/s.
-
-##### provisioned IOPS
-
-- high performance for mission-critical, low-latency, or high-throughput workloads.
-  - particularly database workloads,
-- volume size
-  - 4 GiB to 16 TiB. You can provision 100–64,000 IOPS per volume on instances built on the Nitro System and up to 32,000 on other instances.
-- io1:
-  - 99.8–99.9 percent volume durability with an AFR no higher than 0.2 percent
-  - available for all Amazon EC2 instance types.
-  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
-    - Provisioned IOPS are charged at a flat rate up to the maximum of 64,000 IOPS.
-- io2: the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
-  - 99.999 percent volume durability with an AFR no higher than 0.001 percent
-    - all other volume types provide 99.8-99.9 % durability with an AFR of between 0.1–0.2 percent.
-  - available for all EC2 instances types, with the exception of R5b.
-  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
-    - Provisioned IOPS are charged using a tiered structure.
-      - Tier 1 is up to 32,000 IOPS.
-      - Tier 2 is 32,001 to 64,000 IOPS,
-      - Tier 3 is over 64,000 IOPS.
-- io2 block express: highest perf ssd volume
-- EBS multi attach: only for io1 & io2 volume types
-  - allows a single EBS volume to be concurrently attached to up to 16 Nitro-based EC2 instances within the same Availability Zone.
-  - to achieve higher application availability for applications that manage storage consistency from multiple writers
-  - Applications using multi attach need to provide I/O fencing for storage consistency.
-
-#### HDD backed
-
-- I/O size is capped at 1,024 KiB
-- expected average latency is two-digit millisecond performance
-- designed to deliver their provisioned performance 90 percent of the time.
-- volume size can range from 125 GiB to 16 TiB.
-
-##### throughput optimized
-
-- frequently accessed, throughput-intensive workloads
-- st1: low-cost magnetic storage that defines performance in terms of throughput rather than IOPS
-  - support frequently accessed data
-  - optimized for workloads involving large, sequential I/O; e.g. Amazon EMR, data warehouses, log processing, and extract, transform, and load (ETL) workloads.
-
-##### cold
-
-- throughput-oriented storage for data that is infrequently accessed and scenarios where the lowest storage cost is important.
-- sc1: a bunch of iops stuff thats lame relative to the others
-
-#### Magnetic (standard)
-
-- previous-generation EBS volume type that is still in use in some customer production environments and available on AWS Management Console.
 
 ### Security
 
@@ -352,9 +390,40 @@
 
 ## considerations
 
+- DeleteOnTermination: controls the default behavior of EBS deletion when associated EC2 instances are terminated
+- ec2
+  - volume limits
+  - ebs & ebs types are compatible
+  - ebs volumes with market place codes
+    - volume can only be attached to a stopped instance.
+    - must be subscribed to the AWS Marketplace code that is on the volume.
+    - Marketplace product codes are copied from the volume to the instance.
+
 ## integrations
 
 - use the same connectivity and access methods that you use to reach your EC2 instances to reach your EBS volumes.
+
+### EC2
+
+- you need an EC2 instance in the same AZ to access data on an EBS volume
+  - to associate the ebs with another ec2 instance
+    - stop the current ec2 instance
+    - detach the ebs volume
+    - attach it to a different ec2 instance in the same AZ
+  - this is a 1:M relationship: one ec2 can have multiple attached EBS volumes
+- verify that the instance supports the volume type that you want to create
+
+#### multi attach
+
+- can attach a single Provisioned IOPS SSD (io1 or io2) volume to multiple instances
+  - only available in certain regions
+  - Do not support I/O fencing or being boot volumes.
+  - EBS volume and instance must be in the same Availability Zone.
+  - cannot be enabled during instance launch using either the Amazon EC2 console or RunInstances API.
+- nitro instances: up to 27 volumes
+- linux instances: some support up to 40 volumes
+- Using Multi-Attach with a standard file system can result in data corruption or loss and should not be used with production workloads
+  - use a clustered file system to ensure data resiliency and reliability for production workloads.
 
 ### AMI
 

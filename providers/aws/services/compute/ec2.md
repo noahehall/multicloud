@@ -251,6 +251,22 @@
 - block device mapping
 - instance type: hardware type
 - instance size
+- EBS vs Instance store
+  - instance boot time
+    - ebs: less than 1 minute
+    - instance: less than 5 minutes
+  - size limit
+    - ebs: 64 TiB
+    - instance: 10 gb
+  - instance modifications
+    - ebs: some instance details can be changed when in Stopped state
+    - instance: instance attributes are fixed
+  - costs: both charge for instance usage
+    - ebs: EBS volume usage, and storing your AMI as an EBS snapshot.
+    - instance: storing your AMI in Amazon S3
+  - creation/bundling
+    - ebs: a single command/call
+    - instance: installation and use of AMI tools
 
 ### user data
 

@@ -535,6 +535,7 @@
   - stateful apps
 - in AWS
   - EC2: runs anything; the foundational building block of all AWS compute services
+  - AMIs: EC2 starter kits, pay attention to the differences when AMIs are backed by EBS vs Instance Stores
 
 ### Containers
 

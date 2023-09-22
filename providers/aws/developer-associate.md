@@ -3,7 +3,7 @@
 - last updated in Q4/2023 for version 1.0 DVA-C02
 - bookmark:
   - Block Storage Knowledge Badge Assessment
-    - ebs deep dive monitoring > review
+    - ebs deep dive monitoring > Best Practices for Managing Volumes and Snapshots
     - ebs deep dive performance
   - Exam Prep Official Practice Question Set
   - take the exam
