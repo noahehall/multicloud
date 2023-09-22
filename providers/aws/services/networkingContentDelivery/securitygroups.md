@@ -34,7 +34,7 @@
 
 #### VPC
 
-- attaches to resources within a VPC
+- control access at the resource level; specifically the elastic network interfaces (ENIs) of associated resources
 
 ### OSI Model
 

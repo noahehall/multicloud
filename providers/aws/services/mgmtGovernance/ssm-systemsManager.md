@@ -35,6 +35,7 @@
 - [ssm agent: hybrid activations](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html)
 - [ssm agent: intro](https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent.html)
 - [user guide](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-state.html)
+  [operational capabilities: white paper](https://docs.aws.amazon.com/whitepapers/latest/aws-systems-manager-operational-capabilities/aws-systems-manager-operational-capabilities.html)
 
 ## best practices
 

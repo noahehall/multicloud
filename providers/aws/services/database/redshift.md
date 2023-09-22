@@ -12,6 +12,7 @@
 - [clusters](https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html)
 - [queries](https://docs.aws.amazon.com/redshift/latest/mgmt/query-databases.html)
 - [iam: user management](https://docs.aws.amazon.com/redshift/latest/mgmt/iam-redshift-user-mgmt.html)
+- [blog: performance tuning](https://aws.amazon.com/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/)
 
 ## best practices
 

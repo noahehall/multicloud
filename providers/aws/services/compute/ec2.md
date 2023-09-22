@@ -240,6 +240,7 @@
 - if you an existing EC2 with appropriate configuration, you can select it > actions > image & templates > launch more like this
 - hardware: CPU, memory, network, storage
 - software: network location, firewall rules, authentication, operating system
+- To change an instance type, the instance must be in the stopped state
 
 ### AMI
 

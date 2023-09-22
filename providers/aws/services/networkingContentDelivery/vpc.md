@@ -1,9 +1,10 @@
 # Virtual Private Cloud (VPC)
 
 - regionally isolated software defined virtual private network
-- [all gateway types](./vpc-gateways.md)
-- [VPC security groups](./securitygroups.md)
 - [direct connect](./VPC-directConnect.md)
+- [gateways](./vpc-gateways.md)
+- [security groups](./securitygroups.md)
+- [VPC security groups](./securitygroups.md)
 - [vpn](./vpc-vpn.md)
 
 ## my thoughts
@@ -24,6 +25,7 @@
 - [eks: subnet tagging](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html#vpc-subnet-tagging)
 - [eks: vpc cni k8s plugin](https://github.com/aws/amazon-vpc-cni-k8s)
 - [eks: vpc considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html)
+- [endpoints: centralizing access blog](https://aws.amazon.com/blogs/networking-and-content-delivery/centralize-access-using-vpc-interface-endpoints/)
 - [flow logs: guide](https://docs.aws.amazon.com/vpc/latest/userguide/working-with-flow-logs.html)
 - [flow logs: record examples](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-records-examples.html)
 - [flow logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html)
@@ -33,7 +35,9 @@
 - [landing page](https://aws.amazon.com/vpc/?did=ap_card&trk=ap_card)
 - [monitoring](https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html)
 - [nacl: intro](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html)
+- [organizations: sharing vpc best practices](https://aws.amazon.com/blogs/networking-and-content-delivery/vpc-sharing-key-considerations-and-best-practices/)
 - [peering: intro](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
+- [peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
 - [reachability analyzer for AWS whitepaper pdf](https://d1.awsstatic.com/whitepapers/Security/Reachability_Analysis_for_AWS-based_Networks.pdf)
 - [reachability: analyzer](https://docs.aws.amazon.com/vpc/latest/reachability/what-is-reachability-analyzer.html)
 - [reachability: explanation codes](https://docs.aws.amazon.com/vpc/latest/reachability/explanation-codes.html)
@@ -48,7 +52,6 @@
 - [subnets: pub & priv scenario](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Scenario2.html)
 - [traffic mirroring](https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html)
 - [troubleshooting](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs-troubleshooting.html)
-- [vpc peering](https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html)
 
 ### opensource
 
@@ -295,15 +298,6 @@
   - rules are processed in order from lowest rule number to the highest rule number (ending in `*`)
     - When a rule is matched, an action is taken, and processing stops
 
-### security groups
-
-- control access at the resource level; specifically the elastic network interfaces (ENIs)
-- see the sibling markdown file
-
-### Gateways
-
-- see the sibling markdown file
-
 ### Peering
 
 - enables 1:1 encrypted, highly available communication between TWO isolated VPCs using their private IP address without traversing the public internet
@@ -393,10 +387,6 @@
   - explicitly denies access to any actions not listed in the policy.
   - does not override or replace IAM user policies or service-specific policies (such as S3 bucket policies).
   - cannot attach more than one policy to an endpoint.
-
-### VPNs
-
-- see the sibling markdown file
 
 ### Networking Tools
 
@@ -570,6 +560,11 @@ ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - -
 # ACTION: e.g. accept/reject, taken by the security groups, NACLs, etc
 ```
 
+### encryption
+
+- hardware acceleration allows for line-rate AES-256 encryption of network traffic without performance penalty
+- automatically for all VPC, and VPC-peering traffic
+
 ## considerations
 
 - vpc ip range: 1 primary and up to 4 secondary; the smallest range is 28 (4 ips), the largest is 16 (65,536 ips)
@@ -595,6 +590,7 @@ ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - -
 ## integrations
 
 - many integrations can be more secured by communicating with other services via VPC Endpoint
+- use a Network Load Balancer and an interface endpoint to share an application from a VPC.
 
 ### EC2
 
@@ -605,10 +601,6 @@ ACCOUNT-ID ENI-ID SOURCE-IP DEST-IP SOURCE-PORT DEST-PORT PROTOCOL PACKETS - - -
   - can add a public IP address.
     - ephemeral: associated with your instance until it is stopped, rebooted, or terminated
     - static: allocate an elastic IP address for your AWS account and associate that elastic IP address with an instance or a network interface
-
-### Security Groups
-
-- you cant use a security group attached to VPC X with VPC Y
 
 ### rds
 

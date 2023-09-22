@@ -7,6 +7,7 @@
 ## links
 
 - [landing page](https://aws.amazon.com/app-mesh/?did=ap_card&trk=ap_card)
+- [blog: intro](https://aws.amazon.com/blogs/aws/aws-app-mesh-application-level-networking-for-cloud-applications/)
 
 ## best practices
 

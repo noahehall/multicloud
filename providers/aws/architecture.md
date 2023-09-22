@@ -26,6 +26,7 @@
 - [security, identity & compliance best practices](https://aws.amazon.com/architecture/security-identity-compliance/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all)
 - [serverless apps Lens](https://docs.aws.amazon.com/wellarchitected/latest/serverless-applications-lens/welcome.html)
 - [serverless express (check examples dir)](https://github.com/vendia/serverless-express)
+- [serverless: app integration using quesues and messages](https://aws.amazon.com/blogs/architecture/application-integration-using-queues-and-messages/)
 - [service search](https://aws.amazon.com/products/)
 - [youtube: databases on aws](https://www.youtube.com/watch?v=WE8N5BU5MeI&t=9s)
 
@@ -555,7 +556,7 @@
   - event driven applications
 - in AWS
   - lambda: serverless max 15 minute computation cycles
-  - ECS Fargate: immutable serverless apps; data plan access
+  - ECS/EKS Fargate: immutable serverless apps; data plan access
 
 ## Analytics
 

@@ -18,6 +18,7 @@
 - [mapping template variable reference](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-mapping-template-reference.html)
 - [request validation](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-request-validation.html)
 - [lambda: handling errors](https://docs.aws.amazon.com/apigateway/latest/developerguide/handle-errors-in-lambda-integration.html) -[api gateway limits](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)
+- [step functions: service integration](https://aws.amazon.com/blogs/compute/introducing-amazon-api-gateway-service-integration-for-aws-step-functions/)
 
 ## best practices
 

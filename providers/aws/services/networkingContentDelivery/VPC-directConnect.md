@@ -7,6 +7,7 @@
 ## links
 
 - [landing page](https://aws.amazon.com/directconnect/?did=ap_card&trk=ap_card)
+- [virtual interfaces (VIFs)](https://docs.aws.amazon.com/directconnect/latest/UserGuide/WorkingWithVirtualInterfaces.html)
 
 ## best practices
 

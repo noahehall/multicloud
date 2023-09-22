@@ -10,7 +10,7 @@
 - [landing page](https://aws.amazon.com/codepipeline/?did=ap_card&trk=ap_card)
 - [security](https://docs.aws.amazon.com/codepipeline/latest/userguide/security.html)
 - [services](https://docs.aws.amazon.com/lambda/latest/dg/services-codepipeline.html)
-- [cicd starter kits](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-generating-example-ci-cd.html)
+- [cicd starter kits](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-generating-example-ci-cd.html) -[continuous delivery](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/continuous-delivery-codepipeline.html)
 
 ## best practices
 

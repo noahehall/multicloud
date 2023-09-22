@@ -5,13 +5,14 @@
 ## links
 
 - [igw: user guide](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Internet_Gateway.html)
-- [ng: user guide](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
+- [ngw: user guide](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html)
 - [tgw: faqs](https://aws.amazon.com/transit-gateway/faqs/)
 - [tgw: intro](https://docs.aws.amazon.com/vpc/latest/tgw/what-is-network-manager.html)
 - [tgw: landing page](https://aws.amazon.com/transit-gateway/?did=ap_card&trk=ap_card)
 - [tgw: network manager landing page](https://aws.amazon.com/transit-gateway/network-manager/)
 - [tgw: route analyzer](https://docs.aws.amazon.com/vpc/latest/tgw/route-analyzer.html)
-- [tgw:network manager scenarios](https://docs.aws.amazon.com/vpc/latest/tgw/network-manager-scenarios.html)
+- [tgw: network manager scenarios](https://docs.aws.amazon.com/vpc/latest/tgw/network-manager-scenarios.html)
+- [tgw: use cases](https://docs.aws.amazon.com/vpc/latest/tgw/TGW_Scenarios.html)
 
 ## basics
 
@@ -54,7 +55,7 @@
   - can scope the route to a narrower range of IP addresses; e.g. only specific public IPv4 addresses instead 0.0.0.0/0
   - can scope the route to specific IPs of other aws resources outside your VPC
 
-## nat gateways (NG)
+## nat gateways (NGW)
 
 - for private subnet resources to initiate contact with services outside a VPC (but not the other way around)
   - i.e. egress only, not ingress
@@ -103,7 +104,7 @@
 - one virtual VPG per VPC:
   - VPCs cant share VPG connections: use a transit gateway instead
 
-## Transit Gateway (TG)
+## Transit Gateway (TGW)
 
 - regional resource that lives outside the boundary of any specific VPC acting as a regional router between attachments
   - encrypts data automatically and never traveres over the public internet
