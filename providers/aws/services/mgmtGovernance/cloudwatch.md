@@ -1,12 +1,15 @@
 # cloudwatch
 
 - centralized solution to monitor resources and applications on AWS, on premise and other clouds
-- Collect and track metrics, collect and monitor log files, and set alarms.
+- Collect and track metrics, monitor log files, and set alarms and define automation
 
 ## links
 
 - [agent network performance metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-network-performance.html)
+- [agent: configuration](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch-Agent-Configuration-File-Details.html)
 - [agent: install](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html)
+- [agent: metrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/metrics-collected-by-CloudWatch-agent.html)
+- [agent: troubleshooting](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/troubleshooting-CloudWatch-Agent.html)
 - [alarms: anomaly detetion](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Anomaly_Detection_Alarm.html)
 - [alarms: static thresholds](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/ConsoleAlarms.html)
 - [api gateway: metrics](https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-metrics-and-dimensions.html)
@@ -126,9 +129,13 @@
 
 ### metrics
 
+- metrics become events become alarms
 - REGION SPECIFIC time-ordered set of data points
   - cannot be deleted, but automatically expire after 15 months if no new data is published to them.
-- metrics become events become alarms
+  - Each data point must be associated with a time stamp.
+    - up to two weeks in the past and up to two hours into the future
+    - by default its time the data point was received.
+  - to aggregate statistics from different Regions, use cross-Region functionality
 - custom metrics enable you to post application-level metrics to cloudwatch
 - you can run `math metrics` across metrics e.g. errors/invocations
 - namespaces
@@ -249,23 +256,60 @@
 - theres to many to list here, check the link up top
 - getMetricData: retrieve cloudwatch metric values
 
-### EventBridge fka events
+### events
 
-- when metrics are logged to cloudwatch, an Event can be configured to deliver near real-time streams that describe changes in aws resources
-- you create an event in order to perform an action when that event occurs
-- events can be based on service, schedule, or an alarm
+- see the eventbridge file: the new tool used to field and respond to events
 
-#### rules
+#### Event Rules
 
-- match events and route them to one/more target functions or streams
+- A rule matches incoming events and sends them to targets for processing
+- A single rule can send an event to multiple targets, which then run in parallel.
+- based either on an event pattern or a schedule
+  - pattern: defines the event structure and the fields that a rule matches
+  - schedule: perform an action at regular intervals.
+
+#### Event Buses
+
+- abcd
 
 ### Agent
 
-- Some CloudWatch metrics are not collected by default.
-- must be installed on servers in order post events
+- Some CloudWatch metrics are not/cant be collected by default.
+  - standard metrics are collected through use of the hypervisor, it has no way to gather information related to the instance's operating system and applications
+  - thats why you need the Agent installed
+- helps you monitor your EC2 instances and volumes by collecting in-guest system metrics
+  - collect system-level metrics including disk and memory
+  - collect data at a sub-resource level, such as per-disk and disk-specific metrics
 - imports network performance metrics for EC2 instances running on Linux using the Elastic Network Adapter (ENA) to publish network performance metrics to CloudWatch.
 
 #### application monitoring
+
+### configuration
+
+- a JSON file that specifies the metrics and logs that the agent is to collect, including custom metrics
+- use cli Wizard to get the latest default configuration
+  - Any time you change the agent configuration file, you must then restart the agent for the changes to take effect.
+
+```sh
+
+# Start the CloudWatch agent configuration wizard by entering the following command:
+## theres a windows version --- fk windows
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-config-wizard
+## config file location: /opt/aws/amazon-cloudwatch-agent/bin/config.json
+```
+
+```jsonc
+// sample configuration
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "region": "us-west-1",
+    "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
+    "debug": false,
+    "run_as_user": "cwagent"
+  }
+}
+```
 
 ### insights
 

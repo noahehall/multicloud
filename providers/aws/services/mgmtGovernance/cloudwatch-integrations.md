@@ -12,6 +12,8 @@
 - [dynamodb: contributor insights](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/contributorinsights_HowItWorks.html)
 - [dynamodb: metrics & dimensions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/metrics-dimensions.html)
 - [dynamodb: monitoring](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/monitoring-cloudwatch.html)
+- [ebs: metrics](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using_cloudwatch_ebs.html)
+- [ebs: metrics for nitro instances](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/viewing_metrics_with_cloudwatch.html#ebs-metrics-nitro)
 - [ec2: automation](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/UsingAlarmActions.html)
 - [ec2: cpu usage alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_AlarmAtThresholdEC2.html)
 - [ec2: enhanced networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/enhanced-networking.html)
@@ -29,12 +31,12 @@
 - [sns: setup](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/US_SetupSNS.html)
 - [sqs: metrics](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-available-cloudwatch-metrics.html)
 - [step functions: metrics](https://docs.aws.amazon.com/step-functions/latest/dg/procedure-cw-metrics.html)
+- [storageGateway: file gateway metrics](https://docs.aws.amazon.com/filegateway/latest/files3/monitoring-file-gateway.html)
+- [storageGateway: volume gateway metrics](https://docs.aws.amazon.com/storagegateway/latest/vgw/monitoring-volume-gateway.html)
 - [systemManager: alarm create opsItems](https://docs.aws.amazon.com/systems-manager/latest/userguide/OpsCenter-create-OpsItems-from-CloudWatch-Alarms.html)
 - [vpc: traffic mirror metrics](https://docs.aws.amazon.com/vpc/latest/mirroring/traffic-mirror-cloudwatch.html)
 - [vpc: transit gateway metrics](https://docs.aws.amazon.com/vpc/latest/tgw/transit-gateway-cloudwatch-metrics.html)
 - [vpc: transit gateway monitoring](https://docs.aws.amazon.com/vpc/latest/tgw/monitoring-cloudwatch-metrics.html)
-- [storageGateway: volume gateway metrics](https://docs.aws.amazon.com/storagegateway/latest/vgw/monitoring-volume-gateway.html)
-- [storageGateway: file gateway metrics](https://docs.aws.amazon.com/filegateway/latest/files3/monitoring-file-gateway.html)
 
 ## basics
 
@@ -170,12 +172,19 @@
 
 ## EBS
 
+- Data is reported to CloudWatch only when the volume is attached to an instance.
+  - some metrics are not reported in multi attach scenarios
+- consider also installing the cloudwatch Agent on the attached EC2 instances to gather low-level performance metrics
+  - use these disk-specific metrics to check on the free space, total space used, and total space available.
+- important metrics
+  - VolumeIdleTime: when trying to identify volumes that are unused or underused.
+  - VolumeQueueLength: identify bottlenecks related to a specific EC2 instance type.
+  - BurstBalance: monitors the balance of burst buckets for gp2 volumes.
 - common metrics
   - bandwidth, throughput, latency, VolumeReadBytes, VolumeWriteBytes, VolumeReadOps, VolumeWriteOps, VolumeTotalReadTime, VolumeTotalWriteTime
-  - VolumeIdleTime, VolumeQueueLength, VolumeThroughputPercentage, VolumeConsumedReadWriteOps, BurstBalance
-- common events
-  - createVolume, deleteVolume, attachVolume, reattachVolume, modifyVolume, createSnapshot, createSnapshots, copySnapshot, shareSnapshot
-- Data is reported to CloudWatch only when the volume is attached to an instance.
+  - VolumeThroughputPercentage, VolumeConsumedReadWriteOps
+- agent metrics
+  - `disk_{total,used,used_percent,free}`
 
 ## FSx
 

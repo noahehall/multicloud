@@ -18,6 +18,10 @@
 
 ## basics
 
+### monitoring
+
+### security
+
 ## considerations
 
 ## integrations

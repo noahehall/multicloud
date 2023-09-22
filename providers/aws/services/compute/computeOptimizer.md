@@ -40,3 +40,17 @@
 ## considerations
 
 ## integrations
+
+- identifies the optimal configurations for your Amazon EC2 instance types and Amazon EBS volume configurations by using machine learning to analyze metric utilization.
+
+### EC2
+
+### EBS
+
+- needs at least 30 consecutive hours of metrics before it makes recommendations for EBS volumes.
+- works by analyzing default CloudWatch metrics for EBS volumes, such as IOPS and throughput metrics.
+- supports recommendations for:
+  - General Purpose (SSD) (gp3) volumes
+    - IOPS and throughput
+  - Provisioned IOPS (io1 and io2) volumes.
+    - IOPS

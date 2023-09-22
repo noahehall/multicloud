@@ -694,12 +694,12 @@
 ## analytics
 
 - key domains
-
   - customer experience
   - performance over time: system, costs, etc
   - trends
   - troubleshooting and remediation: identification, isolation and resolution
   - learning and improvement: detecting and preventing problems
+- historical data provides performance trends and helps with root cause analysis for any issues that may occur.
 
 ### monitoring
 

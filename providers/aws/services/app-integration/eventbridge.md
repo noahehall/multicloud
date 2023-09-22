@@ -1,4 +1,4 @@
-# Event Bridge fka CloudWatch Events
+# EventBridge fka CloudWatch Events
 
 - serverless event bus service that you can use to connect your applications with data from a variety of sources
 
@@ -32,6 +32,16 @@
 
 ## basics
 
+### events
+
+- an indicator of a change in an AWS resource
+- are represented as JSON objects. The fields that are unique to the event are contained in the "detail" section of the JSON object. The "event" field contains the event name. The "result" field contains the completed status of the action that triggered the event.
+- events can be based on service, schedule, or an alarm
+
+#### rules
+
+- match events and route them to one/more target functions or streams
+
 ### event bus
 
 - has rules and filters for sending messages to appropriate consumers
@@ -42,7 +52,23 @@
 
 ## integrations
 
+### cloudwatch
+
+- when metrics are logged to cloudwatch, an Event can be configured to deliver near real-time streams that describe changes in aws resources
+- you create an event in order to perform an action when that event occurs
+
 ### Backup
 
 - Backup sends events to EventBridge in a best-effort manner every 5 minutes.
 - EventBridge tracks more changes than the Backup notification API, including changes to backup vaults, copy job state, Region settings, and the number of cold or warm recovery points.
+
+### EBS
+
+- EBS sends notifications to Amazon EventBridge for a variety of changes to the volume, snapshot, and encryption status
+- establish rules that trigger programmatic actions in response to a change in volume, snapshot, or encryption key state
+- important events
+  - createVolume
+  - deleteVolume
+  - {re}attachVolume
+- common events
+  - modifyVolume, createSnapshot, createSnapshots, copySnapshot, shareSnapshot

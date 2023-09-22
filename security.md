@@ -270,6 +270,7 @@
   - the receiver (which also has the secret key) will then recalculate the MAC using the data packet as input, and if both MACs match the receiver can be sure the data packet hasnt been tampered with
   - use cases
     - ensure that the data packets transmitted cannot be forged or tampered with
+- envelope encryption: the practice of encrypting plaintext data with a data key and then encrypting the data key under another key.
 
 ### cloud security
 

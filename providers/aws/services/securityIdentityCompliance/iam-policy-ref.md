@@ -102,25 +102,9 @@
 
 ## Quick Ref
 
-- it would be futile to list everything here, check the docs
+- it would be futile to list everything here, check the docs or one of the sections below
 
 ```sh
-
-## actions: SERVICE_ID:SERVICE_ACTION
-### useful examples: check the resource docs for actions as its too long to capture here
-apigateway:*
-dynamodb:PutItem
-execute-api:Invoke
-iam:GetUser
-iam:PassRole # this identity can pass role to a service
-kms:{En,De}crypt
-logs:Create* # cloudwatch logs: any action starting with Create
-organizations:{describe*,list*}
-sts:AssumeRole # allows the stated principals to assume the rule
-sts:AssumeRolewithSAML
-sts:AssumeRoleWithWebIdentity
-sts:TagSession # able to add session tags
-
 ## principals: generally its an ARN, can also use the following values
 *  # for everyone, and can then be used with other policies
 AWS # applies to all resources, and no other policies are taken into account
@@ -152,8 +136,7 @@ For{Any,All}Value:OTHER_OPERATOR
 NumericLessThan
 String{NotEquals,Equals,Like}
 
-### Condition Keys:will determine the appropriate value
-#### global condition keys: not supported by all services
+### global condition keys: not supported by all services
 aws:{Epoch,TokenIssue}Time # date format: YYYY-MM-DDTHH:MM:SSz
 aws:CurrentTime #  limit access to a certain period of time
 aws:CalledVia # ordered list of services that made requests on behalf of a user
@@ -176,7 +159,19 @@ aws:ViaAWSService #  control access during a service-to-service call.
 aws:VpcSourceIp
 IpAddress
 
-#### iam condition keys
+
+#### variables, can be used to match against values in the request context
+${aws:SomeKeyFromContext}
+```
+
+### IAM
+
+```sh
+# actions
+iam:GetUser
+iam:PassRole # this identity can pass role to a service
+
+# conditions
 iam:AWSServiceName # control access for a specific service role
 iam:PolicyARN # control how users can apply AWS managed and customer managed policies
 iam:AssociatedResourceArn # the ARN of the destination service resource that a role can be associated with
@@ -185,9 +180,67 @@ iam:PermissionsBoundary # the specified policy is attached as a permissions boun
 iam:ResourceTag/SomeTagName # checks the resource tag SomeTagName is attached to the resource
 iam:OrganizationsPolicyId #  provides the IAM entity access to specific SCPs
 
-#### sts condition keys
-sts:RoleSessionName controls how IAM principals and applications name their role sessions when they assume an IAM role
 
-#### variables, can be used to match against values in the request context
-${aws:SomeKeyFromContext}
+```
+
+### organizations
+
+```sh
+
+# actions
+organizations:{describe*,list*}
+```
+
+### sts
+
+```sh
+# actions
+sts:AssumeRole # allows the stated principals to assume the rule
+sts:AssumeRolewithSAML
+sts:AssumeRoleWithWebIdentity
+sts:TagSession # able to add session tags
+
+# conditions
+## controls how IAM principals and applications name their role sessions when they assume an IAM role
+sts:RoleSessionName
+```
+
+### KMS
+
+```sh
+# actions
+kms:Decrypt
+kms:DescribeKey
+kms:GenerateDataKeyWithoutPlainText
+kms:ReEncrypt
+kms:CreateGrant # should be used with a conditional
+
+# conditions
+## for use with CreateGrant action: only approved if called on behalf of KMS
+"Bool" > "kms:GrantIsForAWSResource" > true
+
+```
+
+### API Gateway
+
+```sh
+
+# actions
+apigateway:*
+execute-api:Invoke
+```
+
+### dynamodb
+
+```sh
+
+# actions
+dynamodb:PutItem
+```
+
+### cloudwatch
+
+```sh
+# actions
+logs:Create* # cloudwatch logs: any action starting with Create
 ```

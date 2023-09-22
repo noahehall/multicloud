@@ -47,6 +47,7 @@
 - [hybrid networking](https://docs.aws.amazon.com/wellarchitected/latest/hybrid-networking-lens/hybrid-networking-lens.html)
 - [implementing microservices on AWS pdf](https://docs.aws.amazon.com/whitepapers/latest/microservices-on-aws/microservices-on-aws.pdf)
 - [incident response plan guide pdf](https://d1.awsstatic.com/whitepapers/aws_security_incident_response.pdf)
+- [incident response](https://docs.aws.amazon.com/whitepapers/latest/aws-security-incident-response-guide/aws-security-incident-response-guide.html)
 - [microservices on aws pdf](https://docs.aws.amazon.com/pdfs/whitepapers/latest/microservices-on-aws/microservices-on-aws.pdf)
 - [optimizing enterprise economics with serverless architectures](https://docs.aws.amazon.com/pdfs/whitepapers/latest/optimizing-enterprise-economics-with-serverless/optimizing-enterprise-economics-with-serverless.pdf)
 - [overview of deployment options on aws](https://docs.aws.amazon.com/whitepapers/latest/overview-deployment-options/aws-deployment-services.html)
@@ -569,6 +570,8 @@
   - CloudTrail: logs all API actions in your account to an S3 bucket
     - Management Events: control plane events are logged by default
     - Data Events: data plane events require additional setup
+  - trusted advisor: performance & security recommendations for most services
+  - compute optimizer: configuration recommendations for some services
 
 #### Network Monitoring
 

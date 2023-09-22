@@ -7,14 +7,18 @@
 
 ## links
 
-- [landing page](https://aws.amazon.com/kms/?did=ap_card&trk=ap_card)
-- [faqs](https://aws.amazon.com/kms/faqs/?da=sec&sec=prep)
-- [protecting SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html)
-- [cryptographic details pdf](https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf)
 - [best practices pdf](https://d0.awsstatic.com/whitepapers/aws-kms-best-practices.pdf)
 - [concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
+- [cryptographic details pdf](https://d0.awsstatic.com/whitepapers/KMS-Cryptographic-Details.pdf)
+- [faqs](https://aws.amazon.com/kms/faqs/?da=sec&sec=prep)
+- [landing page](https://aws.amazon.com/kms/?did=ap_card&trk=ap_card)
+- [overview](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html)
+- [protecting SQS](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-server-side-encryption.html)
 
 ## best practices
+
+- for most services
+  - enable Encryption by default: you can use Managed/Customer keys
 
 ### anti patterns
 
@@ -34,31 +38,70 @@
 
 ## basics
 
-- You submit data to AWS KMS to be encrypted or decrypted under keys that you control.
+- You submit data to AWS KMS to be encrypted or decrypted
   - the keys never leave KMS
-  - set usage policies on these keys that determine which users can use them to encrypt and decrypt data
+  - set usage policies on these keys that determine which users can use them
+- aws vs customer managed keys
+  - aws managed
+    - creation: AWS
+    - rotation: automatically once every 3 years
+    - deletion: cant be deleted
+    - scope of use: a key generated for each specific service
+    - key access policy: AWS managed
+    - user access management: IAM policy
+  - customer managed
+    - creation: you
+    - rotation: opt-in to once a year or manually
+    - deletion: manually
+    - scope of use: controlled via KMS / IAM policy
+    - key access policy: you decide
+    - user access management: IAM policy
+-
 
-### Customer Master Keys CMK
+### key types
 
-- aws managed
-  - creation: AWS
-  - rotation: automatically once every 3 years
-  - deletion: cant be deleted
-  - scope of use: a key generated for each specific service
-  - key access policy: AWS managed
-  - user access management: IAM policy
-- customer managed
-  - creation: you
-  - rotation: opt-in to once a year or manually
-  - deletion: manually
-  - scope of use: controlled via KMS / IAM policy
-  - key access policy: you decide
-  - user access management: IAM policy
+- each key receives an Amazon Resource Name (ARN) that includes a unique key identifier, or key ID
+
+#### AWS Owned
+
+- created and exclusively used by AWS for internal encryption operations across different AWS services
+- Customers do not have visibility into key policies or AWS owned key usage in CloudTrail.
+
+#### AWS Managed
+
+- the default option for services when integrating with KMS
+- AWS creates and controls the lifecycle and key policies of AWS managed keys
+
+#### Customer Master Keys CMK
+
+- Customers create and control the lifecycle and key policies of customer managed keys.
 - benefits of CMKs
   - You manage the rotation of the keys
   - Easier to manage a few primary keys as opposed to billions of data keys
   - Centralized access and auditing
   - Performs better for large datasets
+
+### Data keys
+
+- Cryptographic keys generated on hardware security modules (HSMs) protected by a KMS key.-
+- authorized entities can obtain data keys protected by a KMS key
+- can be symmetric or asymmetric, with both the public and private portions returned.
+
+### Grants
+
+- The delegated permission to use a KMS key when the intended IAM principals or duration of use is not known at the outset, and therefore cannot be added to a key or IAM policy.
+- use cases
+  - deﬁne scoped-down permissions for how an AWS service can use a KMS key.
+
+### algorithms
+
+- check the security file for a deep dive
+- symmetric: same key is used for encryption and decryption
+  - never leaves the AWS KMS service unencrypted.
+- assymetric: public key and private key pair that you can use for encryption and decryption or signing and verification, but not both
+  - private key never leaves the KMS service unencrypted
+  - use the public key within AWS KMS by calling the AWS KMS API operations or downloading it
+- envelope encryption: the practice of encrypting plaintext data with a data key and then encrypting the data key under another key.
 
 ## considerations
 
@@ -71,14 +114,61 @@
 
 ## integrations
 
-- generally all AWS services can utilize KMS and encrypt traffi in flict
+- generally all AWS services can utilize KMS for encryption whether at rest or in transit
 
 ### cloudtrail
 
-- All requests to use these keys are logged
+- All requests to use any KMS key is logged in cloudtrail
 
 ### s3
 
 - server side encryption
 - KMS generates a unique key to encrypt each object transparently to the user
   - the data key is encrypted under a master key provided by aws/user
+
+### EBS
+
+- supports only symmetric KMS keys.
+- The encryption status of an EBS volume is determined when you create the volume.
+  - migrate data between encrypted and unencrypted volumes and apply a new encryption status while copying a snapshot.
+- encryption can be enabled by default at the account level
+  - any new volumes will be automatically encrypted
+  - The same data key is shared by snapshots of the volume and any subsequent volumes created from those snapshots.
+- the encryption data key is stored on-disk with your encrypted data,
+  - but not before EBS encrypts it with your CMK
+  - data key
+    - never appears on disk in plaintext.
+    - is shared by snapshots of the volume and any subsequent volumes created from those snapshots
+- at rest: using KMS or customer managed keys
+  - data volumes:
+  - boot volumes: by default are NOT encrypted; enable when creating the AMI/modify default settings
+  - snapshots:
+- in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS
+- snapshot encryption rules:
+  - cannot change the KMS key that is associated with an existing snapshot or volume
+  - Snapshots of encrypted volumes are automatically encrypted.
+  - Volumes created from
+    - encrypted snapshots are automatically encrypted.
+    - an unencrypted snapshot can be encrypted during the creation process.
+  - copy an
+    - unencrypted snapshot, you can encrypt it during the copy process.
+    - encrypted snapshot, you can re-encrypt it with a different encryption key during the copy process.
+  - The first snapshot taken of
+    - an encrypted volume that was created from an unencrypted snapshot is always a full snapshot.
+    - a re-encrypted volume that has a different encryption key from the source snapshot is always a full snapshot.
+- the following types of data are encrypted:
+  - Data at rest inside the volume
+  - All data moving between the EBS volume and the EC2 instance
+  - All snapshots created from the EBS volume
+    - All EBS volumes created from those snapshots
+- workflow
+  - For EBS to encrypt a volume for you, it must have access to generate a volume key (VK) under a KMS key in the account.
+  - do this by providing a grant for Amazon EBS to the KMS key to create data keys and to encrypt and decrypt these volume keys.
+- gotchas
+  - encryption by default
+    - is a region-specific setting and applied to all ebs volumes in that region
+    - forces use of instance types that supports EBS encryption.
+    - copy a snapshot and encrypt it to a new KMS key, a complete, non-incremental copy is created (more storage costs)
+  - configuring a KMS key as the default key for EBS encryption
+    - the default KMS key policy allows any IAM user with access to the required KMS actions to use this default key to encrypt or decrypt EBS resources.
+    - search the docs for the required KMS permissions

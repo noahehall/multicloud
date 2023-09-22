@@ -19,6 +19,7 @@
 - enforcement
   - tag usage: via IAM policies conditions requiring tags
   - resource-level management: via IAM Policies dictating who can create/modify tags
+- create a logical, well-architected approach to monitoring and maintaining your resources.
 
 ## basics
 

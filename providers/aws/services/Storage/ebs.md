@@ -5,7 +5,6 @@
 
 ## my thoughts
 
-- determine up front if you need multi attach to share data across EC2s as it depends on volume type
 - remember there is a size limit for ebs, unlike S3
 
 ## links
@@ -22,11 +21,13 @@
 - [faq](https://aws.amazon.com/ebs/faqs/)
 - [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
 - [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
+- [monitoring](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-volume-status.html)
 - [multi attach](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html)
 - [snapshots: copy](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-copy-snapshot.html)
 - [snapshots: crash consistent](https://aws.amazon.com/blogs/storage/taking-crash-consistent-snapshots-across-multiple-amazon-ebs-volumes-on-an-amazon-ec2-instance/)
 - [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
 - [snapshots: deleting](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-deleting-snapshot.html)
+- [i/o characteristics](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-io-characteristics.html)
 
 ### tools
 
@@ -40,13 +41,19 @@
 - With Elastic Volumes,
   - volume sizes can only be increased within the same volume
   - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
-- use Snapshots with DKM lifecycle policies to back up your data to s3
-- logically separate your backup data from your EBS volumes.
-  - Create a separate AWS account for backups.
-    - To copy EBS snapshots to a different account, you share the snapshots with that account by modifying the permissions.
-  - protect backups from being renamed or encrypted by unauthorized users
+- use Snapshots with DLM lifecycle policies to back up your data to s3
+- logically separate
+  - backup data from your EBS volumes.
+    - Create a separate AWS account for backups.
+      - To copy EBS snapshots to a different account, you share the snapshots with that account by modifying the permissions.
+    - protect backups from being renamed or encrypted by unauthorized users
+  - root volume from app data volumes
+    - each can be detached and reattached without them interfering with each other.
 - controlling costs:
-  - Delete inactive or unattached EBS volumes when appropriate.
+  - Delete inactive or unattached EBS volumes and old snapshots when appropriate.
+    - DeleteOnTermination flag
+    - Deleting a snapshot has no effect on the volume.
+    - Deleting a volume has no effect on the snapshots made from it.
   - Avoid provisioning EBS volumes larger than required.
   - Avoid over-sizing provisioned performance options.
   - Use newer volume types when appropriate.
@@ -55,12 +62,12 @@
     - Design your DLM policies to keep only the snapshots that you need to keep.
     - Use EBS Snapshots Archive to create archival snapshots.
     - Use AWS Backup to create backup copies of your data to maintain archival data copies rather than keeping additional snapshots.
-- volume types support provisioning IOPS performance separately from the volume size
+- volume types supporting provisioning IOPS performance separately from the volume size
   - io1, io2, and gp3
 - to calculate minimum volume size to support a sustained IOPS target for General Purpose and Provisioned IOPS volumes
   - Required minimum sustained IOPS
   - IOPS-to-volume capacity ratio
-- separate the root volume from your data volumes so that each can be detached and reattached without them interfering with each other.
+- Monitor the read/write access of EBS volumes to determine if throughput is low.
 
 ### anti patterns
 
@@ -80,8 +87,8 @@
 
 ### pricing
 
-- FYI: the pricing structure is insane to calculate, use the pricing calculator
-  - haha if they this shiz on the test your going to fail bro ;)~
+- FYI:
+  - remember that you are still charged for volumes that are unused and unattached
 - volume type, provisioned volume size, and the provisioned IOPS and throughput performance
   - general purpose ssd: storage, iops, throughput, or regular volumes
   - provisioned IOPS ssd: storage, iops, or regular volumes
@@ -116,6 +123,10 @@
 - volumes from snapshots
   - the volume is created in the background so you don't need to wait for all of the data to transfer from Amazon S3 to your Amazon EC2 instance before you can access the volume.
 
+#### Available
+
+- unattached EBS volumes
+
 ### Block Devices
 
 - root volumes: contains all the necessary data required to boot an instance
@@ -143,7 +154,7 @@
   - operate within your normal baseline range, you accumulate burst credits.
   - workload uses IOPS or throughput above your baseline range, you use your accumulated burst credits.
   - If your burst balance is depleted, you are unable to burst, and operations are limited to your provisioned baseline limits.
-- elastic volumes:
+- elastic volumes: current-generation EBS volume attached to a current-generation EC2 instance type
   - increase and decrease provisioned performance settings
   - you can scale an ebs volume up to a max size of 64 tebibytes (TiB)
   - hange from one volume type to a different volume type.
@@ -162,10 +173,12 @@
   - boot volumes, and dev/test environments, Virtual desktops, medium-sized single instance databases
 - GP2: IOPS performance is tied to volume size,
   - performance scales linearly at 3 IOPS per GiB of volume size.
+    - i.e. performance is tied to volume size, which determines the baseline performance level of the volume and how quickly it accumulates I/O credits.
     - Larger volumes have higher baseline performance levels and accumulate I/O credits faster.
   - minimum of 100 IOPS at 33.33 GiB and below to a maximum of 16,000 IOPS at 5,334 GiB and above.
   - volume size can range from 1 GiB to 16 TiB.
   - Your costs are based on the provisioned volume capacity.
+  - optimize for capacity so that you’re paying only for what you use.
 - GP3: scale IOPS and throughput independent from the volume size.
   - lowest cost SSD volume
   - workloads performing small, random I/O.
@@ -183,8 +196,12 @@
 - io1: Highest performance SSD volume; I/O-intensive NoSQL and relational databases
   - 99.8–99.9 percent volume durability with an AFR no higher than 0.2 percent
   - available for all Amazon EC2 instance types.
-  - Your costs are based on the provisioned volume capacity plus the provisioned IOPS.
+  - Your costs are based directly on the provisioned volume capacity plus the provisioned IOPS.
     - Provisioned IOPS are charged at a flat rate up to the maximum of 64,000 IOPS.
+    - pay close attention to IOPS use rather than throughput,
+      - Provision 10–20 percent above maximum IOPS utilization.
+  - adjust IOPS performance without detaching the volume.
+  -
 - io2: Highest performance and highest durability SSD volume; I/O-intensive NoSQL and relational databases
   - the most current Provisioned IOPS SSD volumes available and are recommended by AWS for all new deployments.
   - 99.999 percent volume durability with an AFR no higher than 0.001 percent
@@ -228,7 +245,8 @@
 
 - redundantly stored incremental backups:
   - new snapshots only track the blocks on the volume that have changed since the previous snapshot
-  - backups are stored redundantly in multiple AZs using S3
+- backups are stored redundantly in multiple AZs using S3
+- use less storage and have a lower cost than Amazon EBS volumes.
 - use cases: protects data with eleven 9's of durability and provides you Regional access and availability.
   - instantiate multiple new volumes in any AZ
   - expand the size of a volume
@@ -289,8 +307,9 @@
 
 #### deleting
 
-- delete any snapshot whether it is a full or incremental snapshot.
+- deleting any snapshot whether it is a full or incremental snapshot.
   - removes only the data not needed by any other snapshot.
+- Check for snapshots that are over 30 days old and delete them to reduce storage costs
 
 #### restoring
 
@@ -355,38 +374,42 @@
     - The maximum credit bucket size is 10.
     - credits are not shared between snapshots
 
+### monitoring
+
+- detect issues with volume inconsistencies, space utilization, and performance bottlenecks. Visibility into resource use helps when optimizing volume sizes and determining storage capacity needs.
+
+#### volume status checks
+
+- automated tests that run every 5 minutes
+  - determine whether your Amazon EBS volumes are healthy or impaired
+- states
+  - Okay: all checks passed
+  - Warning: degraded; performance is below expectations
+  - Impaired: one/more checks failed
+  - Insufficient-Data: tests may still be running
+- remediation:
+  - the default option is to disable I/O to the volume from any attached EC2 instances
+    - an event alerts you that I/O is disabled and that you can resolve the impaired status of the volume by enabling I/O to the volume.
+  - you can override the default behavior by configuring the volume to automatically enable I/O
+    - an event will alert you that the volume was determined to be potentially inconsistent, but that its I/O was automatically enabled
+
+#### EC2 console dashboard events
+
+- Awaiting Action Enable IO: volume data is potentially inconsistent. I/O is disabled for the volume until you explicitly enable it.
+- IO Enabled: I/O operations were explicitly enabled for this volume.
+- IO Auto-Enabled: I/O operations were automatically enabled on this volume after an event occurred.
+  - check for data inconsistencies before continuing to use the data.
+- For io1, io2, and gp3 volumes only.
+  - Normal: Volume performance is as expected.
+  - Degraded: Volume performance is below expectations.
+  - Severely Degraded: Volume performance is well below expectations.
+  - Stalled: Volume performance is severely impacted.
+
 ### Security
 
 #### Encryption
 
-- encryption can be enabled by default at the account level
-  - any new volumes will be automatically encrypted
-- the encryption data key is stored on-disk with your encrypted data,
-  - but not before EBS encrypts it with your CMK
-  - data key
-    - never appears on disk in plaintext.
-    - is shared by snapshots of the volume and any subsequent volumes created from those snapshots
-- at rest: using KMS or customer managed keys
-  - data volumes:
-  - boot volumes: by default are NOT encrypted; enable when creating the AMI/modify default settings
-  - snapshots:
-- in transit: encryption occurs on the servers that host EC2 instances before sending it to EBS
-- snapshot encryption rules:
-  - Snapshots of encrypted volumes are automatically encrypted.
-  - Volumes created from
-    - encrypted snapshots are automatically encrypted.
-    - an unencrypted snapshot can be encrypted during the creation process.
-  - copy an
-    - unencrypted snapshot, you can encrypt it during the copy process.
-    - encrypted snapshot, you can re-encrypt it with a different encryption key during the copy process.
-  - The first snapshot taken of
-    - an encrypted volume that was created from an unencrypted snapshot is always a full snapshot.
-    - a re-encrypted volume that has a different encryption key from the source snapshot is always a full snapshot.
-- the following types of data are encrypted:
-  - Data at rest inside the volume
-  - All data moving between the EBS volume and the EC2 instance
-  - All snapshots created from the EBS volume
-    - All EBS volumes created from those snapshots
+- check the KMS file
 
 ## considerations
 
@@ -464,6 +487,14 @@
 - Snapshot events are tracked through CloudWatch events
 - An event is generated each time you create a single snapshot or multiple snapshots, copy a snapshot, or share a snapshot.
 
+### EventBridge
+
 ### compute optimizer
 
 - Once your EBS volumes are in operation, monitor them and verify that your volumes are providing optimal performance and cost effectiveness using AWS Compute Optimizer.
+
+### Trusted Advisor
+
+- Trusted Advisor will automatically find and report unattached volumes
+
+### cloudtrail

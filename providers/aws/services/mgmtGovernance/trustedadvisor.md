@@ -20,6 +20,7 @@
 - improve performace & security via actionable recommendations
 - improve reliability (fault tolerance) by examing autoscaling ec2 groups, r53 helath checks, AZs and RDS backups
 - notification when you begin to reach service quotas
+- monitoring
 
 ### pricing
 
@@ -37,3 +38,7 @@
 ## considerations
 
 ## integrations
+
+- most services integrate with trusted advisor for performance, security and monitoring
+
+### EBS
