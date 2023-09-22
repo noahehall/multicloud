@@ -29,7 +29,7 @@
 
 ### high level
 
-> The exam validates a candidate’s ability to demonstrate proficiency in developing, testing, deploying, and debugging AWS cloud-based applications.
+> The exam validates a candidate’s ability to demonstrate proficiency in developing, testing, deploying, and debugging cloud-based applications.
 
 - Develop and optimize applications on AWS
 - Package and deploy by using continuous integration and continuous delivery (CI/CD) workflows
@@ -38,7 +38,7 @@
 
 ### topics
 
-- Domain 1: Development with AWS Services 32%
+- Domain 1: Development with Services 32%
 - Domain 2: Security 26%
 - Domain 3: Deployment 24%
 - Domain 4: Troubleshooting and Optimization 18%
@@ -47,22 +47,19 @@
 
 > IMO: these are recurring themes
 
-- global architecture
-- SDKs
-  - Python (boto3)
-  - local credentials (~/.aws/credentials)
-    - remember SDKs require key + secret (not name + pass)
-- CLI
-  - aws
-  - SAM
-    - template.yaml
-    - build
-    - deploy
-    - errors
-      - Invalid/missing template file
-- Trusted Advisor
-- Inspector
-- Managed Streaming for Apache Kafka (MSK)
+#### in general
+
+> especially how these domains map to specific services
+
+- abcd
+
+#### knowledgable
+
+> what they do, main features, compare & contrast
+
+#### in depth
+
+> i mean deeper than deep with a focus on performance, security, service comparison & integration
 
 #### technologies
 
@@ -73,13 +70,13 @@
   - Kinesis
   - OpenSearch Service
 - Application integration
-  - AWS AppSync
+  - AppSync
     - underlying graphql architecture it uses
   - EventBridge (CloudWatch Events)
     - Events (near realtime stream)
   - Simple Notification Service (SNS)
   - Simple Queue Service (SQS)
-  - AWS Step Functions
+  - Step Functions
     - activity workers
     - tasks
       - attributes
@@ -90,9 +87,9 @@
 - Compute
   - EC2
     - Auto Scaling Group
-  - AWS Elastic Beanstalk
+  - Elastic Beanstalk
     - ebextensions folder
-  - AWS Lambda
+  - Lambda
     - architecture & patterns
       - code inside vs outside the fn handler
       - reusing the execution environment across invocations
@@ -108,7 +105,7 @@
       - managing deployment with versions
     - Layers
     - artifacts (are not encrypted at rest)
-    - Polling aws services with lambdas
+    - Polling services with lambdas
     - versioning
       - deploying without updating ARNs
     - event source mapping
@@ -118,10 +115,10 @@
       - layer
     - monitoring & observability
       - logging
-  - AWS Serverless Application Model (AWS SAM)
+  - Serverless Application Model (SAM)
     - also check the SAM CLI section
 - Containers
-  - AWS Copilot
+  - Copilot
   - Elastic Container Registry (ECR)
   - Elastic Container Service (ECS)
     - tasks
@@ -164,18 +161,18 @@
     - Heavy reads vs Heavy writes
       - optimizing one vs the other
 - Developer tools
-  - AWS Amplify
-  - AWS Cloud9
-  - AWS CloudShell
-  - AWS CodeArtifact
-  - AWS CodeBuild
-  - AWS CodeCommit
-  - AWS CodeDeploy
+  - Amplify
+  - Cloud9
+  - CloudShell
+  - CodeArtifact
+  - CodeBuild
+  - CodeCommit
+  - CodeDeploy
     - appspec.yml
   - CodeGuru
-  - AWS CodePipeline
-  - AWS CodeStar
-  - AWS X-Ray (instrumentation)
+  - CodePipeline
+  - CodeStar
+  - X-Ray (instrumentation)
     - observing service-to-service interaction
     - troubleshooting bottlenecks in service pipelines
     - service map
@@ -185,10 +182,10 @@
       - average latency
       - failure rates
 - Management and governance
-  - AWS AppConfig
-  - AWS Cloud Development Kit (AWS CDK)
-  - AWS CloudFormation
-  - AWS CloudTrail (api monitor)
+  - AppConfig
+  - Cloud Development Kit (CDK)
+  - CloudFormation
+  - CloudTrail (api monitor)
     - event history (governance, compliance and risk auditing)
   - CloudWatch
     - agent
@@ -204,8 +201,8 @@
     - streaming
     - export to s3
     - which services support cloudwatch logs
-  - AWS Command Line Interface (AWS CLI)
-  - AWS Systems Manager
+  - Command Line Interface (CLI)
+  - Systems Manager
     - state manager
     - parameter store
       - SecureStrings (for encryption at rest)
@@ -232,19 +229,19 @@
   - Route 53
   - VPC
 - Security, identity, and compliance
-  - AWS Certificate Manager (ACM)
-  - AWS Certificate Manager Private Certificate Authority
+  - Certificate Manager (ACM)
+  - Certificate Manager Private Certificate Authority
   - Cognito
-  - AWS Identity and Access Management (IAM)
-  - AWS Key Management Service (AWS KMS)
+  - Identity and Access Management (IAM)
+  - Key Management Service (KMS)
     - Envelope Encryption
     - Symmetric Encryption
     - Asymmetric encryption
     - KMS Keys vs external generated keys
-  - AWS Secrets Manager
+  - Secrets Manager
     - secrets rotation
-  - AWS Security Token Service (AWS STS)
-  - AWS WAF
+  - Security Token Service (STS)
+  - WAF
 - Storage
   - Elastic Block Store (EBS)
     - integration with ec2
@@ -254,7 +251,7 @@
 
 ## Domains
 
-### 1: Development with AWS Services
+### 1: Development with Services
 
 - architectural and fault-tolerent design patterns
   - stateful vs stateless concepts
@@ -265,22 +262,22 @@
 
 #### develop code for apps hosted on aws
 
-- Architectural patterns (for example, event-driven, microservices, monolithic, choreography, orchestration, fanout)
+- Architectural patterns (e.g., event-driven, microservices, monolithic, choreography, orchestration, fanout)
 - Idempotency
 - Differences between stateful and stateless concepts
 - Differences between tightly coupled and loosely coupled components
-- Fault-tolerant design patterns (for example, retries with exponential backoff and jitter, dead-letter queues)
+- Fault-tolerant design patterns (e.g., retries with exponential backoff and jitter, dead-letter queues)
 - Differences between synchronous and asynchronous patterns
-- Creating fault-tolerant and resilient applications in a programming language (for example,
+- Creating fault-tolerant and resilient applications in a programming language (e.g.,
   Java, C#, Python, JavaScript, TypeScript, Go)
-- Creating, extending, and maintaining APIs (for example, response/request transformations, enforcing validation rules, overriding status codes)
-- Writing and running unit tests in development environments (for example, using AWS
-  Serverless Application Model [AWS SAM])
+- Creating, extending, and maintaining APIs (e.g., response/request transformations, enforcing validation rules, overriding status codes)
+- Writing and running unit tests in development environments (e.g., using AWS
+  Serverless Application Model)
 - Writing code to use messaging services
-- Writing code that interacts with AWS services by using APIs and AWS SDKs
-- Handling data streaming by using AWS services
+- Writing code that interacts with services by using APIs and SDKs
+- Handling data streaming by using services
 
-#### develop code for aws lambda
+#### develop code for lambda
 
 - Event source mapping
 - Stateless applications
@@ -288,12 +285,12 @@
 - Event-driven architecture
 - Scalability
 - The access of private resources in VPCs from Lambda code
-- Configuring Lambda functions by defining environment variables and parameters (for example, memory, concurrency, timeout, runtime, handler, layers, extensions, triggers,
+- Configuring Lambda functions by defining environment variables and parameters (e.g., memory, concurrency, timeout, runtime, handler, layers, extensions, triggers,
   destinations)
-- Handling the event lifecycle and errors by using code (for example, Lambda Destinations,
+- Handling the event lifecycle and errors by using code (e.g., Lambda Destinations,
   dead-letter queues)
-- Writing and running test code by using AWS services and tools
-- Integrating Lambda functions with AWS services
+- Writing and running test code by using services and tools
+- Integrating Lambda functions with services
 - Tuning Lambda functions for optimal performance
 
 #### using data stores in app development
@@ -301,11 +298,11 @@
 - Relational and non-relational databases
 - Create, read, update, and delete (CRUD) operations
 - High-cardinality partition keys for balanced partition access
-- Cloud storage options (for example, file, object, databases)
-- Database consistency models (for example, strongly consistent, eventually consistent)
+- Cloud storage options (e.g., file, object, databases)
+- Database consistency models (e.g., strongly consistent, eventually consistent)
 - Differences between query and scan operations
 - DynamoDB keys and indexing
-- Caching strategies (for example, write-through, read-through, lazy loading, TTL)
+- Caching strategies (e.g., write-through, read-through, lazy loading, TTL)
 - S3 tiers and lifecycle management
 - Differences between ephemeral and persistent data storage patterns
 - Serializing and deserializing data to provide persistence to a data store
@@ -315,33 +312,32 @@
 
 ### 2: security
 
-#### implement authnz for apps & aws services
+#### implement authnz for apps & services
 
-- Identity federation (for example, Security Assertion Markup Language [SAML], OpenID
+- Identity federation (e.g., Security Assertion Markup Language [SAML], OpenID
   Connect [OIDC], Cognito)
-- Bearer tokens (for example, JSON Web Token [JWT], OAuth, AWS Security Token Service [AWS
-  STS])
+- Bearer tokens (e.g., JSON Web Token [JWT], OAuth, Security Token Service)
 - The comparison of user pools and identity pools in Cognito
 - Resource-based policies, service policies, and principal policies
 - Role-based access control (RBAC)
 - Application authorization that uses ACLs
 - The principle of least privilege
-- Differences between AWS managed policies and customer-managed policies
+- Differences between managed policies and customer-managed policies
 - Identity and access management (IAM)
-- Using an identity provider to implement federated access (for example, Cognito, AWS Identity and Access Management [IAM])
+- Using an identity provider to implement federated access (e.g., Cognito, Identity and Access Management [IAM])
 - Securing applications by using bearer tokens
 - Configuring programmatic access to AWS
-- Making authenticated calls to AWS services
+- Making authenticated calls to services
 - Assuming an IAM role
 - Defining permissions for principals
 
-#### implement incryption using aws services
+#### implement incryption using services
 
 - Encryption at rest and in transit
-- Certificate management (for example, AWS Certificate Manager Private Certificate Authority)
-- Key protection (for example, key rotation)
+- Certificate management (e.g., Certificate Manager Private Certificate Authority)
+- Key protection (e.g., key rotation)
 - Differences between client-side encryption and server-side encryption
-- Differences between AWS managed and customer-managed AWS Key Management Service (AWS KMS) keys
+- Differences between managed and customer-managed Key Management Service (KMS) keys
 - Using encryption keys to encrypt or decrypt data
 - Generating certificates and SSH keys for development purposes
 - Using encryption across account boundaries
@@ -349,9 +345,9 @@
 
 #### manage sensitive data in application code
 
-- Data classification (for example, personally identifiable information [PII], protected health information [PHI])
+- Data classification (e.g., personally identifiable information [PII], protected health information [PHI])
 - Environment variables
-- Secrets management (for example, AWS Secrets Manager, AWS Systems Manager Parameter
+- Secrets management (e.g., Secrets Manager, Systems Manager Parameter
   Store)
 - Secure credential handling
 - Encrypting environment variables that contain sensitive data
@@ -362,71 +358,71 @@
 
 #### Prepare application artifacts to be deployed to AWS
 
-- Ways to access application configuration data (for example, AWS AppConfig, Secrets Manager, Parameter Store)
+- Ways to access application configuration data (e.g., AppConfig, Secrets Manager, Parameter Store)
 - Lambda deployment packaging, layers, and configuration options
-- Git-based version control tools (for example, Git, AWS CodeCommit)
+- Git-based version control tools (e.g., Git, CodeCommit)
 - Container images
-- Managing the dependencies of the code module (for example, environment variables, configuration files, container images) within the package
+- Managing the dependencies of the code module (e.g., environment variables, configuration files, container images) within the package
 - Organizing files and a directory structure for application deployment
 - Using code repositories in deployment environments
-- Applying application requirements for resources (for example, memory, cores)
+- Applying application requirements for resources (e.g., memory, cores)
 
 #### test applications in dev environments
 
-- Features in AWS services that perform application deployment
+- Features in services that perform application deployment
 - Integration testing that uses mock endpoints
 - Lambda versions and aliases
-- Testing deployed code by using AWS services and tools
+- Testing deployed code by using services and tools
 - Performing mock integration for APIs and resolving integration dependencies
-- Testing applications by using development endpoints (for example, configuring stages in API Gateway)
-- Deploying application stack updates to existing environments (for example, deploying an AWS
+- Testing applications by using development endpoints (e.g., configuring stages in API Gateway)
+- Deploying application stack updates to existing environments (e.g., deploying an AWS
   SAM template to a different staging environment)
 
 #### automate deployment testing
 
 - API Gateway stages
 - Branches and actions in the continuous integration and continuous delivery (CI/CD) workflow
-- Automated software testing (for example, unit testing, mock testing)
-- Creating application test events (for example, JSON payloads for testing Lambda, API Gateway, AWS SAM resources)
+- Automated software testing (e.g., unit testing, mock testing)
+- Creating application test events (e.g., JSON payloads for testing Lambda, API Gateway, SAM resources)
 - Deploying API resources to various environments
-- Creating application environments that use approved versions for integration testing (for example, Lambda aliases, container image tags, AWS Amplify branches, AWS Copilot environments)
-- Implementing and deploying infrastructure as code (IaC) templates (for example, AWS SAM templates, AWS CloudFormation templates)
-- Managing environments in individual AWS services (for example, differentiating between development, test, and production in API Gateway)
+- Creating application environments that use approved versions for integration testing (e.g., Lambda aliases, container image tags, Amplify branches, Copilot environments)
+- Implementing and deploying infrastructure as code (IaC) templates (e.g., SAM templates, CloudFormation templates)
+- Managing environments in individual services (e.g., differentiating between development, test, and production in API Gateway)
 
-#### deploy code using aws ci/cd services
+#### deploy code using ci/cd services
 
-- Git-based version control tools (for example, Git, AWS CodeCommit)
-- Manual and automated approvals in AWS CodePipeline
-- Access application configurations from AWS AppConfig and Secrets Manager
-- CI/CD workflows that use AWS services
-- Application deployment that uses AWS services and tools (for example, CloudFormation, AWS Cloud Development Kit [AWS CDK], AWS SAM, AWS CodeArtifact, Copilot, Amplify, Lambda)
+- Git-based version control tools (e.g., Git, CodeCommit)
+- Manual and automated approvals in CodePipeline
+- Access application configurations from AppConfig and Secrets Manager
+- CI/CD workflows that use services
+- Application deployment that uses services and tools (e.g., CloudFormation, Cloud Development Kit, SAM, CodeArtifact, Copilot, Amplify, Lambda)
 - Lambda deployment packaging options
 - API Gateway stages and custom domains
-- Deployment strategies (for example, canary, blue/green, rolling)
-- Updating existing IaC templates (for example, AWS SAM templates, CloudFormation templates)
-- Managing application environments by using AWS services
+- Deployment strategies (e.g., canary, blue/green, rolling)
+- Updating existing IaC templates (e.g., SAM templates, CloudFormation templates)
+- Managing application environments by using services
 - Deploying an application version by using deployment strategies
 - Committing code to a repository to invoke build, test, and deployment actions
 - Using orchestrated workflows to deploy code to different environments
 - Performing application rollbacks by using existing deployment strategies
 - Using labels and branches for version and release management
-- Using existing runtime configurations to create dynamic deployments (for example, using staging variables from API Gateway in Lambda functions)
+- Using existing runtime configurations to create dynamic deployments (e.g., using staging variables from API Gateway in Lambda functions)
 
 ### 4: toubleshooting and optimizing
 
 #### root cause analysis
 
 - Logging and monitoring systems
-- Languages for log queries (for example, CloudWatch Logs Insights)
+- Languages for log queries (e.g., CloudWatch Logs Insights)
 - Data visualizations
 - Code analysis tools
 - Common HTTP error codes
 - Common exceptions generated by SDKs
-- Service maps in AWS X-Ray
+- Service maps in X-Ray
 - Debugging code to identify defects
 - Interpreting application metrics, logs, and traces
 - Querying logs to find relevant data
-- Implementing custom metrics (for example, CloudWatch embedded metric format [EMF])
+- Implementing custom metrics (e.g., CloudWatch embedded metric format [EMF])
 - Reviewing application health by using dashboards and insights
 - Troubleshooting deployment failures by using service output logs
 
@@ -435,18 +431,18 @@
 - Distributed tracing
 - Differences between logging, monitoring, and observability
 - Structured logging
-- Application metrics (for example, custom, embedded, built-in)
+- Application metrics (e.g., custom, embedded, built-in)
 - Implementing an effective logging strategy to record application behavior and state
 - Implementing code that emits custom metrics
 - Adding annotations for tracing services
-- Implementing notification alerts for specific actions (for example, notifications about quota limits or deployment completions)
-- Implementing tracing by using AWS services and tools
+- Implementing notification alerts for specific actions (e.g., notifications about quota limits or deployment completions)
+- Implementing tracing by using services and tools
 
-#### optimize apps via aws services and features
+#### optimize apps via services and features
 
 - Caching
 - Concurrency
-- Messaging services (for example, Simple Queue Service, Simple Notification Service)
+- Messaging services (e.g., Simple Queue Service, Simple Notification Service)
 - Profiling application performance
 - Determining minimum memory and compute power for an application
 - Using subscription filter policies to optimize messaging
