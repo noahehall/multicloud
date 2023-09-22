@@ -2,11 +2,11 @@
 
 - last updated in Q4/2023 for version 1.0 DVA-C02
 - bookmark:
-  - Exam Prep > dunno where we left off
-  - Exam Prep Official Practice Question Set
-  - Examp Prep Enhanced Course
-  - Serverless Knowledge Badge Assessment
   - Block Storage Knowledge Badge Assessment
+    - intro to ebs
+    - ebs deep dive monitoring
+    - ebs deep dive performance
+  - Exam Prep Official Practice Question Set
   - take the exam
     - [offical online practice exam](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14196/aws-certified-developer-associate-official-practice-exam-dva-c02-english)
     - [schedule the exam](https://aws.amazon.com/certification/certified-developer-associate/)
@@ -51,15 +51,47 @@
 
 > especially how these domains map to specific services
 
-- abcd
+- analyzing & classifying application workloads
+- architectural patterns
+  - microservices, event driven, orchestration, sync vs async
+  - REST, graphql, messaging, fanout
+- distributed systems
+- database architectures
+- classifying, managing and protecting
+  - data
+  - runtime environments
+- SAML, OpenID Connect, Active Directory
+- Encryption, tokens, certificates
+- analytics: observability, centralized & structured logging, code instrumentation & tracing, root cause analysis
+- ci/cd: deployment strategies, artifact management
+- devops: configuration as code, infrastructure as code
 
 #### knowledgable
 
 > what they do, main features, compare & contrast
 
+- machine learning
+  - macie, sagemaker, codeguru
+
 #### in depth
 
-> i mean deeper than deep with a focus on performance, security, service comparison & integration
+> i mean deeper than deep with a focus on web & mobile application -> design, development, monitoring & observability, ci/cd, service integration, runtime performance
+
+- all of these service domains:
+  - authnz
+  - well architected framework
+  - compute
+  - containers
+  - serverless
+  - dbs
+  - storage
+  - caching
+  - APIs
+  - security: encryption, certificates
+  - ci/cd: automation, testing
+  - development tools: apis, sdks, cli
+  - analytics: observability, monitoring, visualization
+  - application integration
 
 #### technologies
 
@@ -71,95 +103,27 @@
   - OpenSearch Service
 - Application integration
   - AppSync
-    - underlying graphql architecture it uses
   - EventBridge (CloudWatch Events)
-    - Events (near realtime stream)
   - Simple Notification Service (SNS)
   - Simple Queue Service (SQS)
   - Step Functions
-    - activity workers
-    - tasks
-      - attributes
-    - state machines
-      - configuring max failures
-      - timeouts
-      - error handling
 - Compute
   - EC2
-    - Auto Scaling Group
   - Elastic Beanstalk
-    - ebextensions folder
   - Lambda
-    - architecture & patterns
-      - code inside vs outside the fn handler
-      - reusing the execution environment across invocations
-      - supporting local development with aliases
-      - environment variables
-    - Aliases
-    - Triggers
-      - which & how each service triggers lambdas
-      - schedules & polling
-      - event based
-    - CD
-      - all changes require build & deploy
-      - managing deployment with versions
-    - Layers
-    - artifacts (are not encrypted at rest)
-    - Polling services with lambdas
-    - versioning
-      - deploying without updating ARNs
-    - event source mapping
-    - ARNs
-      - version
-      - alias
-      - layer
-    - monitoring & observability
-      - logging
   - Serverless Application Model (SAM)
-    - also check the SAM CLI section
 - Containers
   - Copilot
   - Elastic Container Registry (ECR)
   - Elastic Container Service (ECS)
-    - tasks
   - Elastic Kubernetes Services (EKS)
 - Cost and capacity management
 - Database
   - Aurora
   - DynamoDB (NoSQL)
-    - table
-      - change triggers
-      - encryption
-    - query
-      - pagination
-      - parameters
-      - filters
-      - expressions
-      - scan
-        - parallel
-        - parameters
-    - streams
-    - Accelerator (DAX)
-    - Encryption Client
-      - Direct KMS Materials Provider
-    - encryption & protecting data
-      - client side
-      - end to end encryption (for in transit and at rest)
   - ElastiCache (NoSQL)
-    - For Redis
-      - storing session state across devices
-    - For Memcached
-      - Lazy Loading Strategy
-      - write-through strategy
   - MemoryDB for Redis
   - RDS
-    - High Availability / Failover Strategies
-      - Multi-AZ
-        - standby replica
-        - read replica
-          - async replication
-    - Heavy reads vs Heavy writes
-      - optimizing one vs the other
 - Developer tools
   - Amplify
   - Cloud9
@@ -168,64 +132,23 @@
   - CodeBuild
   - CodeCommit
   - CodeDeploy
-    - appspec.yml
   - CodeGuru
   - CodePipeline
   - CodeStar
   - X-Ray (instrumentation)
-    - observing service-to-service interaction
-    - troubleshooting bottlenecks in service pipelines
-    - service map
-    - trace data
-    - common metrics for common problems
-      - connections between services
-      - average latency
-      - failure rates
 - Management and governance
   - AppConfig
   - Cloud Development Kit (CDK)
   - CloudFormation
   - CloudTrail (api monitor)
-    - event history (governance, compliance and risk auditing)
   - CloudWatch
-    - agent
-    - native & custom metrics
-      - filters
-      - common metrics for common problems
-        - slow response times
-        - performance issues (hit or miss with cloudwatch)
-        - relative workload
-        - troubleshooting specific services
-    - alarms
   - CloudWatch Logs
-    - streaming
-    - export to s3
-    - which services support cloudwatch logs
   - Command Line Interface (CLI)
   - Systems Manager
-    - state manager
-    - parameter store
-      - SecureStrings (for encryption at rest)
-      - restricting access
 - Networking and content delivery
   - API Gateway
-    - Rest API
-    - WebSocket API
-    - Stages
-      - Variables
-        - syntax
-    - URI path patterns
-    - lambda proxy integration
-    - optimizing complex API calls & dependencies
-      - db integration
-        - reusing db connections
   - CloudFront
   - Elastic Load Balancing
-    - sticky session cookies
-    - application load balancer
-      - routing to different environments
-      - listener rules
-      - target groups
   - Route 53
   - VPC
 - Security, identity, and compliance
@@ -234,17 +157,11 @@
   - Cognito
   - Identity and Access Management (IAM)
   - Key Management Service (KMS)
-    - Envelope Encryption
-    - Symmetric Encryption
-    - Asymmetric encryption
-    - KMS Keys vs external generated keys
   - Secrets Manager
-    - secrets rotation
   - Security Token Service (STS)
   - WAF
 - Storage
   - Elastic Block Store (EBS)
-    - integration with ec2
   - Elastic File System (EFS)
   - S3
   - S3 Glacier

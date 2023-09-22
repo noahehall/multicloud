@@ -33,8 +33,7 @@
 ### Whitepapers
 
 - [CICD: best practices on aws](https://docs.aws.amazon.com/whitepapers/latest/practicing-continuous-integration-continuous-delivery/welcome.html)
-- [CICD: blue/green dpeloyments on aws](https://d1.awsstatic.com/whitepapers/AWS_Blue_Green_Deployments.pdf)
-- [CICD: on AWS](https://docs.aws.amazon.com/whitepapers/latest/cicd_for_5g_networks_on_aws/cicd-on-aws.html)
+- [CICD: blue/green dpeloyments on aws PDF](https://d1.awsstatic.com/whitepapers/AWS_Blue_Green_Deployments.pdf)
 - [compute services](https://docs.aws.amazon.com/whitepapers/latest/aws-overview/compute-services.html)
 - [cost optimization tools](https://docs.aws.amazon.com/whitepapers/latest/cost-optimization-laying-the-foundation/reporting-cost-optimization-tools.html)
 - [cost optimization](https://aws.amazon.com/architecture/cost-optimization/?cards-all.sort-by=item.additionalFields.sortDate&cards-all.sort-order=desc&awsf.content-type=*all&awsf.methodology=*all)

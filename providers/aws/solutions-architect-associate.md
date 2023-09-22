@@ -91,40 +91,22 @@
     - determines type of resiliency and applied architecture patterns
     - pay attention to tricky questions switching multi-az and multi-region services for availability
   - all of the pillars, but especially the cost optimization one
-- IAM and all IAM services
-  - Policy types, interpreting policy documents and all policy elements
-  - STS, Roles, Federation, Active Directory
-  - Providing and securing credentials
-- AWS Organizations & Accounts, ControlTower
 - other aws services
   - launch configuration, EC2 autoscaling vs AWS Autoscaling
-  - artifact, backup, service catalog, systems manager
 - most of these service domains
   - security
-    - KMS, CloudHSM
-    - Shield, WAF, Secrets Manager, Parameter Store
-    - inspector, codeguru
-  - devops: elastic beanstalk, cloudformation, opswork
+  - devops
 - all of these service domains
+  - authnz
   - networking
-    - VPC and all VPC components
-      - subnets, cidr, protocols, routing, endpoints, etc
-      - public, private and hybrid architectures
-    - cloudfront, global accelerator, route 53, ELB
-    - optimizing network traffic
-  - DB: RDS + Proy + Aurora, neptune, documentdb, dynamodb, redshift, elasticache
+  - DBs
   - analytics, obervability and events: especially metrics related to availability, scalability and performance, automation & alarms
-    - cloudwatch, cloudtrail, xray, eventBridge
-    - kinesis, athena, msk, emr, data pipeline, etc
-  - compute: ec2, lambda, eks, ecs
-  - storage: EBS, S3, storage gateway, FSx, EFS, snowball
-    - lol dont skip over the fsx windows shiz ;)~
-  - caching: elasticache, dynamodb accelerator
-  - serverless & integration
-    - lambda, ecs fargate, sqs, sns, eventbridge, stepfunctions, appsync, s3, rds proxy, aurora, dynamodb, api gateway, kinesis
-  - disaster recovery & backups:
-    - backup, disaster recovery service, AMIs, snapshots,
-  - application integration: step functions, sqs, sns
+  - compute
+  - storage: lol dont skip over the fsx windows shiz ;)~
+  - caching
+  - serverless
+  - disaster recovery & backups
+  - application integration
   - data ingestion
 
 #### technologies
