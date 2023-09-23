@@ -2,6 +2,17 @@
 
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
+  - network learning plan: blah
+    - Application Load Balancer
+    - Gateway Load Balancer
+    - Network Load Balancer
+    - Amazon API Gateway - Troubleshooting
+    - AWS VPN - Troubleshooting
+    - Instance Isolation with Elastic Network Interfaces
+    - Configure & Deploy PrivateLink
+    - Configure & Deploy Client VPN
+    - Route 53: theres bunches of these
+    - AWS Networking Practical Approaches
   - review the
     - service categories in depth
     - whitepaper related to best practices
