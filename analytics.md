@@ -1,5 +1,9 @@
 # analytics
 
+## links
+
+- [noisy neighbor antipattern](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor)
+
 ## best practices
 
 - monitoring applications, services and resources: use a tool that will get you 90% there
@@ -20,9 +24,9 @@
 - monitor and alarm proactively
   - Use KPIs, combined with monitoring and alerting systems, to proactively address performance-related issues.
   - automated alerts when thresholds are breached
-- simulate real user traffic
-- establish a performance baseline measurement for each segment of a resource
 - deploy monitoring agents to constantly monitor resource performance
+- There is no substitute for measuring the performance of your full application
+  - i.e. rarely is it useful to measure in isolation
 
 ## basics
 
@@ -30,7 +34,8 @@
   - customer experience
   - performance over time: system, costs, etc
   - trends
-  - troubleshooting and remediation: identification, isolation and resolution
+  - troubleshooting and remediation: identification, isolation and resolution, root cause analysis
+  - cost allocation
   - learning and improvement: detecting and preventing problems
 
 ### Automated Alerts
@@ -41,6 +46,13 @@
 - every alert should contain
   - when a problem occured and which threshold is being approached/breached
   - information to identify the source, device, resource, etc
+
+### Right sizing resources
+
+- the process of reviewing deployed resources and identifying opportunities to eliminate or downsize without compromising capacity or other requirements
+- involves continually analyzing resource performance and usage needs and patterns, then turning off idle resources, removing unused capacity, and right-sizing resources that are over-provisioned or poorly matched to the workload.
+- directly impacts performance and costs
+- Noisy Neighbor effect: in multitenant systems with shared resources, the activity of one tenant can negatively impact another tenant's share of resources
 
 ## monitoring
 
@@ -123,14 +135,14 @@
   - congestion: occurs when network devices are unable to send the equivalent amount of traffic they receive.
 - response times: measures the time it takes for a server to respond to a data request with application data
 
-#### network fault monitoring:
+#### network fault monitoring
 
 - when a system polls registered devices at established intervals to verify if they respond
 - this is the simplest form of network monitoring
 
 #### network capacity monitoring
 
-- monitor the users, applications, and other services on your network to see if one or many are draining the network
+- monitor the users, applications, and other services on your network to see if any are draining the network
 
 #### Application Network Performance Optimization
 
@@ -150,12 +162,19 @@
 
 - collects detailed information to help determine possible reasons for poor service performance
 - historical data provides performance trends and helps with root cause analysis for any issues that may occur.
-- When measuring the performance:
+- When measuring performance:
   - measure the time it takes for a service to complete an operation
   - understand the units of measurement involved
   - how to use these measurements to calculate performance.
 
-#### Storage Peformance
+#### benchmarking
+
+- understand the actual performance and the optimal performance of your workload before you attempt to optimize it.
+  - establish a baseline measurement for each segment of a resource
+    - observe performance over at least a two-week period (ideally, over a one-month period) to capture the workload and business peaks.
+  - simulate real user traffic
+- actual: is what you see day to day
+- optimal: the absolute best performance you can get based on the combined components that you are using
 
 #### storage performance
 
@@ -163,16 +182,18 @@
   - How the storage is connected to the compute system
 - Input/output operations per second: IOPS; a statistical storage measurement of the number of input/output (I/O) operations that can be performed per second
   - used to measure the number of operations at a given type of workload and operation size can occur per second
-- throughput: statistical storage measurement used to measure the performance associated with reading large sequential data files.
+  - generally measured in KiB, and the underlying drive technology determines the maximum amount of data that a volume type counts as a single I/O.
+    - SSD vs HDD
+      - ssd: handle small or random I/O operations more efficiently than HDD volumes.
+- throughput:how much data (in MiB/s) you can read/write per second when reading large sequential data files.
   - Large files, such as video files, must be read from beginning to end.
   - operations are measured in megabytes per second (MB/s).
-- common metrics
-  - block size:
-  - IOPS
-  - throughput
-  - latency
+- block size: certain workloads benefit from a smaller or larger block size
+  - file systems support non-default block sizes that you can specify when formatting the disk.
 
-## Cloud Financial Management (CFM)
+## Cost Management
+
+### Cloud Financial Management (CFM)
 
 - set of activities that enable organizations to measure, optimize and plan costs as you grow your adoption of cloud services
 - outcomes: CFM goals
@@ -182,13 +203,13 @@
   - establish cost aware behaviors and culture
 - FinOps: cross functional finance and technology team
 
-### capabilities
+#### capabilities
 
 - guage your organizations maturity in the following domains
 - maturity level: 1 novice -> 5 expert
   - only the expert level is listed, fk the rest
 
-#### ownership and accountability
+##### ownership and accountability
 
 - who is responsible for driving CFM across the entire organization
   - identify an owner (SME) or establish a cross-functional team with finance, technology and others
@@ -198,7 +219,7 @@
   - consistent executive sponsorship
   - programmatic CFM activities
 
-#### finance and tech cooperation
+##### finance and tech cooperation
 
 - establish strong partnerships between finance and tech
   - financial stakeholders become more cloud & technology savvy
@@ -218,7 +239,7 @@
   - finance and/or tech orgs educate external audiences
     - the CFM team can present their activities in detail to relevant external stakeholders
 
-#### cost allocation
+##### cost allocation
 
 - mechanisms to allocate consumption of cloud services back to the actual consumer of the cloud
   - identify the most important dimensions for your specific business
@@ -235,7 +256,7 @@
     - there are always cross-cutting concerns that spans accounts, but still need to be allocated effectively
   - special tag handling
 
-#### cost visibility
+##### cost visibility
 
 - visibility into cloud spend
   - define KPIs based on unit costs of cloud resources (e.g. X per hour, Y per transaction)
@@ -252,7 +273,7 @@
   - stakeholders activtely use the dashboards
   - efficiency KPIs drive decision making related to cloud adoption and consumption activities
 
-#### cost optimization
+##### cost optimization
 
 - reduce existing costs and avoid unnecessary costs through upfront workload design and embedding cost optimization in all operational processes
   - effective consumption planning
@@ -268,7 +289,7 @@
     - you must bake cost optimization into the design phase of the tech organization
   - continuous and increased level of automated optimization
 
-#### forecasting
+##### forecasting
 
 - mechanisms for forecasting future costs in order to improve the business and financial predictability
   - use trend based forecasting for consistant usage
@@ -284,69 +305,69 @@
   - standard operating procedure or well defined playbook for mitigating variances
   - high forecasting accuracy
 
-### 4 pillars of CFM
+#### 4 pillars of CFM
 
 - see: measurement and accountability
 - save: cost optimization
 - plan: planning and forecasting
 - run: financial operations
 
-#### Measurement and Accountability (see)
+##### Measurement and Accountability (see)
 
 - activities that establish cost and visibility to ensure transparency and accountability for spend
 
-##### account and tagging strategy
+###### account and tagging strategy
 
-##### cost reporting and monitoring processes
+###### cost reporting and monitoring processes
 
-##### cost show/chargeback
+###### cost show/chargeback
 
-##### efficiency/value KPIs
+###### efficiency/value KPIs
 
-#### Cost Optimization (save)
+##### Cost Optimization (save)
 
 - activities that ensure your organization pays only for resources it needs
 
-##### cost aware architecture
+###### cost aware architecture
 
-###### design and service selection
+- design and service selection
 
-##### match capacity with demand
+###### match capacity with demand
 
-##### purchase model selection
+###### purchase model selection
 
-##### identifying waste resources
+###### identifying waste resources
 
-#### Planning and Forecasting (plan)
+##### Planning and Forecasting (plan)
 
 - activities that allow your organization to better undertand costs associated with future cloud workloads
 
-##### budgeting & forcasting
+###### budgeting & forcasting
 
-###### variable cloud usage
+- variable cloud usage
 
-##### POC based cost estimation
+###### POC based cost estimation
 
-##### business case
+###### business case
 
-###### value articulation
+- value articulation
 
-##### strategic fit
+###### strategic fit
 
-#### Financial Operations (run)
+##### Financial Operations (run)
 
 - activites that enable your organization to scale CFM
 
-##### secure executive sponsorship
+###### secure executive sponsorship
 
-##### Finance + Tech cooporation
+###### Finance + Tech cooporation
 
 - partnership between finance and technology organizations
 
-##### People, Governance, Tools
+###### People, Governance, Tools
 
 - investing in the right things
 
-##### Accomplishments
+###### Accomplishments
 
 - celebrating, rewarding and promoting good practices

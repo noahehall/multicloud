@@ -32,7 +32,6 @@
 - [Network Address Translation](https://en.wikipedia.org/wiki/Network_address_translation)
 - [network protocols](https://en.wikipedia.org/wiki/Lists_of_network_protocols)
 - [network topoligies](https://en.wikipedia.org/wiki/Network_topology)
-- [noisy neighbor antipattern](https://learn.microsoft.com/en-us/azure/architecture/antipatterns/noisy-neighbor/noisy-neighbor)
 - [protobuf](https://protobuf.dev/)
 - [rapid prototyping](https://engineeringproductdesign.com/knowledge-base/rapid-prototyping-techniques/)
 - [REST (roy fielding)](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)

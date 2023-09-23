@@ -28,12 +28,7 @@
 - [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
 - [snapshots: deleting](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-deleting-snapshot.html)
 - [i/o characteristics](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-io-characteristics.html)
-
-### tools
-
-- [Flexible IO: load tester](https://github.com/axboe/fio)
-- [io meter: load tester](http://www.iometer.org/doc/downloads.html)
-- [sysbench: load tester](https://github.com/akopytov/sysbench)
+- [benchmarking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/benchmark_procedures.html)
 
 ## best practices
 
@@ -70,6 +65,11 @@
 - Monitor the read/write access of EBS volumes to determine if throughput is low.
 
 ### anti patterns
+
+- IOPS and throughput limitations.
+  - SSD: large I/O sizes may experience a smaller number of IOPS than you provisioned because you are hitting the throughput limit for the volume.
+  - HDD: used for small or random I/O workloads can experience a lower throughput than expected
+    - EBS counts each random, non-sequential I/O towards the total IOPS count, which can cause you to hit the volume's IOPS limit sooner than expected.
 
 ## features
 
@@ -404,6 +404,32 @@
   - Degraded: Volume performance is below expectations.
   - Severely Degraded: Volume performance is well below expectations.
   - Stalled: Volume performance is severely impacted.
+
+#### Considerations
+
+- IOPS: I/O size is capped at
+  - ssd: 256 KiB
+  - hdd: 1,024
+    - EBS divides large sequential I/O operations into separate I/O operations up to the maximum I/O size.
+    - A single 1,024 KiB operation would count as four operations on SSDs and one operation on HDDs.
+- block size: Amazon EBS advertises 512-byte sectors to the OS, which then reads and writes data to disk using data blocks that are a multiple of the sector size.
+- throughput:
+  - gp2: `(Number of IOPS) * (size per I/O operation)`
+    - up to the throughput limit of 250 MiB/s
+- latency: The expected average latency ranges from
+  - SSD: sub-1 millisecond to single-digit millisecond performance depending on the SSD volume type.
+  - HDD: two-digit millisecond performance
+- performance tuning
+  - BurstBalance: Displays the burst bucket balance for gp2, st1, and sc1 volumes as a percentage of the remaining balance.
+  - VolumeReadByte
+  - VolumeWriteBytes
+  - VolumeReadOps
+  - VolumeWriteOps
+  - VolumeQueueLength
+- performance options
+  - file system mount options
+  - block alignment
+  - volume type, size, provisioned IOPS, maximum throughput, etc
 
 ### Security
 

@@ -7,6 +7,15 @@
 - R/W patterns
   - Worm: write once, read many: for data with heavy reads
 
+## links
+
+### tools
+
+- [Flexible IO: load tester](https://github.com/axboe/fio)
+- [io meter: load tester](http://www.iometer.org/doc/downloads.html)
+- [sysbench: load tester](https://github.com/akopytov/sysbench)
+- [oracle orion: load tester](https://docs.oracle.com/cd/E18283_01/server.112/e16638/iodesign.htm#BABFCFBC)
+
 ## Consideration
 
 - characteristics that will lead you toward the best storage solution
@@ -85,6 +94,9 @@
 
 - block size: select the block size that best meets your use case
   - Block size flexibility is a fundamental differentiator for block storage
+    - certain workloads benefit from a smaller or larger block size,
+    - file systems support non-default block sizes that you can specify when formatting the disk
+  - The industry default size for logical data blocks is currently 4,096 bytes, or 4 kibibytes (KiB).
 - metadata management: information that the operating system and users need to identify and track the data.
   - e.g. resource type, permissions, and the time and way it was created.
 - read/write activity: controls in place to manage access to the data.
