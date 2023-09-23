@@ -4,51 +4,28 @@
 
 ## links
 
-- [api as a product](https://api-as-a-product.com/articles/case-study-human-centered-api-design/)
-- [api product ideation and validation](https://medium.com/api-product-management/api-product-ideation-and-validation-aef140db00b)
-- [api versioning (stripe)](https://stripe.com/docs/api/pagination/auto)
-- [api versioning](https://stackoverflow.com/questions/389169/best-practices-for-api-versioning)
-- [aws architecture center](https://aws.amazon.com/architecture/)
+- [AAA: aws architecture center](https://aws.amazon.com/architecture/)
+- [AAA: IBM the GOAT of documentation](https://www.ibm.com/docs/en)
 - [AWS leadership principles](https://www.amazon.jobs/en/principles?ref=wellarchitected-wp)
 - [azure architecture center](https://docs.microsoft.com/en-us/azure/architecture/)
-- [best practices for designing pragmatic RESTful apis (enchant)](https://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
-- [best practices for REST api design (stackoverflow.blog)](https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/)
-- [best practices in API Design (swagger)](https://swagger.io/resources/articles/best-practices-in-api-design/)
-- [circuit breaker pattern](https://www.martinfowler.com/bliki/CircuitBreaker.html)
-- [CRUD](https://en.m.wikipedia.org/wiki/Create,_read,_update_and_delete)
-- [fan out/in integration pattern](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
-- [GCP patterns for scalablee and resilient apps](https://cloud.google.com/architecture/scalable-and-resilient-apps)
+- [GCP patterns for scalable and resilient apps](https://cloud.google.com/architecture/scalable-and-resilient-apps)
 - [gcp: what is multicloud](https://cloud.google.com/learn/what-is-multicloud)
 - [github architectural decision records](https://adr.github.io/)
-- [grpc](https://grpc.io/)
-- [HATEOAS driven REST APIs](https://restfulapi.net/hateoas/)
-- [how to mke effective service blueprints](https://miro.com/guides/service-blueprints/)
-- [http decision diagram](https://github.com/for-GET/http-decision-diagram)
-- [human-centered api design](https://medium.com/api-product-management/design-apis-human-centered-to-build-successful-api-products-ffe35015cee5)
-- [IBM: the GOAT of documentation](https://www.ibm.com/docs/en)
+- [how to make effective service blueprints](https://miro.com/guides/service-blueprints/)
 - [learning domain driven design](https://dddcommunity.org/learning-ddd/)
-- [list of software architecture styles and patterns](https://en.wikipedia.org/wiki/List_of_software_architecture_styles_and_patterns)
 - [microservice architecture patterns and best practices](http://microservices.io/index.html)
-- [Network Address Translation](https://en.wikipedia.org/wiki/Network_address_translation)
-- [network protocols](https://en.wikipedia.org/wiki/Lists_of_network_protocols)
-- [network topoligies](https://en.wikipedia.org/wiki/Network_topology)
-- [protobuf](https://protobuf.dev/)
+- [pattern: action pattern](https://ponyfoo.com/articles/action-pattern-clean-obvious-testable-code)
+- [pattern: circuit breaker](https://www.martinfowler.com/bliki/CircuitBreaker.html)
+- [pattern: fan out/in integration](https://dzone.com/articles/understanding-the-fan-out-fan-in-api-integration-p)
+- [pattern: list of software architecture styles and patterns](https://en.wikipedia.org/wiki/List_of_software_architecture_styles_and_patterns)
 - [rapid prototyping](https://engineeringproductdesign.com/knowledge-base/rapid-prototyping-techniques/)
-- [REST (roy fielding)](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
-- [REST (wikipedia)](https://en.m.wikipedia.org/wiki/Representational_state_transfer)
-- [REST API: concepts, best practices and benefits (altexsoft)](https://www.altexsoft.com/blog/rest-api-design/)
-- [rest](https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm)
-- [restful api best practices](http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api)
-- [RESTful web API design (microsoft)](https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design)
 - [rethinking service blueprints for agile delivery](https://wiprodigital.com/2018/08/30/rethinking-service-blueprints-for-agile-delivery/)
 - [roy fielding](https://roy.gbiv.com/)
 - [selecting a rapid prototyping process](https://engineeringproductdesign.com/rapid-prototyping-process-selection-key-factors/)
 - [Selina Liu: microservices @ airbnb](https://www.youtube.com/watch?v=PIw1WF1UXNc)
-- [serverless framework](https://github.com/serverless/serverless)
 - [shared nothing architecture](https://en.wikipedia.org/wiki/Shared-nothing_architecture)
 - [state of devops 2021 (PDF)](https://services.google.com/fh/files/misc/state-of-devops-2021.pdf)
 - [TCO: serverless vs traditional clouds](https://pages.awscloud.com/NAMER-field-GC-Deloitte-TCO-whitepaper-2019-learn.html)
-- [the action pattern](https://ponyfoo.com/articles/action-pattern-clean-obvious-testable-code)
 - [TOGAF capability framework](https://pubs.opengroup.org/architecture/togaf9-doc/arch/?ref=wellarchitected-wp)
 - [towards a human-centered workshop design](https://www.slideshare.net/TobiasBlum/innovating-the-api-economy-towards-a-humancentered-workshop-design)
 - [zachman framework](https://www.zachman.com/about-the-zachman-framework?ref=wellarchitected-wp)
@@ -265,6 +242,10 @@
 - strategies
   - horizontal scaling: in/out; increasing the total number of load balanced resources
   - vertical scaling: up/down; increasing perf characteristics of existing resources
+
+#### high availability
+
+- reducing or managing failures and minimizing downtime through the implementation of redundant components, deployment of parallel components to distribute traffic load, and elimination of single points of failure.
 
 #### scaling
 
@@ -587,22 +568,22 @@
 
 # copypasta
 
-## Program Patterns
+## Patterns
 
-- specific to the internals of a single application, restricted by the application architecture
-  - the structural composition of the software program
-  - the interactions between software elements
-  - during the process of writing software code, edevelopers encounter similar problems multiple times within a roject/compony
-    - design patterns give engineers a reusable way to solve recurring problems
-- bad design:
-  - rigid: hard to change, e.g. due to dependency changes
-  - fragile: easy to break, e.g. when making a change bugs cascade
-  - immobile: difficult to reuse
-- OOP concepts not always relevant to good design principles
-  - enheritance: reuse features & behaviors
-  - encapsulation: hide & protect data
-  - polymorphism: code that works by behavior, and works with types/subtypes with a similar interface
-  - abstraction: hide implementation details, and depend instead on declarative interfaces
+- specific strategies for resolving common architecture problems
+- dont get too hung up on program vs system patterns
+
+### best practices
+
+- focus on reducing a services blast radius
+  - if service A fails, how many other services will be disrupted?
+- whether or not you describe your architecture in terms of Tiers, there will always be tiers
+  - lower tiered services generally have a bigger blast radius; require the most stability and resilience
+  - never let lower tiered services call higher tiered services which may have reduce stability
+
+#### Antipatterns
+
+- abstraction for the sake of abstraction increases complexity & cost for no value
 
 ### design principles
 
@@ -621,30 +602,52 @@
   - objects should have little knowledge about implementation details of other objects
   - changes to one should not impact another, if it does, you've got some tight coupling
   - reduces the dependency between components
-- SOLID: by Martin Robert Martin
-  - S: single responsibility: all about limiting the impact of change
-    - an object should only have one reason to change
-    - each additional responsibility adds a reason for modifications to be required to the object as the nature of that responsibilty changes in the future
-  - O: classes should be open for extension, but closed for modification
-    - objects should provide default behavior, but enable consumers to override behaviors when needed
-  - L: Liskov substitution: subtypes should be substitutable for their base types
-    - i.e. subtypes should adhere to the interfaces of their base types
-    - i.e. subtypes behave like their base types
-  - I: interface segregation: interfaces should be small and cohesive, and shouldnt include methods they dont use
-    - polluted interface: continuing to add new functionality to an interface as it evolves
-      - causes unwanted dependencies between consumers of the the interfaces
-    - cohesion: how related a class/interfaces methods are to themselves
-      - if all consumers of a class/interface use the class/interface the same way, it generally means there is high cohesion
-      - else you should subtype the class/interface into additional subtypes, that only implements the behavior with high cohesion
-  - D: dependency inversion: high level modules should not depend on low level modules; both should depend on abstractions
-    - instead of coupling high level component -> low level component
-    - ^ you should instead program to an interface, and have both the high and low components depend on the same interface abstraction
-    - ^ the abstraction should not depend on details (implementation), but the implementation (low level component) should depend on the interface
 - design by contract: specify preconditions, postconditions & invariants; treat inputs and outputs the same way across implementations
 
-### patterns
+### Program Patterns
 
-- specific strategies for resolving common architecture problems
+- specific to the internals of a single application, restricted by the application architecture
+  - the structural composition of the software program
+  - the interactions between software elements
+  - during the process of writing software code, edevelopers encounter similar problems multiple times within a roject/compony
+    - design patterns give engineers a reusable way to solve recurring problems
+- bad design:
+  - rigid: hard to change, e.g. due to dependency changes
+  - fragile: easy to break, e.g. when making a change bugs cascade
+  - immobile: difficult to reuse
+
+#### OOP
+
+- concepts not always relevant to good design principles
+- enheritance: reuse features & behaviors
+- encapsulation: hide & protect data
+- polymorphism: code that works by behavior, and works with types/subtypes with a similar interface
+- abstraction: hide implementation details, and depend instead on declarative interfaces
+
+#### SOLID
+
+- by Martin Robert Martin
+- S: single responsibility: all about limiting the impact of change
+  - an object should only have one reason to change
+  - each additional responsibility adds a reason for modifications to be required to the object as the nature of that responsibilty changes in the future
+- O: classes should be open for extension, but closed for modification
+  - objects should provide default behavior, but enable consumers to override behaviors when needed
+- L: Liskov substitution: subtypes should be substitutable for their base types
+  - i.e. subtypes should adhere to the interfaces of their base types
+  - i.e. subtypes behave like their base types
+- I: interface segregation: interfaces should be small and cohesive, and shouldnt include methods they dont use
+  - polluted interface: continuing to add new functionality to an interface as it evolves
+    - causes unwanted dependencies between consumers of the the interfaces
+  - cohesion: how related a class/interfaces methods are to themselves
+    - if all consumers of a class/interface use the class/interface the same way, it generally means there is high cohesion
+    - else you should subtype the class/interface into additional subtypes, that only implements the behavior with high cohesion
+- D: dependency inversion: high level modules should not depend on low level modules; both should depend on abstractions
+  - instead of coupling high level component -> low level component
+  - ^ you should instead program to an interface, and have both the high and low components depend on the same interface abstraction
+  - ^ the abstraction should not depend on details (implementation), but the implementation (low level component) should depend on the interface
+
+#### other program patterns
+
 - adapter
 - aggregator
 - builder
@@ -662,156 +665,7 @@
 - tryparse: pattern for trying some logic and returning the response, but on error returning the given substitute instead of throwing the exception
 - event sourcing: storing events instead of state, enabling you to rehydrate/replay timelines
 
-## APIs
-
-- API-First strategy: where each service within their stack is first and always released as an API
-
-### best practices
-
-- in any API-based application: capture and retry a call whenever possible and handle errors gracefully when a call fails
-- before you do anything
-  - start with a stable data model before releasing a public API
-- structure & design: an API is a user interface for a developer
-  - use plural NOUNS (things) and not ACTIONS (http methods) in your endpoint URLs
-    - wtf is the difference between goose & geese?
-  - use web standards
-  - should be explorable via a browser address bar
-    - this should also include common search queries
-      - package up common sets of conditions into easily accessible endpoints
-      - e.g. recently closed could be `/tickets/recentlyclosed` versus a long as fkn filter query param
-- http methods have meaning: e.g. a single `/users` endpoint can receive GET, PUT, POST, PUT, PATCH, etc without needing 5 different URIs
-  - GET: retrieve thing(s)
-  - POST: create thing(s)
-  - PUT: update thing(s)
-  - PATCH: partially update thing(s)
-    - arguable if PATCH should ever be used
-    - however PATCH can be used to make an ACTION on a resource appear as a FIELD ona resource
-      - e.g. ACTIVATE action could be a PATCH on a resource, even tho the backend data model supports this via other logic (and not an activate field)
-  - DELETE: delete thing(s)
-  - return useful confirmations from POST, PATCH & PUT requests
-- have a single source of documentation
-  - available without logging in
-  - include copypasta examples
-- define a consumable error payload
-- effectively use HTTP status codes
-
-### versioning
-
-- have a predictable and publicly available versioning scheme and update schedule
-  - CHANGE is coming, everyone knows it, versioning helps manage it
-- version via the URL
-  - prevents invalid requests from hitting updated endpoints
-  - smooth transition to newer versions while sunsetting legacy endpoints
-  - ensures browser explorability across versions
-  - provides structural stability
-- version via HEADER fields
-  - useful for specifying minor/patch versions of a major versions
-    - e.g. field deprecedations, endpoint changes, etc
-
-### caching
-
-- via response headers
-- abcde lol wtf happened to the rest of this section
-
-### security
-
-- use SSL everywhere
-  - encrypt communication between parties
-  - inhibit eavesdropping/impersonation if authentication credentials are hijacked
-  - enables use of access tokens instead of having to sign each API request
-- token based authentication
-- oauth2 in case delegation is required
-- use HARD errors
-  - e.g. a client requests a non secure version of an API endpoint
-    - an automatic redirect to the SSL version could leak request params over the unencrypted endpoint
-
-### REST
-
-- Representational state transfer (REST) refers to architectures that follow six constraints:
-  - Separation of concerns via a client-server model.
-  - State is stored entirely on the client and the communication between the client and server is stateless.
-  - The client will cache data to improve network efficiency.
-  - There is a uniform interface (in the form of an API) between the server and client.
-  - As complexity is added into the system, layers are introduced. There may be multiple layers of RESTful components.
-  - Follows a code-on-demand pattern, where code can be downloaded on the fly (in our case implemented in Lambda) and changed without having to update clients.
-- many features require extended set of options
-  - filtering
-    - use a unique query param for each field e.g. `poop?field1=yes&field2=no`
-  - sorting
-    - use a generic queyr param for sorting rules e.g. poop?sort=-field1&field2
-      - unary operators -/+ indicate DESC & ASC
-  - searching:
-    - /users?search=field1...:
-      - some resources require SEARCH as a mechanism to filtering and retrieving matches
-    - /search?...:
-      - a distinct endpoint for searching all resources
-  - pagination
-    - via link headers
-    - via query params
-- ability to toggle/specify specific features
-  - toggle
-    - response envelopes: required by JSONP and other limited http clients
-  - specify
-    - version: major version in the URL, minor/patch versions via HEADER fields (see stripe/enchant)
-    - returned fields: do you need every user field every time?
-- autoloading
-- http-method-override
-  - never on GET requests
-- use restful URLs and actions
-  - structure your API into logical resources that are manipulated using HTTP methods (CRUD)
-    - dont map to your data model 1 to 1
-      - this is likely not effective from an API consumer perspective
-      - a security risk by revealing the structure to your data modal
-      - brittle in the event your data model changes
-    - hierarchy
-      1. if resource Y is always a child of X, then `/v1/x/:id/y
-      2. if resource Y is independent but associated: include an identifier with X where Y can be retrieved with a second API call
-      3. if resource Y is independent but always requested with X: see #1 or embed the resource within the call to retrieve X
-         - this avoid the second call with approach #2
-- only/always use
-  - JSON syntax (fk xml) for all HTTP methods
-    - some HTTP clients wont be supported, but fk them (unless their paying u)
-  - camelCase (fk snake)
-  - compression (e.g. gzip) unless in test mode
-  - pretty print unless in unless in prod prod
-
-#### HATEOAS
-
-- abcd
-
-### GraphQL
-
-### RPC
-
-#### gRPC
-
-#### tRPC
-
-## system patterns
-
-### command query responsibility segregation (CQRS)
-
-- specific to data problems
-- a distinct service for reading from data sources
-- a distinct service for writing to data sources
-
-### CQRS and event sourcing combined
-
-- useful for operational & yielding problems
-
-## best practices
-
-- focus on reducing a services blast radius
-  - if service A fails, how many other services will be disrupted?
-- whether or not you describe your architecture in terms of Tiers, there will always be tiers
-  - lower tiered services generally have a bigger blast radius; require the most stability and resilience
-  - never let lower tiered services call higher tiered services which may have reduce stability
-
-### Antipatterns
-
-- abstraction for the sake of abstraction increase complexity & cost for no value
-
-## basics
+### system patterns
 
 - cascading failure pattern: where a failure at one integration point, cascades to cause failures/disruptions throughtout the application stack in a layered architecture
 - architectural style: way of designing processes & building systems to facilitate an end goal, e.g cloud native is an architectural style
@@ -831,169 +685,23 @@
   - scheduler: manages retrieval from multiple data sources at different rates, and sending each into the matching data collector
   - data collectors: services geared toward retrieving data from a single data source, serializing and storing the raw data (e.g. in s3)
   - data convertors: convert raw serialized data into a common serialization format, with a defined interface and storing the new formatted data (e.g. back into s3)
-  - data processors: take the converted data, and process it for storing into the final db (e.g. a knowledge graph)
-- scalability
-  - vertical: scale up/down: whatever you have now, but optimized for multi-core, multi-cpu, and high capacity storage devices, usually on the fly
-  - horizontal: scale in/out: whatever you have now, but more of it; usually on the fly
-- availability
-  - low latency and remain highly accesible even in the event of hardware/system/network failures
-- fault tolerance: the degree to which a system operates in the presense of failing components
-  - load balancing
-  - state management
-  - redundancy
+  - data processors: take the converted data, and process it for storing into the final db (e.g. in a knowledge graph)
 
-## Networking
+#### command query responsibility segregation (CQRS)
 
-### peer-to-peer networking
+- specific to data problems
+- a distinct service for reading from data sources
+- a distinct service for writing to data sources
 
-- no server exists
-- each client is connected to mulitple other clients
+#### CQRS and event sourcing combined
 
-### client-server model
+- useful for operational & yielding problems
 
-- a single server to which all clients connect
-
-### Circuit Breaker
-
-- a service that watches for failures through systems boundaries, and reroutes requests upon detection
-
-### Multi VPC
-
-- VPCs are separated and isolated from one another and can optionally be linked through dedicated connections
-- common goals
-  - greater flexibility for development, increased security features, and more robust analytical views.
-
-### High Availability
-
-- commonly referred to as eliminating single points of failure
-- reducing or managing failures and minimizing downtime through the implementation of redundant components, deployment of parallel components to distribute traffic load, and elimination of single points of failure.
-
-### Hybrid Networking
-
-- at least two independent cloud or on-premises networks communicate with each other
-
-### High performance
-
-- its all about reducing latency: Anything that lengthens the time to get data to the user
-  - packet loss
-  - jitter: Variations in latency or time delay between packets
-  - bandwidth constraints
-  - inefficient protocol use
-  - physical distance
-- When reducing latency, consider
-  - physical distance between two nodes
-  - quality of routes
-  - request origin location in relation to data
-  - average packet delay under network cost constraints
-  - memory resources
-  - traffic patterns and available node resources
-
-### Hub and Spoke
-
-- like a bicycle wheel
-
-### mesh
-
-- like a cobweb
-
-## Storage
-
-- cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
-- consistency: every read receives the most recent write/error
-- availability: every request receives a (non-error) response, without the guarantee that it contains the most recent write
-  - can be overcome via active replication: in the event of failure just switch to the redundant system
-- partition tolerance: the system continues to operate despite an arbitrary number of messages being dropped/delayed by the network between nodes
-- network partition failure: forces you to either cancel the operation & decrease availabilty but ensure consistency, or proceed with the operation and thus provide availability but risk consistency
-- garbage collection
-- compaction
-- node: generally a unit of storage, e.g. a single db instance including all the software running on the hardware
-- cluster: a group of nodes that work together; e.g. a 3 node cluster is the minimum for high availability
-- replication: the process of replicating data across nodes ina cluster
-- replication factor: The total number of replica Nodes across a given Cluster; the number of copies of a set of data, e.g. RF of 1, means theres 1 copy, RF 2 means there 2 identical copies, etc, generally you want 3
-- consistency level: how many nodes must validate a READ/WRITE before the request is considered successful
-  - e.g. at least 2 nodes must acknowledge an operation/query/whatever for it to be considered 200
-- big data: generally the dataset is so huge it cant be contained in a single node, thus a cluster of nodes are required
-
-### data fabric
-
-### data mesh
-
-- enables collection, integration and analysis of data from disparate systems concurrently in a single location
-
-### data lake
-
-- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
-  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
-
-### data warehouse
-
-- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
-  - i.e. you push filtered data into a warehouse, for later analysis
-
-### Databases
-
-#### Relational
-
-- relational, structured
-- best for online analytical processing
-
-#### NewSql
-
-#### nosql
-
-- hierarchical, unstructured
-- best for online transaction processing at scale
-- scales out
-- main distinctions are data model driven: e.g. rdbms vs nosql vs wide-column etc
-- secondary distinctions is according to the cap thereom: usually a choice between C and A, as all are susceptible to P (failures)
-  - consistency: will every read receive the most recent write
-  - availability: will ever request receive a non-error response (but doesnt have to be the most recent write)
-  - partition tolerance: will the system operate in the face of network failures/msg loss
-
-##### key/val
-
-- data model
-  - key value pairs: each key has only one value
-  - fast queries, no need for a query language
-
-##### document store
-
-- data model
-  - data stored in documents of tagged elements (like a row in rdbms)
-
-##### column (oriented)
-
-- long list
-- data model
-- characteristics
-  - wheres SQL stores record by record (row by row), column oriented dbs store column by column
-  - improves storage and retrieval performance
-
-##### wide column store
-
-- long list
-- data model
-  - store data in columns
-  - related columns are grouped into tables (column families)
-- characteristics
-  - supports large numbers of dynamic columns:
-  - aka 2 dimensional key value stores
-
-##### graph
-
-- long list
-- data model
-  - use nodes & edges to store data
-
-##### multi-model
-
-- go for the native multi models, and not the ones enhanced with extensions/plugins/etc (timescale is dope tho)
-
-## monolith
+#### monolith
 
 - all services in a system are within a single compile, yield and runtime environment
 
-## N-tier
+#### N-tier
 
 - stack services based on the flow of data, each stack/tier/layer exists at a different level of abstraction and is responsibile for a specific
   - tier: abstracts services by what they are, instead of what they do, so still some duplication exists over service-oriented architectures
@@ -1009,7 +717,7 @@
   - introduce extra layers of defense between attackers and your sensitive resources
     - the most sensitive data should be at the bottom of the stack
 
-### layered
+##### layered
 
 - type of n-tier in which communication between tiers are forced to flow in a single direction, from top to bottom
   - presentation: UI
@@ -1018,12 +726,12 @@
   - persistence: abstracts away the implementation details to interact with the database
   - data: database
 
-### microkernel / plugin
+##### microkernel / plugin
 
 - core logic that can be extended via plugins (sidecars), and defines the interface of each plugin
 - each plugin/sidecar then implements the contract
 
-### MVC
+##### MVC
 
 - extends the multi-tier pattern: divides an application into 3 tiers
   - model: manages application data and data related functionality
@@ -1045,7 +753,7 @@
 - disadvantages:
 - examples:
 
-#### MVP model view presenter
+###### MVP model view presenter
 
 - evolution of MVC
 - model: see MVC
@@ -1056,14 +764,14 @@
     - and the view is responsible for rendering the static content given to it by the presenter
   - supervising controller: rendering logic is in within the UI, but data transformation logic is within the presenter
 
-#### MVVM: model view view model
+###### MVVM: model view view model
 
 - model: business logic & data
 - view model: interacts with the model
 - view: interacts with the view model
   - two-way databinding between the view data, and the model data
 
-### client-server
+##### client-server
 
 - extends the multi-tier pattern: two main components taking roles of service requester (client) and service provider (server)
   - client: initiates & sends service requests to the server
@@ -1079,7 +787,7 @@
 - examples:
   - the internet operates on a client-server pattern
 
-### Controller-Responder (master-slave|primary-replica)
+##### Controller-Responder (master-slave|primary-replica)
 
 - extends the multi-tier pattern consisting of two components the controller and responser(s)
   - controller: distributes work and copies of work-data among identical responders for processing
@@ -1098,18 +806,17 @@
     - responders can be promoted to controller, but technical deficits exist in the time it takes to transition
 - examples:
 
-## service oriented
+#### service oriented
 
 - beyond tiers, which group by fn (what it is), this groups services by activity (what it does)
 - heavily dependent on interface design & contracts and communication architecture patterns
 - enterprise service bus: the controller responsible for orchestrating communication between services
 
-### Gateway
+##### Microservices
 
-- e.g. an API gateway
-
-### microservices
-
+- scoped units of services, that work in unison but scale independently to achieve a goal
+  - breaking endpoints into distinct units of work that can be scaled independently
+  - focus on data, business and function domains, analyze call patterns and dependency graphs, and determine boundaries between services that need to be scaled independently
 - the extreme in service oriented architectures, with the removal of the enterprise service bus
 - each service should be single purpose, stateless, independenty scalable and composable
 - involves creating multiple applications (i.e. micro services) that work interdependently
@@ -1126,13 +833,7 @@
 - disadvantages:
 - examples
 
-### Microservices
-
-- scoped units of services, that work in unison but scale independently to achieve a goal
-  - breaking endpoints into distinct units of work that can be scaled independently
-  - focus on data, business and function domains, analyze call patterns and dependency graphs, and determine boundaries between services that need to be scaled independently
-
-#### Presentation Services
+###### Presentation Services
 
 - render data for frontend clients in a friendly and common format
   - this layer is prime for a graphql service in a data access layer
@@ -1141,38 +842,38 @@
 - localization and other external business logic
 - data fetching and hydration
 
-#### business services
+###### business services
 
 - shared business logic consumed/sidecarred by many services
 - distinct from presentation as this relates to internal business logic
 
-#### data access layer
+###### data access layer
 
 - in complex situations it may be more appropriate to extract data access from the presentation layer
 
-#### Data services
+###### Data services
 
 - encsuplate data sources into a uniform data layer
 
-#### messaging patterns
+###### messaging patterns
 
 - Queues
 - Messages
 - Streams
 
-#### decomposition patterns
+##### decomposition patterns
 
 - break a component into logical steps, convert each step into a service that can be reused and scaled
 - core goal is to make services smaller, thereby more scalable as demand fluxtuates across service boundaries
 
-##### decoupling patterns
+###### decoupling patterns
 
 - decoupled services: the degree of decoupling has significant implicatins on architecture, performance and scalability
 - direct service calls: either sync/async
 - producer/consumer: a single producer orchastrates the invocation of multiple consumers, and handles the responses
 - pipeline architectures: a form of producer/consumer, however the producer doesnt expect a response from the consumer, but accepts input from the previous stage, does its thing, and passes its output as input to the next stage
 
-##### domain based decomposition
+###### domain based decomposition
 
 - functional pipelines in a system; create services that fulfill the needs of a particular domain
 - largely based on domain-driven design patterns, as that methodology lends itself to decomposing services by domains
@@ -1189,7 +890,7 @@
   - define your service boundary and build APIs around your actions
   - define a schema that supports the model (but doesnt have to match 1:1 to the model) and implement your datastore (db)
 
-##### business process based decomposition
+###### business process based decomposition
 
 - breakdown complex business processes into discrete services each fulfilling a specific role in the overall system
 - higher level of service for reusing business logic across other microservices
@@ -1201,7 +902,7 @@
 - define the APIs for each business process
   - business processes always change, and sometimes frequently, so encapsulate the actual business process logic into its own module that can be iterated on separately from the service contract & interface
 
-##### atomic transaction based decomposition
+###### atomic transaction based decomposition
 
 - you build your decomposition model around the atomic transaction at the data domain level
   - these are synchronous blocking calls, be sure this is what you need and understand the performance implications on the system as a whole (this could become a bottleneck)
@@ -1215,7 +916,7 @@
   - always have clearly defined transactions, especially the conditions which cause commits to be rolled back
 - dont depend on distributed transactions, the complexity is far greater than just using a synchronous API
 
-##### strangler pattern
+###### strangler pattern
 
 - migrate from a monolithic system into a microservices architecture
 - carving/sharding functionality out of a monolith and into a micrservice endpoint
@@ -1224,18 +925,18 @@
 - top down approach: start at the API/service level, and work down to the data domain
 - bottom up approach: start the at data domain, and move up to the API/service level
 
-##### sidecar pattern
+###### sidecar pattern
 
 - promote separation of concerns; all about removing repetitive code from multiple microservices into a single embed that can be utilized by any service
 - offload services (e.g. operational/security functions) into distinct components that can be deployed alongside dependent services as runtime dependencies (inversion of control)
 - e.g. monitoring, logging, & security etc all lend themselves to this pattern, and can either be deployed as an embedded module (e.g. logging) or as a distinct microservice itself (e.g. oauth)
 - this pattern generally shouldnt create more microservices, but instead create child processes to existing microservices
 
-#### integration patterns
+##### integration patterns
 
 - solve orchestration & ingress needs across a system as a whole
 
-##### api gateway pattern
+###### api gateway pattern
 
 - pattern for external clients communicating with your system
   - if distinct clients have diverging demands/special business logic, use the edge pattern instead
@@ -1246,7 +947,7 @@
 - adhere to strict api version control and ensure all changes are passive (non-aggressive)
 - implement clients (service wrappers) as distinct modules for services behind the gateway
 
-##### edge pattern
+###### edge pattern
 
 - client specific API gateways for optimizing cost by creating distinct ingress APIs for clients with distinct business logic & demand profiles
 - provides aggregation, consolidation, composition and complexity isolation away from the main API gateway used by the other clients
@@ -1254,7 +955,7 @@
 - identify the client, their needs & constraints, build contracts, interfaces and models
 - generally recommended over pure api gateways, unless the cost of the additional hardware/service is too much
 
-##### process aggregator pattern
+###### process aggregator pattern
 
 - aggregate multiple business processes into a distinct flow to solve specific goals
   - usually the processes are dependent, and must be executed consecutively (and not in parallel) and can cause choke points as wait times increase
@@ -1269,9 +970,9 @@
 - design an API for the actions on that model (using either REST/Actions pattern)
 - wire the service and implement the internal processing
 
-#### data pattern
+##### data pattern
 
-##### single service database
+###### single service database
 
 - the most common pattern for all data domain based services
 - single service, single database
@@ -1280,7 +981,7 @@
   - thus, each data domain should have its own dedicated datastore in this pattern
   - can potentially isolate the data per region, for a more sophisticated architecture
 
-##### shared service database
+###### shared service database
 
 - all data domains exist within a single database
   - still, you should break the data domains into schemas/keystores/etc to keep them somewhat distinct at the data level
@@ -1292,7 +993,7 @@
 - data distribution should be handled by the database, and not by code
   - else synchronization/replication issues will eventually develop if application code is responsible for pushing data across regions/datacenters
 
-##### command query responsbility segregation (CQRS)
+###### command query responsbility segregation (CQRS)
 
 - the most complex pattern of all the data patterns
   - if implemented correctly, provides the most benefits for the use cases where its appropriate
@@ -1307,7 +1008,7 @@
     - write interfaces may inject behavior and other characteristics based on a specific use case being modeled
   - whenever CRUD becomes a bottleneck in complex write & read scenarios
 
-##### asynchronous messaging/eventing pattern
+###### asynchronous messaging/eventing pattern
 
 - whenever you have long running transactions/complex workflows and a single blocking API call becomes unfeasable
 - some problems/processes cannot be achieved in real time
@@ -1315,7 +1016,7 @@
 - events can trigger from posting to a messaging queue
 - super powerful in distributed systems
 
-#### operational patterns
+##### operational patterns
 
 - how you run run systems, vs how you build it
 - helps you answer:
@@ -1325,7 +1026,7 @@
   - why is it happening?
   - who is involved?
 
-##### log aggregation patterns
+###### log aggregation patterns
 
 - provide detail behavior of the runtime characteristics of the system
 - the source logs need to have a clearly defined model and structure and be consistent across the entire system for effective aggregation and holistic analysis
@@ -1338,7 +1039,7 @@
     - enables you to recreate call stacks from errant processes
 - log indexing: enbales rapid searching, is almost required in high-value production systems
 
-##### metrics aggregation patterns
+###### metrics aggregation patterns
 
 - understand whats going on at a system level
 - ensure the taxonomy is structured across all system components
@@ -1349,7 +1050,7 @@
     - trace alarms on dashboards are useful, that way oncall devs can see why they are being paged visually without having to run queries to figure out where issues are occuring
 - ensure you have runbooks for all alarms
 
-##### tracing patterns
+###### tracing patterns
 
 - the more call stacks span processes and networks, code traces are less valuable
 - you need to implement a higher level trace ID that can be delivered across processes & services
@@ -1358,7 +1059,7 @@
   - every log message should embed the trace Id through structured logging with common taxonomy
 - always use an open-standards approach (usually specify the trace ID in the request header)
 
-##### external configuration
+###### external configuration
 
 - critical when resources and services are moved across systems
 - its main benefits is operational: when you need to reconfigure resources & services, its great to have a single place to manage the runtime environment of microservices
@@ -1368,22 +1069,22 @@
 - configurations are generally injected into the service, or retrieved as part of the service startup routine
 - services should prioritized externalized values over embedded (default) values
 
-##### service discovery
+###### service discovery
 
 - mechanism for provider services to be found by consuming services in a dynamic runtime where service identifiers/locations/etc can and do change in response to system activity
 - a central location should should exist that can be queried to find what services exist to acocmplish each task in the system,
   - as services boot, they should advertise themselves to this datastore, describing their location and what services they offer
 
-### serverless
+#### serverless
 
 - not as extreme (implementation wise) as microservices
 - currently restricted by the available cloud technology for advanced use-cases
 - backend as a service: abstracts security (e.g. authnz), operational (e.g. logging), and database (e.g. RDS) implementation details away for the core application
 - function as a service: simple utilities callable over a network
 
-## decentralized
+#### decentralized
 
-### Peer-to-Peer
+##### Peer-to-Peer
 
 - extends the the client-server architecture, utilizing a decentralized system in which peers communicate with each other directly
   - abstraction X...

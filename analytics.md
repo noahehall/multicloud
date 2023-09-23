@@ -144,11 +144,6 @@
 
 - monitor the users, applications, and other services on your network to see if any are draining the network
 
-#### Application Network Performance Optimization
-
-- monitoring and troubleshooting of performance issues within applications
-- permits applications to evaluate the network API communication from the application perspective
-
 ### observability
 
 - the extent to which a system can be monitored
@@ -190,6 +185,27 @@
   - operations are measured in megabytes per second (MB/s).
 - block size: certain workloads benefit from a smaller or larger block size
   - file systems support non-default block sizes that you can specify when formatting the disk.
+
+#### network performance
+
+- its all about reducing latency: Anything that lengthens the time to get data to the user
+  - packet loss
+  - jitter: Variations in latency or time delay between packets
+  - bandwidth constraints
+  - inefficient protocol use
+  - physical distance
+- When reducing latency, consider
+  - physical distance between two nodes
+  - quality of routes
+  - request origin location in relation to data
+  - average packet delay under network cost constraints
+  - memory resources
+  - traffic patterns and available node resources
+
+##### Application Network Performance Optimization
+
+- monitoring and troubleshooting of performance issues within applications
+- permits applications to evaluate the network API communication from the application perspective
 
 ## Cost Management
 

@@ -11,6 +11,41 @@
 
 ### tools
 
+## Storage
+
+- cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
+- consistency: every read receives the most recent write/error
+- availability: every request receives a (non-error) response, without the guarantee that it contains the most recent write
+  - can be overcome via active replication: in the event of failure just switch to the redundant system
+- partition tolerance: the system continues to operate despite an arbitrary number of messages being dropped/delayed by the network between nodes
+- network partition failure: forces you to either cancel the operation & decrease availabilty but ensure consistency, or proceed with the operation and thus provide availability but risk consistency
+- garbage collection
+- compaction
+- node: generally a unit of storage, e.g. a single db instance including all the software running on the hardware
+- cluster: a group of nodes that work together; e.g. a 3 node cluster is the minimum for high availability
+- replication: the process of replicating data across nodes ina cluster
+- replication factor: The total number of replica Nodes across a given Cluster; the number of copies of a set of data, e.g. RF of 1, means theres 1 copy, RF 2 means there 2 identical copies, etc, generally you want 3
+- consistency level: how many nodes must validate a READ/WRITE before the request is considered successful
+  - e.g. at least 2 nodes must acknowledge an operation/query/whatever for it to be considered 200
+- big data: generally the dataset is so huge it cant be contained in a single node, thus a cluster of nodes are required
+
+### data fabric
+
+### data mesh
+
+- enables collection, integration and analysis of data from disparate systems concurrently in a single location
+
+### data lake
+
+- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
+  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
+
+### data warehouse
+
+- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
+
+  - i.e. you push filtered data into a warehouse, for later analysis
+
 - [Flexible IO: load tester](https://github.com/axboe/fio)
 - [io meter: load tester](http://www.iometer.org/doc/downloads.html)
 - [sysbench: load tester](https://github.com/akopytov/sysbench)
@@ -136,3 +171,39 @@
 - Unlike file storage, object storage does not differentiate between types of data
   - method of storing files in a flat address space based on attributes and metadata.
 - uses cases: data archiving, backup and recovery, rich media; systems requiring file versioning, file tracking, and file retention.
+
+# copypasta from some other file
+
+## Storage
+
+- cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
+- consistency: every read receives the most recent write/error
+- availability: every request receives a (non-error) response, without the guarantee that it contains the most recent write
+  - can be overcome via active replication: in the event of failure just switch to the redundant system
+- partition tolerance: the system continues to operate despite an arbitrary number of messages being dropped/delayed by the network between nodes
+- network partition failure: forces you to either cancel the operation & decrease availabilty but ensure consistency, or proceed with the operation and thus provide availability but risk consistency
+- garbage collection
+- compaction
+- node: generally a unit of storage, e.g. a single db instance including all the software running on the hardware
+- cluster: a group of nodes that work together; e.g. a 3 node cluster is the minimum for high availability
+- replication: the process of replicating data across nodes ina cluster
+- replication factor: The total number of replica Nodes across a given Cluster; the number of copies of a set of data, e.g. RF of 1, means theres 1 copy, RF 2 means there 2 identical copies, etc, generally you want 3
+- consistency level: how many nodes must validate a READ/WRITE before the request is considered successful
+  - e.g. at least 2 nodes must acknowledge an operation/query/whatever for it to be considered 200
+- big data: generally the dataset is so huge it cant be contained in a single node, thus a cluster of nodes are required
+
+### data fabric
+
+### data mesh
+
+- enables collection, integration and analysis of data from disparate systems concurrently in a single location
+
+### data lake
+
+- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
+  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
+
+### data warehouse
+
+- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
+  - i.e. you push filtered data into a warehouse, for later analysis

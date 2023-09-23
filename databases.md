@@ -315,3 +315,64 @@
 - distrubed caches
   - in-memory databases, that load data from disk and stores it in cache
   - caching refers to the process of storing a copy of data in an easily retrievable form to speed up responding to requests for that data
+
+# copypasta from some other file
+
+### Databases
+
+#### Relational
+
+- relational, structured
+- best for online analytical processing
+
+#### NewSql
+
+#### nosql
+
+- hierarchical, unstructured
+- best for online transaction processing at scale
+- scales out
+- main distinctions are data model driven: e.g. rdbms vs nosql vs wide-column etc
+- secondary distinctions is according to the cap thereom: usually a choice between C and A, as all are susceptible to P (failures)
+  - consistency: will every read receive the most recent write
+  - availability: will ever request receive a non-error response (but doesnt have to be the most recent write)
+  - partition tolerance: will the system operate in the face of network failures/msg loss
+
+##### key/val
+
+- data model
+  - key value pairs: each key has only one value
+  - fast queries, no need for a query language
+
+##### document store
+
+- data model
+  - data stored in documents of tagged elements (like a row in rdbms)
+
+##### column (oriented)
+
+- long list
+- data model
+- characteristics
+  - wheres SQL stores record by record (row by row), column oriented dbs store column by column
+  - improves storage and retrieval performance
+
+##### wide column store
+
+- long list
+- data model
+  - store data in columns
+  - related columns are grouped into tables (column families)
+- characteristics
+  - supports large numbers of dynamic columns:
+  - aka 2 dimensional key value stores
+
+##### graph
+
+- long list
+- data model
+  - use nodes & edges to store data
+
+##### multi-model
+
+- go for the native multi models, and not the ones enhanced with extensions/plugins/etc (timescale is dope tho)
