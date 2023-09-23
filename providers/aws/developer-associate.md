@@ -2,8 +2,6 @@
 
 - last updated in Q4/2023 for version 1.0 DVA-C02
 - bookmark:
-  - Block Storage Knowledge Badge Assessment
-    - ebs deep dive performance > Choosing the Best Amazon EC2 Instance for Your Workload
   - Exam Prep Official Practice Question Set
   - take the exam
     - [offical online practice exam](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14196/aws-certified-developer-associate-official-practice-exam-dva-c02-english)

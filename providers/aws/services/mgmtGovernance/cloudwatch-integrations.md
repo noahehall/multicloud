@@ -134,9 +134,20 @@
   - CPUUtilization
   - NetworkinIn
   - NetworkOut
-- detailed monitoring: apps running on EC2 can post metrics every minute (instead of every 5 with basic monitoring)
+- burstable metrics
+  - Baseline utilization %: (accrued credits/number of vCPUs)/60 minutes
+  - CPUCreditUsage: CPU credits spent during the measurement period.
+  - CPUCreditBalance: CPU credits that an instance has accrued. This balance is depleted when the CPU bursts and CPU credits are spent more quickly than they are earned.
+  - CPUSurplusCreditBalance: The number of surplus CPU credits spent to sustain CPU utilization when the - CPUCreditBalance value is zero.
+  - CPUSurplusCreditsCharged: The number of surplus CPU credits exceeding the maximum number of CPU credits that can be earned in a 24-hour period, thus attracting an additional charge.
+- common alarms
+  - when your burstable credits fall below a specific threshold.
 
-### enhanced networking:
+### detailed monitoring
+
+- apps running on EC2 can post metrics every minute (instead of every 5 with basic monitoring)
+
+### enhanced networking
 
 - uses single root I/O virtualization (SR-IOV) to provide high-performance networking capabilities on supported instance types
   - requires the cloudwatch agent to be installed
@@ -183,8 +194,28 @@
 - common metrics
   - bandwidth, throughput, latency, VolumeReadBytes, VolumeWriteBytes, VolumeReadOps, VolumeWriteOps, VolumeTotalReadTime, VolumeTotalWriteTime
   - VolumeThroughputPercentage, VolumeConsumedReadWriteOps
+- troubleshooting metrics
+  - check i/o burst balance
+  - Estimates the IOPS requirement by workload
+    - Find your primary data volume's VolumeReadOps and VolumeWriteOps metrics
+    - Use the CloudWatch Sum statistic to get the peak levels of VolumeReadOps and VolumeWriteOps
+      - volume read ops + volume write ops
+    - estimate how many IOPS you need
+      - divide the total from the previous step by the number of seconds in the measurement interval
+      - e.g. 936,000 / 5 minutes (or 300 seconds) = 3,120 IOPS
 - agent metrics
   - `disk_{total,used,used_percent,free}`
+
+### Micro-bursting
+
+- occurs when an EBS volume "bursts" high IOPS or throughput for significantly shorter periods than the collection period
+- CloudWatch monitors EBS volumes' IOPS (op/s) and throughput (byte/s) by collecting samples every minute for most volumes
+  - thus your application appears to be throttle but cloudwatch isnt reporting as such because it cant see it
+  - Because the volume bursts high IOPS or throughput for a shorter time than the collection period
+- remediation
+  - Monitor CloudWatch's VolumeIdleTime metric to identify possible micro-bursting.
+  - Confirm micro-bursting using an OS-level tool, such as iostat.
+  - Prevent micro-bursting by changing your volume size or type to accommodate your applications.
 
 ## FSx
 

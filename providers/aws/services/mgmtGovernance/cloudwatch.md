@@ -31,6 +31,7 @@
 - [metrics: by service](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/aws-services-cloudwatch-metrics.html)
 - [metrics: intro](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html)
 - [metrics: using metric math](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/using-metric-math.html)
+- [alarms: composite](https://aws.amazon.com/blogs/mt/improve-monitoring-efficiency-using-amazon-cloudwatch-composite-alarms-2/)
 
 ### api
 

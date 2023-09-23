@@ -1,17 +1,22 @@
 # Storage
 
-- Network File System: FNS; generally linux based systems
-- Server Message Block: SMB; generally windows
-- SAN: storage area networks
-- IOPS: input/output operations per second
-- R/W patterns
-  - Worm: write once, read many: for data with heavy reads
+- theres some
+  - copypasta at the bottom
+  - duplication in this, databases, and distributedSystems files
 
 ## links
 
+- [RAID](https://en.wikipedia.org/wiki/Standard_RAID_levels)
+
 ### tools
 
-## Storage
+- [Flexible IO: load tester](https://github.com/axboe/fio)
+- [io meter: load tester](http://www.iometer.org/doc/downloads.html)
+- [sysbench: load tester](https://github.com/akopytov/sysbench)
+- [oracle orion: load tester](https://docs.oracle.com/cd/E18283_01/server.112/e16638/iodesign.htm#BABFCFBC)
+- [iostat](https://www.redhat.com/sysadmin/io-reporting-linux)
+
+## basics
 
 - cap theorem: any distributed data store can only provide 2 of three guarantees: consistency, availability, and partition tolerance; since every DB is susciptible to partition failure, its really a choice between consistency and availability
 - consistency: every read receives the most recent write/error
@@ -29,29 +34,34 @@
   - e.g. at least 2 nodes must acknowledge an operation/query/whatever for it to be considered 200
 - big data: generally the dataset is so huge it cant be contained in a single node, thus a cluster of nodes are required
 
-### data fabric
+### protocols
 
-### data mesh
+- Network File System: FNS; generally linux
+- Server Message Block: SMB; generally windows
+- SAN: storage area networks
 
-- enables collection, integration and analysis of data from disparate systems concurrently in a single location
+### R/W patterns
 
-### data lake
+- determine whether your workload is random or sequential via monitoring graphs
+  - The more sequential your workload is, the more bandwidth it will consume and the larger your average read/write sizes will be as reported in the graphs.
+- HDD volumes: the seek head needs to move across the various areas of the spinning disk to access the blocks
+  - If the blocks are randomly scattered, then the head must move back and forth to the different blocks, creating latency.
+- SSD volumes: sequential write operations comprise a number of simultaneous individual write operations to distinct data cells.
 
-- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
-  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
+#### Worm
 
-### data warehouse
+- write once, read many: for data with heavy reads
 
-- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
+#### random:
 
-  - i.e. you push filtered data into a warehouse, for later analysis
+- data is read or written from data scattered around the storage medium
+- If there's an open block, a small I/O operation can write to it
 
-- [Flexible IO: load tester](https://github.com/axboe/fio)
-- [io meter: load tester](http://www.iometer.org/doc/downloads.html)
-- [sysbench: load tester](https://github.com/akopytov/sysbench)
-- [oracle orion: load tester](https://docs.oracle.com/cd/E18283_01/server.112/e16638/iodesign.htm#BABFCFBC)
+#### sequential:
 
-## Consideration
+- data is read or written from long contiguous sections.
+
+## Considerations
 
 - characteristics that will lead you toward the best storage solution
   - Type of access method (block, file, or object)
@@ -105,6 +115,59 @@
   - Snapshots can consume more space than your actual data
   - systems require additional space for operation overhead, especially for write operations.
 - actual: business requirements + allocated:
+
+### RAID
+
+- redundant array of independent disks
+- whenever an application or workload needs more performance from the volumes than any single volume can provide.
+- use cases
+  - can increase your volume size
+  - improve performance,
+  - provide additional fault tolerance for your data.
+- There are seven types/levels of RAID 0 -> 6:
+  - Each having a different disk configuration, data layout and parity pattern, and each type addresses different performance needs
+  - Both RAID 3 and RAID 4 were replaced by RAID 5.
+
+#### raid 0 (stripe set or striped volume)
+
+- splits ("stripes") data evenly across two or more disks, without parity information, redundancy, or fault tolerance.
+- the failure of one drive will cause the entire array to fail; as a result of having data striped across all disks, the failure will result in total data loss
+- use cases
+  - increase performance,
+  - create a large logical volume out of two or more physical disks
+
+#### raid 1 (mirror)
+
+- consists of an exact copy (or mirror) of a set of data on two or more disks
+- offers no parity, striping, or spanning of disk space across multiple disks, since the data is mirrored on all disks belonging to the array, and the array can only be as big as the smallest member disk
+- use cases
+  - read performance or reliability is more important than write performance or the resulting data storage capacity.
+
+#### raid 2
+
+- rarely used in practice
+- stripes data at the bit (rather than block) level, and uses a Hamming code for error correction
+
+#### raid 3
+
+- rarely used in practice
+- consists of byte-level striping with a dedicated parity disk.
+
+#### raid 4
+
+- consists of block-level striping with a dedicated parity disk
+- provides good performance of random reads, while the performance of random writes is low due to the need to write all parity data to a single disk
+
+#### raid 5
+
+- consists of block-level striping with distributed parity. Unlike in RAID 4, parity information is distributed among the drives
+- requires that all drives but one be present to operate. Upon failure of a single drive, subsequent reads can be calculated from the distributed parity such that no data is lost
+
+#### raid 6
+
+- extends RAID 5 by adding another parity block; thus, it uses block-level striping with two parity blocks distributed across all member disks.[28]
+- does not have a performance penalty for read operations,
+- does have a performance penalty on write operations because of the overhead associated with parity calculations.
 
 ## storage types
 

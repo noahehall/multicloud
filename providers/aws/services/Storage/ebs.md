@@ -9,9 +9,11 @@
 
 ## links
 
-- [api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
+- [AAA api reference](https://docs.aws.amazon.com/ebs/latest/APIReference/Welcome.html)
+- [benchmarking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/benchmark_procedures.html)
 - [concepts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/block-device-mapping-concepts.html)
 - [data lifecycle manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html)
+- [designing for performance VIDEO](https://www.youtube.com/watch?v=2wKgha8CZ_w)
 - [dlm: landing page](https://aws.amazon.com/ebs/data-lifecycle-manager/)
 - [ec2: volume limits](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/volume_limits.html)
 - [ecs: using volumes](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-using-volumes.html)
@@ -19,23 +21,27 @@
 - [eks: EBS CSI driver](https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html)
 - [eks: managing EBS CSI Addon](https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi-self-managed-add-on.html)
 - [faq](https://aws.amazon.com/ebs/faqs/)
+- [i/o characteristics](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-io-characteristics.html)
 - [intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html)
 - [landing page](https://aws.amazon.com/ebs/?did=ap_card&trk=ap_card)
 - [monitoring](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/monitoring-volume-status.html)
-- [multi attach](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html)
+- [optimize provisioned iops](https://aws.amazon.com/premiumsupport/knowledge-center/optimize-ebs-provisioned-iops/)
+- [quotas](https://docs.aws.amazon.com/general/latest/gr/ebs-service.html)
+- [raid](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/raid-config.html)
 - [snapshots: copy](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-copy-snapshot.html)
 - [snapshots: crash consistent](https://aws.amazon.com/blogs/storage/taking-crash-consistent-snapshots-across-multiple-amazon-ebs-volumes-on-an-amazon-ec2-instance/)
 - [snapshots: creating](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-creating-snapshot.html)
 - [snapshots: deleting](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-deleting-snapshot.html)
-- [i/o characteristics](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-io-characteristics.html)
-- [benchmarking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/benchmark_procedures.html)
+- [snapshots: FSR](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ebs-fast-snapshot-restore.html)
+- [volume: monitoring](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/monitoring-volume-status.html)
+- [volumes: elastic](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-modify-volume.html)
+- [volumes: initialization](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/ebs-initialize.html)
+- [volumes: multi attach](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html)
+- [volumes: types](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html)
 
 ## best practices
 
 - ensure your taking regular snapshots, and removing old snapshots
-- With Elastic Volumes,
-  - volume sizes can only be increased within the same volume
-  - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
 - use Snapshots with DLM lifecycle policies to back up your data to s3
 - logically separate
   - backup data from your EBS volumes.
@@ -63,6 +69,14 @@
   - Required minimum sustained IOPS
   - IOPS-to-volume capacity ratio
 - Monitor the read/write access of EBS volumes to determine if throughput is low.
+- perf recommendations
+  - For maximum consistency, a Provisioned IOPS volume must maintain an average queue depth of one for every 1000 provisioned IOPS in a minute (rounded to the nearest whole number).
+    - e.g. for a volume provisioned with 3000 IOPS, the queue depth average must be 3.
+  - By creating a RAID 0 array, you can achieve a higher level of performance for a file system than you can provision on any single EBS volume.
+  - use EBS optimized instances
+  - consider
+    - using additional non-root EBS volumes for your applications, or for the different functions of a single application.
+    - using the root volume for the operating system only.
 
 ### anti patterns
 
@@ -252,6 +266,9 @@
   - expand the size of a volume
   - move volumes across Availability Zones
   - backup and retention
+- There is a significant increase in latency when you first access each block of data on a new EBS volume that was created from a snapshot.
+  - initialization: Access each block before putting the volume into production
+  - fast snapshot restore: does this for you; see below
 
 #### consistency
 
@@ -374,9 +391,19 @@
     - The maximum credit bucket size is 10.
     - credits are not shared between snapshots
 
+### RAID
+
+- In traditional on-premises data centers, RAID arrays write data across multiple disks.
+  - When used with Amazon EBS, RAID writes across multiple volumes
+- is accomplished at the software level, use any RAID configuration supported by the operating system for your instance
+- any RAID level is supported but only RAID 0 is recommended
+- Some instance types can drive more I/O throughput than what you can provision for a single EBS volume.
+  - join multiple volumes together in a RAID 0 configuration to use the available bandwidth for these instances.
+
 ### monitoring
 
 - detect issues with volume inconsistencies, space utilization, and performance bottlenecks. Visibility into resource use helps when optimizing volume sizes and determining storage capacity needs.
+- I/O characteristics drive the performance behavior of the volume
 
 #### volume status checks
 
@@ -442,6 +469,7 @@
 - DeleteOnTermination: controls the default behavior of EBS deletion when associated EC2 instances are terminated
 - ec2
   - volume limits
+    - e.g. elastic volume aggregated storage
   - ebs & ebs types are compatible
   - ebs volumes with market place codes
     - volume can only be attached to a stopped instance.
@@ -473,6 +501,29 @@
 - linux instances: some support up to 40 volumes
 - Using Multi-Attach with a standard file system can result in data corruption or loss and should not be used with production workloads
   - use a clustered file system to ensure data resiliency and reliability for production workloads.
+
+#### elastic volumes
+
+- enable runtime modifications of volume characteristics without detaching
+  - All current-generation ec2 instances
+    - previous-generation instances: C1, C3, CC2, CR1, G2, I2, M1, M3, and R3.
+  - unsupported instance types: you must stop the instance, modify the volume, and then restart the instance.
+    - then check the file system size to see if your instance recognizes the larger volume space.
+    - else you must extend the file system of the device so that your instance can use the new space.
+- check the docs for other requirements: theres some specific to windows/linux
+  - increase the volume size, change the volume type, or adjust the performance
+    - volume sizes can only be increased within the same volume
+      - to decrease a volume size, you must copy the EBS volume data to a new smaller EBS volume.
+    - new volume size can't exceed the supported capacity of its file system and partitioning scheme
+  - After modifying a volume, you must wait at least six hours and ensure that the volume is in the in-use or available state before you can modify the same volume.
+- modification life cycle:
+  - modifying:
+    - Size changes usually take a few seconds to complete and take effect after the volume has transitioned to the optimizing state.
+    - Performance (IOPS) changes can take from a few minutes to a few hours to complete and depend on the configuration change being made.
+      - up to 24 hours for a new configuration to take effect
+      - e.g. a fully used 1-TiB volume takes about 6 hours to migrate to a new performance configuration.
+  - optimizing: volume performance is in between the source and target configuration specifications.
+  - completed:
 
 ### AMI
 
@@ -524,3 +575,17 @@
 - Trusted Advisor will automatically find and report unattached volumes
 
 ### cloudtrail
+
+### lambda
+
+### step functions
+
+- ondemand performance tuning: send Systems Manager commands that run OS-level scripts
+- CloudWatch to monitor the capacity of the volume, you can configure a series of Step Functions
+  - run checks on your EC2 instances,
+  - snapshot the volume as a temporary backup,
+  - expand the volume and extend the file system,
+  - verify the successful status of the volume and file system extension,
+  - then notify your IT staff when the process is complete.
+
+### Tags

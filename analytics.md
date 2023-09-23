@@ -179,7 +179,9 @@
   - used to measure the number of operations at a given type of workload and operation size can occur per second
   - generally measured in KiB, and the underlying drive technology determines the maximum amount of data that a volume type counts as a single I/O.
     - SSD vs HDD
-      - ssd: handle small or random I/O operations more efficiently than HDD volumes.
+      - ssd: deliver consistent performance whether an I/O operation is random or sequential.
+        - handle small or random I/O operations more efficiently than HDD volumes.
+      - hdd: deliver optimal performance only when I/O operations are large and sequential.
 - throughput:how much data (in MiB/s) you can read/write per second when reading large sequential data files.
   - Large files, such as video files, must be read from beginning to end.
   - operations are measured in megabytes per second (MB/s).

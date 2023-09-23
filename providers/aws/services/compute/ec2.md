@@ -4,23 +4,25 @@
 
 ## my thoughts
 
-- any service backed by ec2 will have the slowest elasticity
+- any service backed by ec2 will have the slowest elasticity relative to its serverless counterpart
 
 ## links
 
-- [landing page](https://aws.amazon.com/ec2/?did=ap_card&trk=ap_card)
-- [instance types](https://aws.amazon.com/ec2/instance-types/)
 - [AMI: intro](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html)
 - [AMI: with EBS](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html)
+- [concepts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+- [hibernation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html)
+- [instance store](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html)
+- [instance types: burstable](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/burstable-credits-baseline-concepts.html)
+- [instance types: ebs optimized](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html)
+- [instance types: intro](https://aws.amazon.com/ec2/instance-types/)
+- [landing page](https://aws.amazon.com/ec2/?did=ap_card&trk=ap_card)
+- [networking: elastic ips](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html)
+- [networking: network interface best practices](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/best-practices-for-configuring-network-interfaces.html)
+- [networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html)
 - [pricing: reserved instances](https://aws.amazon.com/ec2/pricing/reserved-instances/pricing/)
 - [pricing: savings plans](https://aws.amazon.com/savingsplans/)
 - [pricing: spot instances](https://aws.amazon.com/ec2/spot/?did=ap_card&trk=ap_card)
-- [hibernation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/hibernating-prerequisites.html)
-- [instance store](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/InstanceStorage.html)
-- [networking: elastic ips](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html)
-- [networking](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-networking.html)
-- [networking: network interface best practices](https://docs.aws.amazon.com/AWSEC2/latest/WindowsGuide/best-practices-for-configuring-network-interfaces.html)
-- [concepts](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
 
 ## best practices
 
@@ -45,10 +47,11 @@
     - if you need the entire server for yourself
     - but you can also reserve a dedicated host for cost saving
 - dont forget about the user data script
-- high availability requires at least 2 ecs across distinct availability zones
 - pick the right block storage type
   - ephemeral storage: use instance store
   - persistent storage: use ebs
+- Many general purpose workloads are not busy on average, and do not require a high level of sustained CPU performance.
+  - using burstable instance types could save you 15% by switching to geico
 
 ### anti patterns
 
@@ -57,6 +60,24 @@
 ### pricing
 
 - billed for running instances & any data stored on EBS volumes
+- ebs optimization: pay an additional low, hourly fee for the dedicated capacity.
+
+#### burstable
+
+- pay only for baseline CPU plus any additional burst CPU usage resulting in lower compute costs.
+- CPU credits: governs the baseline utilization and ability to burst
+  - the only instance types that use credits for CPU usage.
+  - accrued credits: credits earned - credits spent
+    - can be used later to burst above baseline CPU utilization.
+- baseline: the level at which the CPU can be used for a net credit balance of zero
+- the CPU utilization, relative to baseline, credits earned are
+  - CPU < baseline: you're earning accrued credits
+  - CPU == baseline: net credit balance of 0
+  - CPU > baseline: instance uses the accrued credits to burst above baseline CPU utilization based on the burst configuration
+    - standard: until no accreed credits remain
+    - unlimited: spends surplus credits to burst up to 24 hours
+      - if surplus credits arent earned back within 24 hours
+        - billed for the additional usage at a flat additional rate per vCPU-hour.
 
 #### on demand
 
@@ -141,28 +162,71 @@
 
 ### instance (hardware) types
 
-- determines the blend of hardware capabilities:
+- determines the blend of hardware capabilities
   - compute
   - memory
   - network resources
-- optimizations
-  - general purpose: balanced hardware capabilities
-    - apps that use resources in equal/dynamic proportions e.g. a webserver
-  - compute: high perf processors
-    - anything compute intensive, e.g. batch processing, media, web servers, machine learning, etc
-  - memory: processing large data sets in memory
-    - e.g. databases, in memory caches, real-time data anlytics
-  - accelerated: use hardware accelerators (co-processors)
-    - e.g. scientific computing, finance, graphics processing, pattern matching, etc
-  - storage: high performance R/W to large data sets on local storage
-    - e.g. nosql dbs, in-memory databases, transactional dbs, data warehousing, search, analytics
-  - HPC: high performance computing
-    - e.g. large/complex simulations and deep learning workloads
+    - bandwidth allocation
+    - packet per second capabilities
+    - abcd
+- burstable: provide a baseline level of CPU utilization with the ability to burst CPU utilization above the baseline level.
+- fixed performance: provide fixed CPU resources; applications such as video encoding, high-volume websites or HPC applications
 - instance family abreviations, e.g. t#, c#, m#, etc
   - #: indicates the generation of the instance
   - m: memory
   - g: graphics
   - c: compute
+  - t: burstable
+
+#### general purpose
+
+- balanced hardware capabilities
+- apps that use resources in equal/dynamic proportions e.g. a webserver
+
+##### burstable
+
+- provide you with the most cost-effective way to run a broad spectrum of general purpose applications that have a low-to-moderate CPU usage but require full access to very fast CPUs when they need them
+- large-scale micro-services, web servers, small and medium databases, data logging, code repositories, virtual desktops, development and test environments, and business-critical applications.
+
+#### compute
+
+- high perf processors
+- anything compute intensive, e.g. batch processing, media, web servers, machine learning, etc
+
+#### memory
+
+- processing large data sets in memory
+- e.g. databases, in memory caches, real-time data analytics
+
+#### accelerated
+
+- use hardware accelerators (co-processors)
+- e.g. scientific computing, finance, graphics processing, pattern matching, etc
+
+#### storage
+
+- high performance R/W to large data sets on local storage
+- e.g. nosql dbs, in-memory databases, transactional dbs, data warehousing, search, analytics
+
+#### HPC: high performance computing
+
+- e.g. large/complex simulations and deep learning workloads
+
+#### ebs optimized
+
+- provides the best performance for your EBS volumes.
+- use an optimized configuration stack and provide additional, dedicated bandwidth and capacity for EBS I/O.
+- minimizes contention between Amazon EBS I/O and other traffic from instances
+
+##### ebs-optimized by default
+
+- no need to enable EBS optimization and no effect if you disable EBS optimization.
+- an instance should provide more dedicated EBS throughput than your application needs else, the connection between EBS and EC2 can become a performance bottleneck.
+
+##### ebs-optmized support
+
+- EBS optimization is not enabled by default
+- enable when you launch these instances or after they are running.
 
 ### instance size
 
@@ -172,7 +236,11 @@
 
 - [see markdown file](../networkingContentDelivery/securitygroups.md)
 
-### Instance Store
+### local storage
+
+- also check the ebs file for persistent storage
+
+#### Instance Store (ephemeral)
 
 - consists of one or more volumes exposed as block devices
 - ephemeral storage used as an internal, directly attached ephemeral data volume with submillisecond latencies; e.g. a laptops internal harddrive
@@ -225,6 +293,8 @@
 #### Elastic Network Intefaces
 
 - are limited to servicing 1,024 requests simultaneously. Any requests beyond 1,024 are reported as spillover.
+
+### security
 
 ## considerations
 
@@ -280,8 +350,10 @@
 
 ### elastic block storage
 
-- [see markdown file](../Storage/elasticblockstore.md)
+- see markdown file
 
 ### ec2 autoscaling
 
-- [see markdown file](./ec2-autoscaling.md)
+- see markdown file
+
+### cloudwatch

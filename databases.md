@@ -316,7 +316,22 @@
   - in-memory databases, that load data from disk and stores it in cache
   - caching refers to the process of storing a copy of data in an easily retrievable form to speed up responding to requests for that data
 
-# copypasta from some other file
+### data fabric
+
+### data mesh
+
+- enables collection, integration and analysis of data from disparate systems concurrently in a single location
+
+### data lake
+
+- allows storing yuuuge amounts of raw, structured, and/or unstructured data in a single repository enabling comprehensive analysis from a single location
+  - i.e. you push any and everything into a data lake, whether or not the data has a purpose
+
+### data warehouse
+
+- allows storing yuuuge amounts of structured, filtered data that has already been processed for a specific purpose (like data already in use by app/biz)
+
+  - i.e. you push filtered data into a warehouse, for later analysis
 
 ### Databases
 

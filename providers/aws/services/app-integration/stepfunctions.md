@@ -20,6 +20,7 @@
 - [lambda service exceptions](https://docs.aws.amazon.com/step-functions/latest/dg/bp-lambda-serviceexception.html)
 - [limits overview](https://docs.aws.amazon.com/step-functions/latest/dg/limits-overview.html)
 - [api: landing page](https://docs.aws.amazon.com/step-functions/latest/apireference/Welcome.html)
+- [ebs: automating volume resizing](https://aws.amazon.com/blogs/storage/automating-amazon-ebs-volume-resizing-with-aws-step-functions-and-aws-systems-manager/)
 
 ### Tools
 
