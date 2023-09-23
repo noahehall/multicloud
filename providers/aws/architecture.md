@@ -561,7 +561,10 @@
 
 ## Analytics
 
-### Monitoring and troubleshooting
+- in AWS
+  - tagging resources is foundational to all analytical services
+
+### Observability & Monitoring
 
 - in AWS
   - cloudwatch: core supporting service within AWS which provides metrics, logs, and event management services
@@ -582,10 +585,6 @@
     - can send the traffic to out-of-band security and monitoring appliances for further analysis
   - VPC Reachability Analyzer: network diagnostics tool that troubleshoots reachability between two endpoints in an Amazon VPC, or within multiple Amazon VPCs.
   - AWS Transit Gateway Network Manager: lets you to centrally manage your networks that are built around transit gateways.
-
-### Tags
-
-- tagging resources is foundational to all analytical services
 
 ## Databases
 

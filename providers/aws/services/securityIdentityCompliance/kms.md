@@ -119,12 +119,42 @@
 ### cloudtrail
 
 - All requests to use any KMS key is logged in cloudtrail
+- encrypts all log files delivered to your specified Amazon S3 bucket using Amazon S3 server-side encryption (SSE).
+- Optionally, add a layer of security by encrypting the log files with AWS KMS keys
+  - S3 automatically decrypts your log files if you have decrypt permissions.
 
 ### s3
 
-- server side encryption
 - KMS generates a unique key to encrypt each object transparently to the user
   - the data key is encrypted under a master key provided by aws/user
+- default encryption
+  - uses SSE-s3 or SSE-kms
+- custom encryption: when the object PUT request header contains a different encryption method
+  - instead of using the buckets default encryption, it will use whatevers in the header
+- bucket keys for SSE-KMs: configure your bucket to use an S3 Bucket Key for SSE-KMS
+  - KMS generates a bucket-level key that is used to create unique data keys for new objects that you add to the bucket
+    - instead of making an api request from s3 to KMS each time
+
+#### at rest
+
+- three mutually exclusive server side encryption options, depending on how you choose to manage the encryption keys.
+- S3-managed Keys: SSE-S3; the base level of encryption for every bucket and all new objects
+  - each object encrypts with a unique key
+  - encrypts the key itself with a master key that it regularly rotates
+  - SS3-S3 keys are managed within S3, but i think it all eventually uses kms
+- KMS keys: SSE-KMS; uses customer Master Keys (CMKs) Stored in KMS
+  - additional benefits and charges for using this service compared with SSE-S3
+  - separate permissions for the use of a CMK that provides added protection against unauthorized access of your objects in Amazon S3
+  - an audit trail showing when and who used the CMK
+  - create and manage customer managed CMKs, or use AWS managed CMKs that are unique to you, your service, and your Region.
+- Customer-provided keys: SSE-C;
+  - you manage the encryption keys
+  - S3 manages the encryption before writing to disk, and decryption on object access
+
+#### in transit
+
+- either HTTPS or client-side encryption.
+- use an S3 bucket policy to force the use of HTTPS requests.
 
 ### EBS
 
