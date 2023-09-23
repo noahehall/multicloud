@@ -3,7 +3,7 @@
 - last updated in Q4/2023 for version 1.0 SSA-C03
 - bookmark:
   - network learning plan: blah
-    - Application Load Balancer
+    - Application Load Balancer > Introduction
     - Gateway Load Balancer
     - Network Load Balancer
     - Amazon API Gateway - Troubleshooting

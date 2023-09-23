@@ -2,13 +2,8 @@
 
 - Centrally manage your environment as you scale your AWS resources
 - group accounts into logical categories
-- use cases
-  - manage access, share resources and consolidate billing/audit at the organization level
-  - nest organizations to form hierarchies
 
 ## my thoughts
-
-- check control towe for a more managed approach if you can afford it
 
 ## links
 
@@ -38,6 +33,8 @@
 
 ## features
 
+- manage access, share resources and consolidate billing/audit at the organization level
+- nest organizations to form hierarchies
 - programmatically create new AWS accounts for resources and teams
 - simplify user-based authnz for teams and users
 - manage and optimize costs across accounts and resources
@@ -53,6 +50,8 @@
   - see link up top
 
 ### pricing
+
+- shiz free yo
 
 ## basics
 
@@ -75,7 +74,7 @@
 - Deployments OU: The Deployments OU contains resources and workloads that support how you build, validate, promote, and release changes to your workloads.
 - Transitional OU: The Transitional OU is intended as a temporary holding area. It is used for existing accounts and workloads that you move to your organization before you formally integrate them into your more standardized areas of your AWS environment structure.
 
-##### Account:
+##### Account
 
 - A standard AWS account that contains your AWS resources and the identities that can access those resources
 
@@ -90,7 +89,7 @@
   - at the account level
 - Configure integration with supported AWS services to provide service functionality across all accounts in the organization.
 
-###### member accounts:
+###### member accounts
 
 - make up the rest of the accounts in an organization.
 - An account can be a member of only one organization at a time.
@@ -128,7 +127,7 @@
   - backup policies
   - tag policies
 - policy inheritance: attach a policy to:
-  - the organization roo: all OUs and accounts in the organization inherit that policy.
+  - the organization root: all OUs and accounts in the organization inherit that policy.
   - a specific OU: accounts that are directly under that OU or any child OU inherit the policy.
   - a specific account: it affects only that account.
 

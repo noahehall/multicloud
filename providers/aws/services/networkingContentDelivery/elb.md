@@ -1,18 +1,21 @@
-# elastic load balancing ELB
+# elastic load balancing (ELB)
 
 - distribute network traffic across EC2, containers, ip address and lambda functions
 - its in the ec2 console
+- [ALB](./elb-alb.md)
+- [NLB](./elb-nlb.md)
+- [GLB](./elb-glb.md)
+- classic load balancer is kept in this file; shouldnt be used
 
 ## my thoughts
+
+- why tf is everything in the ec2 console
 
 ## links
 
 - [landing page](https://aws.amazon.com/elasticloadbalancing/?did=ap_card&trk=ap_card)
 - [user guide](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html)
-- [sticky sessions](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html)
-- [load balancer type comparisons](https://aws.amazon.com/elasticloadbalancing/features/#Product_comparisons)
-- [alb: authnz](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/listener-authenticate-users.html)
-- [glb: intro](https://aws.amazon.com/blogs/aws/introducing-aws-gateway-load-balancer-easy-deployment-scalability-and-high-availability-for-partner-appliances/)
+- [type comparisons](https://aws.amazon.com/elasticloadbalancing/features/#Product_comparisons)
 - [blue green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-create-loadbalancer-bluegreen.html)
 
 ## best practices
@@ -45,6 +48,7 @@
 ## basics
 
 - its a regional service, AWS manages provisioning and scaling across regions to meet demand
+- all elb types uses the same API, i.e. target groups, health checks, etc
 
 ### OSI Model
 
@@ -82,51 +86,6 @@
 - the first load balancer type
 - not recommended for use unless you have legacy services or applications that need the Classic Load Balancer.
 
-### application load balancer
-
-- layer 7 http/s/grpc
-- features
-  - route traffic based on request data e.g. paths, headers, hosts, etc
-  - send fixed responses directly to the client
-  - TLS offloading/termination
-  - user authnz: uses OpenID Connect (OIDC) and supports SAML, LDAP, microsoft active directory, etc
-  - rich metrics and logging
-  - sticky sessions with http cookies to send subsueqent requests to the save backend target
-- schemes
-  - internet facing: routes public requests
-  - internal: routes private ip requests to targets with private ips
-- target types: ip, instance, lambda
-
-### network load balancer
-
-- layer 4 tcp/udp/tls
-  - enable access to resources within a private vpc
-- features
-  - does not need to worry about the upper layer protocol and it is much faster
-  - tcp & UDP connections
-  - source IP preservation
-  - low latency
-  - sticky sessions
-  - automatically receives a static IP addr per availability zone subnet
-  - can assign a custom fixed elastic ip addr per availability zone subnet
-  - dns failover via route 53 to direct traffic to load balancer nodes in other zones
-
-### gateway laod balancer
-
-- mainly used to load balance requests to third party applications
-  - uses Gateway Load Balancer endpoints to securely exchange traffic across VPC boundaries.
-  - Gateway Load Balancer endpoint is a VPC endpoint that provides private connectivity between virtual appliances across VPCs
-- layer 3 gateway and layer 4 loadbalancer
-  - deploy scale and manage thirdparty appliances like firewalls, intrusion detection adn prevension systems, and deep packet inspection systems
-  - It listens for all IP packets across all ports and forwards traffic to the target group that's specified in the listener rule.
-  - It maintains stickiness of flows to a specific target appliance using 5-tuple (for TCP/UDP flows) or 3-tuple (for non-TCP/UDP flows).
-- features
-  - high availabilty routing to backends via health checks
-  - gateway load balancer endpoints
-  - integrated with cloudwatch metrics for monitoring
-  - deploy new appliances by selecting them from the aws marketplace
-  - private connectivity to itnernet gateways, VPCs and other resources over a private network
-
 ## considerations
 
 - scheme: either internet-facing oor internal
@@ -136,10 +95,3 @@
 - target group: depends on the type of target group youve selected
 
 ## integrations
-
-### EKS
-
-- ALB: managed by Ingress objects
-  - used with pods that are deployed to nodes or fargate
-- NLB: managed by LoadBalancer services
-  - used with pods deployed to EC2 IP and instance targets or farget IP targets

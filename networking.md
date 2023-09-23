@@ -616,6 +616,9 @@
 
 #### gRPC
 
+- uses HTTP/2 for transport and is becoming the protocol of choice for inter-service communications in microservices architectures
+- features like efficient binary serialization and support for numerous languages in addition to the inherent benefits of HTTP/2 like lighter network footprint, compression, and bi-directional streaming making it better than the legacy protocols like REST.
+
 #### tRPC
 
 # copypasta from some other file
