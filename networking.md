@@ -3,6 +3,17 @@
 - TODOs
   - theres a copypasta section you need to deal with at the very bottom
 
+## links
+
+- [Address Allocation for Private Internets](http://www.faqs.org/rfcs/rfc1918.html)
+- [networking: intro](https://web.stanford.edu/class/cs101/network-1-introduction.html)
+- [ip address & cidr range visualizer](https://cidr.xyz/)
+- [understanding ip addressing](https://www.ripe.net/about-us/press-centre/understanding-ip-addressing)
+
+### tools
+
+- [bpftrace: inspect syscalls](https://github.com/iovisor/bpftrace)
+
 ## basics
 
 - CSMA: carrier-sense multiple access

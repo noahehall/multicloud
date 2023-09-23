@@ -10,30 +10,36 @@
 
 ## links
 
-- blogs
-  - [krebs on security](https://krebsonsecurity.com/)
-  - [schneier on security](https://www.schneier.com/)
-- envs
-  - [kali linux](https://www.kapageli.org/)
-  - [caine](https://www.caine-live.net/)
-  - [blackbox](https://www.backbox.org/)
-  - [parrot](https://www.parrotsec.org/)
-  - [demon](https://www.demonlinux.com/)
-- tools
-  - [metasploit](https://www.metasploit.com/)
-  - [samurai](https://owasp.org/www-project-samuraiwtf/#SamuraiWTF_Project)
-  - [nessus](https://www.tenable.com/products/nessus)
-  - [portswigger](https://portswigger.net/burp)
-  - [wireshark](https://www.wireshark.org/)
-  - [cobalt strike](https://www.cobaltstrike.com/)
-  - [test browser compliance to web standards](http://acid3.acidtests.org/)
-  - wmap
-  - nmap
-  - [sans institut opensource](https://www.sans.org/cloud-security/tools/)
-  - [center for internet security](https://www.cisecurity.org/)
-    - TODO: review their prehardened OS images
-- stuff
-  - [checksums](https://en.wikipedia.org/wiki/Checksum)
+- [OWASP quick reference PDF](https://www.owasp.org/images/0/08/OWASP_SCP_Quick_Reference_Guide_v2.pdf)
+- [checksums](https://en.wikipedia.org/wiki/Checksum)
+
+### blogs
+
+- [krebs on security](https://krebsonsecurity.com/)
+- [schneier on security](https://www.schneier.com/)
+
+### envs
+
+- [kali linux](https://www.kapageli.org/)
+- [caine](https://www.caine-live.net/)
+- [blackbox](https://www.backbox.org/)
+- [parrot](https://www.parrotsec.org/)
+- [demon](https://www.demonlinux.com/)
+
+### tools
+
+- [metasploit](https://www.metasploit.com/)
+- [samurai](https://owasp.org/www-project-samuraiwtf/#SamuraiWTF_Project)
+- [nessus](https://www.tenable.com/products/nessus)
+- [portswigger](https://portswigger.net/burp)
+- [wireshark](https://www.wireshark.org/)
+- [cobalt strike](https://www.cobaltstrike.com/)
+- [test browser compliance to web standards](http://acid3.acidtests.org/)
+- wmap
+- nmap
+- [sans institut opensource](https://www.sans.org/cloud-security/tools/)
+- [center for internet security](https://www.cisecurity.org/)
+  - TODO: review their prehardened OS images
 
 ## best practices
 

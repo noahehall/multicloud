@@ -2,6 +2,11 @@
 
 - [also check the databases dir](./databases)
 
+## links
+
+- [cap theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+- [database transactions](https://en.wikipedia.org/wiki/Database_transaction)
+
 ## best practices
 
 - use purpose built dbs instead of general purpose
