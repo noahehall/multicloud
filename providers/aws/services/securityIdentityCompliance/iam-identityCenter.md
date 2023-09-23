@@ -1,6 +1,6 @@
 # Identity Center
 
-- central management of SSO access to multiple AWS accounts and business applications
+- central management of SSO access to multiple AWS accounts, active directory and business applications
 - successor to single sign-on
 
 ## my thoughts
@@ -32,16 +32,17 @@
 
 ## basics
 
-- logical workflow
-  - enable identity center: open the identity center console and follow the prompts
-    - it requires permissions to create service-linked roles with all accounts in your aws organization
-  - choose a directory: determines where identity center looks for users and groups that require aws access
-    - by default its the AWS Identity Center directory
-    - you can connect microsoft active directory, or any other SAML 2.0 IdP
-  - grant users in your connected directories access to one/more aws web consoles in specific AWS accounts within your organization
-    - access can also be granted to AWS/SAML Applications
-  - enable directory users access to the Identity Center User Portal
-    - they will see the AWS account icons' they've been given access to and the roles for each account they can use to sign in
+### initial setup
+
+- enable identity center: open the identity center console and follow the prompts
+  - it requires permissions to create service-linked roles with all accounts in your aws organization
+- choose a directory: determines where identity center looks for users and groups that require aws access
+  - by default its the AWS Identity Center directory
+  - you can connect microsoft active directory, or any other SAML 2.0 IdP
+- grant users in your connected directories access to one/more aws web consoles in specific AWS accounts within your organization
+  - access can also be granted to AWS/SAML Applications
+- enable directory users access to the Identity Center User Portal
+  - they will see the AWS account icons' they've been given access to and the roles for each account they can use to sign in
 
 ### Permission Sets
 

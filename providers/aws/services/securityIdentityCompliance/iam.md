@@ -19,8 +19,7 @@
 ### user guide
 
 - [AAA: getting started](https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html)
-- [AAAA policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html)
-- [AAAA security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [AAA security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 - [access history: finding unused credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html)
 - [access history: tightenting s3 permissions](https://aws.amazon.com/blogs/security/tighten-s3-permissions-iam-users-and-roles-using-access-history-s3-actions/)
 - [apigateway: authnz workflow](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-authorization-flow.html)
@@ -38,12 +37,17 @@
 - [identities](https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html)
 - [intro to IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html)
 - [mfa](https://aws.amazon.com/iam/details/mfa/)
+- [organizations: SCPs > AAA landing page](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+- [organizations: SCPs > examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
+- [organizations: SCPs > inheritance](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_inheritance_auth.html)
+- [organizations: SCPs > intro BLOG](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-in-aws-organizations/)
+- [organizations: SCPs > vpc sharing BLOG](https://aws.amazon.com/blogs/security/control-vpc-sharing-in-an-aws-multi-account-setup-with-service-control-policies/)
 - [policies: access](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
 - [signing aws api requests (sig v4)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html)
-- [step functions: advanced permissions](https://docs.aws.amazon.com/step-functions/latest/dg/concept-create-iam-advanced.html)
-- [ssm: profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
 - [ssm: iam](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-iam.html)
+- [ssm: profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
 - [ssm: service linked roles](https://docs.aws.amazon.com/systems-manager/latest/userguide/using-service-linked-roles.html)
+- [step functions: advanced permissions](https://docs.aws.amazon.com/step-functions/latest/dg/concept-create-iam-advanced.html)
 - [Tagging IAM resources](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html)
 - [testing iam policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
 - [tutorial: ABAC via tags](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html)
@@ -173,6 +177,7 @@
 #### service roles
 
 - iam roles that can be assumed by an AWS service
+- Service linked roles enable other AWS services to integrate each other
 - must include a trust policy
   - or (i think) sts assumeRole
 
@@ -267,9 +272,7 @@
 
 ##### Service Control Policies (SCPs) for AWS Organizations
 
-- restricts permissions for entities in an account, including the root user
-- specify the maximum permissions for an account, or a group of accounts, called an organizational unit (OU).
-- If you enable all features in an organization, then you can apply SCPs to any or all of your accounts
+- see the organizations section under integrations
 
 ##### Session Policies
 
@@ -456,7 +459,50 @@
 
 ### organizations
 
-- weird its kept in [managementGovernance dir](../mgmtGovernance/organizations.md)
+- policies specific to AWS organizations
+
+#### Policies
+
+- central control over the maximum available permissions for all accounts in your organization
+  - entities can access only what is allowed by both the AWS Organizations policies and IAM policies.
+- to create and attach a policy to your organization, you must configure that policy type for use.
+  - Turning on a policy type is a one-time task on the organization root
+- authorization policies
+  - service control policies
+- management policies
+  - AI services opt-out policies
+  - backup policies
+  - tag policies
+- policy inheritance: attach a policy to:
+  - the organization root: all OUs and accounts in the organization inherit that policy.
+  - a specific OU: accounts that are directly under that OU or any child OU inherit the policy.
+  - a specific account: it affects only that account.
+
+##### AI Opt-out Policies
+
+- control data collection for AWS AI services for all your organization's accounts.
+
+##### Backup Policies
+
+- centrally manage and apply backup plans to the AWS resources across your organization's accounts.
+
+##### Tag Policies
+
+- standardize the tags attached to the AWS resources in your organization's accounts.
+
+##### Service Control Policies
+
+- centralize & specify the maximum permissions for OUs and member accounts (including root user)
+  - i.e. SCP defines a guardrail, or sets limits, but doesnt grant any access
+- requires all organization features to be enabled
+- FYI
+  - do effect
+    - users (including root), roles in member accounts of the associated OU
+  - don't affect
+    - users or roles in the management account.
+    - esource-based policies directly
+    - any service-linked role.
+    - there are some exceptions to services specified in the docs
 
 ### STS
 

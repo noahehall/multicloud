@@ -2,6 +2,7 @@
 
 - Centrally manage your environment as you scale your AWS resources
 - group accounts into logical categories
+- a global service with a single endpoint that works from any and all AWS Regions
 
 ## my thoughts
 
@@ -14,11 +15,6 @@
 - [managing organization policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies.html)
 - [managing orgs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org.html)
 - [recommended OUs](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/recommended-ous.html)
-- [service control policies: examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
-- [service control policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
-- [service control policies: inheritance](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_inheritance_auth.html)
-- [service control policies: organizations blog](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-in-aws-organizations/)
-- [service control policies: vpc sharing blog](https://aws.amazon.com/blogs/security/control-vpc-sharing-in-an-aws-multi-account-setup-with-service-control-policies/)
 
 ## best practices
 
@@ -33,16 +29,12 @@
 
 ## features
 
-- manage access, share resources and consolidate billing/audit at the organization level
-- nest organizations to form hierarchies
+- programmatically manage authnz, share resources and consolidate billing/audit at the organization level
 - programmatically create new AWS accounts for resources and teams
-- simplify user-based authnz for teams and users
-- manage and optimize costs across accounts and resources
 - centrally secure and audit environments across all acounts
 - combine your existing accounts into an organization to manage the accounts centrally.
 - Consolidated billing: use the management account of your organization to consolidate and pay for all member accounts
 - hierarchical grouping of accounts: group your accounts into organizational units (OUs) and attach different access policies to each OU.
-  - nest OUs within other OUs to a depth of five levels to provide flexibility in how you structure your account groups.
 - Policies: create and use different types of policies to manage permissions and control actions within individual accounts and groups of account
 - extending IAM authnz: giving you control over what users and roles in an account or a group of accounts can do
   - permissions allowed in an account are a combination of those allowed at the account level by AWS Organizations and the IAM permissions explicitly granted at the user or role level.
@@ -59,20 +51,25 @@
 
 - entity that you create to consolidate your AWS accounts so that you can administer them as a single unit
   - To fully manage accounts, turn on all features option for your organization
+- nest OUs within other OUs to a depth of five levels
+- each level inherits the policies of the parents
 
 #### organizational unit: OU;
 
 - Root: the parent or top-level OU for other OUs and account
-- Security OU: The Security OU is a foundational OU. Your security organization should own and manage this OU in addition to any child OUs and associated accounts.
-- Infrastructure OU: The Infrastructure OU, another foundational OU, is intended to contain shared infrastructure services. Your infrastructure teams should own and manage this OU, any child OUs, and associated accounts.
-- Sandbox OU: The Sandbox OU contains accounts that your developers can generally use to explore and experiment with AWS services and other tools and services, subject to your acceptable use policies. These environments are typically disconnected from your internal networks and internal services.
-- Workloads OU: The Workloads OU is intended to house most of your business-specific workloads, including both production and non-production environments. These workloads can be a mix of commercial off-the-shelf (COTS) applications and your own internally developed custom applications and data services. Workloads in this OU often include shared application and data services that are used by other workloads.
-- Policy Staging OU: The Policy Staging OU is intended to help teams that manage overall policies for your AWS environment to safely test potentially broadly impacting policy changes before applying them to the intended OUs, accounts, or both.
-- Suspended OU: The Suspended OU is used as a temporary holding area for accounts that are required to have their use suspended either temporarily or permanently.
-- Individual Business Users OU: The Individual Business Users OU houses accounts for individual business users and teams who need access to directly manage AWS resources outside the context of resources managed within your Workloads OU.
-- Exceptions OU: The Exceptions OU houses accounts that require an exception to the security policies that are applied to your Workloads OU. Normally, there should be a minimal number of accounts, if any, in this OU.
-- Deployments OU: The Deployments OU contains resources and workloads that support how you build, validate, promote, and release changes to your workloads.
-- Transitional OU: The Transitional OU is intended as a temporary holding area. It is used for existing accounts and workloads that you move to your organization before you formally integrate them into your more standardized areas of your AWS environment structure.
+  - within the root you can create new OUs and structure the hierarchy
+  - delegate root-level access to other users/groups
+- recommended OU hierarchy
+  - Security OU: The Security OU is a foundational OU. Your security organization should own and manage this OU in addition to any child OUs and associated accounts.
+  - Infrastructure OU: The Infrastructure OU, another foundational OU, is intended to contain shared infrastructure services. Your infrastructure teams should own and manage this OU, any child OUs, and associated accounts.
+  - Sandbox OU: The Sandbox OU contains accounts that your developers can generally use to explore and experiment with AWS services and other tools and services, subject to your acceptable use policies. These environments are typically disconnected from your internal networks and internal services.
+  - Workloads OU: The Workloads OU is intended to house most of your business-specific workloads, including both production and non-production environments. These workloads can be a mix of commercial off-the-shelf (COTS) applications and your own internally developed custom applications and data services. Workloads in this OU often include shared application and data services that are used by other workloads.
+  - Policy Staging OU: The Policy Staging OU is intended to help teams that manage overall policies for your AWS environment to safely test potentially broadly impacting policy changes before applying them to the intended OUs, accounts, or both.
+  - Suspended OU: The Suspended OU is used as a temporary holding area for accounts that are required to have their use suspended either temporarily or permanently.
+  - Individual Business Users OU: The Individual Business Users OU houses accounts for individual business users and teams who need access to directly manage AWS resources outside the context of resources managed within your Workloads OU.
+  - Exceptions OU: The Exceptions OU houses accounts that require an exception to the security policies that are applied to your Workloads OU. Normally, there should be a minimal number of accounts, if any, in this OU.
+  - Deployments OU: The Deployments OU contains resources and workloads that support how you build, validate, promote, and release changes to your workloads.
+  - Transitional OU: The Transitional OU is intended as a temporary holding area. It is used for existing accounts and workloads that you move to your organization before you formally integrate them into your more standardized areas of your AWS environment structure.
 
 ##### Account
 
@@ -117,37 +114,7 @@
 
 #### Policies
 
-- apply additional types of management to the AWS accounts in your organization
-- to create and attach a policy to your organization, you must configure that policy type for use.
-  - Turning on a policy type is a one-time task on the organization root
-- authorization policies
-  - service control policies
-- management policies
-  - AI services opt-out policies
-  - backup policies
-  - tag policies
-- policy inheritance: attach a policy to:
-  - the organization root: all OUs and accounts in the organization inherit that policy.
-  - a specific OU: accounts that are directly under that OU or any child OU inherit the policy.
-  - a specific account: it affects only that account.
-
-##### AI Opt-out Policies
-
-- control data collection for AWS AI services for all your organization's accounts.
-
-##### Backup Policies
-
-- centrally manage and apply backup plans to the AWS resources across your organization's accounts.
-
-##### Tag Policies
-
-- standardize the tags attached to the AWS resources in your organization's accounts.
-
-##### Service Control Policies
-
 - see the IAM file
-- specify the maximum permissions for member accounts in the organization
-- centralize control over the AWS services and API actions that each account can access
 
 ## considerations
 
