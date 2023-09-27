@@ -54,6 +54,7 @@
 ### guide
 
 - [service endpoints](https://docs.aws.amazon.com/general/latest/gr/rande.html#cfn_region)
+- [service specific endpoints](https://docs.aws.amazon.com/sdkref/latest/guide/feature-ss-endpoints.html)
 - [service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html)
 
 ## best practices

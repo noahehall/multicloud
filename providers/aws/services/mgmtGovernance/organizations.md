@@ -1,8 +1,9 @@
 # Organizations
 
-- Centrally manage your environment as you scale your AWS resources
+- Centrally manage your accounts as you scale your AWS resources
 - group accounts into logical categories
 - a global service with a single endpoint that works from any and all AWS Regions
+- check the IAM file for more
 
 ## my thoughts
 
@@ -15,6 +16,7 @@
 - [managing organization policies](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies.html)
 - [managing orgs](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_org.html)
 - [recommended OUs](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/recommended-ous.html)
+- [api reference](https://docs.aws.amazon.com/organizations/latest/APIReference/Welcome.html)
 
 ## best practices
 

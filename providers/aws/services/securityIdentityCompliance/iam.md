@@ -72,6 +72,8 @@
   - protect the root user at all costs
     - create and use an admin user instead of the root account
   - always enable multi factor auth
+  - manage users through Identity Center and not the IAM console
+    - you can set AWS as the Idp
 - groups
   - always assign users to groups, and attach policies to groups (and not directly to users)
   - should reflect organizational role, not technical commonality
@@ -100,6 +102,31 @@
 
 - access in AWS is managed by creating policies and attaching them to IAM identities (users, groups of users, or roles) or AWS resources.
 - IAM acts as an identity provider (IdP), and manages identities inside an AWS account
+
+### authentication schemes
+
+- uname & pword: for accessing the console
+  - define a password policy to enforce strong passwords and to require password rotation
+- access keys: for programmatic access; caccess key ID and a secret key; Each user can have two active access keys
+  - cli access
+  - local code in a dev env to access AWS account
+  - apps running on compute services
+  - third-party services to access the aws account
+  - direct http calls using APIs for individual services
+  - apps run outside of AWS
+- mfa: via soft/hardware; requires an additional input to validate a login attempt
+  - something you know: e.g. a pin number
+  - something you have: e.g. a onetime code from an app/device
+    - virtual MFA: softare
+    - hardware TOTP token
+    - FIDO security keys
+  - something you are: e.g. fingerprint or piece of your soul
+
+#### request signatures
+
+- signing a request enables AWS to authenticate your identity
+- users and groups use the credentials associated with their acounts
+- machines (e.g. any of your aws services) must assume a predefined role and sign requests with temporary credentials
 
 ### users & groups
 
@@ -178,34 +205,9 @@
 #### service roles
 
 - iam roles that can be assumed by an AWS service
-- Service linked roles enable other AWS services to integrate each other
+- Service linked roles enable other AWS services to integrate with each other
 - must include a trust policy
-  - or (i think) sts assumeRole
-
-### authentication schemes
-
-- uname & pword: for accessing the console
-  - define a password policy to enforce strong passwords and to require password rotation
-- access keys: for programmatic access; caccess key ID and a secret key; Each user can have two active access keys
-  - cli access
-  - local code in a dev env to access AWS account
-  - apps running on compute services
-  - third-party services to access the aws account
-  - direct http calls using APIs for individual services
-  - apps run outside of AWS
-- mfa: via soft/hardware; requires an additional input to validate a login attempt
-  - something you know: e.g. a pin number
-  - something you have: e.g. a onetime code from an app/device
-    - virtual MFA: softare
-    - hardware TOTP token
-    - FIDO security keys
-  - something you are: e.g. fingerprint or piece of your soul
-
-#### request signatures
-
-- signing a request enables AWS to authenticate your identity
-- users and groups use the credentials associated with their acounts
-- machines (e.g. any of your aws services) must assume a predefined role and sign requests with temporary credentials
+  - or (i think) permission to sts->assumeRole
 
 ### policies
 
@@ -235,7 +237,7 @@
     - strict one-to-one relationship between a service and principal
     - embedded directly into a single user, group or role
     - not recommended
-- size elements: for all policies attached to an entity
+- size restrictions: for all policies attached to an entity
   - User 2kb
   - Role 10kb.
   - Group 5kb.
@@ -388,11 +390,12 @@
 - most versatile strategy is to use both RBAC + ABAC
   - roles split out users by functions
   - attributes split out roles by context
-    - reduces the number of roles required, as a role can be based the context of user attributes
+    - reduces the number of roles required, as a role can be segmented based on the context of user attributes
 
 #### Tags
 
 - Tags enable customizable key-value pairs, such as a project name or an environment type, to identify IAM principals and AWS resources.
+- fundamental to ABAC
 
 #### RBAC
 
