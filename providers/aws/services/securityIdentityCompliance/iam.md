@@ -18,8 +18,8 @@
 
 ### user guide
 
-- [AAA: getting started](https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html)
 - [AAA security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+- [AAA: getting started](https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html)
 - [access history: finding unused credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_finding-unused.html)
 - [access history: tightenting s3 permissions](https://aws.amazon.com/blogs/security/tighten-s3-permissions-iam-users-and-roles-using-access-history-s3-actions/)
 - [apigateway: authnz workflow](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-authorization-flow.html)
@@ -38,6 +38,7 @@
 - [intro to IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html)
 - [mfa](https://aws.amazon.com/iam/details/mfa/)
 - [organizations: SCPs > AAA landing page](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
+- [organizations: SCPs > evaluation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_evaluation.html)
 - [organizations: SCPs > examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
 - [organizations: SCPs > inheritance](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_inheritance_auth.html)
 - [organizations: SCPs > intro BLOG](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-in-aws-organizations/)
@@ -69,14 +70,14 @@
   - iam roles are a bit more verbose but dont have limits
 - users
   - protect the root user at all costs
-    - create an admin user instead
+    - create and use an admin user instead of the root account
   - always enable multi factor auth
 - groups
   - always assign users to groups, and attach policies to groups (and not directly to users)
   - should reflect organizational role, not technical commonality
 - policies
-  - always follow principle of least privilege for users and roles
-  - generally the managed policies are always too lenient
+  - always follow principle of least privilege for users, groups and roles
+  - generally the managed policies are too lenient and should be customized
 - roles
   - use both RBAC and ABAC at the same time if using IAM roles for access control.
 - organizations that spans multiple AWS accounts;
@@ -494,6 +495,11 @@
 
 - centralize & specify the maximum permissions for OUs and member accounts (including root user)
   - i.e. SCP defines a guardrail, or sets limits, but doesnt grant any access
+  - recommendation is to use a "block list" strategy where all actions are implicitly allowed except for those actions you want to block by creating statements that deny access
+    - specify resources and conditions for the statement and use the NotAction element.
+  - if you ignore the recommendation and use the Allow statement
+    - permits the Resource element to only have a "\*" entry.
+    - can't have a Condition element at all.
 - requires all organization features to be enabled
 - FYI
   - do effect

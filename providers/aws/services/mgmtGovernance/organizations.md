@@ -30,7 +30,6 @@
 ## features
 
 - programmatically manage authnz, share resources and consolidate billing/audit at the organization level
-- programmatically create new AWS accounts for resources and teams
 - centrally secure and audit environments across all acounts
 - combine your existing accounts into an organization to manage the accounts centrally.
 - Consolidated billing: use the management account of your organization to consolidate and pay for all member accounts
@@ -46,6 +45,24 @@
 - shiz free yo
 
 ## basics
+
+### organization-based strategy
+
+- centralized management while separating your cloud-infrastructure resources to protect and limit access to resources at different levels.
+  - Restrict or limit access to your AWS resources using the principle of least privilege.
+  - separate:
+    - accounts for different applications and workflows.
+    - active data from backup and archive data.
+  - centrally:
+    - manage and enforce access privileges.
+    - enforce development and deployment standards.
+    - monitor resources and activities.
+- key benefits of a multi-account strategy
+  - group workloads by business purpose and ownership
+  - apply distinct security controls by env
+  - constrain access to sensitive data
+  - limit the scope of impact from adverse events
+  - manage costs
 
 ### organization:
 
@@ -71,10 +88,6 @@
   - Deployments OU: The Deployments OU contains resources and workloads that support how you build, validate, promote, and release changes to your workloads.
   - Transitional OU: The Transitional OU is intended as a temporary holding area. It is used for existing accounts and workloads that you move to your organization before you formally integrate them into your more standardized areas of your AWS environment structure.
 
-##### Account
-
-- A standard AWS account that contains your AWS resources and the identities that can access those resources
-
 ###### management account
 
 - the payer account and is responsible for paying all charges that are accrued by the member accounts.
@@ -86,29 +99,11 @@
   - at the account level
 - Configure integration with supported AWS services to provide service functionality across all accounts in the organization.
 
-###### member accounts
+##### Accounts (members)
 
+- A standard AWS account that contains your AWS resources and the identities that can access those resources
 - make up the rest of the accounts in an organization.
 - An account can be a member of only one organization at a time.
-
-### organization-based strategy
-
-- separating your cloud-infrastructure to protect and limit access to resources at different levels.
-- separating resources and centralized management
-  - Restrict or limit access to your AWS resources using the principle of least privilege.
-  - separate:
-    - accounts for different applications and workflows.
-    - active data from backup and archive data.
-  - centrally:
-    - manage and enforce access privileges.
-    - enforce development and deployment standards.
-    - monitor resources and activities.
-- key benefits of a multi-account strategy
-  - group workloads by business purpose and ownership
-  - apply distinct security controls by env
-  - constrain access to sensitive data
-  - limit the scope of impact from adverse events
-  - manage costs
 
 ### Security
 
