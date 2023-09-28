@@ -5,13 +5,16 @@
 ## links
 
 - [landing page](https://tinkerpop.apache.org/)
-- [tinkerpop: reference](http://tinkerpop.apache.org/docs/current/reference/)
-- [gremlin: with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 
 ### practical gremlin
 
 - [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
 - [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
+
+### Ref
+
+- [AAA: docs landing page](https://tinkerpop.apache.org/docs/current/reference/)
+- [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
 
 ## Gremlin
 
@@ -72,6 +75,7 @@ g.addV("person").property(id, "myname").V('myname').addE('somerelation').to(V('o
 // until
 // where
 // lte
+// hasLabel
 
 
 // terminal methods

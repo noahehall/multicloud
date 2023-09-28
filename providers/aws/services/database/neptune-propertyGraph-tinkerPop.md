@@ -6,7 +6,16 @@
 ## links
 
 - [knowledge graphs on AWS](https://aws.amazon.com/neptune/knowledge-graphs-on-aws/)
-- [gremlin: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
+
+### gremlin
+
+- [AAA: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
+- [AAA: getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-graph-gremlin.html)
+- [neptune compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
+- [sessions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-sessions.html)
+- [with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
+- [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-transactions.html)
+- [statements](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-explain-background-statements.html)
 
 ## best practicies
 
@@ -16,6 +25,8 @@
     - use a property to perform this partitioning
 
 ### Anti patterns
+
+- check the neptune compliance docs if running into any issues with gremlin copypasta
 
 ## basics
 
@@ -39,11 +50,14 @@
   - Every edge must have a name, or label, and a direction (i.e. no dangling edges)
 - abcd
 
-### IDs:
+### IDs
 
 - every vertex and edge must have a unique ID
 - you can supply one on creation, else it will be auto assigned
+  - user-defined IDS are required when bulk uploading
 - a vertex and edge can share the same ID, but not two vertex/edges
+- user supplied ids
+  - use the property step with the id keyword:` g.addV().property(id, 'customid')`
 
 ### Properties
 
@@ -54,6 +68,9 @@
     - e.g. following only KNOWS edges in a social graph whose strength property is greater than 5
     - e.g. store metadata such as a version number, last updated timestamp, or access control list.
 - vertex properties: e.g. entity attributes, application metadata, etc
+- updating properties: by default it uses set cardinality, which always appends when upserting
+  - you must specify `single` to replace all existing values
+  - e.g. `g.V('exampleid01').property(single, 'age', 25)`
 
 ### Labels
 
@@ -62,6 +79,9 @@
   - vertex: 0/more (lol, not really required ;)~)
 - vertex labels: tag, type and group vertices
 - edge labels: the semantics of the relationship represented by the edge
+- When you create a label, you can specify multiple labels by separating them with ::.
+  - `g.addV("Label1::Label2::Label3")` adds a vertex with three different labels.
+  - `::` is reserved only for adding labels function
 
 ### vertices
 
@@ -137,15 +157,50 @@
 
 ## gremlin
 
-- check the tinkerpop file
-- neptune vs gremlin
-  - vertex properties:
-    - gremlin: single, set and list cardinality for vertex properties
-    - neptune: single and set cardinality, not list, with set cardinality the default.
+- check the tinkerpop file for gremlin specific shiz
+
+### API compliance
+
+- neptune doesnt support;
+  - Groovy commands that don't start with g
+  - Lambda Steps.
   - metaproperties
-    - neptune: doesnt support it them at all
-  - optimizations
-    - neptune: optimized for
-      - traversing outgoing edges
-      - datasets containing a relatively small number of unique predicates – in the order of several thousand at most.
-        - e.g. A dataset containing 100,000 User vertices, each with 5 properties, and 1 million FOLLOWS edges has 6 unique predicates (5 vertex properties and 1 edge label).
+  - list cardinality for vertex properties (only single & set)
+  - Gremlin variables or parameterization in scripts
+    - because neptune uses the ANTLR grammar in its query processing engine rather than the older GremlinGroovyScriptEngine
+  - fully qualified class names for enumeration values
+    - e.g. use `single` and not `org.apache.tinkerpop.gremlin.structure.VertexProperty.Cardinality.single`
+      - fk java!
+  - gremlin `io-step` is only partially supported
+  - does not expose the graph object.
+    - i.e. a bunch of graph features arent supported, check the docs!
+- optimizations
+  - neptune is optimized for
+    - traversing outgoing edges
+    - datasets containing a relatively small number of unique predicates – in the order of several thousand at most.
+      - e.g. A dataset containing 100,000 User vertices, each with 5 properties, and 1 million FOLLOWS edges has 6 unique predicates (5 vertex properties and 1 edge label).
+- Variables and parameters in scripts
+  - neptune:
+    - pre-bound variables: the traversal object g is Pre-bound in Neptune, and the graph object is not supported.
+- java code! fk java!
+  - Neptune does not support calls to methods defined by arbitrary Java or Java library calls other than supported Gremlin APIs.
+  - e.g. java.lang.\*, Date(), and g.V().tryNext().orElseGet() are not allowed.
+- Script execution
+  - neptune
+    - All queries must begin with g, the traversal object.
+    - multiple traversals can be issued separated by a semicolon (;) or a newline character (\n)
+      - To be executed, every statement other than the last must end with an .iterate() step.
+      - Only the final traversal data is returned.
+      - this does not apply to GLV ByteCode query submissions.
+- sessions
+  - in Neptune are limited to only 10 minutes in duration.
+- transactions
+  - Neptune opens a new transaction at the beginning of each Gremlin traversal
+    - closes the transaction upon the successful completion of the traversal.
+    - rolled back when there is an error.
+  - Multiple statements separated by a semicolon (;) or a newline character (\n) are included in a single transaction.
+    - Every statement other than the last must end with a next() step to be executed.
+    - Only the final traversal data is returned.
+- when you send the Gremlin query as a text string, the following are not supported
+  - Manual transaction logic using tx.commit() and tx.rollback()
+  - a bunch of gremlin methods, lol check the docs!

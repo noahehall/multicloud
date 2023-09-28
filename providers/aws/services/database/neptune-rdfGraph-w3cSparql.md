@@ -5,6 +5,7 @@
 ## links
 
 - [sparql: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-sparql.html)
+- [neptune compliance](https://docs.aws.amazon.com/neptune/latest/userguide/feature-sparql-compliance.html)
 
 ### open source
 

@@ -3,9 +3,9 @@
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - [tinker pop property graph](./neptune-propertyGraph-tinkerPop.md)
 - [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
-- [w3c sparwl RDF graph](./neptune-rdfGraph-w3cSparql.md)
+- [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
-  - [gremlin standards compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
+  - [neptune transactions](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
   - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
 
 ## my thoughts
@@ -13,6 +13,7 @@
 ## links
 
 - [AAA: best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
+- [AAA: neptunes data model](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-data-model.html)
 - [AAA: reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
 - [appsync: workshop example](https://github.com/aws-samples/aws-appsync-calorie-tracker-workshop/)
 - [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
@@ -24,8 +25,10 @@
 - [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
 - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started.html)
 - [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
+- [kinesis: data stream example](https://github.com/aws-samples/amazon-neptune-samples/tree/master/gremlin/stream-2-neptune)
 - [lambda: examples](https://docs.aws.amazon.com/neptune/latest/userguide/lambda-functions.html)
 - [landing page](https://aws.amazon.com/neptune/?did=ap_card&trk=ap_card)
+- [lookup cache](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-lookup-cache.html)
 - [running local](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
 - [security](https://docs.aws.amazon.com/neptune/latest/userguide/security.html)
 - [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
@@ -35,9 +38,9 @@
 - [storage](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
 - [tagging resources](https://docs.aws.amazon.com/neptune/latest/userguide/tagging.html)
 - [tools and utilities](https://github.com/awslabs/amazon-neptune-tools)
-- [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
+- [transactions: intro](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
+- [transactions: acId isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
 - [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
-- [kinesis: data stream example](https://github.com/aws-samples/amazon-neptune-samples/tree/master/gremlin/stream-2-neptune)
 
 ### opensource
 
@@ -51,6 +54,8 @@
 
 - read replicas should always be equal to or larger than the writer instance
   - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
+- you should probably re-read the following links every so often
+  - graph data model
 
 ### anti patterns
 
@@ -93,19 +98,59 @@
 
 ### Data model
 
-- neptune will create UUIDs for new verticies & edges
-  - you can still supply your own unique IDs
-    - required when bulk uploading
-- labels: are tags, keyless properties
-  - generally used to type a vertex, or name a relationship
-  - verticies must have one/more labels
-  - edges must have exactly one label
+#### Four position QUAD element
+
+- the basic unit of Amazon Neptune graph data.
+  - S: subject
+  - P: predicate
+  - O: object
+  - G: graph
+- Each quad is a statement that makes an assertion about one or more resources.
+  - can assert the existence of a relationship between two resources
+  - can attach a property (key-value pair) to a resource
+- statement example
+  - A relationship between two vertices can be represented by storing the source vertex identifier in the S position, the target vertex identifier in the O position, and the edge label in the P position.
+  - A property can be represented by storing the element identifier in the S position, the property key in the P position, and the property value in the O position
+- A set of quad statements with shared resource identifiers creates a graph.
 
 ### Performance
 
 - directly related to how much of the graph a query must touch
   - choose domain-meaningful edge labels
   - discover only what is absolutely necessary
+
+#### Lookup Cache
+
+- only available on an R5d instance type, where it is automatically enabled by default
+- improves read performance for queries with frequent, repetitive lookups of property values or RDF literals
+- temporarily stores these values in the NVMe SSD volume where they can be accessed rapidly.
+- use cases
+  - Read queries that return the properties of a large number of vertices and edges, or many RDF triples
+  - long-running read queries that return a large number of:
+    - full names from an identity graph
+    - IP addresses from a fraud-detection graph
+- FYI: only pay for this shiz if the following are ALL true
+  - observing increased latency in read queries.
+  - observing a drop in the BufferCacheHitRatio CloudWatch metric when running read queries
+  - read queries are spending a lot of time in materializing return values prior to rendering the results
+
+#### Materialization costs
+
+- assess the materialization costs of a query with the Gremlin profile API.
+- Under "Index Operations', it shows the number of terms materialized during execution:
+- check the lookup cache docs for an example
+
+### Transactions
+
+- Neptune is designed to support highly concurrent online transactional processing (OLTP) workloads over data graphs
+  - neither SPARQL nor GREMLIN define standard transactions mechanisms for concurrent query processing
+  - neptune, however, enforces strict semantics to help avoid data anomalies.
+
+### indexes
+
+- probably should re-read this section in the Graph Data Model link
+- neptune only enables 3 out of the 6 available indexes by default
+  - you can enable the OSGP Index Creation Using Lab Mode
 
 ### cluster
 
