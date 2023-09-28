@@ -2,12 +2,12 @@
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - [property graph](./neptune-propertyGraph.md)
+- [RDF graph](./neptune-rdfGraph.md)
 - bookmark
+  - [architecture](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/graph-data-modelling)
   - [blah start from the top](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
 
 ## my thoughts
-
-- since it uses tinkerpop, i'm presuming we can migrate data out of neptune into something else if push comes to shove
 
 ## links
 
@@ -19,7 +19,7 @@
 - [db clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
 - [storage](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
 - [security](https://docs.aws.amazon.com/neptune/latest/userguide/security.html)
-- [slideshare:onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
+- [slideshare: onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
 - [slideshare: graph data model and queries with neptune](https://www.slideshare.net/AmazonWebServices/work-backwards-to-your-graph-data-model-queries-with-amazon-neptune-dat330-aws-reinvent-2018)
 - [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
 - [best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
@@ -43,8 +43,8 @@
 
 ## best practices
 
-- read replicas always be equal to or larger than the writer instance
-  - avoid the the larger writer instance is handling changes too quickly for the reader to maintain pace.
+- read replicas should always be equal to or larger than the writer instance
+  - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 
 ### anti patterns
 
@@ -158,17 +158,26 @@
 ### Graph Data Models
 
 - each model has its own query language
+- property vs RDF
+  - property: your workload requires applying computations over edge attributes in the course of a graph traversal, or model bi-directional relationships
+    - no schema and no predefined vocabularies for property names and labels; you must create and enforce constraints around naming of labels and such
+    - support edge properties, making it easy to associate edge attributes with the edge definition
+    - allows you to create multiple disconnected subgraphs within the same dataset, but has no equivalent to named graphs that allows you to identify and address individual subgraphs.
+  - RDF: you need to differentiate between and manage multiple subgraphs in your dataset
+    - has predefined schema vocabularies with well-understood data modelling semantics for specifying class and property schema elements
+    - predefined domain-specific vocabularies such as vCard, FOAF, Dublin Core and SKOS for describing resources in different domains
+    - designed to make it easy to share and publish data with fixed, well-understood semantics.
+      - To qualify an edge in RDF with additional data, you must use intermediate nodes or blank nodes
+    - supports the concept of named graphs, allowing you to group a set of RDF statements and identify them with a URI
 
 #### Property Graph
 
-- Apache tinkerpop
-- gremlin traversal language
+- Apache tinkerpop's gremlin traversal language
 - check the neptune property graph file
 
 #### Resource Description Framework (RDF)
 
-- w3c standard
-- SPARQL query language
+- w3c's SPARQL query language
 
 ### security
 
