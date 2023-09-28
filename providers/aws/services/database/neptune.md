@@ -1,9 +1,9 @@
 # neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
-- workloads in which the relationships or connections between data points are as important as the data points themselves, and where the questions you want to ask of the data require leveraging those connections.
+- [property graph](./neptune-propertyGraph.md)
 - bookmark
-  - [graph data model queries reinvent 2018](https://www.slideshare.net/AmazonWebServices/work-backwards-to-your-graph-data-model-queries-with-amazon-neptune-dat330-aws-reinvent-2018)
+  - [blah start from the top](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
 
 ## my thoughts
 
@@ -48,6 +48,8 @@
 
 ### anti patterns
 
+- avoid creating ID properties
+
 ## features
 
 - read replicas for highly availability
@@ -82,6 +84,22 @@
 - performance
   - scale out read traffic across read replicas
   - reader endpoint balances connections across read replicas
+
+### Data model
+
+- neptune will create UUIDs for new verticies & edges
+  - you can still supply your own unique IDs
+    - required when bulk uploading
+- labels: are tags, keyless properties
+  - generally used to type a vertex, or name a relationship
+  - verticies must have one/more labels
+  - edges must have exactly one label
+
+### Performance
+
+- directly related to how much of the graph a query must touch
+  - choose domain-meaningful edge labels
+  - discover only what is absolutely necessary
 
 ### cluster
 
@@ -145,6 +163,7 @@
 
 - Apache tinkerpop
 - gremlin traversal language
+- check the neptune property graph file
 
 #### Resource Description Framework (RDF)
 

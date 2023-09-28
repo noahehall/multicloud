@@ -111,9 +111,9 @@
 #### knowledge graphs
 
 - a means of structuring and organizing information for improved access and understanding
-- build systems that can recommend people to projects, connect related projects, or centralize access to avoid duplicate efforts.
-- build systems that can recommend people to projects, connect related projects, or centralize access to avoid duplicate efforts.
-- build context-aware systems that can derive answers based on queries and a vast knowledge base
+- build
+  - systems that can recommend people to projects, connect related projects, or centralize access to avoid duplicate efforts.
+  - context-aware systems that can derive answers based on queries and a vast knowledge base
 - use machine learning services with knowledge graphs for better decision making and knowledge discovery.
 
 #### Fraud Detection
