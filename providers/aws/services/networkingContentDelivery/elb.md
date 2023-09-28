@@ -17,6 +17,7 @@
 - [user guide](https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/what-is-load-balancing.html)
 - [type comparisons](https://aws.amazon.com/elasticloadbalancing/features/#Product_comparisons)
 - [blue green deployments](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-create-loadbalancer-bluegreen.html)
+- [blog: maintain static ip addresses with lambda](https://aws.amazon.com/blogs/networking-and-content-delivery/using-static-ip-addresses-for-application-load-balancers/)
 
 ## best practices
 

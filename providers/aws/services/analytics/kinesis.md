@@ -20,7 +20,7 @@
 - [building consumers & reading data from streams](https://docs.aws.amazon.com/streams/latest/dev/building-consumers.html)
 - [resharding strategies](https://docs.aws.amazon.com/streams/latest/dev/kinesis-using-sdk-java-resharding-strategies.html)
 - [lambda: enhanced fanout](https://aws.amazon.com/blogs/compute/increasing-real-time-stream-processing-performance-with-amazon-kinesis-data-streams-enhanced-fan-out-and-aws-lambda/)
--
+- [record aggregation for lambda fns](https://github.com/awslabs/kinesis-aggregation)
 
 ## best practices
 

@@ -1,10 +1,12 @@
 # Neptune Property graph
 
 - create and query data using Apache tinkerpop's gremlin traversal language
+- check the apache/tinkerpop file for ramping up on gremlin
 
 ## links
 
 - [knowledge graphs on AWS](https://aws.amazon.com/neptune/knowledge-graphs-on-aws/)
+- [gremlin: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 
 ## best practicies
 

@@ -202,3 +202,7 @@
   - configuring a KMS key as the default key for EBS encryption
     - the default KMS key policy allows any IAM user with access to the required KMS actions to use this default key to encrypt or decrypt EBS resources.
     - search the docs for the required KMS permissions
+
+### neptune
+
+- On an encrypted Neptune instance, data in the underlying storage is encrypted, as are the automated backups, snapshots, and replicas in the same cluster.

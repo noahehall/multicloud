@@ -4,6 +4,8 @@
 
 ## links
 
+- [sparql: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-sparql.html)
+
 ### open source
 
 - [w3c: vcard](https://www.w3.org/TR/vcard-rdf/)

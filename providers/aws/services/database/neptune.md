@@ -1,37 +1,43 @@
 # neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
-- [property graph](./neptune-propertyGraph.md)
-- [RDF graph](./neptune-rdfGraph.md)
+- [tinker pop property graph](./neptune-propertyGraph-tinkerPop.md)
+- [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
+- [w3c sparwl RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
-  - [architecture](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/connecting-using-a-load-balancer)
-  - [blah start from the top](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+  - [gremlin standards compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
+  - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
 
 ## my thoughts
 
 ## links
 
-- [landing page](https://aws.amazon.com/neptune/?did=ap_card&trk=ap_card)
-- [running local](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
-- [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started.html)
+- [AAA: best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
+- [AAA: reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
+- [appsync: workshop example](https://github.com/aws-samples/aws-appsync-calorie-tracker-workshop/)
+- [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
 - [bulk load tutorial](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-IAM.html)
 - [bulk load user guide](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load.html)
 - [db clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
-- [storage](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
+- [elb: examples with neptune gremlin client](https://aws.amazon.com/blogs/database/load-balance-graph-queries-using-the-amazon-neptune-gremlin-client/)
+- [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
+- [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
+- [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started.html)
+- [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
+- [lambda: examples](https://docs.aws.amazon.com/neptune/latest/userguide/lambda-functions.html)
+- [landing page](https://aws.amazon.com/neptune/?did=ap_card&trk=ap_card)
+- [running local](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
 - [security](https://docs.aws.amazon.com/neptune/latest/userguide/security.html)
-- [slideshare: onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
+- [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
 - [slideshare: graph data model and queries with neptune](https://www.slideshare.net/AmazonWebServices/work-backwards-to-your-graph-data-model-queries-with-amazon-neptune-dat330-aws-reinvent-2018)
 - [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
-- [best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
-- [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
-- [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
+- [slideshare: onramp to graph dbs & neptune](https://www.slideshare.net/AmazonWebServices/onramp-to-graph-databases-and-amazon-neptune-dat335-aws-reinvent-2018?qid=e677d773-0cb1-452d-95a3-b0be4d1dc7d9)
+- [storage](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
 - [tagging resources](https://docs.aws.amazon.com/neptune/latest/userguide/tagging.html)
-- [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
-- [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
-- [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
-- [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
-- [reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
 - [tools and utilities](https://github.com/awslabs/amazon-neptune-tools)
+- [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
+- [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+- [kinesis: data stream example](https://github.com/aws-samples/amazon-neptune-samples/tree/master/gremlin/stream-2-neptune)
 
 ### opensource
 
@@ -155,6 +161,11 @@
 
 - Subscribe to Neptune events within the neptune console
 
+### Errors
+
+- ConcurrentModificationException: occur when multiple concurrent requests attempt to modify the same elements in the graph
+- ReadOnlyViolationException: occur if the client attempts to write to a database instance that is no longer the primary.
+
 ### Graph Data Models
 
 - each model has its own query language
@@ -187,8 +198,7 @@
 
 #### encryption
 
-- data at rest in the database is encrypted using industry standard AES-256 KMS
-  - Keys can also be used, which are managed through KMS
+- see the KMS file
 
 ## considerations
 
@@ -210,27 +220,49 @@
 
 ## integrations
 
+- Neptune only allows connections from clients located in the same VPC as the Neptune cluster.
+- you have to one of:
+  - direct access to the DB: an A/NLB otherwise
+  - api access: api gateway + lambda
+    - optionally run lambda outside a VPC and connect to neptune via an ELB
+
 ### IAM
 
 - user authn at creation
 - roles can be assigned at anytime (e.g. to load data from s3)
 
-### kms
-
 ### kinesis
 
-### lambda
+#### Data Streams
+
+- in high write throughput scenarios improve the reliability, performance and scalability by
+  - sending logical writes to an kinsesis Data Stream
+  - Lambda function polls the stream and issues batches of writes to the underlying Neptune database.
+- A Kinesis Data Stream is provisioned to accept write requests from client applications, which act as record producers.
+- Clients can use the Amazon Kinesis Data Streams API or Kinesis Agent to write individual records to the data stream.
+- An AWS Lambda function processes records in the data stream.
+  - Create a Lambda function and an event source mapping.
+  - The event source mapping tells Lambda to send records from your data stream to the Lambda function, which uses a Gremlin or SPARQL client to submit write requests to the Neptune cluster endpoint.
+  - The Lambda function issues batch writes to Neptune. Each batch is executed in the context of a single transaction.
+  - To increase the speed at which the function processes records, add shards to the data stream.
+- best practices
+  - implement record aggregation in the client, and deaggregation in your Lambda functions
+    - check the kinesis file for the record aggregation link
+  - Consider pulling large batches from the stream by configuring the batch size property in the event source mapping, but writing smaller batches to Neptune one after another in a single Lambda invocation.
+    - e.g. pulling 1000 records from the stream, and issuing 10 batch writes, each of 100 records, to Neptune during a single Lambda invocation.
+    - allows you to tune batch write size according to factors such as the instance size of the Neptune database leader node and the complexity of your writes, while reusing a connection for the several batch writes you issue to Neptune during a single Lambda invocation
+    - be careful as errors causes the entire batch to fail
+  - control concurrency by adjusting the number of shards in your Kinesis Data Stream.
+    - e.g. two shards will result in two concurrent Lambda invocations, one per shard.
+    - set the number of shards to no more than 2x the number of vCPUs on the Neptune leader node.
+  - Increasing the number of shards in order to increase concurrency and throughput will therefore increase costs.
+    - alternatively at the expense of additional engineering effort, you can increase concurrency using the threading model particular to your Lambda runtime.
+  - ensure that logical writes are wholly independent of one another such that they can be executed out of insert order, or direct dependent writes to the same shard using partition keys to group data by shard.
 
 ### VPC
 
 - requires atleast two subnets in two different Availability Zones for high availability
   - dude stop spamming this everywhere, this is a default for high availability
-
-### s3
-
-### cloudtrail
-
-### SNS
 
 ### SageMaker
 
@@ -248,10 +280,97 @@
 
 - migrating data to a neptune cluster
 
-### Backup
-
 ### EC2
 
 - autoscaling groups for read replicas
+  - hmm this might be AWS autoscaling groups and not EC2 autoscaling groups
+
+### ELB
+
+- for both A/NLB
+  - your Neptune cluster is run in at least two subnets in two Availability Zones, with each subnet in a different Availability Zone.
+    - enables external clients to access the Neptune cluster endpoint, which always points to the primary instance in the cluster.
+    - To enable access to the reader endpoint, which load balances connections across all the read replicas in the cluster, you will need to either create a second
+      - target group and a listener configured with a different port
+      - load balancer with a different DNS name.
+  - The Neptune DB subnet group spans at least two subnets in two Availability Zones.
+- ALB vs NLB
+  - number of hops
+    - NLB: one hop.
+    - ALB: two hops between the client and the Neptune instance
+  - service types
+    - NLB: fully managed
+    - ALB: third party proxy
+- best practices
+  - Restrict access to your cluster to a range of IP addresses using the security groups attached to the Neptune instances.
+  - further restricting access by enabling IAM database authentication, requiring all HTTP requests be signed using AWS Signature Version 4, which requires changes to the client.
+    - the client must sign the request using Neptune's DNS and include an HTTP Host header whose value is <neptune-cluster-dns:port>
+      - i.e. the client must know the Neptune cluster's DNS and port in addition to the load balancer's DNS and port.
+
+#### ALB
+
+- Web connections from external clients terminate on an Application Load Balancer in a public subnet.
+- The load balancer forwards requests to HAProxy running on an EC2 instance. This EC2 instance is registered in a target group belonging to the ALB.
+- HAProxy is configured with the Neptune cluster endpoint DNS and port. Requests from the ALB are forwarded to the primary instance in the database cluster.
+- FYI:
+  - aws expicitly states HAProxy, but i'm sure Envoy would work just as well
+- best practices
+  - increase the availability of the publicly available endpoint by enabling multiple Availability Zones for the ALB, adding multiple HAProxy instances in each AZ, and load balancing across the HAProxy instances by including all instances in each ALB’s target group.
+  - To enable access to the reader endpoint configure path-based routing either in the ALB, which will allow you to route to different HAProxy instances, or in HAProxy itself.
+    - With path-based routing, the client would add a path suffix – such as /reader or /writer – to the request URI.
+      - e.g. use http://<alb-dns>:80/gremlin/reader.
+      - You will need to rewrite the path to remove this suffix in the ALB or HAProxy before passing the request to the appropriate Neptune endpoint.
+
+#### NLB
+
+- Web connections from external clients terminate on a Network Load Balancer in a public subnet.
+- The load balancer forwards requests to the Neptune cluster endpoint (which then routes to the primary instance in the database cluster).
+- The target IP addresses of the cluster endpoint are refreshed on a periodic basis by a Lambda function.
+- This Lambda function is triggered by a CloudWatch event. When it fires, the function queries a DNS server for the IP addresses of the Neptune cluster endpoint. It registers new IP addresses with the load balancer’s target group, and deregisters any stale IP addresses
+- best practices
+  - you must use SSL termination and have your own SSL certificate on the proxy server. NLB, although a Layer 4 load balancer, supports TLS termination.
+  - new cluster IPs are registered with the NLB as soon as they are identified. and stale IPs are removed (e.g. via health checks)
+    - maintain a candidate list of IP addresses to be deregistered using a file stored in an S3 bucket.
+      - theres a blog post link in ELB file
+
+### API Gateway
+
+- API Gateway exposes API operations that accept client requests and execute your backend Lambda functions.
+- check the lambda section
+
+### lambda
+
+- execute gremlin/sparql queries, which can be exposed as endpoints via api gateway
+- Neptune's VPC security group is configured to allow access from the AWS Lambda security group on the Neptune cluster's port.
+- AWS Lambda is configured to access resources in your VPC.
+  - allows Lambda to create elastic network interfaces (ENIs) that enable your function to connect securely to Neptune.
+- The Lambda VPC configuration information includes at least 2 private subnets, allowing Lambda to run in high availability mode.
+- The VPC security group that Lambda uses is permitted to access Neptune via an inbound rule on the Neptune VPC security group.
+- Code running in your Lambda function uses a Gremlin or SPARQL client to submit queries to the Neptune cluster's cluster, reader and/or instance endpoints.
+- best practices
+  - to enable external internet access for your function, configure your Lambda security group to allow outbound connections and route outbound internet traffic via a NAT gateway attached to your VPC.
+  - Lambda functions that are configured to run inside a VPC incurs an additional ENI start-up penalty
+    - address resolution may be delayed when trying to connect to network resources.
+  - Use a single connection and graph traversal source for the entire lifetime of the Lambda execution context.
+    - If the Gremlin driver you’re using has a connection pool, configure it to use a single connection.
+      - Hold the connection in a member variable so that it can be resued across invocations.
+      - Concurrent client requests to the function will be handled by different function instances running in separate execution contexts – each with its own member variable connection.
+  - Handle connection issues and retry connections in your function code.
+    - unexpected network events can cause this connection to be terminated abruptly.
+    - code your function to handle these connection issues and attempt a reconnection if necessary.
+  - If your Lambda function modifies data in Neptune,
+    - adopt a backoff-and-retry strategy to handle ConcurrentModificationException and ReadOnlyViolationException errors.
+
+### AppSync
+
+### kms
+
+### s3
+
+### cloudtrail
+
+### SNS
+
+### Backup
 
 ### cloudwatch
