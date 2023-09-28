@@ -26,6 +26,8 @@
 
 ## SPARQL
 
+- kept in this file, have no plains on using it
+
 ```ts
 // find the names of users that p-1 follows
 PREFIX s: <http://www.example.com/social#>

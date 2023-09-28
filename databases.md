@@ -102,13 +102,15 @@
   - variable structure: highly connected entities in many different ways
   - connected queries: navigate connected structures taking into account strength, weight, or quality of relationships
 
-#### Identity Graphs
+#### Types
+
+##### Identity Graphs
 
 - a single unified view of customers and prospects by linking multiple identifiers such as cookies, device identifiers, IP addresses, email IDs, and internal enterprise IDs to a known person or anonymous profile using privacy-compliant methods
 - captures customer behavior and preferences across devices and marketing channels.
 - acts as a central hub and drives targeted advertising, personalization of customer experiences, and measurement of marketing effectiveness.
 
-#### knowledge graphs
+##### knowledge graphs
 
 - a means of structuring and organizing information for improved access and understanding
 - build
@@ -116,34 +118,81 @@
   - context-aware systems that can derive answers based on queries and a vast knowledge base
 - use machine learning services with knowledge graphs for better decision making and knowledge discovery.
 
-#### Fraud Detection
+##### Fraud Detection
 
 - stores the relationships between the transactions, actors, and other relevant information to help customers find common patterns in the data and build applications that can detect fraudulent activities.
 - people can collude to commit fraudulent transactions, creating fraud rings.
   - can have hundreds of members, which makes it challenging to find the bad actors and detect fraud.
 
-#### Social Networking
+##### Social Networking
 
 - store human interactions between people, track skills, and roles at organizations.
 - understand social interactions, likes, and preferences
 - find beneficial connections across companies, fill occupational needs that may not be obvious from job title alone, and understand how information spreads through a population
 
-#### Network/IT operations
+##### Network/IT operations
 
 - store resources, configurations, and access patterns across the technology landscape
 - Storing this topology in a graph gives better insight to the critical resources in the production environment that are essential to protect and better understand whether the changes observed daily in an environment are critical, expected, or anomalous.
 
-#### Recommendation Engines
+##### Recommendation Engines
 
 - provide predictive capability based on existing connections in a graph
 - exploit the fact that similarity breeds connections.
 - make recommendations based on a well-understood phenomenon called triadic closure.
   - If a connection between Bill and Sarah exists and a connection between Bill and Terry exists, there is a tendency for a connection between Terry and Sarah to form.
 
-#### Life Sciences
+##### Life Sciences
 
 - store connections ranging from relationships between biological compounds and biochemical reactions to those connecting multiple datasets.
 - used for applications such as data integration, management of research publications, drug discovery, precision medicine, and cancer research.
+
+#### Converting other models to graph
+
+- it is best to design an application graph data model and graph queries by working backwards from a set of application use cases, and using the model as a target for any subsequent data ingest from other systems.
+- however, in some cases you have to start from an existing (e.g. relational) and convert to a graph
+  - you can apply a number of 'mechanical' transformations that yield a naive graph model.
+  - provide the basis for exploration and the iterative development of an application graph data model.
+
+##### relational to graph
+
+- in general
+  - each row in a table can be converted to a vertex in a property graph, or a set of statements with a common subject in an RDF graph.
+  - Foreign key relations can be modelled as edges.
+  - Each row in a join table with two foreign keys can be converted to an edge with edge properties.
+  - If a table contains more than two foreign keys, convert each row to an intermediate node, and convert the foreign keys into edges connecting the intermediate node to other nodes.
+- to property graph
+  - tables
+    - convert the column names to property keys.
+    - Use the table name as the label for each vertex.
+    - Concatenate primary key values to generate each vertex ID.
+  - foreign keys
+    - Choose an edge direction and label that best express the domain semantics of the relationship.
+    - Concatenate primary and foreign key values to generate the edge ID.
+  - join tables with two foreign keys
+    - Use the join table name for the edge label.
+    - Concatenate foreign keys to create the edge ID.
+    - Convert the remaining columns to edge properties.
+- to RDF graph
+  - tables
+    - Column names and values become predicates and object literals.
+    - The table name becomes an object literal value of an rdf:type predicate.
+    - Concatenate primary key values to generate each resource ID.
+  - foreign keys
+    - Represent the relationship using a triple whose subject and object are URIs identifying the resources to be connected.
+    - Choose a direction and predicate value that best express the domain semantics of the relationship.
+  - join tables with two foreign keys
+    - you will have to introduce an intermediate node:
+    - Use the join table name to type the node.
+    - Concatenate foreign keys to create the subject URI.
+
+##### document oriented to graph
+
+- [read this](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/converting-to-graph#converting-a-document-oriented-data-model-to-a-graph-model)
+
+##### key value to graph
+
+- [read this](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/converting-to-graph#converting-a-document-oriented-data-model-to-a-graph-model)
 
 ### key value
 

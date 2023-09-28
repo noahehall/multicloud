@@ -7,7 +7,11 @@
 - [landing page](https://tinkerpop.apache.org/)
 - [tinkerpop: reference](http://tinkerpop.apache.org/docs/current/reference/)
 - [gremlin: with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
-- [gremlin: online book](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
+
+### practical gremlin
+
+- [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
+- [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
 
 ## Gremlin
 
@@ -39,20 +43,20 @@ g.addV("person").property(id, "myname").V('myname').addE('somerelation').to(V('o
 // g -> graph traversel source
 
 
-// vertices
+// creation
 // addV -> create verticies
-// otherV -> navigate to specific verticies
-
-// edges
 // addE -> create edges
-// outE -> reference to outgoing edges
+// property
 
 
 // traversel
+// otherV -> navigate to specific verticies
 // in -> follow INcoming edges to vertices
 // out -> follow OUTgoing edges to vertices
-// both ->
-// bothE ->
+// outE -> reference to outgoing edges
+
+// both -> bidirectional
+// bothE -> bidirectional
 
 // loops
 // until
@@ -83,4 +87,5 @@ g.addV("person").property(id, "myname").V('myname').addE('somerelation').to(V('o
 // valueMap
 // fold
 // count
+// to(V('abc'))
 ```

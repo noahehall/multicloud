@@ -4,7 +4,7 @@
 - [property graph](./neptune-propertyGraph.md)
 - [RDF graph](./neptune-rdfGraph.md)
 - bookmark
-  - [architecture](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/graph-data-modelling)
+  - [architecture](https://github.com/aws-samples/aws-dbs-refarch-graph/tree/master/src/connecting-using-a-load-balancer)
   - [blah start from the top](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
 
 ## my thoughts
