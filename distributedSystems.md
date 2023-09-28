@@ -519,9 +519,10 @@
 ##### race conditions: issues with concurrent transactions
 
 - dirty write: when a transaction overwrites the value written by another transaction that hasnt comitted
-- dirty read: when a transaction observes a write form a transaction that hasnt completed yet
+- dirty read: when a transaction observes a write from a transaction that hasnt completed yet
 - fuzzy read: when a transaction reads an objects value twice but sees a different value in each read
   - because another transaction updated the value between the two reads
+  - aka Non-repeatable reads
 - phantom read: when a transaction reads a group of objects matching a specific condition while another transaction concurrently adds/updates/deletes objects matching the same condition
 
 ##### race conditions: solutions via isolation levels
@@ -572,6 +573,12 @@
     - can never block because of awaiting a lock
     - conflict because the previous value was overwritten by a concurrent write
   - for write tranactions it falls back to either 2PL or OCC
+- snapshot isolation: uses MVCC
+  - a read-only query logically operates on a consistent snapshot of the database taken when query evaluation begins
+  - guards against
+    - Dirty reads
+    - Non-repeatable read
+    - Phantom reads
 
 #### Durability
 

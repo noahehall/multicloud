@@ -16,6 +16,7 @@
 - [with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 - [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-transactions.html)
 - [statements](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-explain-background-statements.html)
+- [api status endpoint](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-api-status.html)
 
 ## best practicies
 

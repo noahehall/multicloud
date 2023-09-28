@@ -5,7 +5,7 @@
 - [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
-  - [neptune transactions](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
+  - [storage, reliability, availability](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
   - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
 
 ## my thoughts
@@ -17,18 +17,23 @@
 - [AAA: reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
 - [appsync: workshop example](https://github.com/aws-samples/aws-appsync-calorie-tracker-workshop/)
 - [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
+- [backup & restore](https://docs.aws.amazon.com/neptune/latest/userguide/backup-restore-overview.html)
 - [bulk load tutorial](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-IAM.html)
 - [bulk load user guide](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load.html)
 - [db clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
 - [elb: examples with neptune gremlin client](https://aws.amazon.com/blogs/database/load-balance-graph-queries-using-the-amazon-neptune-gremlin-client/)
+- [endoints](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-endpoints.html)
+- [error codes](https://docs.aws.amazon.com/neptune/latest/userguide/errors-engine-codes.html)
 - [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
 - [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
 - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started.html)
 - [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
+- [instance types](https://docs.aws.amazon.com/neptune/latest/userguide/instance-types.html)
 - [kinesis: data stream example](https://github.com/aws-samples/amazon-neptune-samples/tree/master/gremlin/stream-2-neptune)
 - [lambda: examples](https://docs.aws.amazon.com/neptune/latest/userguide/lambda-functions.html)
 - [landing page](https://aws.amazon.com/neptune/?did=ap_card&trk=ap_card)
 - [lookup cache](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-lookup-cache.html)
+- [read replicas](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-create-replica.html)
 - [running local](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
 - [security](https://docs.aws.amazon.com/neptune/latest/userguide/security.html)
 - [skillbuilder course](https://explore.skillbuilder.aws/learn/course/internal/view/elearning/14165/getting-started-with-amazon-neptune)
@@ -39,7 +44,7 @@
 - [tagging resources](https://docs.aws.amazon.com/neptune/latest/userguide/tagging.html)
 - [tools and utilities](https://github.com/awslabs/amazon-neptune-tools)
 - [transactions: intro](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
-- [transactions: acId isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
+- [transactions: isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
 - [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
 
 ### opensource
@@ -56,6 +61,8 @@
   - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 - you should probably re-read the following links every so often
   - graph data model
+  - transactions, specifically the conflict resolution section
+- optimal concurrency for writing or querying data is twice the number of vCPUs:
 
 ### anti patterns
 
@@ -113,6 +120,32 @@
   - A property can be represented by storing the element identifier in the S position, the property key in the P position, and the property value in the O position
 - A set of quad statements with shared resource identifiers creates a graph.
 
+#### Graph implementations
+
+- each model has its own query language
+- property vs RDF
+  - property: your workload requires applying computations over edge attributes in the course of a graph traversal, or model bi-directional relationships
+    - no schema and no predefined vocabularies for property names and labels; you must create and enforce constraints around naming of labels and such
+    - support edge properties, making it easy to associate edge attributes with the edge definition
+    - allows you to create multiple disconnected subgraphs within the same dataset, but has no equivalent to named graphs that allows you to identify and address individual subgraphs.
+  - RDF: you need to differentiate between and manage multiple subgraphs in your dataset
+    - has predefined schema vocabularies with well-understood data modelling semantics for specifying class and property schema elements
+    - predefined domain-specific vocabularies such as vCard, FOAF, Dublin Core and SKOS for describing resources in different domains
+    - designed to make it easy to share and publish data with fixed, well-understood semantics.
+      - To qualify an edge in RDF with additional data, you must use intermediate nodes or blank nodes
+    - supports the concept of named graphs, allowing you to group a set of RDF statements and identify them with a URI
+
+##### Property Graph
+
+- Apache tinkerpop's gremlin traversal language
+  - check the neptune property graph file
+- neo4j's opencypher
+  - it has a file too
+
+##### Resource Description Framework (RDF)
+
+- w3c's SPARQL query language
+
 ### Performance
 
 - directly related to how much of the graph a query must touch
@@ -143,8 +176,33 @@
 ### Transactions
 
 - Neptune is designed to support highly concurrent online transactional processing (OLTP) workloads over data graphs
-  - neither SPARQL nor GREMLIN define standard transactions mechanisms for concurrent query processing
+  - neither SPARQL nor GREMLIN define standard transaction mechanisms for concurrent query processing
   - neptune, however, enforces strict semantics to help avoid data anomalies.
+- read only isolation: snapshot isolation semantics via MVCC
+  - a read-only query logically operates on a consistent snapshot of the database taken when query evaluation begins.
+  - there can be a small replication lag between the writer and read replicas.
+    - for the strongest guarantee: send the query to the writer endpoint itself rather than to a read replica.
+- read after mutation isolation: READ COMMITTED transaction isolation
+  - also guards against fuzzy and phantom reads
+  - achieved by locking records and ranges of records when reading data
+
+#### Gremlin
+
+- READ queries: not a mutation query
+- MUTATION queries:
+  - contains any query-path steps such as addE(), addV(), property(), or drop()
+  - all script based session queries, whether read or mutation, or classified as mutation queries
+- Neptune uses quorum writes that make six copies of your data across three Availability Zones,
+  - four out of those six storage nodes must acknowledge a write for it to be considered durable
+
+#### sparql
+
+- READ queries: SELECT, ASK, CONSTRUCT, and DESCRIBE
+- MUTATION queries: INSERT and DELETE
+
+#### opencycpher
+
+- abcd
 
 ### indexes
 
@@ -152,17 +210,33 @@
 - neptune only enables 3 out of the 6 available indexes by default
   - you can enable the OSGP Index Creation Using Lab Mode
 
-### cluster
+## architecture
 
-- primary database: read and write operations and performs all the data modifications to the cluster volume
+### db cluster
+
+- manages access to your data through queries. A cluster consists of:
+  - primary database
+  - read replicas: Up to 15
 - compute layer
-  - single-writer architecture: no more than a single writer instance can be provisioned.
-  - read replicas: up to 15; connects to the same storage volume as the primary database instance
-    - Readsare eventually consistent: generally in the single-digit milliseconds, but potentially up to 100 ms under extremely heavy traffic.
+  - single-writer architecture: no more than a single (primary db) writer instance can be provisioned.
+  - read replicas: up to 15;
 - storage layer: spans multiple AZs
   - cluster volume: designed for reliability and high availability; copies data across AZs in a single region.
 
-#### endpoints:
+#### primary database
+
+- accepts read and write operations
+- coordinates all write operations to the DB cluster's underlying storage volume
+- There can only be one primary DB instance in a Neptune DB cluster.
+  - Neptune automatically fails over to one of the read-replica instances with a priority that you can specify.
+
+#### read replicas
+
+- connects to the same storage volume as the primary database instance
+- Reads are eventually consistent: generally in the single-digit milliseconds, but potentially up to 100 ms under extremely heavy traffic.
+- Each read-replica DB instance has its own endpoint.
+
+#### endpoints
 
 - cluster: connects to the current primary database instance for the database cluster.
 - instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
@@ -190,9 +264,18 @@
   - query complexity
   - query performance requirements
   - etc
-- testing query performance:
-  - optimal concurrency for writing or querying data is twice the number of vCPUs:
-    - e.g. db.r5.large instance has TWO vCPUs -> FOUR processes writing data in parallel to test load times
+
+##### right sizing
+
+- based on your CPU and memory requirements
+- the number of vCPUs on an instance determines the number of query threads that handle incoming queries
+  - Each Neptune DB instance has a number of query threads equal to 2 x number of vCPUs on that instance
+    - e.g. db.r5.large, has TWO vCPUs -> 4 processes writing data in parallel
+    - e.g. r5.4xlarge, has 16 vCPUs, has 32 query threads, and can therefore process 32 queries concurrently.
+  - subsequent queries that arrive while all query threads are occupied are put into a server-side queue,
+    - processed in a FIFO manner as query threads become available.
+    - server-side queue can hold approximately 8000 pending requests
+- The amount of memory on an instance determines the size of the buffer cache
 
 ### Notebooks
 
@@ -208,32 +291,14 @@
 
 ### Errors
 
-- ConcurrentModificationException: occur when multiple concurrent requests attempt to modify the same elements in the graph
+- ConcurrentModificationException: When transactions are canceled because of unresolvable conflicts or lock-wait timeouts
+  - occur when multiple concurrent requests attempt to modify the same elements in the graph
+  - when instances of this error is low
+    - an exponential backoff-based retry mechanism works well as a way to handle them
+  - when instances of this error is high
+    - modify your app logic to serialize updates that are likely to conflict with each other.
 - ReadOnlyViolationException: occur if the client attempts to write to a database instance that is no longer the primary.
-
-### Graph Data Models
-
-- each model has its own query language
-- property vs RDF
-  - property: your workload requires applying computations over edge attributes in the course of a graph traversal, or model bi-directional relationships
-    - no schema and no predefined vocabularies for property names and labels; you must create and enforce constraints around naming of labels and such
-    - support edge properties, making it easy to associate edge attributes with the edge definition
-    - allows you to create multiple disconnected subgraphs within the same dataset, but has no equivalent to named graphs that allows you to identify and address individual subgraphs.
-  - RDF: you need to differentiate between and manage multiple subgraphs in your dataset
-    - has predefined schema vocabularies with well-understood data modelling semantics for specifying class and property schema elements
-    - predefined domain-specific vocabularies such as vCard, FOAF, Dublin Core and SKOS for describing resources in different domains
-    - designed to make it easy to share and publish data with fixed, well-understood semantics.
-      - To qualify an edge in RDF with additional data, you must use intermediate nodes or blank nodes
-    - supports the concept of named graphs, allowing you to group a set of RDF statements and identify them with a URI
-
-#### Property Graph
-
-- Apache tinkerpop's gremlin traversal language
-- check the neptune property graph file
-
-#### Resource Description Framework (RDF)
-
-- w3c's SPARQL query language
+- ThrottlingException: server-side queue is full and no more queries can be accepted
 
 ### security
 
@@ -253,6 +318,9 @@
   - burstable
   - notebook configuration: enables access to the cluster
 - high availability: can be disabled
+- Multi-AZ deployment
+  - specifying Multi-AZ when creating a DB cluster.
+  - If a DB cluster is in a single Availability Zone, you can make it a Multi-AZ DB cluster adding a Neptune replica in a different Availability Zone.
 - db instance identifier: must be unique per account per region
 - vpc, subnets, security group
 - db cluster identifier, db port (e.g. 8192), parameter group

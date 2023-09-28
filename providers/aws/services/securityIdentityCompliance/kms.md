@@ -206,3 +206,5 @@
 ### neptune
 
 - On an encrypted Neptune instance, data in the underlying storage is encrypted, as are the automated backups, snapshots, and replicas in the same cluster.
+- You can't create an encrypted read-replica instance for an unencrypted Neptune DB cluster,
+  - or an unencrypted read-replica instance for an encrypted Neptune DB cluster.

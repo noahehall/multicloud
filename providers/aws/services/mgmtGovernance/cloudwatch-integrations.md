@@ -26,6 +26,7 @@
 - [lambda: metrics](https://docs.aws.amazon.com/lambda/latest/dg/monitoring-functions-metrics.html)
 - [neptune: cloudwatch logs](https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch-logs.html)
 - [neptune: monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch.html)
+- [neptune: monitoring instances](https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch-monitoring-instances.html)
 - [neptune: metrics](https://docs.aws.amazon.com/neptune/latest/userguide/cw-metrics.html)
 - [s3: metrics](https://docs.aws.amazon.com/AmazonS3/latest/userguide/metrics-dimensions.html)
 - [sns: metrics](https://docs.aws.amazon.com/sns/latest/dg/sns-monitoring-using-cloudwatch.html)
@@ -228,6 +229,13 @@
 - use EventBridge and these events to write rules that take actions,
 
 ## neptune
+
+- common metrics
+  - MainRequestQueuePendingRequests: number of pending requests in the server-side queue
+    - can also be retrieved by hitting the gremlin api status endpoint with `includeWaiting` parameter
+- insights
+  - A sustained concurrent write load that utilizes all the query threads on the primary DB instance ideally shows 90% or more CPU utilization
+    - indicates that all the query threads on the server are actively engaged in doing useful work
 
 ## s3
 
