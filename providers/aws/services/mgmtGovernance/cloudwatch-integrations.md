@@ -233,6 +233,7 @@
 - common metrics
   - MainRequestQueuePendingRequests: number of pending requests in the server-side queue
     - can also be retrieved by hitting the gremlin api status endpoint with `includeWaiting` parameter
+  - VolumeBytesUsed: total storage space allocated; user data + dictionary data + internal log data
 - insights
   - A sustained concurrent write load that utilizes all the query threads on the primary DB instance ideally shows 90% or more CPU utilization
     - indicates that all the query threads on the server are actively engaged in doing useful work

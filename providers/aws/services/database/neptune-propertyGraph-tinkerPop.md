@@ -156,6 +156,20 @@
 - create & execute tests via sagemaker jupiter notebooks, gremlin console, cloud9 ide
 - Create test fixtures that install a sample dataset in a known state, and write unit tests for your queries that assert query results based on a fixed set of inputs.
 
+## API
+
+### status endpoint
+
+- used for a bunch of stuff
+- specify your own queryId value in the HTTP header,
+  - enables you to cancel/inspect executed queries
+
+```sh
+# check a query
+curl https://your-neptune-endpoint:port/gremlin/status \
+    -d "queryId=4d5c4fae-aa30-41cf-9e1f-91e6b7dd6f47"
+```
+
 ## gremlin
 
 - check the tinkerpop file for gremlin specific shiz

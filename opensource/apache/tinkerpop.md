@@ -69,6 +69,7 @@ g.V('person1').hasLabel('Person')
 // modification
 // addV -> create verticies
 // addE -> create edges
+// drop
 
 // Cardinality.single is optional, else it uses Cardinality.set and appends the value
 // property(Cardinality.single?, 'key', 'val') -> inserts a property with the given key and value

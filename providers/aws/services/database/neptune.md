@@ -5,7 +5,7 @@
 - [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
-  - [storage, reliability, availability](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-storage.html)
+  - [lab mode](https://docs.aws.amazon.com/neptune/latest/userguide/features-lab-mode.html)
   - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
 
 ## my thoughts
@@ -18,11 +18,15 @@
 - [appsync: workshop example](https://github.com/aws-samples/aws-appsync-calorie-tracker-workshop/)
 - [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
 - [backup & restore](https://docs.aws.amazon.com/neptune/latest/userguide/backup-restore-overview.html)
-- [bulk load tutorial](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-IAM.html)
-- [bulk load user guide](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load.html)
-- [db clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
+- [data: bulk load tutorial](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-IAM.html)
+- [data: bulk load user guide](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load.html)
+- [data: export](https://docs.aws.amazon.com/neptune/latest/userguide/machine-learning-data-export.html)
+- [db: clones](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-cloning.html)
+- [db: clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
+- [db: fast reset](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-fast-reset.html)
 - [elb: examples with neptune gremlin client](https://aws.amazon.com/blogs/database/load-balance-graph-queries-using-the-amazon-neptune-gremlin-client/)
-- [endoints](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-endpoints.html)
+- [endoints: intro](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-endpoints.html)
+- [endpoints: custom](https://docs.aws.amazon.com/neptune/latest/userguide/feature-custom-endpoint-membership.html)
 - [error codes](https://docs.aws.amazon.com/neptune/latest/userguide/errors-engine-codes.html)
 - [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
 - [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
@@ -57,12 +61,29 @@
 
 ## best practices
 
-- read replicas should always be equal to or larger than the writer instance
-  - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 - you should probably re-read the following links every so often
   - graph data model
   - transactions, specifically the conflict resolution section
+  - working with custom endpoints
+- read replicas should always be equal to or larger than the writer instance
+  - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 - optimal concurrency for writing or querying data is twice the number of vCPUs:
+- storage
+  - avoid as much as possible using property keys and user-facing values that are temporary in nature.
+  - data model changes should be loaded onto a new DB cluster.
+    - or atleats using the fast reset api
+  - split large transactions into smaller ones and allow time between them so that the associated internal logs have a chance to expire and release their internal storage for re-use by subsequent logs.
+    - large amounts of data generate correspondingly large internal logs, which can permanently increase the high water mark of the internal log space
+  - shrink allocated storage space when you have a large amount of unused allocated space is migrate to a new DB cluster.
+    - e.g. via the data export + import tools
+    - FYI: Creating and restoring a snapshot does not reduce the amount of storage allocated for your DB cluster, because a snapshot retains the original image of the cluster's underlying storage
+- read replicas
+  - Disable any DNS caching settings to force DNS resolution each time.
+    - neptune uses DNS to round-robin requests
+  - If you want to load balance queries to distribute the read workload for a DB cluster,
+    - you must manage that in your application
+    - & use instance endpoints to connect directly to Neptune replicas to balance the load.
+      - the DNS round robin doesnt consider load, its naive routing mechanism
 
 ### anti patterns
 
@@ -84,17 +105,24 @@
   - primary instances used for read-write workloads
   - read replicas used to scale reads and enhance failover
   - Neptune workbench instances: work with your Neptune cluster using Jupyter notebooks (hosted by Amazon SageMaker).
-- storage consumed: per gigabyte per month
-  - automated database backups and customer-initiated database cluster snapshots
+- storage consumed: space actually allocated per gigabyte per month
+  - determined by the storage high water mark, which is the maximum amount allocated to the cluster volume at any time during its existence.
+- database backups and customer-initiated database cluster snapshots
+  - bill separately from storage, as backup storage
 - i/o: billed in per million request increments
   - requests in
   - data out
+- FYI
+  - even if user data is removed from a cluster volume, such as by a drop query like g.V().drop(), the total allocated space remains the same. Neptune does automatically optimize the unused allocated space for reuse in the future.
+  - Although your data is replicated into six copies, you are only billed for one copy of the data.
+  - clones point to the same cluster volume that your DB cluster itself uses, so there is no additional storage charge for the original data
 
 ## terms
 
 ## basics
 
-- availability:
+- availability: You can delete the cluster volume and its data only after deleting all of its DB instances.
+  - six copies of your Neptune data are maintained across three AZs
   - failing db nodes auto detected and replaced
   - failing db processes auto detected and recycled
   - replicas auto promoted to primary during failover
@@ -119,6 +147,21 @@
   - A relationship between two vertices can be represented by storing the source vertex identifier in the S position, the target vertex identifier in the O position, and the edge label in the P position.
   - A property can be represented by storing the element identifier in the S position, the property key in the P position, and the property value in the O position
 - A set of quad statements with shared resource identifiers creates a graph.
+
+#### dictionary
+
+- most user-facing values are stored separately in a dictionary
+- The dictionary contains a forward mapping of user-facing values to 8-byte IDs in a value_to_id index.
+  - prolly should re-read this section
+
+#### indexes
+
+- neptune actually uses an index storing 8 byte identifiers that reference the actual dictionary values
+  - All user-facing values that would go in S, P, or G indexes are stored in the dictionary in this way.
+  - In the O index, numeric values are stored directly in the index (inlined). This includes date and datetime values (represented as milliseconds from the epoch).
+  - All other user-facing values that would go in the O index are stored in the dictionary and represented in the index by IDs.
+- neptune only enables 3 out of the 6 available indexes by default
+  - you can enable the OSGP Index Creation Using Lab Mode
 
 #### Graph implementations
 
@@ -204,14 +247,6 @@
 
 - abcd
 
-### indexes
-
-- probably should re-read this section in the Graph Data Model link
-- neptune only enables 3 out of the 6 available indexes by default
-  - you can enable the OSGP Index Creation Using Lab Mode
-
-## architecture
-
 ### db cluster
 
 - manages access to your data through queries. A cluster consists of:
@@ -238,11 +273,60 @@
 
 #### endpoints
 
-- cluster: connects to the current primary database instance for the database cluster.
-- instance: connects to a specific database instance; provides direct control over connections to the DB cluster, for scenarios where using the cluster endpoint or reader endpoint might not be appropriate
-- writer: points at the writer instance and should be used for any query that modifies data in the cluster.
-- reader: rotates distribution of requests across all of the read replicas in the cluster.
-  - connects to one of the available Neptune replicas. Each replica has its own endpoint
+- Each Neptune connection is handled by a specific DB instance.
+  - the host name and port that you specify point to an intermediate handler called an endpoint
+  - the intermediate endpoint abstracts away the underlying connections so that you don't have to hardcode the hostnames, or write your own logic for rerouting connections when some DB instances are unavailable.
+
+##### cluster endpoint
+
+- e.g. `mydbcluster.cluster-123456789012.us-east-1.neptune.amazonaws.com:8182`
+- connects to the current primary database instance for the database cluster.
+- Each Neptune DB cluster has a cluster endpoint and one primary DB instance.
+- provides failover support for read/write connections to the DB cluster
+- use cases: any R/W operation
+  - all write operations on the DB cluster, including inserts, updates, deletes, and data definition language (DDL) changes
+  - read operations, such as queries.
+
+##### reader endpoint
+
+- connects to one of the available Neptune replicas
+- if there is more than one replica
+  - uses DNS routing to load balance (round-robin) requests across all of the read replicas in the cluster.
+    - changes the host that the DNS entry points to
+    - Each time you resolve the DNS, you get a different IP, and connections are opened against those IPs
+    - if using web sockets
+      - Ensure that your client resolves the DNS entry each time it connects.
+      - Close the connection and reconnect.
+- use cases: R operations
+  - unless you have a single-instance archicture, then it accepts writes too
+    - likely all of the endpoints point to the same single instance, which is the primary
+
+##### instance endpoints
+
+- e.g. `mydbinstance.123456789012.us-east-1.neptune.amazonaws.com:8182`
+- connects to a specific database instance in the cluster;
+- use cases
+  - scenerios where using the cluster endpoint or reader endpoint might not be appropriate
+    - e.g. fine-grained load balancing based on workload type
+  - direct control over connections to the DB cluster,
+
+##### custom endpoints
+
+- e.g. `myendpoint.cluster-custom-123456789012.us-east-1.neptune.amazonaws.com:8182`
+- represents a set of DB instances that you choose
+- Neptune chooses one of the instances in the group to handle the connection
+- create up to five custom endpoints for each provisioned Neptune cluster.
+- FYI
+  - load-balances db connections based on criteria other than the read-only or read/write capability of the DB instances
+  - make sure that all the instances within that group share the same performance and memory capacity characteristics
+- use cases
+  - intended for advanced users with specialized kinds of workloads where it isn't practical to keep all the Neptune Replicas in the cluster identical
+  - can adjust the capacity of the DB instances used with each connection.
+  - custom endpoints that connect to groups of instances with different instance classes, you can then direct users with different performance needs to the endpoints that best suit their use cases.
+- creating: abcd
+- viewing: abcd
+- editing: abcd
+- deleting: abcd
 
 #### Parameter Groups
 
@@ -250,7 +334,7 @@
 - db cluster parameter groups: apply to every instance in the cluster
 - default parameter & cluster parameter groups
   - every account has them, cant be modified
-- customer paramter and cluster parameter groups
+- customer parameter and cluster parameter groups
   - all Neptune DB parameters are static
   - you must manually reboot each db instance before changes take effect
 
@@ -277,6 +361,19 @@
     - server-side queue can hold approximately 8000 pending requests
 - The amount of memory on an instance determines the size of the buffer cache
 
+#### Storage
+
+- uses a distributed and shared storage architecture that scales automatically as your database storage needs grow.
+- cluster volume: which is a single, virtual volume that uses Non-Volatile Memory Express (NVMe) SSD-based drives
+  - consists of a collection of logical blocks known as segments
+  - Each segment is allocated 10 gigabytes (GB) of storage.
+  - The data in each segment is replicated into six copies, allocated across three AZs in the DB cluster's region.
+- contains all your user data, indices and dictionaries, internal metadata such as internal transaction logs
+  - cannot exceed the maximum size of the cluster volume:
+    - 128 tebibytes (TiB) in all regions except China and GovCloud, where it is 64 TiB
+- When a Neptune DB cluster is created, it is allocated a single segment of 10 GB.
+  - before capacity breaches allocated storage, Neptune automatically expands the cluster volume by adding new segments
+
 ### Notebooks
 
 - jupyter notebooks: run python code
@@ -299,6 +396,8 @@
     - modify your app logic to serialize updates that are likely to conflict with each other.
 - ReadOnlyViolationException: occur if the client attempts to write to a database instance that is no longer the primary.
 - ThrottlingException: server-side queue is full and no more queries can be accepted
+
+### lab mode
 
 ### security
 
