@@ -1,11 +1,12 @@
 # neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
+- must be deployed in a VPC
 - [tinker pop property graph](./neptune-propertyGraph-tinkerPop.md)
 - [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
-  - [lab mode](https://docs.aws.amazon.com/neptune/latest/userguide/features-lab-mode.html)
+  - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
   - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
 
 ## my thoughts
@@ -24,6 +25,7 @@
 - [db: clones](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-cloning.html)
 - [db: clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
 - [db: fast reset](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-fast-reset.html)
+- [db: parameter groups](https://docs.aws.amazon.com/neptune/latest/userguide/parameters.html)
 - [elb: examples with neptune gremlin client](https://aws.amazon.com/blogs/database/load-balance-graph-queries-using-the-amazon-neptune-gremlin-client/)
 - [endoints: intro](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-endpoints.html)
 - [endpoints: custom](https://docs.aws.amazon.com/neptune/latest/userguide/feature-custom-endpoint-membership.html)
@@ -50,6 +52,7 @@
 - [transactions: intro](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
 - [transactions: isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
 - [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+- [dfe engine](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-dfe-engine.html)
 
 ### opensource
 
@@ -58,6 +61,7 @@
 - [apache tinkerpop](https://tinkerpop.apache.org/)
 - [w3c RDF](https://www.w3.org/RDF/)
 - [w3c SPARQL](https://www.w3.org/TR/sparql11-query/)
+- [neptune jdbc driver](https://github.com/aws/amazon-neptune-jdbc-driver)
 
 ## best practices
 
@@ -65,6 +69,7 @@
   - graph data model
   - transactions, specifically the conflict resolution section
   - working with custom endpoints
+  - dfe engine
 - read replicas should always be equal to or larger than the writer instance
   - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 - optimal concurrency for writing or querying data is twice the number of vCPUs:
@@ -84,6 +89,7 @@
     - you must manage that in your application
     - & use instance endpoints to connect directly to Neptune replicas to balance the load.
       - the DNS round robin doesnt consider load, its naive routing mechanism
+        - If a client opens a lot of connections before the DNS entry changes, all the connection requests are sent to a single Neptune instance
 
 ### anti patterns
 
@@ -216,6 +222,16 @@
 - Under "Index Operations', it shows the number of terms materialized during execution:
 - check the lookup cache docs for an example
 
+#### DFE engine
+
+- optionally enable for high perf; set via parameter groups
+- uses DB instance resources such as CPU cores, memory, and I/O more efficiently than the original Neptune engine.
+- uses pre-generated statistics about your Neptune graph data to make informed decisions about how to structure queries
+- supports a wide variety of plan types, including left-deep, bushy, and hybrid ones.
+  - but only a subset of SPARQL and Gremlin query constructs.
+    - Gremlin: generally the subset of queries that contain a chain of traversals which do not contain some of the more complex steps.
+- read the docs
+
 ### Transactions
 
 - Neptune is designed to support highly concurrent online transactional processing (OLTP) workloads over data graphs
@@ -338,6 +354,12 @@
   - all Neptune DB parameters are static
   - you must manually reboot each db instance before changes take effect
 
+##### lab mode
+
+- enable new features that are in the current Neptune engine release, but that aren't yet ready for production use and aren't enabled by default.
+- read the docs on this when it becomes important
+  - you need to restart both the primary, and each replica, plus some other gotchas
+
 #### Instances
 
 - DB instances are created by default with a firewall and a default security group that prevents access
@@ -397,7 +419,32 @@
 - ReadOnlyViolationException: occur if the client attempts to write to a database instance that is no longer the primary.
 - ThrottlingException: server-side queue is full and no more queries can be accepted
 
-### lab mode
+### http API
+
+#### status endpoint
+
+- used for a bunch of stuff
+- specify your own queryId value in the HTTP header,
+  - enables you to cancel/inspect executed queries
+
+```sh
+# check a query
+curl https://your-neptune-endpoint:port/gremlin/status \
+    -d "queryId=4d5c4fae-aa30-41cf-9e1f-91e6b7dd6f47"
+```
+
+#### summary endpoint
+
+- returns a read-only list of graph data size and content:node and edge labels and property keys, along with counts of nodes, edges, and properties.
+- summary data is drawn from the DFE statistics computed by the Neptune DFE engine during runtime
+  - if you havent disabled statistics, its periodically updated
+  - else manually trigger a statistics update right before retrieving the summary.
+
+```sh
+
+# drop the mode param for basic
+curl https://your-neptune-host:port/pg/statistics/summary?mode=detailed
+```
 
 ### security
 

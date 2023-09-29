@@ -6,21 +6,23 @@
 ## links
 
 - [knowledge graphs on AWS](https://aws.amazon.com/neptune/knowledge-graphs-on-aws/)
+- [migrating from tinkerpop to neptune](https://docs.aws.amazon.com/neptune/latest/userguide/migrating-from-tinkerpop.html)
 
 ### gremlin
 
 - [AAA: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 - [AAA: getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-graph-gremlin.html)
-- [neptune compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
-- [sessions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-sessions.html)
-- [with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
-- [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-transactions.html)
-- [statements](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-explain-background-statements.html)
 - [api status endpoint](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-api-status.html)
+- [gremlin console: connecting](https://docs.aws.amazon.com/neptune/latest/userguide/iam-auth-connecting-gremlin-console.html)
+- [neptune: compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
+- [sessions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-sessions.html)
+- [statements](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-explain-background-statements.html)
+- [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-transactions.html)
+- [with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 
 ## best practicies
 
-- design for querability: work backwards from the questions your data must answer; whereby you iterate the model and the queries on a use-case-by-use-case basis.
+- design for queryability: work backwards from the questions your data must answer; whereby you iterate the model and the queries on a use-case-by-use-case basis.
 - Try to limit each vertex to having just one label, but exceptions can exist if entities play multiple roles
   - avoid using labels as flags or enumerated tags that group entities of a particular type
     - use a property to perform this partitioning
@@ -32,6 +34,12 @@
 ## basics
 
 - specifications by example: illustrating a small, representative example of the graph, with specific vertices, labels, properties and edges showing how instances of things in the application domain are attributed and connected to one another
+
+### Migration
+
+#### tinkerpop to neptune
+
+- thoroughly review the doc up to
 
 ## data model
 
@@ -155,20 +163,6 @@
 
 - create & execute tests via sagemaker jupiter notebooks, gremlin console, cloud9 ide
 - Create test fixtures that install a sample dataset in a known state, and write unit tests for your queries that assert query results based on a fixed set of inputs.
-
-## API
-
-### status endpoint
-
-- used for a bunch of stuff
-- specify your own queryId value in the HTTP header,
-  - enables you to cancel/inspect executed queries
-
-```sh
-# check a query
-curl https://your-neptune-endpoint:port/gremlin/status \
-    -d "queryId=4d5c4fae-aa30-41cf-9e1f-91e6b7dd6f47"
-```
 
 ## gremlin
 

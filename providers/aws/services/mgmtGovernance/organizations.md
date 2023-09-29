@@ -7,6 +7,8 @@
 
 ## my thoughts
 
+- FYI: AWS Free Tier eligibility for all member accounts begins on the day that the management account is created.
+
 ## links
 
 - [integrations](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_integrate_services_list.html)

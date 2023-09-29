@@ -4,6 +4,10 @@
 
 ## links
 
+### opensource
+
+- [awscurl](https://github.com/okigan/awscurl)
+
 ### user guide
 
 - [authenticating with short-term credentials](https://docs.aws.amazon.com/cli/latest/userguide/cli-authentication-short-term.html)
@@ -31,6 +35,8 @@
 
 ## basics
 
+- need to finish this section
+
 ### named profiles
 
 - profile: named collection of settings
@@ -43,7 +49,7 @@
 region = us-east-1
 output = json
 
-# credentials files arent used with SSO
+# credentials files
 [profile nirvai-dev]
 sso_session = my-sso
 sso_account_id = 444455556666

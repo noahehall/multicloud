@@ -1,12 +1,17 @@
 # Policy ref
 
+- should probably reread
+  - policy reference
+  - variables link
+
 ## links
 
 - [AAA: policy generator](https://awspolicygen.s3.amazonaws.com/policygen.html)
-- [AAA: policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html)
+- [AAA: policy reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html)
 - [blog: writing least privilege IAM policies](https://aws.amazon.com/blogs/security/techniques-for-writing-least-privilege-iam-policies/)
 - [condition: global keys](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_condition-keys.html)
 - [condition: operators](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition_operators.html)
+- [variables](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_variables.html)
 
 ## basics
 
@@ -208,12 +213,15 @@ sts:RoleSessionName
 
 ```sh
 # actions
+kms:CreateGrant # should be used with a conditional
 kms:Decrypt
 kms:DescribeKey
+kms:Encrypt
+kms:GenerateDataKey
 kms:GenerateDataKeyWithoutPlainText
 kms:ReEncrypt
-kms:CreateGrant # should be used with a conditional
-
+kms:ReEncryptFrom
+kms:ReEncryptTo
 # conditions
 ## for use with CreateGrant action: only approved if called on behalf of KMS
 "Bool" > "kms:GrantIsForAWSResource" > true
@@ -242,4 +250,21 @@ dynamodb:PutItem
 ```sh
 # actions
 logs:Create* # cloudwatch logs: any action starting with Create
+```
+
+### neptune
+
+- Neptune shares operational technology with RDS for certain management features.
+  - which is why Neptune administrative actions have an rds: prefix.
+-
+
+```sh
+#### actions
+# control plane
+neptune:*
+
+# data plane: prefix them all with neptune-db:blah
+neptune-db:*
+ReadDataViaQuery
+Read*,Get*,List*
 ```

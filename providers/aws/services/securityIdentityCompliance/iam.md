@@ -37,6 +37,8 @@
 - [identities](https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html)
 - [intro to IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/intro-structure.html)
 - [mfa](https://aws.amazon.com/iam/details/mfa/)
+- [neptune: iam auth](https://docs.aws.amazon.com/neptune/latest/userguide/iam-auth.html)
+- [neptune: iam policy page](https://docs.aws.amazon.com/neptune/latest/userguide/security-iam-access-manage.html)
 - [organizations: SCPs > AAA landing page](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html)
 - [organizations: SCPs > evaluation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_evaluation.html)
 - [organizations: SCPs > examples](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_example-scps.html)
@@ -44,6 +46,7 @@
 - [organizations: SCPs > intro BLOG](https://aws.amazon.com/blogs/security/how-to-use-service-control-policies-in-aws-organizations/)
 - [organizations: SCPs > vpc sharing BLOG](https://aws.amazon.com/blogs/security/control-vpc-sharing-in-an-aws-multi-account-setup-with-service-control-policies/)
 - [policies: access](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html)
+- [roles: service linked roles](https://docs.aws.amazon.com/IAM/latest/UserGuide/using-service-linked-roles.html)
 - [signing aws api requests (sig v4)](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-signing.html)
 - [ssm: iam](https://docs.aws.amazon.com/systems-manager/latest/userguide/security-iam.html)
 - [ssm: profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/setup-instance-profile.html)
@@ -53,7 +56,6 @@
 - [testing iam policies](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html)
 - [tutorial: ABAC via tags](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_attribute-based-access-control.html)
 - [vpc: reachability analyzer perms](https://docs.aws.amazon.com/vpc/latest/reachability/security_iam_required-API-permissions.html)
-- [neptune: iam auth](https://docs.aws.amazon.com/neptune/latest/userguide/iam-auth.html)
 
 ### API
 
@@ -206,9 +208,15 @@
 #### service roles
 
 - iam roles that can be assumed by an AWS service
-- Service linked roles enable other AWS services to integrate with each other
+- Service roles enable other AWS services to integrate with each other
 - must include a trust policy
   - or (i think) permission to sts->assumeRole
+
+##### service linked roles
+
+- type of service role that is linked to a specific aws service
+- appear in your in AWS account and are owned by the service
+- you can view but not edit service linked roles
 
 ### policies
 
@@ -633,3 +641,14 @@
   - aws Config
   - cloudwatch logs / cloudwatch agent
   - s3 buckets
+
+### neptune
+
+- By default, IAM database authentication is disabled when you create an Amazon Neptune DB cluster
+  - Enable IAM DB Authentication -> yes
+  - Accessing Neptune with IAM-based authentication requires that you create HTTP requests and sign the requests yourself.
+    - check the awscurl tool in the cli file, or use the sdk
+- common managed policies
+  - NeptuneReadOnlyAccess
+  - NeptuneFullAccess
+  - NeptuneConsoleFullAccess
