@@ -1,26 +1,52 @@
 # TinkerPop
 
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
+- bookmark
+  - 2.2. The Gremlin console
 
 ## links
 
 - [landing page](https://tinkerpop.apache.org/)
+- [janusgraph](https://janusgraph.org/)
 
 ### practical gremlin
 
 - [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
-- [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
+- [AAA: github](https://github.com/krlawrence/graph)
+- [sample data](https://github.com/krlawrence/graph/tree/master/sample-data)
+- [sample code](https://github.com/krlawrence/graph/tree/master/sample-code)
+- [sample apps](https://github.com/krlawrence/graph/tree/master/demos)
+
+### docker
+
+- [gremlin console](https://hub.docker.com/r/tinkerpop/gremlin-console/)
 
 ### Ref
 
+- [AAA: console](https://tinkerpop.apache.org/docs/current/reference/#gremlin-console)
 - [AAA: docs landing page](https://tinkerpop.apache.org/docs/current/reference/)
+- [AAA: recipes](https://tinkerpop.apache.org/docs/current/recipes/)
+- [AAA: server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
+- [AAA: tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
+- [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
+
+## basics
+
+- a graph computing framework and top level project hosted by the Apache Software Foundation.
+
+## related
+
+- shiz that can be used with gremlin
+
+### janusgraph
+
+- Distributed, open source, massively scalable graph database
 
 ## Gremlin
 
+- graph traversal (query) language
 - a functional, data-flow language that enables users to succinctly express complex traversals on (or queries of) their application's property graph. Every Gremlin traversal is composed of a sequence of (potentially nested) steps.
-
-## Property Graph
 
 ### Data Model
 
@@ -29,7 +55,18 @@
 - properties: represent and store data
 - labels: attached to vertices and edges
 
-## quick ref
+### console
+
+- an interactive terminal or REPL that can be used to traverse local/remote graphs and interact with the data that they contain.
+- the most common method for performing ad hoc graph analysis, small to medium sized data loading projects and other exploratory functions.
+- hosts the Gremlin-Groovy language.
+
+### server
+
+- Allows hosting of graphs remotely via an HTTP/Web Sockets connection.
+- among other things, Provides a method for non-JVM languages which may not have a Gremlin Traversal Machine (e.g. Python, Javascript, Go, etc.) to communicate with the TinkerPop stack on the JVM.
+
+### quick ref
 
 - FYI: this quick ref is geared towards neptunes gremlin implementation
 
@@ -117,3 +154,8 @@ g.V('person1').hasLabel('Person')
 // to(V('abc'))
 // sideEffect
 ```
+
+## tinkergraph
+
+- in-memory (with optional persistence), non-transactional graph engine that provides both OLTP and OLAP functionality.
+- great for learning

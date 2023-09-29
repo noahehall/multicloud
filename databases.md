@@ -6,6 +6,7 @@
 
 - [cap theorem](https://en.wikipedia.org/wiki/CAP_theorem)
 - [database transactions](https://en.wikipedia.org/wiki/Database_transaction)
+- [graph theory](https://en.wikipedia.org/wiki/Graph_theory)
 
 ## best practices
 
@@ -103,6 +104,15 @@
   - connected queries: navigate connected structures taking into account strength, weight, or quality of relationships
 
 #### Types
+
+##### directed property graphs
+
+- Vertices: aka nodes; things
+- edges: connections
+- properties: both vertices and edges can have properties (effectively, key-value pairs) associated with them.
+- directed: every edge has a direction, out from one vertex and into another
+
+#### use cases
 
 ##### Identity Graphs
 
