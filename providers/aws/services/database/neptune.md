@@ -5,6 +5,7 @@
 - [tinker pop property graph](./neptune-propertyGraph-tinkerPop.md)
 - [Neo4j's openCypher property graph](./neptune-propertyGrpah-openCypher.md)
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
+- [neptune local](./neptune-local.md)
 - bookmark
   - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
   - [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
@@ -41,6 +42,7 @@
 - [db: clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
 - [db: fast reset](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-fast-reset.html)
 - [db: parameter groups](https://docs.aws.amazon.com/neptune/latest/userguide/parameters.html)
+- [dfe engine](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-dfe-engine.html)
 - [elb: examples with neptune gremlin client](https://aws.amazon.com/blogs/database/load-balance-graph-queries-using-the-amazon-neptune-gremlin-client/)
 - [endoints: intro](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-endpoints.html)
 - [endpoints: custom](https://docs.aws.amazon.com/neptune/latest/userguide/feature-custom-endpoint-membership.html)
@@ -48,6 +50,7 @@
 - [events](https://docs.aws.amazon.com/neptune/latest/userguide/events.html)
 - [getting started: 7 videos 9 hrs](https://pages.awscloud.com/AWS-Learning-Path-Getting-Started-with-Amazon-Neptune_2020_LP_0009-DAT.html)
 - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started.html)
+- [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
 - [instance status checks](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-status.html)
 - [instance types](https://docs.aws.amazon.com/neptune/latest/userguide/instance-types.html)
 - [kinesis: data stream example](https://github.com/aws-samples/amazon-neptune-samples/tree/master/gremlin/stream-2-neptune)
@@ -67,7 +70,6 @@
 - [transactions: intro](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
 - [transactions: isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
 - [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
-- [dfe engine](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-dfe-engine.html)
 
 ### opensource
 
@@ -77,6 +79,7 @@
 - [w3c RDF](https://www.w3.org/RDF/)
 - [w3c SPARQL](https://www.w3.org/TR/sparql11-query/)
 - [neptune jdbc driver](https://github.com/aws/amazon-neptune-jdbc-driver)
+- [workbench: graph notebook project](https://github.com/aws/graph-notebook)
 
 ## best practices
 
@@ -133,6 +136,9 @@
 - i/o: billed in per million request increments
   - requests in
   - data out
+- workbench
+  - T3 and T4g instance types for less than $0.10 per hour.
+  - billed for workbench resources through Amazon SageMaker, separately from your Neptune billing.
 - FYI
   - even if user data is removed from a cluster volume, such as by a drop query like g.V().drop(), the total allocated space remains the same. Neptune does automatically optimize the unused allocated space for reuse in the future.
   - Although your data is replicated into six copies, you are only billed for one copy of the data.
@@ -411,9 +417,23 @@
 - When a Neptune DB cluster is created, it is allocated a single segment of 10 GB.
   - before capacity breaches allocated storage, Neptune automatically expands the cluster volume by adding new segments
 
-### Notebooks
+### Workbench
 
-- jupyter notebooks: run python code
+- run jupyter notebooks hosted in SageMaker
+- automatically loads the latest release of aws graph notebook project from github
+- its not free, check the pricing section
+
+#### graph notebook project
+
+- easy way to interact with graph databases using Jupyter notebooks.
+- connect to any graph (local/cloud) database that supports the Apache TinkerPop, openCypher or the RDF SPARQL graph models.
+
+#### jupyter/lab notebooks
+
+- all use an Amazon Linux 2 and JupyterLab 3 environment
+- create a notebook using the Neptune workbench in the AWS Management Console
+  - when creating a new Neptune DB cluster.
+  - or from the notebook menu
 
 ### Audit Logs
 
@@ -540,7 +560,8 @@ curl https://your-neptune-host:port/pg/statistics/summary?mode=detailed
 
 ### SageMaker
 
-- for analyzing neptune graphs
+- for analyzing neptune graphs via jupyter notebooks
+- i think the notebook instances for neptune are managed via the sagemaker console
 
 ### Glue
 

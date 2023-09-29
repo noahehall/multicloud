@@ -3,7 +3,14 @@
 - pretty sure this is going to have a bunch of overlap with the SAM doc
   - its in compute/SAM.md
 
-## long example
+## links
+
+- [neptune: db cluster](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-cfn-create.html)
+
+## basics
+
+- this section should contain a shell
+- create focused sections like we did in IAM docs
 
 ```yaml
 AWSTemplateFormatVersion: 2010-09-09
@@ -35,3 +42,7 @@ Resources:
 Outputs:
   - abcd
 ```
+
+## Integrations
+
+### neptune
