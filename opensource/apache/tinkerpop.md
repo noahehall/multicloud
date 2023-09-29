@@ -2,20 +2,33 @@
 
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - bookmark
-  - 2.2. The Gremlin console
+  - 2.8. A word about indexes and schemas
 
 ## TLDR!
 
 ```sh
-# start a container
-docker run -it tinkerpop/gremlin-console:latest gremlin
+# download some sample data
+# https://github.com/krlawrence/graph/blob/main/sample-data/air-routes-latest.graphml
 
-# create a graph, and then create a "traversal source" that uses that graph
-graph = TinkerFactory.createModern()
+
+# start a container and copy the sample data into it
+docker run -it --rm --name gremlin tinkerpop/gremlin-console:latest gremlin
+docker cp ~/Downloads/air-routes-latest.graphml gremlin:sampledata.graphml
+
+# enable the sugar plugin for shorthand forms of queries
+# dunno if this transfers to neptune tho
+:plugin use tinkerpop.sugar
+
+# create a graph, load the data file and then create a "traversal source"
+graph = TinkerGraph.open()
+graph.io(graphml()).readGraph('/sampledata.graphml')
 g = traversal().withEmbedded(graph)
 
 # run some queries then exit
+graph.toString()
+g.V().count().next()
 g.V().valueMap(true)
+g.V().has('code','AUS').valueMap(true).unfold()
 :exit
 
 ```
@@ -28,11 +41,13 @@ g.V().valueMap(true)
 
 ### practical gremlin
 
-- [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
 - [AAA: github](https://github.com/krlawrence/graph)
-- [sample data](https://github.com/krlawrence/graph/tree/master/sample-data)
-- [sample code](https://github.com/krlawrence/graph/tree/master/sample-code)
-- [sample apps](https://github.com/krlawrence/graph/tree/master/demos)
+- [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
+- [AAAA: bunch of query examples](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#msc)
+- [sample: apps](https://github.com/krlawrence/graph/tree/master/demos)
+- [sample: code](https://github.com/krlawrence/graph/tree/master/sample-code)
+- [sample: data startup script](https://github.com/krlawrence/graph/blob/main/sample-data/load-air-routes-graph-34.groovy)
+- [sample: data](https://github.com/krlawrence/graph/tree/master/sample-data)
 
 ### docker
 
@@ -50,17 +65,18 @@ g.V().valueMap(true)
 - [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
 
+### related
+
+- janusgraph: Distributed, open source, massively scalable graph database
+- gephi: source tool for visualizing graph data
+
 ## basics
 
 - a graph computing framework and top level project hosted by the Apache Software Foundation.
-
-## related
-
-- shiz that can be used with gremlin
-
-### janusgraph
-
-- Distributed, open source, massively scalable graph database
+- common file formats
+  - GraphML: widely recognized by TinkerPop
+  - GraphSON: JSON defined by Apache TinkerPop and heavily used in that environment
+  - CSV
 
 ## Gremlin
 
@@ -78,7 +94,55 @@ g.V().valueMap(true)
 
 - an interactive terminal or REPL that can be used to traverse local/remote graphs and interact with the data that they contain.
 - the most common method for performing ad hoc graph analysis, small to medium sized data loading projects and other exploratory functions.
-- hosts the Gremlin-Groovy language.
+- hosts the Gremlin-Groovy language; you can enter valid Groovy code directly into the console
+- tldr
+  - ending a cmd with `;[]` hides the console output
+
+```sh
+### console cmds, always prefixed with `:`
+# important
+:help # list or specific cmd
+:exit # the shell
+:cls # clear the screen
+:load # a file/url into buffer, e.g. a groovy startup script
+:record start toThisFile.log .... :record stop
+:history # of shiz u did
+:plugin # manage console plugins
+:remote # define a connection
+
+# others
+:quit # via :exit
+:clear # the buffer & reset prompt counter
+:inspect # var/last result in browser
+:purge # maybe everything
+:save # buffer to file
+:record # current session to file
+:grab # add a dependency to the shell env
+:set # or list preferences
+:un/install # a maven lib
+:submit # a gremlin script to a gremlin server
+:show imports
+
+
+### known classes
+Gremlin
+  .version()
+```
+
+### tinkergraph
+
+- in-memory (with optional persistence), non-transactional graph engine that provides both OLTP and OLAP functionality.
+- great for learning
+
+```sh
+### enable tinkergraph if its not enabled
+:plugin use tinkerpop.tinkergraph
+
+### create a new graph and load some data from a file
+graph = TinkerGraph.open()
+graph.io(graphml()).readGraph('air-routes.graphml')
+
+```
 
 ### server
 
@@ -87,9 +151,15 @@ g.V().valueMap(true)
 
 ### quick ref
 
-- FYI: this quick ref is geared towards neptunes gremlin implementation
+- tested with tinkergraph and the practical grammer air routes data file
+- check the TLDR up top
 
 ```ts
+// Graph object
+graph // e.g. graph = TinkerGraph.open()
+  .features() // what tinkerpop features are supported
+  .toString() // basic stats about the graph
+
 ////////////////////////////////// examples
 // bi-directional relationship
 g.v.hasLabel("person").both("friends");
@@ -173,8 +243,3 @@ g.V('person1').hasLabel('Person')
 // to(V('abc'))
 // sideEffect
 ```
-
-## tinkergraph
-
-- in-memory (with optional persistence), non-transactional graph engine that provides both OLTP and OLAP functionality.
-- great for learning
