@@ -7,7 +7,22 @@
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - bookmark
   - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
-  - [getting started](https://docs.aws.amazon.com/neptune/latest/userguide/graph-get-started.html)
+  - [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
+  - [setup](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-setup.html)
+  - [migration](https://docs.aws.amazon.com/neptune/latest/userguide/migrating.html)
+  - [loading data](https://docs.aws.amazon.com/neptune/latest/userguide/load-data.html)
+  - [querying](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-queries.html)
+  - [visualization](https://docs.aws.amazon.com/neptune/latest/userguide/visualization-tools.html)
+  - [serverless](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-serverless.html)
+  - [streams](https://docs.aws.amazon.com/neptune/latest/userguide/streams.html)
+  - [full text search](https://docs.aws.amazon.com/neptune/latest/userguide/full-text-search.html)
+  - [lambda fns](https://docs.aws.amazon.com/neptune/latest/userguide/lambda-functions.html)
+  - [monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/monitoring.html)
+  - [exporting data](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-data-export.html)
+  - [best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
+  - [apis](https://docs.aws.amazon.com/neptune/latest/userguide/using-neptune-apis.html)
+  - [control plane ref](https://docs.aws.amazon.com/neptune/latest/userguide/api.html)
+  - [data plane ref](https://docs.aws.amazon.com/neptune/latest/userguide/data-api.html)
 
 ## my thoughts
 
