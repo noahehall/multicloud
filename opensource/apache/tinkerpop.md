@@ -4,10 +4,27 @@
 - bookmark
   - 2.2. The Gremlin console
 
+## TLDR!
+
+```sh
+# start a container
+docker run -it tinkerpop/gremlin-console:latest gremlin
+
+# create a graph, and then create a "traversal source" that uses that graph
+graph = TinkerFactory.createModern()
+g = traversal().withEmbedded(graph)
+
+# run some queries then exit
+g.V().valueMap(true)
+:exit
+
+```
+
 ## links
 
 - [landing page](https://tinkerpop.apache.org/)
 - [janusgraph](https://janusgraph.org/)
+- [gremlin: getting started](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
 
 ### practical gremlin
 
@@ -20,6 +37,8 @@
 ### docker
 
 - [gremlin console](https://hub.docker.com/r/tinkerpop/gremlin-console/)
+- [gremlin server](https://hub.docker.com/r/tinkerpop/gremlin-server)
+- [blog: setup console in docker](https://emmer.dev/blog/creating-a-gremlin-playground/)
 
 ### Ref
 
