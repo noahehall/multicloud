@@ -83,7 +83,7 @@
 
 ## best practices
 
-- you should probably re-read the following links every so often
+- you should probably re-read the following links
   - graph data model
   - transactions, specifically the conflict resolution section
   - working with custom endpoints

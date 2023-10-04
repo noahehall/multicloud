@@ -1,6 +1,10 @@
 # TinkerPop
 
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
+- this file focuses more on gremlin + tinkergraph than tinkerpop as a whole
+- intended for those interested in AWS neptune and
+  - need to rampup on gremlin
+  - developing locally on tinkergraph and migrating to neptune
 - bookmark
   - 2.8. A word about indexes and schemas
 
@@ -37,7 +41,8 @@ g.V().has('code','AUS').valueMap(true).unfold()
 
 - [landing page](https://tinkerpop.apache.org/)
 - [janusgraph](https://janusgraph.org/)
-- [gremlin: getting started](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
+- [gremlin: tutorials](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
+- [gremlin: console tutorial](https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/)
 
 ### practical gremlin
 
@@ -80,14 +85,14 @@ g.V().has('code','AUS').valueMap(true).unfold()
 
 ## Gremlin
 
-- graph traversal (query) language
+- graph traversal and query language
 - a functional, data-flow language that enables users to succinctly express complex traversals on (or queries of) their application's property graph. Every Gremlin traversal is composed of a sequence of (potentially nested) steps.
 
 ### Data Model
 
 - vertices: entity nodes
 - edges: relationships connecting nodes
-- properties: represent and store data
+- properties: represent and store data for both edges and vertices
 - labels: attached to vertices and edges
 
 ### console
@@ -161,6 +166,18 @@ graph // e.g. graph = TinkerGraph.open()
   .toString() // basic stats about the graph
 
 ////////////////////////////////// examples
+// total airports by country
+g.V().hasLabel('airport').groupCount().by('country')
+
+// all paths from  AUS to AGR with exactly two stops
+g.V().has('code','AUS').out().out().out().has('code','AGR').path().by('code')
+// same as above
+g.V().has('code','AUS').repeat(out()).times(3).has('code','AGR').path().by('code')
+
+
+
+
+////////////////////////////////// dunno where these came from (aws docs?) but should be updated to use the air routes data
 // bi-directional relationship
 g.v.hasLabel("person").both("friends");
 
@@ -188,7 +205,7 @@ g.V('person1').hasLabel('Person')
  .sideEffect(properties('creditScore').drop())
  .property('creditScore', 'BBB')
 
-////////////////////////////////// api
+////////////////////////////////// wouldnt trust anything here
 // g -> graph traversel source
 
 

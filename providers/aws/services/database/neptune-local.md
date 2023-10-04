@@ -1,6 +1,6 @@
 # Neptune local
 
-- running nraph notebook project locally and connecting to local gremlin/remote neptune
+- running graph notebook project locally and connecting to local gremlin/remote neptune
 
 ## links
 
