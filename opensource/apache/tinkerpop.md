@@ -3,7 +3,7 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 3.3.4. Does an edge exist between two vertices?
+  - 3.8. Working with IDs
 
 ## TLDR!
 
@@ -20,9 +20,9 @@ docker cp ~/Downloads/air-routes-latest.graphml gremlin:sampledata.graphml
 :plugin use tinkerpop.sugar
 
 # create a graph, load the data file and then create a "traversal source"
-graph = TinkerGraph.open()
-graph.io(graphml()).readGraph('/sampledata.graphml')
-g = traversal().withEmbedded(graph)
+graph = TinkerGraph.open();
+graph.io(graphml()).readGraph('/sampledata.graphml');
+g = traversal().withEmbedded(graph);
 
 # run some queries then exit
 graph.toString()
@@ -168,54 +168,19 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 - keywords: label
 
 ```ts
-// Graph object
+
+////////////////////////////////// common steps
+////////////////// Graph object
 graph // e.g. graph = TinkerGraph.open()
   .features() // what tinkerpop features are supported
   .toString() // basic stats about the graph
 
-////////////////////////////////// examples
-// total airports by country
-g.V().hasLabel('airport').groupCount().by('country')
-// all paths from  AUS to AGR with exactly two stops
-g.V().has('code','AUS').out().out().out().has('code','AGR').path().by('code')
-// same as above but using repeat fn
-g.V().has('code','AUS').repeat(out()).times(3).has('code','AGR').path().by('code')
-// how many routes leaving airports
-g.V().hasLabel('airport').outE('route').count()
-// How many of each type of vertex/edge are there? all return the same thing
-g.V().groupCount().by(label) // can replace g.V() with g.E()
-g.V().label().groupCount()
-g.V().group().by(label).by(count())
-// How many airports are there in each country?
-g.V().hasLabel('airport').groupCount().by('country')
-// How many airports are there in each country? (look at country first)
-g.V().hasLabel('country').group().by('code').by(out().count())
-// How many airports are there in France, Greece and Belgium respectively?
-g.V().hasLabel('airport').groupCount().by('country').select('FR','GR','BE')
-// for each route, return both vertices and the edge that connects them.
-g.V().has('airport','code','LCY').outE().inV().path()
-// modulates the previous query
-g.V().has('airport','code','LCY').outE().inV().path().by('code').by('dist')
-// five routes that start in austin, modulated by an anonymous traversal
-g.V(3).out().limit(5).path().by(values('code','city').fold())
-// similar to above, but uses AS and FROM to ignore the starting vertex
-g.V().has('airport','code','AUS').out().as('a').out().as('b').path().by('code').from('a').to('b').limit(10)
+////////////////// graph traversel source object
+g = graph.traversal()
+  .V() // all vertices
+  .E() // all edges
 
 
-
-////////////////////////////////// common steps
-g = graph.traversal() // graph traversel source object for a loaded graph
-g.V() // all vertices
-g.E() // all edges
-
-
-////////////////// terminal steps:
-next() // turns the result of the traversal into an object we can work with further.
-fold() // converts results to an array
-toList() // dunno, suppose to return an array
-path() // get a summary of the path walked
-limit() // amount of elements returned
-dedup() // remove duplicates
 
 ////////////////// traversal steps;
 // all accept edge labels as filters
@@ -226,16 +191,18 @@ inE() // Incoming incident edges.
 otherV() // The vertex that was not the vertex we came from.
 out() // Outgoing adjacent vertices
 outE() // Outgoing incident edges; examine the outgoing edges from a given vertex
+
 // dont accept edge labels as filters
 outV() // Outgoing vertex.
 inV() // Incoming vertex.
 
 
-////////////////// filters: will return back the ID of matching element(s)
+////////////////// filters
 between()
-has(['label',] 'prop', 'value')
-hasLabel('prop')
-hasNot('prop') // shorthand for not(has('prop'))
+has() // e.g. has(['label',] 'prop', 'value')
+hasLabel()
+hasNot() // shorthand for not(has('prop'))
+hasNext() // check if an edge exists between two vertices, eg.
 is()
 lte()
 not()
@@ -243,11 +210,52 @@ or()
 where()
 
 
+////////////////// terminal steps: stops traversal and generates a result set
+next() // returns object by default, pass an int to return the next(10) elements as an array
+toList() // array
+toSet() // math set
+bulkSet() // weight set; the count of each element in the set
+// dunno if these are classified as terminal steps
+fold() // converts results to an array
+unfold() // unbundles a collection
+
+
+
+////////////////// limiting results
+limit() // first X results, e.g. limit(10)
+tail() // last X results
+range() // between X and Y, start inclusiv, 0 indexed, e.g. range(0, 20) first 20, range(10, -1) until end
+skip() // the first X and return remaining, shorthand for range(X, -1)
+timeLimit() // limit query to X milliseconds, e.g. timeLinit(10)
+until()
+dedup() // remove duplicates, aka unique?; can provide references to limit specific steps
+
+
+////////////////// modulators: alter the behavior of the steps that they are associated with.
+as() // create a reference so you can refer to it later
+// processed in a round robin fashion in cases where there are more elements that modulators specified
+// ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
+// ^ use a by modulator with no param if the element is not a vertex/edge
+by() // for each element returned, extract this prop/run this fn
+from()
+to()
+with() // e.g. with(WithOptions.tokens,WithOptions.labels, WithOptions.ids)
+path() // get a summary of the path walked; more expensive (memory, cpu) than select + as
+
 
 ////////////////// CRUD: READ
-values('key1', 'key2', ...) // retrieve values for 0/more keys
-label() // read
-select() // extract specific values
+values() // for 0/more keys, e.g. values('a', 'b', ...)
+// valueMap(true): return ID an label of element; should use the with modulator starting from 3.4
+// ^ e.g. valueMap().with(WithOptions.tokens)
+valueMap() // all/specific properties as an array of key=[value] pairs; value is always an array
+// vertices: returns id + label and the first value in a list as a primitive for each property
+// edges: id + label + the id & label of in + outgoing verticies as well
+elementMap() // enhanced valueMap
+label()
+// the keywords are used in a query when as() is used to supply multiple labels to the same el
+// ^ e.g. g.V(1).as('a').V(2).as('a').select(first,'a')
+select() // extract values/references; e.g. .select([first|last|all,]'propOrReferenceName')
+project() // shorthand for as and select steps; creates projection of results
 
 
 ////////////////// CRUD: modification
@@ -259,20 +267,10 @@ select() // extract specific values
 
 
 
-
-////////////////// modulators: alter the behavior of the steps that they are associated with.
-as() // create a reference so you can refer to it later
-// processed in a round robin fashion in cases where there are more elements that modulators specified
-// ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
-// ^ use a by modulator with no param if the element is not a vertex/edge
-by() // for each element returned, extract this prop/run this fn
-from()
-to()
-
-
 ////////////////// useful steps
 count()
-
+join()
+order()
 
 ////////////////// aggregates
 groupCount()
@@ -280,30 +278,154 @@ by()
 group() // collect things into a group using some filter
 
 
+////////////////// control structs
+repeat()
+emit() // yield a traversel for each step in a repeat()
+coalesce(ifThisFails, doThis) // executes the first argument, on failure executes the second
+
+
+
 
 ////////////////// other steps
-getMethods() // list of all the methods and their supported types
-
-
-
-////////////////// control structs
-// until
-// repeat
-// emit -> yield a traversel for each step in a repeat()
-// coalesce(ifThisFails, doThis) -> executes the first argument, on failure executes the second
-
+getMethods() // list of all the methods and their supported types on the current element
+getClass() // get element class
 
 
 // other stuff
-// project() -> create projection of results
-// valueMap()
-// V()
 // sideEffect()
 
 
 
+////////////////// enums
+label //
+local //
+first|last|all //
 
-////////////////////////////////// dunno where these came from (aws docs?) but should be updated to use the air routes data
+```
+
+#### useful examples
+
+- all based on the practice gremlin air routes dataset
+
+```ts
+////////////////////////////////// examples
+// total airports by country
+g.V().hasLabel("airport").groupCount().by("country");
+// all paths from  AUS to AGR with exactly two stops
+g.V().has("code", "AUS").out().out().out().has("code", "AGR").path().by("code");
+// same as above but using repeat fn
+g.V()
+  .has("code", "AUS")
+  .repeat(out())
+  .times(3)
+  .has("code", "AGR")
+  .path()
+  .by("code");
+// how many routes leaving airports
+g.V().hasLabel("airport").outE("route").count();
+// How many of each type of vertex/edge are there? all return the same thing
+g.V().groupCount().by(label); // can replace g.V() with g.E()
+g.V().label().groupCount();
+g.V().group().by(label).by(count());
+// How many airports are there in each country?
+g.V().hasLabel("airport").groupCount().by("country");
+// same as above but looks at country first
+g.V().hasLabel("country").group().by("code").by(out().count());
+// How many airports are there in France, Greece and Belgium respectively?
+g.V().hasLabel("airport").groupCount().by("country").select("FR", "GR", "BE");
+// for each route, return both vertices and the edge that connects them.
+g.V().has("airport", "code", "LCY").outE().inV().path();
+// modulates the previous query
+g.V().has("airport", "code", "LCY").outE().inV().path().by("code").by("dist");
+// five routes that start in austin, modulated by an anonymous traversal
+g.V(3).out().limit(5).path().by(values("code", "city").fold());
+// similar to above, but uses AS and FROM to ignore the starting vertex
+g.V()
+  .has("airport", "code", "AUS")
+  .out()
+  .as("a")
+  .out()
+  .as("b")
+  .path()
+  .by("code")
+  .from("a")
+  .to("b")
+  .limit(10);
+// check if an edge exists between two verticies
+g.V().has("code", "AUS").out("route").has("code", "DFW").hasNext();
+// path vs select & as, both return the same thing but path is less verbose
+g.V()
+  .has("code", "DFW")
+  .as("from")
+  .out()
+  .has("region", "US-CA")
+  .as("to")
+  .select("from", "to")
+  .by("code");
+g.V().has("code", "DFW").out().has("region", "US-CA").path().by("code");
+// get the code, region and total routes of the first ten airports
+// AS enables getting the same element 3 times, SELECT + BY assigns properties to each
+g.V()
+  .has("type", "airport")
+  .limit(10)
+  .as("a", "b", "c")
+  .select("a", "b", "c")
+  .by("code")
+  .by("region")
+  .by(out().count());
+// same as above but uses PROJECT
+g.V()
+  .has("type", "airport")
+  .limit(10)
+  .project("a", "b", "c")
+  .by("code")
+  .by("region")
+  .by(out().count());
+// return every other stop
+g.V()
+  .has("code", "LAX")
+  .out()
+  .as("stop")
+  .out()
+  .out()
+  .as("stop")
+  .out()
+  .out()
+  .as("stop") // multiple AS returns an array
+  .limit(1)
+  .select(all, "stop")
+  .unfold() // thats why we need to unfold the array
+  .values("code")
+  .fold(); // so we can operate on each element
+// select the edge connecting MIA and DFW verticies
+g.V().has("code", "MIA").outE().as("e").inV().has("code", "DFW").select("e");
+// same as above but uses inE and outV
+g.V().has("code", "MIA").inE().as("e").outV().has("code", "DFW").select("e");
+// modulate how dedupe is applied to results
+// return 1 airport for each unique number of runways
+g.V()
+  .has("region", "GB-ENG")
+  .dedup()
+  .by("runways")
+  .values("code", "runways")
+  .fold();
+// unwrap a valuemap via an extra by(unfold()) step so all key=value are returned as strings
+g.V().has("code", "SFO").valueMap().by(unfold()).unfold();
+// examine an edge with elementMap
+g.V(3).outE().limit(1).elementMap();
+// same as above but with valueMap
+g.E(5161)
+  .project("v", "IN", "OUT")
+  .by(valueMap(true))
+  .by(inV().union(id(), label()).fold())
+  .by(outV().union(id(), label()).fold());
+
+
+
+
+
+////////////////////////////////// dunno where these came from (aws docs?)
+// should be updated to use the air routes data or deleted
 // bi-directional relationship
 g.v.hasLabel("person").both("friends");
 
@@ -331,4 +453,27 @@ g.V('person1').hasLabel('Person')
  .sideEffect(properties('creditScore').drop())
  .property('creditScore', 'BBB')
 
+```
+
+#### groovy: just enough
+
+- just enough for debugging in the console
+
+```groovy
+
+// assign query results to a var; must end with a terminal step
+// then print the results
+aus=g.V().has('code','AUS').valueMap().next()
+println "The AUS airport is located in " + aus['city'][0] // need [0] because value is always a list
+
+// store the result of a query into prexisting variable
+// same as calling toList/toSet
+a = [] // or a = [] as Set
+g.V().has('airport','region','US-TX').values('runways').fill(a)
+
+
+// working with collections
+size()
+uniqueSize()
+asBulk() // converts a bulkSet to a key=value map where key = element and value = occurrence
 ```

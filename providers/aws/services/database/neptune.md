@@ -32,6 +32,7 @@
 - [AAA: best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices.html)
 - [AAA: neptunes data model](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-data-model.html)
 - [AAA: reference architecture](https://github.com/aws-samples/aws-dbs-refarch-graph)
+- [AAA: neptune engine releases](https://docs.aws.amazon.com/neptune/latest/userguide/engine-releases.html)
 - [appsync: workshop example](https://github.com/aws-samples/aws-appsync-calorie-tracker-workshop/)
 - [audit logs](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
 - [backup & restore](https://docs.aws.amazon.com/neptune/latest/userguide/backup-restore-overview.html)

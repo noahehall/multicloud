@@ -2,6 +2,7 @@
 
 - create and query data using Apache tinkerpop's gremlin traversal language
 - check the apache/tinkerpop file for ramping up on gremlin
+- [latest release supports tinkerpop 3.6.2](https://docs.aws.amazon.com/neptune/latest/userguide/engine-releases-1.2.1.0.html)
 
 ## links
 
@@ -10,15 +11,15 @@
 
 ### gremlin
 
-- [AAA: accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 - [AAA: getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-graph-gremlin.html)
+- [AAA: gremlin accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
+- [AAA: gremlin best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices-gremlin.html)
 - [api status endpoint](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-api-status.html)
 - [gremlin console: connecting](https://docs.aws.amazon.com/neptune/latest/userguide/iam-auth-connecting-gremlin-console.html)
 - [neptune: compliance](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-differences.html)
 - [sessions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-sessions.html)
 - [statements](https://docs.aws.amazon.com/neptune/latest/userguide/gremlin-explain-background-statements.html)
 - [transactions](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin-transactions.html)
-- [with neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 
 ## best practicies
 
