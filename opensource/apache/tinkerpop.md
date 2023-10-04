@@ -3,12 +3,12 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 2.8. A word about indexes and schemas
+  - 3.3.4. Does an edge exist between two vertices?
 
 ## TLDR!
 
 ```sh
-# download some sample data
+# download some sample data; all examples in this file use this dataset
 # https://github.com/krlawrence/graph/blob/main/sample-data/air-routes-latest.graphml
 
 # start a container and copy the sample data into it
@@ -81,8 +81,17 @@ g.V().has('code','AUS').valueMap(true).unfold()
 
 ## Gremlin
 
-- graph traversal and query language
+- graph traversal and query language for working with property graphs
 - a functional, data-flow language that enables users to succinctly express complex traversals on (or queries of) their application's property graph. Every Gremlin traversal is composed of a sequence of (potentially nested) steps.
+- traversal: aka query; traverses a graph from point A to point B using one/more steps chained together
+  - adjacent: One vertex is considered to be adjacent to another vertex if there is an edge connecting them
+  - incident: A vertex and an edge are considered incident if they are connected to each other.
+  - anonymous: traversals that do not start with a `g.V/E()`
+- steps: aka methods;
+  - terminal steps: ends the graph traversal and returns a concrete object that you can work with further
+- walking the graph: describe moving from one vertex to another vertex via an edge; moving through the graph from one place to one or more other places
+  - circular walk: walking the graph but ending up back where you started
+  - path: the journey you took on the walk
 
 ### Data Model
 
@@ -90,6 +99,8 @@ g.V().has('code','AUS').valueMap(true).unfold()
 - edges: relationships connecting nodes
 - properties: represent and store data for both edges and vertices
 - labels: attached to vertices and edges
+- ids: every vertex and every edge in a graph has a unique ID
+  - can be auto generated or user provided
 
 ### console
 
@@ -154,6 +165,7 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 
 - tested with tinkergraph and the practical grammer air routes data file
 - check the TLDR up top
+- keywords: label
 
 ```ts
 // Graph object
@@ -164,11 +176,129 @@ graph // e.g. graph = TinkerGraph.open()
 ////////////////////////////////// examples
 // total airports by country
 g.V().hasLabel('airport').groupCount().by('country')
-
 // all paths from  AUS to AGR with exactly two stops
 g.V().has('code','AUS').out().out().out().has('code','AGR').path().by('code')
-// same as above
+// same as above but using repeat fn
 g.V().has('code','AUS').repeat(out()).times(3).has('code','AGR').path().by('code')
+// how many routes leaving airports
+g.V().hasLabel('airport').outE('route').count()
+// How many of each type of vertex/edge are there? all return the same thing
+g.V().groupCount().by(label) // can replace g.V() with g.E()
+g.V().label().groupCount()
+g.V().group().by(label).by(count())
+// How many airports are there in each country?
+g.V().hasLabel('airport').groupCount().by('country')
+// How many airports are there in each country? (look at country first)
+g.V().hasLabel('country').group().by('code').by(out().count())
+// How many airports are there in France, Greece and Belgium respectively?
+g.V().hasLabel('airport').groupCount().by('country').select('FR','GR','BE')
+// for each route, return both vertices and the edge that connects them.
+g.V().has('airport','code','LCY').outE().inV().path()
+// modulates the previous query
+g.V().has('airport','code','LCY').outE().inV().path().by('code').by('dist')
+// five routes that start in austin, modulated by an anonymous traversal
+g.V(3).out().limit(5).path().by(values('code','city').fold())
+// similar to above, but uses AS and FROM to ignore the starting vertex
+g.V().has('airport','code','AUS').out().as('a').out().as('b').path().by('code').from('a').to('b').limit(10)
+
+
+
+////////////////////////////////// common steps
+g = graph.traversal() // graph traversel source object for a loaded graph
+g.V() // all vertices
+g.E() // all edges
+
+
+////////////////// terminal steps:
+next() // turns the result of the traversal into an object we can work with further.
+fold() // converts results to an array
+toList() // dunno, suppose to return an array
+path() // get a summary of the path walked
+limit() // amount of elements returned
+dedup() // remove duplicates
+
+////////////////// traversal steps;
+// all accept edge labels as filters
+both() // Both incoming and outgoing adjacent vertices.
+bothE() // Both outgoing and incoming incident edges.
+in() // Incoming adjacent vertices.
+inE() // Incoming incident edges.
+otherV() // The vertex that was not the vertex we came from.
+out() // Outgoing adjacent vertices
+outE() // Outgoing incident edges; examine the outgoing edges from a given vertex
+// dont accept edge labels as filters
+outV() // Outgoing vertex.
+inV() // Incoming vertex.
+
+
+////////////////// filters: will return back the ID of matching element(s)
+between()
+has(['label',] 'prop', 'value')
+hasLabel('prop')
+hasNot('prop') // shorthand for not(has('prop'))
+is()
+lte()
+not()
+or()
+where()
+
+
+
+////////////////// CRUD: READ
+values('key1', 'key2', ...) // retrieve values for 0/more keys
+label() // read
+select() // extract specific values
+
+
+////////////////// CRUD: modification
+// addV -> create verticies
+// addE -> create edges
+// drop
+// Cardinality.single is optional, else it uses Cardinality.set and appends the value
+// property(Cardinality.single?, 'key', 'val') -> inserts a property with the given key and value
+
+
+
+
+////////////////// modulators: alter the behavior of the steps that they are associated with.
+as() // create a reference so you can refer to it later
+// processed in a round robin fashion in cases where there are more elements that modulators specified
+// ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
+// ^ use a by modulator with no param if the element is not a vertex/edge
+by() // for each element returned, extract this prop/run this fn
+from()
+to()
+
+
+////////////////// useful steps
+count()
+
+
+////////////////// aggregates
+groupCount()
+by()
+group() // collect things into a group using some filter
+
+
+
+////////////////// other steps
+getMethods() // list of all the methods and their supported types
+
+
+
+////////////////// control structs
+// until
+// repeat
+// emit -> yield a traversel for each step in a repeat()
+// coalesce(ifThisFails, doThis) -> executes the first argument, on failure executes the second
+
+
+
+// other stuff
+// project() -> create projection of results
+// valueMap()
+// V()
+// sideEffect()
 
 
 
@@ -201,58 +331,4 @@ g.V('person1').hasLabel('Person')
  .sideEffect(properties('creditScore').drop())
  .property('creditScore', 'BBB')
 
-////////////////////////////////// wouldnt trust anything here
-// g -> graph traversel source
-
-
-// modification
-// addV -> create verticies
-// addE -> create edges
-// drop
-
-// Cardinality.single is optional, else it uses Cardinality.set and appends the value
-// property(Cardinality.single?, 'key', 'val') -> inserts a property with the given key and value
-
-
-// traversel
-// otherV -> navigate to specific verticies
-// in -> follow INcoming edges to vertices
-// out -> follow OUTgoing edges to vertices
-// outE -> reference to outgoing edges
-
-// both -> bidirectional
-// bothE -> bidirectional
-
-// control structs
-// until
-// repeat
-// emit -> yield a traversel for each step in a repeat()
-// coalesce(ifThisFails, doThis) -> executes the first argument, on failure executes the second
-
-// filters
-// has
-// or
-// between
-// is
-// until
-// where
-// lte
-// hasLabel
-
-
-// terminal methods
-// toList -> returns array
-
-
-// other stuff
-// as -> create a reference so you can refer to it later
-// project -> create projection of results
-// by -> select by property value
-// select
-// values
-// valueMap
-// fold
-// count
-// to(V('abc'))
-// sideEffect
 ```
