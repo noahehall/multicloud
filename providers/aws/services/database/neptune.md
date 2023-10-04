@@ -84,29 +84,29 @@
 ## best practices
 
 - you should probably re-read the following links
-  - graph data model
+  - graph data model, dictionary
   - transactions, specifically the conflict resolution section
   - working with custom endpoints
   - dfe engine
-- read replicas should always be equal to or larger than the writer instance
-  - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
 - optimal concurrency for writing or querying data is twice the number of vCPUs:
 - storage
-  - avoid as much as possible using property keys and user-facing values that are temporary in nature.
+  - avoid using property keys and user-facing values that are temporary in nature.
   - data model changes should be loaded onto a new DB cluster.
-    - or atleats using the fast reset api
+    - or atleast using the fast reset api
   - split large transactions into smaller ones and allow time between them so that the associated internal logs have a chance to expire and release their internal storage for re-use by subsequent logs.
     - large amounts of data generate correspondingly large internal logs, which can permanently increase the high water mark of the internal log space
   - shrink allocated storage space when you have a large amount of unused allocated space is migrate to a new DB cluster.
     - e.g. via the data export + import tools
     - FYI: Creating and restoring a snapshot does not reduce the amount of storage allocated for your DB cluster, because a snapshot retains the original image of the cluster's underlying storage
 - read replicas
+  - should always be equal to/larger than the writer instance
+    - avoids the larger writer instance from handling changes too quickly for the reader to maintain pace.
   - Disable any DNS caching settings to force DNS resolution each time.
-    - neptune uses DNS to round-robin requests
+    - neptune uses DNS to naively round-robin requests
   - If you want to load balance queries to distribute the read workload for a DB cluster,
     - you must manage that in your application
     - & use instance endpoints to connect directly to Neptune replicas to balance the load.
-      - the DNS round robin doesnt consider load, its naive routing mechanism
+      - the DNS round robin doesnt consider load, its a naive routing mechanism
         - If a client opens a lot of connections before the DNS entry changes, all the connection requests are sent to a single Neptune instance
 
 ### anti patterns
@@ -115,10 +115,9 @@
 
 ## features
 
-- read replicas for highly availability
-- create point-in-time copies, configure continuous backup to Amazon Simple Storage Service (Amazon S3) with replication across Availability Zones
-- supports two popular graph query languages: Apache TinkerPop and RDF/SPARQL
-- a cloud-native storage service that provides high-availability support using multiple Availability Zones for up to 15 read replicas and support for encryption at rest
+- up to 15 read replicas for highly availability
+- create point-in-time copies, configure continuous backup to S3 with replication across Availability Zones
+- supports Three popular graph query languages: Apache TinkerPop, Neo4j OpenCypher and RDF/SPARQL
 - quorum system for read/write
 
 ### pricing
@@ -162,7 +161,7 @@
 
 #### Four position QUAD element
 
-- the basic unit of Amazon Neptune graph data.
+- the basic unit of Amazon Neptune graph data; A set of quad statements with shared resource identifiers creates a graph.
   - S: subject
   - P: predicate
   - O: object
@@ -173,13 +172,11 @@
 - statement example
   - A relationship between two vertices can be represented by storing the source vertex identifier in the S position, the target vertex identifier in the O position, and the edge label in the P position.
   - A property can be represented by storing the element identifier in the S position, the property key in the P position, and the property value in the O position
-- A set of quad statements with shared resource identifiers creates a graph.
 
 #### dictionary
 
 - most user-facing values are stored separately in a dictionary
 - The dictionary contains a forward mapping of user-facing values to 8-byte IDs in a value_to_id index.
-  - prolly should re-read this section
 
 #### indexes
 
@@ -240,12 +237,12 @@
 #### Materialization costs
 
 - assess the materialization costs of a query with the Gremlin profile API.
-- Under "Index Operations', it shows the number of terms materialized during execution:
+- Under "Index Operations', it shows the number of terms materialized during execution
 - check the lookup cache docs for an example
 
 #### DFE engine
 
-- optionally enable for high perf; set via parameter groups
+- optionally enable for high perf; set via db parameter groups
 - uses DB instance resources such as CPU cores, memory, and I/O more efficiently than the original Neptune engine.
 - uses pre-generated statistics about your Neptune graph data to make informed decisions about how to structure queries
 - supports a wide variety of plan types, including left-deep, bushy, and hybrid ones.
@@ -268,10 +265,10 @@
 
 #### Gremlin
 
-- READ queries: not a mutation query
+- READ queries: `!isMutationQuery()`
 - MUTATION queries:
   - contains any query-path steps such as addE(), addV(), property(), or drop()
-  - all script based session queries, whether read or mutation, or classified as mutation queries
+  - all script based session queries, whether read or mutation, are classified as mutation queries
 - Neptune uses quorum writes that make six copies of your data across three Availability Zones,
   - four out of those six storage nodes must acknowledge a write for it to be considered durable
 
@@ -334,9 +331,7 @@
     - if using web sockets
       - Ensure that your client resolves the DNS entry each time it connects.
       - Close the connection and reconnect.
-- use cases: R operations
-  - unless you have a single-instance archicture, then it accepts writes too
-    - likely all of the endpoints point to the same single instance, which is the primary
+- use cases: Read operations
 
 ##### instance endpoints
 

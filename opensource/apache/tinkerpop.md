@@ -1,10 +1,7 @@
 # TinkerPop
 
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
-- this file focuses more on gremlin + tinkergraph than tinkerpop as a whole
-- intended for those interested in AWS neptune and
-  - need to rampup on gremlin
-  - developing locally on tinkergraph and migrating to neptune
+- intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
   - 2.8. A word about indexes and schemas
 
@@ -13,7 +10,6 @@
 ```sh
 # download some sample data
 # https://github.com/krlawrence/graph/blob/main/sample-data/air-routes-latest.graphml
-
 
 # start a container and copy the sample data into it
 docker run -it --rm --name gremlin tinkerpop/gremlin-console:latest gremlin
