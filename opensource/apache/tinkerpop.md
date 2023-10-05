@@ -3,7 +3,7 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 3.12.2. Refining flight routes analysis using not, neq, within and without
+  - 3.16.1. Using where and by to filter results
 
 ## TLDR!
 
@@ -166,7 +166,7 @@ g = graph.traversal()
 // all accept edge labels as filters
 both() // Both incoming and outgoing adjacent vertices.
 bothE() // Both outgoing and incoming incident edges.
-in() // Incoming adjacent vertices.
+in() // Incoming adjacent vertices; might need to invoke as __.in() with gremlin console
 inE() // Incoming incident edges.
 otherV() // The vertex that was not the vertex we came from.
 out() // Outgoing adjacent vertices
@@ -177,29 +177,44 @@ outV() // Outgoing vertex.
 inV() // Incoming vertex.
 
 
-////////////////// comparisons
-between() // Between two values inclusive/exclusive (upper bound is excluded) e.g. hasId(between(1,6))
-eq() // equal
-gt()
-gte()
+////////////////// filters: basic
 has() // e.g. has(['label',] 'prop', 'value')
 hasId() // shorthand for has(id,12345)
 hasLabel() // e.g. hasLabel('this', 'or', 'that')
 hasNext() // check if an edge exists between two vertices, eg.
 hasNot() // shorthand for not(has('prop'))
-inside() // Inside a lower and upper bound, neither bound is included.
-is()
+
+
+////////////////// filters: comparisons
+eq() // equal
+gt()
+gte()
 lt()
 lte()
 neq() // not equal
+
+////////////////// filters: logical
+and()
 not()
 or()
-outside() // Outside a lower and upper bound, neither bound is included.
+is()
 where()
+
+////////////////// filters: ranges
+between() // Between two values inclusive/exclusive (upper bound is excluded) e.g. hasId(between(1,6))
+inside() // Inside a lower and upper bound, neither bound is included.
+outside() // Outside a lower and upper bound, neither bound is included.
 within() // Must match at least one of the values provided. Can be a range or a list
 without() // Must not match any of the values provided. Can be a range or a list
 
 
+////////////////// filters: text search case sensitive
+startingWith()
+endingWith()
+containing()
+notStartingWith()
+notEndingWith()
+notContaining()
 
 ////////////////// terminal steps: stops traversal and generates a result set
 next() // returns object by default, pass an int to return the next(10) elements as an array
@@ -261,7 +276,7 @@ id() // of current element
 
 ////////////////// useful steps
 join()
-order()
+order() // default ascending, else use order(desc)
 
 
 
@@ -271,6 +286,8 @@ mean()
 sum()
 max() // numbers/strings
 min() // numbers/strings
+coin() // % of picking a value from a set, e.g. coin(.75)
+sample() // randomly pick exactly X form a set, e.g. sample(20)
 
 
 ////////////////// aggregates
@@ -299,7 +316,11 @@ getClass() // get element class
 label //
 first|last|all //
 id //
-
+asc // ascending
+incr // increasing; prefer asc
+desc // descending order
+decr // decreasing; prefer desc
+shuffle // as in random
 ```
 
 #### gremlin useful examples
@@ -440,11 +461,28 @@ g.V().hasLabel('airport').
 // ^ or a string that starts with a single character
 g.V().has('airport','code',between('X','Xa')). // specifically X
       values('code').fold()
-
-
-
-
-
+// Flights from Austin to countries outside the US and Canada
+g.V().has('code','AUS').out().has('country',without('US','CA')).values('city')
+// Pick 20 airports at random with an evenly biased coin (50% chance).
+g.V().hasLabel('airport').coin(0.5).limit(20).values('code')
+// pick 20 random airports; FYI sample isnt as random as you may think
+// ^ i.e. its skewed to lower bounded values
+g.V().hasLabel('airport').sample(20).values('code')
+// case insensitive text search via OR
+g.V().hasLabel('airport').
+      or(has('city',startingWith('dal')),
+         has('city',startingWith('Dal'))).
+      dedup().by('city').
+      count()
+// sort in a random order
+g.V().hasLabel('airport').limit(20).values('code').order().by(shuffle).fold()
+// List the 10 airports with the longest runways in decreasing order.
+g.V().hasLabel('airport').order().by('longest',desc).valueMap().
+      select('code','longest').limit(10)
+// Query and order by airport code (the key)
+g.V().hasLabel('airport').limit(5).
+      group().by('code').by('runways').
+      order(local).by(keys,asc) // local required for order to execute appropriately
 
 
 
@@ -501,4 +539,7 @@ g.V().has('airport','region','US-TX').values('runways').fill(a)
 size()
 uniqueSize()
 asBulk() // converts a bulkSet to a key=value map where key = element and value = occurrence
+
+// FYIs
+__.in() // in is a reserved word in groovy, but a fn in gremlin
 ```
