@@ -61,9 +61,10 @@
 - edges: relationships connecting nodes
 - properties: represent and store data for both edges and vertices
 - labels: attached to vertices and edges
-- ids: every vertex and every edge in a graph has a unique ID
+- ids: Every vertex, every edge and even every property in a graph has a unique ID that can be used to reference it individually or as part of a group
   - can be auto generated or user provided
-- Every vertex, every edge and even every property in a graph has a unique ID that can be used to reference it individually or as part of a group
+  - Don’t rely on the graph preserving the ID values you provide. How IDs are managed will be graph database implementation dependent.
+  - using IDs is typically very efficient; many of your queries will involve collecting one or more IDs and then passing those on to other queries or parts of the same query
 
 ## Gremlin
 
