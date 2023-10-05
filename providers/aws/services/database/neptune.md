@@ -219,6 +219,13 @@
 - directly related to how much of the graph a query must touch
   - choose domain-meaningful edge labels
   - discover only what is absolutely necessary
+  - create verticies > properties
+    - sometimes even store the same data twice, e.g. as a vertex AND as a property
+  - create properties > verticies
+    - if the creation of a vertex would disporportionately increase the total edges connected to it
+  - consider storing other data outside of the graph, e.g. in another database
+  - avoid supernodes: verticies that are disporportionately connected to other vertices
+    - the issue being: any graph traversal that goes via such a vertex will have to look at most if not all of the edges connected to that vertex as part of a traversal.
 
 #### Lookup Cache
 

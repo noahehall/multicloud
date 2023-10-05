@@ -3,7 +3,16 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 3.18. Using option to write case/switch type queries
+  - chapter 3: basics
+    - 3.27.3. Limiting the results at each depth
+      - last section of chapter 3 === 3.31
+  - chapter 4: beyond the basics
+    - 4.5.2. Using a traversal to determine a new label name
+  - chapter 8: common graph serialization formats
+  - we can probably skip these and focus on migrating from postgres to neptune
+    - chapter 5: misc queries
+    - chapter 6: beyond gremlin console & tinkergraph
+    - chapter 7: introducing gremlin server
 
 ## TLDR!
 
@@ -89,6 +98,7 @@
 - hosts the Gremlin-Groovy language; you can enter valid Groovy code directly into the console
 - tldr
   - ending a cmd with `;[]` hides the console output
+  - end a line with period, comma, etc or backslash like in shell for continuation
 
 ```sh
 ### console cmds, always prefixed with `:`
@@ -144,7 +154,12 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 ### quick ref
 
 - tested with tinkergraph and the practical gremlin air routes data file
-- check the TLDR up top
+- FYI
+  - most steps
+    - that accept 1 param, generally accept more than 1 param
+    - accept a static/dynamic value for filtering
+  - the double underscore `__` can be used similarly to the `idenity()` step
+    - `__` === the current element
 
 #### gremlin quick ref
 
@@ -156,21 +171,25 @@ graph
   .toString() // basic stats about the graph
 
 ////////////////// graph traversel source object
+// FYI most things below are on this object
 g = graph.traversal()
-  .V() // all vertices, or V(1234) or V(12,34,56)
+  .V() // all vertices, or V(1234) or V(12,34,56) V(varContaingAPreviousResult)
   .E() // all edges, can also limit by passing some 1/more ids
 
 
 
 ////////////////// traversal steps;
-// all accept edge labels as filters
+// all accept labels as filters
+// bidrectional
 both() // Both incoming and outgoing adjacent vertices.
 bothE() // Both outgoing and incoming incident edges.
-in() // Incoming adjacent vertices; might need to invoke as __.in() with gremlin console
+bothV() // vertices at both ends of an edge
+// undirectional
+in() // Incoming adjacent vertices; need to invoke as __.in() within gremlin console
 inE() // Incoming incident edges.
-otherV() // The vertex that was not the vertex we came from.
+otherV() // vertex at the other end of an edge, relative to wherever you started
 out() // Outgoing adjacent vertices
-outE() // Outgoing incident edges; examine the outgoing edges from a given vertex
+outE() // Outgoing incident edges
 
 // dont accept edge labels as filters
 outV() // Outgoing vertex.
@@ -227,12 +246,11 @@ unfold() // unbundles a collection
 
 
 ////////////////// limiting results
-limit() // first X results, e.g. limit(10)
+limit() // first X results, e.g. limit(10), limit has a global scope and not local to any specific step
 tail() // last X results
 range() // between X and Y, start inclusiv, 0 indexed, e.g. range(0, 20) first 20, range(10, -1) until end
 skip() // the first X and return remaining, shorthand for range(X, -1)
 timeLimit() // limit query to X milliseconds, e.g. timeLinit(10)
-until()
 dedup() // remove duplicates, aka unique?; can provide references to limit specific steps
 
 
@@ -241,18 +259,21 @@ as() // create a reference so you can refer to it later
 // processed in a round robin fashion in cases where there are more elements that modulators specified
 // ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
 // ^ use a by modulator with no param if the element is not a vertex/edge
+store() // same as AS, but works with sideEffect? dunno find it in the apache docs
+aggregate() // same as AS, but tracks the results of some traversal in a temporary variable
 by() // for each element returned, extract this prop/run this fn
 from()
 to()
 with() // e.g. with(WithOptions.tokens,WithOptions.labels, WithOptions.ids)
 path() // get a summary of the path walked; more expensive (memory, cpu) than select + as
+simplePath() // shortest + unique path between two entities;
 // execute steps based on the current state of a traversal
 // ^ this is an extremely important concept to master
 local() // e.g. calculate the count before taking the avg local(out('edges').count()).mean()
 
 ////////////////// CRUD: READ
 values() // for 0/more keys, e.g. values('a', 'b', ...)
-// valueMap(true): return ID an label of element; should use the with modulator starting from 3.4
+// valueMap(true): return ID an label of element; prefer the WITH modulator starting from 3.4
 // ^ e.g. valueMap().with(WithOptions.tokens)
 valueMap() // all/specific properties as an array of key=[value] pairs; value is always an array
 // vertices: returns id + label and the first value in a list as a primitive for each property
@@ -265,13 +286,19 @@ label()
 select() // extract values/references; e.g. .select([first|last|all,]'propOrReferenceName')
 project() // shorthand for as and select steps; creates projection of results
 id() // of current element
+identity() // the input element of the current step, i.e. the el that was output from the previous step
 
 ////////////////// CRUD: modification
-// addV -> create verticies
-// addE -> create edges
+// via the graph object
+// ^  best practice to use the g object when adding, updating or deleting vertices and edges
+addVertex()
+// via the traversal source object
+addV()
+addE()
+addEdge()
+property() // e.g. ([Cardinality.single?,] 'key', 'val') <-- else it uses Cardinality.set and appends the value
 // drop
-// Cardinality.single is optional, else it uses Cardinality.set and appends the value
-// property(Cardinality.single?, 'key', 'val') -> inserts a property with the given key and value
+
 
 
 
@@ -288,15 +315,22 @@ sample() // randomly pick exactly X form a set, e.g. sample(20)
 ////////////////// aggregates
 groupCount()
 by()
-group() // collect things into a group using some filter
+group() // collect things into a map of key:value pairs
+union() // collect multiple traversal results
 
 
 ////////////////// control structs
-repeat()
-emit() // yield a traversel for each step in a repeat()
-coalesce(ifThisFails, doThis) // executes the first argument, on failure executes the second
+coalesce() // returns the first truthy result, e.g. coalesce(x, y, ...z)
 choose() // if/else? e.g. choose(test, truthy[, falsy])
-
+option() // combine with choose to create case statement; e.g. option(test, truthy), test can be a static/dynamic value
+match() // pattern matching, e.g. match(x, y, ...z) each being a traversal
+optional() // return optional, else the previous step, e.g. returnThis().optional(ifThisFalsy())
+// loops
+emit() // yield the result for each step in a traversal
+times()
+loops()
+repeat() // make sure you have an ending step, e.g. times, emit, loops or until
+until()
 
 ////////////////// other steps
 getMethods() // list of all the methods and their supported types on the current element
@@ -304,10 +338,13 @@ getClass() // get element class
 
 
 ////////////////// useful steps
-sideEffect()
+sideEffect() // execute steps without changing what gets passed on to the next stage of the query
 join()
 order() // default ascending, else use order(desc)
 constant() // return a constant value e.g. constant('this value')
+inject() // some values in the result set
+
+
 
 
 ////////////////// enums/constants/keywords
@@ -319,6 +356,9 @@ incr // increasing; prefer asc
 desc // descending order
 decr // decreasing; prefer desc
 shuffle // as in random
+values // the values without the keys, e.g. select(values)
+keys // the keys without the values, e.g. select(keys)
+withOptions.{x,y,z} // e.g. tokens, labels, ids, ...}
 ```
 
 #### gremlin useful examples
@@ -505,6 +545,109 @@ g.V().hasLabel('airport').sample(10).as('a').
              constant('lots'),
              constant('not so many')).as('b').
       select('a','b').by('code').by()
+// using CHOOSE and OPTION to create case statements
+// none case is optional
+g.V().hasLabel('airport').
+      choose(values('code')).
+        option('DFW',values('desc')).
+        option('AUS',values('region')).
+        option('LAX',values('runways')).
+        option(none, constant('not DFW, AUS, or LAX'))
+// ^ same as above but supplying an additional test for each option
+g.V().hasLabel('airport').
+      groupCount().
+        by(choose(values('elev')).
+             option(gt(5000),constant('high')).
+             option(gt(3000),constant('medium')).
+             option(none,constant('low')))
+// any airport you can fly from non stop, but cant return from non stop
+// probably should spend some time getting use to MATCH
+g.V().hasLabel('airport').
+      match(__.as('s').out().as('d'),
+            __.not(__.as('d').out().as('s'))).
+      select('s','d').by('code')
+// ^ same query but without using match
+g.V().hasLabel('airport').as('s').
+      out().as('d').
+      where(__.not(out().as('s'))).
+      select('s','d').by('code')
+// retrieve a specific airport and the total outgoing routes
+// ^ FYI out() refers to the traversal immediately before the union() step, i.e. as('a')
+g.V().union(has('airport','code','DFW'),
+            has('airport','code','DFW').
+               out().count()).fold()
+// ^ same as above but without duplication
+g.V().has('airport','code','DFW').as('a').
+      union(select('a'),out().count()).fold()
+// ^ same as above but using identity instead of SELECT and AS
+g.V().has('airport','code','DFW').
+      union(identity(),out().count()).fold()
+// ^ same as above but using GROUP and BY to produce a map instead of a list
+g.V().has('airport','code','DFW').
+      group().by().by(out().count())
+// interesting use of UNION and CONSTANT
+g.V(3).union(constant("Hello"),
+             constant("There"),
+             identity()).fold() // returns [hello, there, v[3]]
+// info about 10 random airports; notice the use of local
+g.V().hasLabel("airport").sample(10).
+      local(union(id(),values("code","city")).fold()) // [id, airport code, airport city]
+// store and output a reference to a traversal
+// ^ notice the use of STORE instead of AS
+g.V(3).sideEffect(out().count().store('a')).
+       out().out().count().as('b').select('a','b')
+// all the places you can go to FROM austing with ONE stop
+// ^ aggregate tracks all the places you can go to austing NON stop
+// ^ the where removes the NON stop vertices then dedupes
+g.V().has('code','AUS').out().aggregate('nonstop').
+     out().where(without('nonstop')).dedup().count()
+// using inject with a useless value in order to execute some other query
+// ^ CHOOSE must be executed on an object, and not directly on g.choose e.g.
+// ^ i.e. this is better than using g.V().choose()
+g.inject(1).choose(V().hasLabel('XYZ').count().is(0),constant("None found"))
+// returns the previous step if optional returns nil
+g.V().has('code','AUS').optional(out().has('code','doesnt exist')).values('city')
+// ^ same as above, but with COALESCE and IDENTITY
+g.V().has('code','AUS').coalesce(out().has('code','doesnt exist'),identity()).values('city')
+// shortest, unqiue paths between two verticies
+g.V().has('code','AUS').
+      repeat(out().simplePath()).
+        until(has('code','AGR')).
+        path().by('code').limit(10)
+// unique paths with 1 stop between two verticies
+g.V().has('code','AUS').repeat(out()).times(2).has('code','SYD').path().by('code')
+// looping: times vs until; the following do the same thing
+g.V(3).repeat(out()).until(loops().is(2)).count()
+g.V(3).repeat(out()).times(2).count()
+// times with + without emit
+// ^ exactly 3 hops between two verticies limit 5: notice no EMIT
+g.V(3).repeat(out()).times(3).has('code','MIA').
+       limit(5).path().by('code')
+// ^ at most 3 hops, limit 5: notice the EMIT before times
+g.V(3).repeat(out().simplePath()).emit().times(3).has('code','MIA').
+       limit(5).path().by('code')
+// ^ same as above but using OR
+g.V(3).repeat(out().simplePath()).
+         until(has('code','MIA').or().loops().is(3)).
+       has('code','MIA').
+       path().by('code').limit(5)
+// nested repeat + loops require naming each
+g.V().has('code','SAF').
+      repeat('r1',out().simplePath()).
+        until(loops('r1').is(3).or().has('code','MAN')).
+      path().by('city').
+      limit(3).
+      toList()
+// Add an imaginary airport with a code of 'XYZ' and connect it to DFW
+g.addV('airport').property('code','XYZ').
+                        property('icao','KXYZ').
+                        property('desc','This is not a real airport').next()
+g.V().has('code','DFW').addE('route').to(V().has('code','XYZ'))
+// Add the return route back to DFW
+g.V().has('code','DFW').addE('route').from(xyz)
+// ^ using as
+g.V().has('code','XYZ').as('a').V().has('code','DFW').addE('route').to('a')
+
 
 
 
@@ -516,14 +659,6 @@ g.V().hasLabel('airport').sample(10).as('a').
 
 ////////////////////////////////// dunno where these came from (aws docs?)
 // should be updated to use the air routes data or deleted
-// bi-directional relationship
-g.v.hasLabel("person").both("friends");
-
-// unidirectional relationship: in/out
-g.v.hasLabel("person").in("friends");
-
-// creating datasets
-g.addV("person").property(id, "myname").V('myname').addE('somerelation').to(V('otherVertexId')).property('someProp', someVal').toList;
 
 // conditional update
 g.V('person1').hasLabel('Person').coalesce(has('creditScore'), property('creditScore', 'AAA+'))
@@ -548,11 +683,15 @@ g.V('person1').hasLabel('Person')
 #### groovy: just enough
 
 - just enough for debugging in the console
+- builds upon everything in the quickref, as the gremin console is a Groovy repl
 
 ```groovy
 
+// FYIs
+__.in() // in is a reserved word in groovy, but a fn in gremlin
+
 // assign query results to a var; must end with a terminal step
-// then print the results
+// then print the results (make sure to call next())
 aus=g.V().has('code','AUS').valueMap().next()
 println "The AUS airport is located in " + aus['city'][0] // need [0] because value is always a list
 
@@ -567,6 +706,26 @@ size()
 uniqueSize()
 asBulk() // converts a bulkSet to a key=value map where key = element and value = occurrence
 
-// FYIs
-__.in() // in is a reserved word in groovy, but a fn in gremlin
+
+
+// A simple function to return the distance between two airports
+// dist(g,'AUS','MEX')
+def dist(g,from,to) {
+  d=g.V().has('code',from).outE().as('a').inV().has('code',to)
+         .select('a').values('dist').next()
+  return d }
+
+
+// Using a Groovy for() loop to iterate over a list returned by Gremlin
+x=g.V().hasLabel('airport').limit(10).toList()
+for (a in x) {println(a.values('code').next()+" "+a.values('icao').next()+" "+a.values('desc').next())}
+
+
+// working with maps
+a=g.V().group().by(label).by('code').next()
+println(a["country"].size())
+println(a["country"][5])
+println(a["airport"][2])
+
+
 ```
