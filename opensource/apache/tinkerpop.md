@@ -3,7 +3,7 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 3.16.1. Using where and by to filter results
+  - 3.18. Using option to write case/switch type queries
 
 ## TLDR!
 
@@ -183,7 +183,7 @@ hasId() // shorthand for has(id,12345)
 hasLabel() // e.g. hasLabel('this', 'or', 'that')
 hasNext() // check if an edge exists between two vertices, eg.
 hasNot() // shorthand for not(has('prop'))
-
+filter()
 
 ////////////////// filters: comparisons
 eq() // equal
@@ -261,6 +261,7 @@ elementMap() // enhanced valueMap
 label()
 // the keywords are used in a query when as() is used to supply multiple labels to the same el
 // ^ e.g. g.V(1).as('a').V(2).as('a').select(first,'a')
+// ^ you often need to select when multiple references are created, else only the last is returned
 select() // extract values/references; e.g. .select([first|last|all,]'propOrReferenceName')
 project() // shorthand for as and select steps; creates projection of results
 id() // of current element
@@ -271,12 +272,6 @@ id() // of current element
 // drop
 // Cardinality.single is optional, else it uses Cardinality.set and appends the value
 // property(Cardinality.single?, 'key', 'val') -> inserts a property with the given key and value
-
-
-
-////////////////// useful steps
-join()
-order() // default ascending, else use order(desc)
 
 
 
@@ -300,7 +295,7 @@ group() // collect things into a group using some filter
 repeat()
 emit() // yield a traversel for each step in a repeat()
 coalesce(ifThisFails, doThis) // executes the first argument, on failure executes the second
-
+choose() // if/else? e.g. choose(test, truthy[, falsy])
 
 
 ////////////////// other steps
@@ -308,8 +303,11 @@ getMethods() // list of all the methods and their supported types on the current
 getClass() // get element class
 
 
-// other stuff
-// sideEffect()
+////////////////// useful steps
+sideEffect()
+join()
+order() // default ascending, else use order(desc)
+constant() // return a constant value e.g. constant('this value')
 
 
 ////////////////// enums/constants/keywords
@@ -483,6 +481,35 @@ g.V().hasLabel('airport').order().by('longest',desc).valueMap().
 g.V().hasLabel('airport').limit(5).
       group().by('code').by('runways').
       order(local).by(keys,asc) // local required for order to execute appropriately
+// all airports FROM austin that have the same number of runways AS austin
+// pay attention to chaining WHERE and BY modulator
+ g.V().has('code','AUS').as('a').out().
+       where(eq('a')).by('runways').valueMap('code','runways')
+// ^ same as above but without WHERE BY
+g.V().has('code','AUS').as('a').out().as('b').
+      filter(select('a','b').by('runways').where('a',eq('b'))).
+      valueMap('code','runways')
+// all airports FROM austin that have fewer runways THAN austin
+// again, pay attention to chaining WHERE and BY
+g.V().has('airport','code','AUS').as('a').out().as('b').
+      where('a',gt('b')).by('runways').valueMap('code','runways')
+// If an airport has a runway > 12,000 feet return its code else return its description
+g.V().has('region','US-TX').
+      choose(values('longest').is(gt(12000)),
+             values('code'),
+             values('desc')).
+      limit(5)
+// choose with constant & by modulator
+g.V().hasLabel('airport').sample(10).as('a').
+      choose(out('route').count().is(gt(50)),
+             constant('lots'),
+             constant('not so many')).as('b').
+      select('a','b').by('code').by()
+
+
+
+
+
 
 
 
