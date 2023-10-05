@@ -7,31 +7,7 @@
 
 ## TLDR!
 
-```sh
-# download some sample data; all examples in this file use this dataset
-# https://github.com/krlawrence/graph/blob/main/sample-data/air-routes-latest.graphml
-
-# start a container and copy the sample data into it
-docker run -it --rm --name gremlin tinkerpop/gremlin-console:latest gremlin
-docker cp ~/Downloads/air-routes-latest.graphml gremlin:sampledata.graphml
-
-# enable the sugar plugin for shorthand forms of queries
-# dunno if this transfers to neptune tho
-:plugin use tinkerpop.sugar
-
-# create a graph, load the data file and then create a "traversal source"
-graph = TinkerGraph.open();
-graph.io(graphml()).readGraph('/sampledata.graphml');
-g = traversal().withEmbedded(graph);
-
-# run some queries then exit
-graph.toString()
-g.V().count().next()
-g.V().valueMap(true)
-g.V().has('code','AUS').valueMap(true).unfold()
-:exit
-
-```
+- [run this container](https://github.com/nirv-ai/dbs/tree/main/graph#tinkerpop)
 
 ## links
 
@@ -69,7 +45,7 @@ g.V().has('code','AUS').valueMap(true).unfold()
 ### related
 
 - janusgraph: Distributed, open source, massively scalable graph database
-- gephi: source tool for visualizing graph data
+- gephi: open source tool for visualizing graph data
 
 ## basics
 
@@ -78,6 +54,16 @@ g.V().has('code','AUS').valueMap(true).unfold()
   - GraphML: widely recognized by TinkerPop
   - GraphSON: JSON defined by Apache TinkerPop and heavily used in that environment
   - CSV
+
+### Data Model
+
+- vertices: entity nodes
+- edges: relationships connecting nodes
+- properties: represent and store data for both edges and vertices
+- labels: attached to vertices and edges
+- ids: every vertex and every edge in a graph has a unique ID
+  - can be auto generated or user provided
+- Every vertex, every edge and even every property in a graph has a unique ID that can be used to reference it individually or as part of a group
 
 ## Gremlin
 
@@ -92,15 +78,6 @@ g.V().has('code','AUS').valueMap(true).unfold()
 - walking the graph: describe moving from one vertex to another vertex via an edge; moving through the graph from one place to one or more other places
   - circular walk: walking the graph but ending up back where you started
   - path: the journey you took on the walk
-
-### Data Model
-
-- vertices: entity nodes
-- edges: relationships connecting nodes
-- properties: represent and store data for both edges and vertices
-- labels: attached to vertices and edges
-- ids: every vertex and every edge in a graph has a unique ID
-  - can be auto generated or user provided
 
 ### console
 
@@ -163,9 +140,8 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 
 ### quick ref
 
-- tested with tinkergraph and the practical grammer air routes data file
+- tested with tinkergraph and the practical gremlin air routes data file
 - check the TLDR up top
-- keywords: label
 
 ```ts
 
