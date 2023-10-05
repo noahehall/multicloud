@@ -3,7 +3,7 @@
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
 - bookmark
-  - 3.8. Working with IDs
+  - 3.12.2. Refining flight routes analysis using not, neq, within and without
 
 ## TLDR!
 
@@ -60,7 +60,9 @@
 - vertices: entity nodes
 - edges: relationships connecting nodes
 - properties: represent and store data for both edges and vertices
-- labels: attached to vertices and edges
+- labels: group vertices and edges into classes or types
+  - not all graph database engines provide support for indexing labels
+    - its recommended to use a vertex or edge property, that can be indexed, as a surrogate for the label.
 - ids: Every vertex, every edge and even every property in a graph has a unique ID that can be used to reference it individually or as part of a group
   - can be auto generated or user provided
   - Don’t rely on the graph preserving the ID values you provide. How IDs are managed will be graph database implementation dependent.
@@ -144,18 +146,19 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 - tested with tinkergraph and the practical gremlin air routes data file
 - check the TLDR up top
 
-```ts
+#### gremlin quick ref
 
-////////////////////////////////// common steps
+```ts
 ////////////////// Graph object
-graph // e.g. graph = TinkerGraph.open()
+graph = TinkerGraph.open()
+graph
   .features() // what tinkerpop features are supported
   .toString() // basic stats about the graph
 
 ////////////////// graph traversel source object
 g = graph.traversal()
-  .V() // all vertices
-  .E() // all edges
+  .V() // all vertices, or V(1234) or V(12,34,56)
+  .E() // all edges, can also limit by passing some 1/more ids
 
 
 
@@ -174,17 +177,28 @@ outV() // Outgoing vertex.
 inV() // Incoming vertex.
 
 
-////////////////// filters
-between()
+////////////////// comparisons
+between() // Between two values inclusive/exclusive (upper bound is excluded) e.g. hasId(between(1,6))
+eq() // equal
+gt()
+gte()
 has() // e.g. has(['label',] 'prop', 'value')
-hasLabel()
-hasNot() // shorthand for not(has('prop'))
+hasId() // shorthand for has(id,12345)
+hasLabel() // e.g. hasLabel('this', 'or', 'that')
 hasNext() // check if an edge exists between two vertices, eg.
+hasNot() // shorthand for not(has('prop'))
+inside() // Inside a lower and upper bound, neither bound is included.
 is()
+lt()
 lte()
+neq() // not equal
 not()
 or()
+outside() // Outside a lower and upper bound, neither bound is included.
 where()
+within() // Must match at least one of the values provided. Can be a range or a list
+without() // Must not match any of the values provided. Can be a range or a list
+
 
 
 ////////////////// terminal steps: stops traversal and generates a result set
@@ -195,7 +209,6 @@ bulkSet() // weight set; the count of each element in the set
 // dunno if these are classified as terminal steps
 fold() // converts results to an array
 unfold() // unbundles a collection
-
 
 
 ////////////////// limiting results
@@ -218,7 +231,9 @@ from()
 to()
 with() // e.g. with(WithOptions.tokens,WithOptions.labels, WithOptions.ids)
 path() // get a summary of the path walked; more expensive (memory, cpu) than select + as
-
+// execute steps based on the current state of a traversal
+// ^ this is an extremely important concept to master
+local() // e.g. calculate the count before taking the avg local(out('edges').count()).mean()
 
 ////////////////// CRUD: READ
 values() // for 0/more keys, e.g. values('a', 'b', ...)
@@ -233,7 +248,7 @@ label()
 // ^ e.g. g.V(1).as('a').V(2).as('a').select(first,'a')
 select() // extract values/references; e.g. .select([first|last|all,]'propOrReferenceName')
 project() // shorthand for as and select steps; creates projection of results
-
+id() // of current element
 
 ////////////////// CRUD: modification
 // addV -> create verticies
@@ -245,9 +260,18 @@ project() // shorthand for as and select steps; creates projection of results
 
 
 ////////////////// useful steps
-count()
 join()
 order()
+
+
+
+////////////////// maths
+count()
+mean()
+sum()
+max() // numbers/strings
+min() // numbers/strings
+
 
 ////////////////// aggregates
 groupCount()
@@ -262,7 +286,6 @@ coalesce(ifThisFails, doThis) // executes the first argument, on failure execute
 
 
 
-
 ////////////////// other steps
 getMethods() // list of all the methods and their supported types on the current element
 getClass() // get element class
@@ -272,15 +295,14 @@ getClass() // get element class
 // sideEffect()
 
 
-
-////////////////// enums
+////////////////// enums/constants/keywords
 label //
-local //
 first|last|all //
+id //
 
 ```
 
-#### useful examples
+#### gremlin useful examples
 
 - all based on the practice gremlin air routes dataset
 
@@ -396,6 +418,32 @@ g.E(5161)
   .by(valueMap(true))
   .by(inV().union(id(), label()).fold())
   .by(outV().union(id(), label()).fold());
+// using where & is
+g.V().where(label().is(eq('airport'))).count()
+// average routes per airport (wrong, the query is re-written before mean() is invoked)
+g.V().hasLabel('airport').out('route').count().mean()
+// ^ the correct way to calculate the average via local
+g.V().hasLabel('airport').local(out('route').count()).mean()
+// order by STRING and locally group results,
+// ^ returns [[A, zzz], [B, zzz], [C, zzz]] <- local groups its item into a sub array
+// ^ instead of [A,zzz, B,zzz, C,zzz]  <- is just a flat list
+g.V().has('region','GB-SCT').order().by('code').
+      local(values('code','city').fold())
+// airports with at least 5 runways
+g.V().has('runways',gte(5)).values('code','runways').fold()
+// airports with exactly 3 runways, can use has without eq(1)
+g.V().has('runways',3)
+// using between to simulate a startsWith search
+g.V().hasLabel('airport').
+      has('city',between('Dal','Dam')). // i.e. starts specifically with Dal as it Dam is excluded
+      values('city')
+// ^ or a string that starts with a single character
+g.V().has('airport','code',between('X','Xa')). // specifically X
+      values('code').fold()
+
+
+
+
 
 
 
