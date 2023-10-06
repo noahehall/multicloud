@@ -7,15 +7,8 @@
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
   - chapter 4: beyond the basics
-    - 4.11.8. Comparing properties and constants to the value of a sack
+    - 4.18.3. Turning the results of a query into JSON
       - last section is 4.20.2
-    - skipped
-      - not supported by neptune:
-        - anything related to closures, lambdas or meta properties
-        - 4.7.10. Adding properties to other properties (meta properties)
-        - 4.7.11. Using unfold and WithOptions with Meta Properties
-        - 4.12. Using Lambda functions
-        - 4.12.2. Using lambdas with sack steps
   - chapter 8: common graph serialization formats
     - abcd
       - last section is 8.3.2
@@ -26,6 +19,21 @@
       - we should instead review the aws graph notebook stuff/sagemaker notebooks
     - chapter 7: introducing gremlin server
       - gremlin server might actually be useful; revisit this after checking out aws graph project
+    - chapter 4: shiz we skipped
+      - author said the API is lame and hasnt been updated
+        - 4.16. Turning graphs into trees
+      - not supported by neptune: closures, lambdas, meta properties, graph object, gremlin variables
+        - 4.7.10. Adding properties to other properties (meta properties)
+        - 4.7.11. Using unfold and WithOptions with Meta Properties
+        - 4.12. Using Lambda functions
+        - 4.12.2. Using lambdas with sack steps
+        - 4.15. Using graph variables to associate metadata with a graph
+        - requires closures
+          - 4.12.4. Using regular expressions to do fuzzy searches
+          - 4.13.1. Creating a regular expression predicate
+          - 4.13. Creating custom tests (predicates)
+        - requires gremlin variables
+          - 4.17. Creating a sub graph
 
 ## TLDR!
 
@@ -72,10 +80,19 @@
 ## basics
 
 - a graph computing framework and top level project hosted by the Apache Software Foundation.
-- common file formats
-  - GraphML: widely recognized by TinkerPop
-  - GraphSON: JSON defined by Apache TinkerPop and heavily used in that environment
-  - CSV
+
+### common file formats
+
+- GraphML: XML; supported by tinkerpop
+  - can represent entire graphs
+  - industry standard and widely adopted
+  - does not support all of the data types and structures used by TinkerPop
+- GraphSON: JSON; defined by Apache TinkerPop
+  - can represent entire graphs
+  - can represent the results of gremlin queries
+  - important for gremlin server but not widely adopted outside of tinkerpop
+  - fully supported by tinkerpop
+- CSV
 
 ### Data Model
 
@@ -190,8 +207,14 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 - side effect steps: can extract & store/operate on values during a traversal but has no affect on what is passed to the next step
   - sack, sideEffect, withSideEffect
 - Avoiding unnecessary use of closures is a Gremlin best practice.
+- path, simplePath and as steps can be memory intensive
+  - prefer sack > as > simplePath > path
 
 #### gremlin cheatsheet
+
+- theres a million ways to do something in gremlin, pick the simplest/most efficient
+- examples copypastad from the book is useful for learning, perhaps not so much as production code
+  - the author repeatedly states this!
 
 ```ts
 ////////////////// Graph object
@@ -199,6 +222,38 @@ graph = TinkerGraph.open()
 graph
   .features() // what tinkerpop features are supported
   .toString() // basic stats about the graph
+  .variables()
+    .set('maintainer','Kelvin') // set a variable
+    .keys() // retrieve all graph variables
+    .asMap()
+    .get('someProp')
+    .remove('someProp')
+  .io(graphml()).writeGraph('my-graph.graphml') // persist to disk
+  // each vertex and all of its edges as a single JSON object, one per line
+  // better for ingesting large amounts of data back into tinkerpop
+  .io(graphson()).writeGraph("my-graph.json") // persist as unwrapped json
+
+// persist as wrapped json; i.e. wrapped adjacency list
+// all vertices and edges stored in a single large JSON oject inside of an enclosing vertices object.
+fos = new FileOutputStream("my-graph.json")
+GraphSONWriter.build().wrapAdjacencyList(true).create().writeGraph(fos,graph)
+
+// persist data using an older graphson version (the default is 3.0)
+fos = new FileOutputStream("my-graph.json")
+mapper = graph.io(IoCore.graphson()).
+         mapper().version(GraphSONVersion.V1_0).create() // specify the version here
+graph.io(IoCore.graphson()).
+    writer().mapper(mapper).
+    create().writeGraph(fos, graph)
+
+
+// load a graphml file
+graph.io(IoCore.graphml()).readGraph('my-graph.graphml')
+
+// Load a grapSON file
+graph.io(IoCore.graphson()).readGraph('my-graph.json')
+
+
 
 ////////////////// graph traversel source object
 // FYI most things below are on this object
@@ -235,13 +290,14 @@ hasNext() // check if an edge exists between two vertices, eg.
 hasNot() // shorthand for not(has('prop'))
 hasValue()
 
-////////////////// filters: comparisons
+////////////////// filters: predicates
 eq() // equal
 gt()
 gte()
 lt()
 lte()
 neq() // not equal
+test() // requires closures, dunno if supported in neptune, skipped
 
 ////////////////// filters: logical
 and()
@@ -286,7 +342,7 @@ dedup() // remove duplicates, aka unique?; can provide references to limit speci
 
 
 ////////////////// modulators: alter the behavior of the steps that they are associated with.
-as() // create a reference so you can refer to it later
+as() // refer back to the previous state of a traversal
 // processed in a round robin fashion in cases where there are more elements that modulators specified
 // ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
 // ^ use a by modulator with no param if the element is not a vertex/edge
@@ -304,7 +360,7 @@ by() // for each element returned, extract this prop/run this step, often used t
 from()
 to()
 with() // e.g. with(WithOptions.tokens, ...)
-path() // get a summary of the path walked; more expensive (memory, cpu) than select + as
+path() // get a summary of the path walked
 simplePath() // shortest + unique path between two entities;
 // execute steps based on the current state of a traversal
 // ^ this is an extremely important concept to master
@@ -381,6 +437,10 @@ times()
 loops()
 repeat() // make sure you have an ending step, e.g. times, emit, loops or until
 until()
+// if it receives multiple inputs, it only passes the first one received to the next step
+map() // process the current state of a traversal
+// if it receives multiple inputs, it passes them all on to the next step
+flatMap() // process the current state of traversal
 
 ////////////////// other steps
 getMethods() // list of all the methods and their supported types on the current element
@@ -430,6 +490,7 @@ sum
 
 ```ts
 ////////////////////////////////// exploration
+// FYI: a good graph db usually has an API to explore the graph state
 // 100 unique vertex and edge labels
 g.V().label().dedup().limit(100)
 g.E().label().dedup().limit(100)
@@ -761,10 +822,30 @@ g.V().has('airport','country','IE').aggregate('ireland').
       out().where(without('ireland')).
       values('country').
       dedup().fold().order(local)
-// extract the keys and values separately
+// extract the keys and values from a map (output of group()) separately
 g.V().hasLabel('airport').limit(5).group().by('code').by('city').select(keys)
 g.V().hasLabel('airport').limit(5).group().by('code').by('city').select(values)
-
+// retrieve a property from vertices
+g.V().hasLabel('airport').limit(10).map(properties('city'))
+// ^ same as above, but without map
+g.V().hasLabel('airport').limit(10).values('city')
+// ^ same as above, but converts the result to a map via group and orders by values
+g.V().hasLabel('airport').limit(10).
+      map(properties('city').group().by(key()).by(value())).
+      unfold().order().by(values,asc)
+// map vs flatMap
+g.V().has('code','SAF').map(out()) // returns a single vertex
+g.V().has('code','SAF').flatMap(out()) // returns all vertices
+// find all the paths from AUS to any other vertex and return the city
+// ^ returns results like [Austin,e[3712][3-route->43],Tucson]
+g.V().has('code','AUS').outE().inV().
+      path().by('city').by().limit(3)
+// ^ same as above, but this time use flatMap to remove the route and only return connecting cities
+// ^ returns results like [Austin,Tucson]
+g.V().has('code','AUS').flatMap(outE().inV()).
+      path().by('city').limit(3)
+// ^ lol same thing but without map ;)~
+g.V().has('code','AUS').out().path().by('city').limit(3)
 
 
 ////////////////////////////////// maths
@@ -937,6 +1018,18 @@ g.withSack([]).V().has('code','SAF').out().
                values('runways').fold().sack(addAll).
                V().has('code','AUS').out().values('runways').fold().
                sack(addAll).sack()
+// use the value of a sack in a comparison
+g.withSack(0).V().
+  has('code','SAF').
+  repeat(outE().
+         sack(sum).by('dist').
+         inV()).
+  until(sack().is(gt(10000))).
+  limit(5).
+  path().
+    by('code').
+    by('dist')
+
 
 
 
