@@ -27,6 +27,7 @@
 - Try to limit each vertex to having just one label, but exceptions can exist if entities play multiple roles
   - avoid using labels as flags or enumerated tags that group entities of a particular type
     - use a property to perform this partitioning
+- make sure to read the API COMPLIANCE section below if migrating from tinkerpop
 
 ### Anti patterns
 
