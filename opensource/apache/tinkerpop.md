@@ -6,13 +6,10 @@
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
+  - chapter 7: introducing gremlin server
+    - 7.2. Connecting to a Gremlin Server from the Gremlin Console
   - we can probably skip these (for now) and transition to migrating from postgres to neptune
     - chapter 5: misc queries
-    - chapter 6: beyond gremlin console & tinkergraph
-      - focuses on java, groovy and janusgraph
-      - we should instead review the aws graph notebook stuff/sagemaker notebooks
-    - chapter 7: introducing gremlin server
-      - gremlin server might actually be useful; revisit this after checking out aws graph project
     - chapter 4: shiz we skipped
       - author said the API is lame and hasnt been updated
         - 4.16. Turning graphs into trees
@@ -40,17 +37,18 @@
 ## links
 
 - [landing page](https://tinkerpop.apache.org/)
-- [janusgraph](https://janusgraph.org/)
 - [gremlin: tutorials](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
 - [gremlin: console tutorial](https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/)
+- [tinkerpop providers](https://tinkerpop.apache.org/providers.html)
 
 ### practical gremlin
 
+- [AAA: bunch of query examples](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#msc)
 - [AAA: github](https://github.com/krlawrence/graph)
 - [AAA: landing page](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html)
-- [AAAA: bunch of query examples](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#msc)
 - [sample: apps](https://github.com/krlawrence/graph/tree/master/demos)
 - [sample: code](https://github.com/krlawrence/graph/tree/master/sample-code)
+- [sample: create graph from CSV](https://github.com/krlawrence/graph/blob/main/sample-code/GraphFromCSV.java)
 - [sample: data startup script](https://github.com/krlawrence/graph/blob/main/sample-data/load-air-routes-graph-34.groovy)
 - [sample: data](https://github.com/krlawrence/graph/tree/master/sample-data)
 
@@ -64,16 +62,17 @@
 
 - [AAA: console](https://tinkerpop.apache.org/docs/current/reference/#gremlin-console)
 - [AAA: docs landing page](https://tinkerpop.apache.org/docs/current/reference/)
-- [AAA: recipes](https://tinkerpop.apache.org/docs/current/recipes/)
 - [AAA: getting started tutorials](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
-- [server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
-- [tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
+- [AAA: recipes](https://tinkerpop.apache.org/docs/current/recipes/)
+- [AAA: tinkerpop javadocs](https://tinkerpop.apache.org/javadocs/current/full/)
 - [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
+- [server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
+- [tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
 
 ### related
 
-- janusgraph: Distributed, open source, massively scalable graph database
+- [janusgraph: graph db](https://janusgraph.org/)
 - gephi: open source tool for visualizing graph data
 
 ## basics
@@ -187,6 +186,20 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 
 - Allows hosting of graphs remotely via an HTTP/Web Sockets connection.
 - among other things, Provides a method for non-JVM languages which may not have a Gremlin Traversal Machine (e.g. Python, Javascript, Go, etc.) to communicate with the TinkerPop stack on the JVM.
+- main configuration files located in conf/gremlin-server
+  - gremlin-server.yaml
+  - bunch of properties files
+  - empty-sample.groovy: sample file that you should modify/copypasta
+
+```sh
+# start the gremlin server passing in the conf file
+gremlin-server.sh conf/gremlin-server/gremlin-server.yaml
+# ^ or in the bg
+export GREMLIN_YAML='conf/gremlin-server/gremlin-server.yaml'
+bin/gremlin-server.sh start
+
+
+```
 
 ### quick ref
 
@@ -298,14 +311,19 @@ hasNext() // check if an edge exists between two vertices, eg.
 hasNot() // shorthand for not(has('prop'))
 hasValue()
 
-////////////////// filters: predicates
+////////////////// filters: predicates basic
+// all defined on the P class
 eq() // equal
+neq() // not equal
 gt()
 gte()
 lt()
 lte()
-neq() // not equal
-test() // requires closures, dunno if supported in neptune, skipped
+between() // Between two values incl/excl e.g. hasId(between(1,6))
+inside() // Inside a lower and upper bound, neither bound is included.
+outside() // Outside a lower and upper bound, neither bound is included.
+within() // Must match at least one of the values provided. Can be a range or a list
+without() // Must not match any of the values provided. Can be a range or a list
 
 ////////////////// filters: logical
 and()
@@ -313,16 +331,12 @@ not()
 or()
 is()
 where()
+test() // requires closures, dunno if supported in neptune, skipped
 
-////////////////// filters: ranges
-between() // Between two values inclusive/exclusive (upper bound is excluded) e.g. hasId(between(1,6))
-inside() // Inside a lower and upper bound, neither bound is included.
-outside() // Outside a lower and upper bound, neither bound is included.
-within() // Must match at least one of the values provided. Can be a range or a list
-without() // Must not match any of the values provided. Can be a range or a list
 
 
 ////////////////// filters: text search case sensitive
+// available since 3.4; on the TextP class
 startingWith()
 endingWith()
 containing()
@@ -474,29 +488,25 @@ explain() // instead of executing a query
 
 
 
-////////////////// enums/constants/keywords
-label //
-first|last|all //
-id //
-asc // ascending
-incr // increasing; prefer asc
-desc // descending order
-decr // decreasing; prefer desc
-shuffle // as in random
-values // the values without the keys, e.g. select(values)
-keys // the keys without the values, e.g. select(keys)
-withOptions.{x,y,z} // tokens, labels, ids, keys, all, ...
-Cardinality.{x,y,z} // single, set, list ... sets the type of property
+////////////////// enums/constants/keywords/etc
+// mixed: returns a list if 2/more items exist, else a list
+Pop.{first,last,all,mixed} // selecting an item from a collection
+T.{label,id,key,value} // for valueMap/properties
+Column.{keys,values} // for map datatype
+Scope.{local,global} // global is default
+// both incr and decr deprecated 3.4; removed 3.5
+// shuffle as in random
+Order.{desc,asc,shuffle} // generally used like order().by(desc/asc/shuffle)
+withOptions.{tokens, labels, ids, keys, all} // , ...
+Cardinality.{single, set, list} // how a property value should be treated when added to a vertex
 // sack operators: defined on the java Operator enum
-addAll
-and
-assign
-max
-min
-minus // are subtracted from the sacks initialize value
-mult // multiply
-or
-sum
+// minus: subtracted from the sacks initialize value
+// mult multiply
+Operator.{sum,minus,mult,div,assign,min,max,addAll,and,or}
+// used in associated with edge directions
+Direction.{IN,OUT,BOTH} // e.g.  myEdge.vertices(Direction.IN)
+// used in association with the branch, choose and option steps.
+Pick.{none,any}
 ```
 
 #### gremlin useful examples
