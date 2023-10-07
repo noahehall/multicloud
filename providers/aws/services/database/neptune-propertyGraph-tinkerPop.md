@@ -7,10 +7,10 @@
 ## links
 
 - [knowledge graphs on AWS](https://aws.amazon.com/neptune/knowledge-graphs-on-aws/)
-- [migrating from tinkerpop to neptune](https://docs.aws.amazon.com/neptune/latest/userguide/migrating-from-tinkerpop.html)
 
 ### gremlin
 
+- [A: migrating from tinkerpop to neptune](https://docs.aws.amazon.com/neptune/latest/userguide/migrating-from-tinkerpop.html)
 - [AAA: getting started](https://docs.aws.amazon.com/neptune/latest/userguide/get-started-graph-gremlin.html)
 - [AAA: gremlin accessing neptune](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-gremlin.html)
 - [AAA: gremlin best practices](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices-gremlin.html)

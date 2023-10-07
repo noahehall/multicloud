@@ -6,13 +6,7 @@
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
-  - chapter 4: beyond the basics
-    - 4.18.3. Turning the results of a query into JSON
-      - last section is 4.20.2
-  - chapter 8: common graph serialization formats
-    - abcd
-      - last section is 8.3.2
-  - we can probably skip these and transition to migrating from postgres to neptune
+  - we can probably skip these (for now) and transition to migrating from postgres to neptune
     - chapter 5: misc queries
     - chapter 6: beyond gremlin console & tinkergraph
       - focuses on java, groovy and janusgraph
@@ -28,12 +22,16 @@
         - 4.12. Using Lambda functions
         - 4.12.2. Using lambdas with sack steps
         - 4.15. Using graph variables to associate metadata with a graph
+          - 4.17. Creating a sub graph
+        - 4.19.3. Introducing TinkerGraph indexes
+        - 4.20.1. Introducing the TinkerPop Graph Computer
+        - 4.20.2. Experiments with Page Rank
         - requires closures
           - 4.12.4. Using regular expressions to do fuzzy searches
           - 4.13.1. Creating a regular expression predicate
           - 4.13. Creating custom tests (predicates)
-        - requires gremlin variables
-          - 4.17. Creating a sub graph
+          - 4.19.1. Timing a query - introducing clock and clockWithResult
+            - should probably return to this
 
 ## TLDR!
 
@@ -67,8 +65,9 @@
 - [AAA: console](https://tinkerpop.apache.org/docs/current/reference/#gremlin-console)
 - [AAA: docs landing page](https://tinkerpop.apache.org/docs/current/reference/)
 - [AAA: recipes](https://tinkerpop.apache.org/docs/current/recipes/)
-- [AAA: server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
-- [AAA: tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
+- [AAA: getting started tutorials](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
+- [server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
+- [tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
 - [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
 
@@ -92,7 +91,9 @@
   - can represent the results of gremlin queries
   - important for gremlin server but not widely adopted outside of tinkerpop
   - fully supported by tinkerpop
-- CSV
+- CSV: generally requires more than 1 CSV
+  - vertex csv: all vertex data
+  - edge csv: all edge data
 
 ### Data Model
 
@@ -246,13 +247,20 @@ graph.io(IoCore.graphson()).
     writer().mapper(mapper).
     create().writeGraph(fos, graph)
 
-
 // load a graphml file
 graph.io(IoCore.graphml()).readGraph('my-graph.graphml')
 
 // Load a grapSON file
 graph.io(IoCore.graphson()).readGraph('my-graph.json')
 
+// view query results as json
+json_mapper = GraphSONMapper.
+                build().
+                version(GraphSONVersion.V3_0). // V{1,2}_0,
+                create().
+                createMapper()
+lax = g.V().has('code','LAX').next()
+json_mapper.writeValueAsString(lax)
 
 
 ////////////////// graph traversel source object
@@ -406,8 +414,6 @@ property() // overloaded step enabling create/read/updating properties
 drop() // a vertex and all connected edges, or a specific edge/property
 
 
-
-
 ////////////////// maths
 count()
 mean()
@@ -446,6 +452,15 @@ flatMap() // process the current state of traversal
 getMethods() // list of all the methods and their supported types on the current element
 getClass() // get element class
 
+////////////////// profiling
+// TimeUtil class: timing queries
+// executes a query one/more times and returns the avg in MS
+// ^ always executes a warm up pass; so human perceived time is double whats reported
+// ^ swing back to this, requires a closure so we skipped it
+clock()
+clockWithResult()
+// ProfileStep class: profiling queries
+profile() // MS per step in a query
 
 ////////////////// useful steps
 withSideEffect() // dunno, check the docs
