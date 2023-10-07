@@ -6,8 +6,6 @@
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
-  - chapter 7: introducing gremlin server
-    - 7.2. Connecting to a Gremlin Server from the Gremlin Console
   - we can probably skip these (for now) and transition to migrating from postgres to neptune
     - chapter 5: misc queries
     - chapter 4: shiz we skipped
@@ -132,12 +130,27 @@
 - an interactive terminal or REPL that can be used to traverse local/remote graphs and interact with the data that they contain.
 - the most common method for performing ad hoc graph analysis, small to medium sized data loading projects and other exploratory functions.
 - hosts the Gremlin-Groovy language; you can enter valid Groovy code directly into the console
+- common files (docker perspective) located in /opt/gremlin-console
+  - bin/
+    - gremlin.sh: start script
+  - conf/
+    - remote.yaml: connection + serialization version for a remote/local gremlin server
 - tldr
   - ending a cmd with `;[]` hides the console output
   - end a line with period, comma, etc or backslash like in shell for continuation
 
 ```sh
-### console cmds, always prefixed with `:`
+############### TLDR
+# console cmds, always prefixed with `:`
+
+############### quickies
+# connect to a gremlin server
+:remote connect tinkerpop.server conf/remote.yaml
+
+# toggle/stop remote/local mode
+:remote console # toggle
+:remote close # a remote connection
+
 # important
 :help # list or specific cmd
 :exit # the shell
@@ -185,6 +198,9 @@ graph.io(graphml()).readGraph('air-routes.graphml')
 ### server
 
 - Allows hosting of graphs remotely via an HTTP/Web Sockets connection.
+  - gremlin console -> gremlin server -> some graph db
+    - console & server must be configured to use the same version of various classes
+      - both contain yaml files to set this up
 - among other things, Provides a method for non-JVM languages which may not have a Gremlin Traversal Machine (e.g. Python, Javascript, Go, etc.) to communicate with the TinkerPop stack on the JVM.
 - main configuration files located in conf/gremlin-server
   - gremlin-server.yaml
