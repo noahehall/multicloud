@@ -2,47 +2,11 @@
 
 - a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
 - intended for those interested in AWS neptune but prefer to rampup via tinkerpop
-- bookmark
-  - [console](https://tinkerpop.apache.org/docs/3.7.0/tutorials/the-gremlin-console/)
-    - abcd
-  - [intro](https://tinkerpop.apache.org/docs/3.7.0/reference/#intro)
-  - [language variants](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
-  - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
-    - skipped: should review these before running the postgres -> tinkergraph import scripts
-      - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
-      - [transactions](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-transactions)
-      - [lambdas](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-lambda)
-      - [submitting scripts](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-scripts)
-      - [domain specific languages](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-dsl)
-  - practical gremlin
-    - chapter 3: basics
-      - 3.27.3. Limiting the results at each depth
-        - last section is 3.31
-    - we can probably skip these (for now) and focus on migrating from postgres to neptune
-      - chapter 5: misc queries
-      - chapter 4: shiz we skipped
-        - author said the API is lame and hasnt been updated
-          - 4.16. Turning graphs into trees
-        - not supported by neptune: closures, lambdas, meta properties, graph object, gremlin variables
-          - 4.7.10. Adding properties to other properties (meta properties)
-          - 4.7.11. Using unfold and WithOptions with Meta Properties
-          - 4.12. Using Lambda functions
-          - 4.12.2. Using lambdas with sack steps
-          - 4.15. Using graph variables to associate metadata with a graph
-            - 4.17. Creating a sub graph
-          - 4.19.3. Introducing TinkerGraph indexes
-          - 4.20.1. Introducing the TinkerPop Graph Computer
-          - 4.20.2. Experiments with Page Rank
-          - requires closures
-            - 4.12.4. Using regular expressions to do fuzzy searches
-            - 4.13.1. Creating a regular expression predicate
-            - 4.13. Creating custom tests (predicates)
-            - 4.19.1. Timing a query - introducing clock and clockWithResult
-              - should probably return to this
+- TODO: finish the bookmark section at the bottom
 
 ## TLDR!
 
-- [run this container](https://github.com/nirv-ai/dbs/tree/main/graph#tinkerpop)
+- [run this container](https://github.com/nirv-ai/dbs/tree/main/graph/tinkerpop)
 
 ## links
 
@@ -81,6 +45,7 @@
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
 - [tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
 - [javascript: imports](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-imports)
+- [traversal steps](https://tinkerpop.apache.org/docs/3.7.0/reference/#graph-traversal-steps)
 
 ### related
 
@@ -1194,3 +1159,42 @@ pkeys.each {
 toList(); // returns array
 iterate(); // abcd
 ```
+
+# bookmark
+
+- [console](https://tinkerpop.apache.org/docs/3.7.0/tutorials/the-gremlin-console/)
+  - abcd
+- [intro](https://tinkerpop.apache.org/docs/3.7.0/reference/#intro)
+- [language variants](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
+- [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
+  - skipped: should review these before running the postgres -> tinkergraph import scripts
+    - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
+    - [transactions](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-transactions)
+    - [lambdas](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-lambda)
+    - [submitting scripts](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-scripts)
+    - [domain specific languages](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-dsl)
+- practical gremlin
+  - chapter 3: basics
+    - 3.27.3. Limiting the results at each depth
+      - last section is 3.31
+  - we can probably skip these (for now) and focus on migrating from postgres to neptune
+    - chapter 5: misc queries
+    - chapter 4: shiz we skipped
+      - author said the API is lame and hasnt been updated
+        - 4.16. Turning graphs into trees
+      - not supported by neptune: closures, lambdas, meta properties, graph object, gremlin variables
+        - 4.7.10. Adding properties to other properties (meta properties)
+        - 4.7.11. Using unfold and WithOptions with Meta Properties
+        - 4.12. Using Lambda functions
+        - 4.12.2. Using lambdas with sack steps
+        - 4.15. Using graph variables to associate metadata with a graph
+          - 4.17. Creating a sub graph
+        - 4.19.3. Introducing TinkerGraph indexes
+        - 4.20.1. Introducing the TinkerPop Graph Computer
+        - 4.20.2. Experiments with Page Rank
+        - requires closures
+          - 4.12.4. Using regular expressions to do fuzzy searches
+          - 4.13.1. Creating a regular expression predicate
+          - 4.13. Creating custom tests (predicates)
+          - 4.19.1. Timing a query - introducing clock and clockWithResult
+            - should probably return to this
