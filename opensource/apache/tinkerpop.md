@@ -518,7 +518,11 @@ g.E().label().dedup().limit(100)
 // properties associated with a specific vertex/edge label
 g.V().hasLabel('airport').limit(1).next().keys()
 g.E().hasLabel('route').limit(1).next().keys()
-
+// How many of each type of vertex/edge are there
+g.V().groupCount().by(label); // use g.E() for edges
+// ^ different ways to get the same thing
+g.V().label().groupCount();
+g.V().group().by(label).by(count());
 ////////////////////////////////// DELETE
 // vertex
 g.V().has('code','XYZ').drop()
@@ -592,19 +596,15 @@ g.V().hasLabel("airport").groupCount().by("country");
 // all paths from  AUS to AGR with exactly two stops
 g.V().has("code", "AUS").out().out().out().has("code", "AGR").path().by("code");
 // same as above but using repeat fn
-g.V()
-  .has("code", "AUS")
-  .repeat(out())
-  .times(3)
-  .has("code", "AGR")
-  .path()
-  .by("code");
+g.V().
+  has("code", "AUS").
+  repeat(out()).
+  times(3).
+  has("code", "AGR").
+  path().
+  by("code");
 // how many routes leaving airports
 g.V().hasLabel("airport").outE("route").count();
-// How many of each type of vertex/edge are there? all return the same thing
-g.V().groupCount().by(label); // can replace g.V() with g.E()
-g.V().label().groupCount();
-g.V().group().by(label).by(count());
 // How many airports are there in each country?
 g.V().hasLabel("airport").groupCount().by("country");
 // same as above but looks at country first
@@ -677,7 +677,7 @@ g.V()
   .fold(); // so we can operate on each element
 // select the edge connecting MIA and DFW verticies
 g.V().has("code", "MIA").outE().as("e").inV().has("code", "DFW").select("e");
-// same as above but uses inE and outV
+// ^ same as above but uses inE and outV
 g.V().has("code", "MIA").inE().as("e").outV().has("code", "DFW").select("e");
 // modulate how dedupe is applied to results
 // return 1 airport for each unique number of runways
@@ -691,7 +691,7 @@ g.V()
 g.V().has("code", "SFO").valueMap().by(unfold()).unfold();
 // examine an edge with elementMap
 g.V(3).outE().limit(1).elementMap();
-// same as above but with valueMap
+// ^ same as above but with valueMap
 g.E(5161)
   .project("v", "IN", "OUT")
   .by(valueMap(true))
@@ -795,7 +795,7 @@ g.V(3).union(constant("Hello"),
 g.V().has('code','AUS').out().aggregate('nonstop').
      out().where(without('nonstop')).dedup().count()
 // using inject with a useless value in order to execute some other query
-// ^ CHOOSE must be executed on an object, and not directly on g.choose e.g.
+// ^ CHOOSE must be executed on an object, and not directly on g
 // ^ i.e. this is better than using g.V().choose()
 g.inject(1).choose(V().hasLabel('XYZ').count().is(0),constant("None found"))
 // returns the previous step if optional returns nil
@@ -1138,17 +1138,18 @@ pkeys.each {
 
 #### typescript: bun.sh + gremlin-javascript
 
-- [via docker](https://github.com/nirv-ai/dbs/blob/main/graph/tinkerpop/README.md#gbunsh-bun-typescript--gremlin-server)
-- I/O operations in Node.js are asynchronous by default, Terminal Steps return a Promise:
+- [typescript DSL](https://github.com/nirv-ai/dbs/blob/main/graph/tinkerpop/bun/src/lib/groovy/dsl.ts)
+- [practical gremlin examples in typescript](https://github.com/nirv-ai/dbs/blob/main/graph/tinkerpop/bun/src/test/airRoutes/examples.ts)
+- FYI
+  - its generally not going to be a copypasta from gremlin to typescript
+    - but shouldnt require much modification
+    - using the docker compose in the link above you can connect gremlin console & a bun server to the same gremlin server in two separate terminals
+      - practice getting identical results
+      - take note of the difference in Results format
 
 ```ts
-////////////////////////////////// FYI
-// Traversal.toList(): Returns a Promise with an Array as result value.
-// Traversal.next(): Returns an async iterator {value, done}
-// Traversal.iterate(): Returns a Promise without a value.
-
 ////////////////////////////////// not supported in typescript
-// hasNext()
+// FYI: the apache docs are old and the latest gremlin npm package may support these
 // next(n): next() is supported
 // tryNext()
 // toSet()
@@ -1156,8 +1157,32 @@ pkeys.each {
 // fill(collection)
 
 ////////////////////////////////// bestfriends in typescript land
-toList(); // returns array
-iterate(); // abcd
+// append to basically any example in this file and it should work
+hasNext(): Promise<boolean>;
+iterate(): Promise<void>;
+next(): Promise<IteratorResult<any>>;
+toList(): Promise<Traverser[]>;
+toString(): string;
+
+////////////////////////////////// important gremlin.process members
+Statics;
+WithOptions;
+P;
+TextP;
+Traversal;
+cardinality;
+column; // e.g. keys, values
+Direction;
+Operator;
+order;
+pick;
+pop;
+scope;
+t; // e.g. id, key, label, value
+GraphTraversal;
+GraphTraversalSource;
+statics; // i.e. __, which contains out(), count(), etc and bunches of other traversal steps
+
 ```
 
 # bookmark
