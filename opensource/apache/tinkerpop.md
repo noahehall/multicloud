@@ -897,17 +897,17 @@ g.V().has('region','US-NM').
       select(values).
       unfold().
       sum().
-      store('a'). // store total runways in US-NM as A
-      V().has('region','US-AZ'). // this is a new traversal chained on the previous one
+      store('a').
+      V().has('region','US-AZ').
       group().by('code').by(values('runways')).
       select(values).
       unfold().
       sum().
-      store('b'). // store total runways in US-AZ as B
+      store('b').
       project('first','second').
         by(select('a').unfold()).
         by(select('b').unfold()).
-      math('first / second') // ration of nmRunways to azRunways
+      math('first / second')
 // routes from SAF with 1 between stop, distance per stop + total distance
 g.withSack(0).
   V().has('code','SAF').
@@ -1141,11 +1141,14 @@ pkeys.each {
 - [typescript DSL](https://github.com/nirv-ai/dbs/blob/main/graph/tinkerpop/bun/src/lib/groovy/dsl.ts)
 - [practical gremlin examples in typescript](https://github.com/nirv-ai/dbs/blob/main/graph/tinkerpop/bun/src/test/airRoutes/examples.ts)
 - FYI
-  - its generally not going to be a copypasta from gremlin to typescript
-    - but shouldnt require much modification
-    - using the docker compose in the link above you can connect gremlin console & a bun server to the same gremlin server in two separate terminals
-      - practice getting identical results
-      - take note of the difference in Results format
+  - using typescript to submit parameterized scripts:
+    - should be copypasta
+  - using typescript gremlin API
+    - its generally not going to be a copypasta from gremlin to typescript
+      - but shouldnt require much modification
+      - using the docker compose in the link above you can connect gremlin console & a bun server to the same gremlin server in two separate terminals
+        - practice getting identical results
+        - take note of the difference in Results format
 
 ```ts
 ////////////////////////////////// not supported in typescript
@@ -1192,12 +1195,10 @@ statics; // i.e. __, which contains out(), count(), etc and bunches of other tra
 - [intro](https://tinkerpop.apache.org/docs/3.7.0/reference/#intro)
 - [language variants](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
 - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
-  - skipped: should review these before running the postgres -> tinkergraph import scripts
+  - skipped: should eventually get to these one day
     - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
     - [transactions](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-transactions)
     - [lambdas](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-lambda)
-    - [submitting scripts](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-scripts)
-    - [domain specific languages](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-dsl)
 - practical gremlin
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth

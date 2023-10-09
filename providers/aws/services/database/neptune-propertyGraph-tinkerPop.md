@@ -181,7 +181,6 @@
     - because neptune uses the ANTLR grammar in its query processing engine rather than the older GremlinGroovyScriptEngine
   - fully qualified class names for enumeration values
     - e.g. use `single` and not `org.apache.tinkerpop.gremlin.structure.VertexProperty.Cardinality.single`
-      - fk java!
   - gremlin `io-step` is only partially supported
   - does not expose the graph object.
     - i.e. a bunch of graph features arent supported, check the docs!
@@ -193,7 +192,7 @@
 - Variables and parameters in scripts
   - neptune:
     - pre-bound variables: the traversal object g is Pre-bound in Neptune, and the graph object is not supported.
-- java code! fk java!
+- java code!
   - Neptune does not support calls to methods defined by arbitrary Java or Java library calls other than supported Gremlin APIs.
   - e.g. java.lang.\*, Date(), and g.V().tryNext().orElseGet() are not allowed.
 - Script execution
