@@ -15,6 +15,11 @@
 - [gremlin: console tutorial](https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/)
 - [tinkerpop providers](https://tinkerpop.apache.org/providers.html)
 
+### MISC
+
+- [dates: neptune gremlin datetime (groovy)](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices-gremlin-datetime.html)
+- [dates: neptune gremlin datetime (not groovy)](https://docs.aws.amazon.com/neptune/latest/userguide/best-practices-gremlin-datetime-glv.html)
+
 ### practical gremlin
 
 - [AAA: bunch of query examples](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#msc)
@@ -523,6 +528,8 @@ g.V().groupCount().by(label); // use g.E() for edges
 // ^ different ways to get the same thing
 g.V().label().groupCount();
 g.V().group().by(label).by(count());
+
+
 ////////////////////////////////// DELETE
 // vertex
 g.V().has('code','XYZ').drop()
@@ -540,7 +547,7 @@ g.V().has('code','SFO').properties().drop() // all properties
 
 
 ////////////////////////////////// CREATE
-// Add an imaginary airport with a code of 'XYZ' and connect it to DFW
+// airport with a code of 'XYZ' and connect it to DFW
 g.addV('airport').property('code','XYZ').
                         property('icao','KXYZ').
                         property('desc','This is not a real airport').next()
