@@ -1,4 +1,4 @@
-# neptune
+s# neptune
 
 - fully managed serverless graph database for highly connected, multi-layered datasets
 - must be deployed in a VPC
@@ -7,10 +7,13 @@
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - [neptune local](./neptune-local.md)
 - bookmark
+  - do these first first
+    - [gremlin data format](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-format-gremlin.html)
+      - Gremlin Data Types
+    - [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
   - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
   - [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
   - [setup](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-setup.html)
-  - [migration](https://docs.aws.amazon.com/neptune/latest/userguide/migrating.html)
   - [loading data](https://docs.aws.amazon.com/neptune/latest/userguide/load-data.html)
   - [querying](https://docs.aws.amazon.com/neptune/latest/userguide/access-graph-queries.html)
   - [visualization](https://docs.aws.amazon.com/neptune/latest/userguide/visualization-tools.html)
@@ -71,6 +74,7 @@
 - [transactions: intro](https://docs.aws.amazon.com/neptune/latest/userguide/transactions.html)
 - [transactions: isolation levels](https://docs.aws.amazon.com/neptune/latest/userguide/transactions-neptune.html)
 - [user guide](https://docs.aws.amazon.com/neptune/latest/userguide/intro.html)
+- [gremlin load data format](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-format-gremlin.html)
 
 ### opensource
 
@@ -483,6 +487,61 @@ curl https://your-neptune-endpoint:port/gremlin/status \
 # drop the mode param for basic
 curl https://your-neptune-host:port/pg/statistics/summary?mode=detailed
 ```
+
+### Migration
+
+- ETL CSVs to an s3 bucket > import into a db cluster via Neptune Bulk Loader
+
+### gremlin
+
+- edges & vertices must be in different files
+- a single load job can import multiple files as long as they're in the same s3 bucket folder
+  - specify the foldre name in the `source` param
+- file restrictions
+  - utf8 encoded
+  - must have header row
+  - spaces not allowed in ANY header names
+  - edge properties can only have a single value, so cant use `propName:int[]`
+- required columns
+  - vertex files
+    - ~id
+    - ~label: mutli-label vertices use `;` separator
+  - edge files
+    - ~id
+    - ~from
+    - ~to
+    - ~label
+- data types: case insensitive
+  - int
+  - [] signifies an array, e.g. int[]
+    - string arrays containing semicolons must be escaped e.g. `\;`
+  - (set|single) sets cardinality, set is default; e.g. int(single)
+    - single throws an error if a previous value is already set/multiple values specified for a property
+- property columns
+  - format: `propName:type`
+
+```sh
+# vertex example
+~id, name:String, age:Int, lang:String, interests:String[], ~label
+v1, "marko", 29, , "sailing;graphs", person
+v2, "lop", , "java", , software
+
+# edge example
+~id, ~from, ~to, ~label, weight:Double
+e1, v1, v2, created, 0.4
+
+# data types
+# name:type   –   the cardinality is set, and the content is single-valued.
+# name:type[]   –   the cardinality is set, and the content is multi-valued.
+# name:type(single)   –   the cardinality is single, and the content is single-valued.
+# name:type(set)   –   the cardinality is set, which is the same as the default, and the content is single-valued.
+# name:type(set)[]   –   the cardinality is set, and the content is multi-valued.
+# name:type(single)[]   –   this is contradictory and causes an error to be thrown.
+```
+
+### Bulk Loader
+
+- abcd
 
 ### security
 

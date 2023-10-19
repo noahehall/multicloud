@@ -1231,14 +1231,14 @@ statics; // i.e. __, allows the cration of anonymous traversals, eg. contains ou
 
 # bookmark
 
-- [intro](https://tinkerpop.apache.org/docs/3.7.0/reference/#intro)
+- docs/3.7.0/reference
   - [bookmark](https://tinkerpop.apache.org/docs/3.7.0/reference/#graph-computing)
+  - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
+    - skipped: should eventually get to these one day
+      - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
+      - [transactions](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-transactions)
+      - [lambdas](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-lambda)
 - [recipes](https://tinkerpop.apache.org/docs/3.7.0/recipes/)
-- [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
-  - skipped: should eventually get to these one day
-    - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
-    - [transactions](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-transactions)
-    - [lambdas](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-lambda)
 - practical gremlin
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
