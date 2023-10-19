@@ -14,6 +14,8 @@
 - [gremlin: tutorials](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
 - [gremlin: console tutorial](https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/)
 - [tinkerpop providers](https://tinkerpop.apache.org/providers.html)
+- [gremlin query converter](https://www.gremlator.com/)
+- [gremlin: google group to ask questions](https://groups.google.com/g/gremlin-users)
 
 ### MISC
 
@@ -51,11 +53,22 @@
 - [tinkergraph](http://tinkerpop.apache.org/docs/current/reference/#tinkergraph-gremlin)
 - [javascript: imports](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-imports)
 - [traversal steps](https://tinkerpop.apache.org/docs/3.7.0/reference/#graph-traversal-steps)
+- [mergeV](https://tinkerpop.apache.org/docs/current/reference/#mergevertex-step)
+- [mergeE](https://tinkerpop.apache.org/docs/current/reference/#mergeedge-step)
+- [vertex properties (multi, meta, etc)](https://tinkerpop.apache.org/docs/3.7.0/reference/#vertex-properties)
+- [clone vertex program: bulk loading](https://tinkerpop.apache.org/docs/3.7.0/reference/#clonevertexprogram)
 
 ### related
 
 - [janusgraph: graph db](https://janusgraph.org/)
 - gephi: open source tool for visualizing graph data
+
+## best practices
+
+- all of the tinkerpop documentation uses singlar (e.g. person) vs plural (e.g. people) for Vertex labels, unlike in relational dbs where its common to use the plural form for table names
+- always include a label when filtering based on props
+  - e.g. instead of `g.V().has(k,v)` use `g.V().has('this label only', k,v)`
+- always use indices: `g.V()` and etc has to iterate over all the vertices and edges
 
 ## basics
 
@@ -113,8 +126,8 @@
 ### console
 
 - an interactive terminal or REPL that can be used to traverse local/remote graphs and interact with the data that they contain.
-- the most common method for performing ad hoc graph analysis, small to medium sized data loading projects and other exploratory functions.
 - hosts the Gremlin-Groovy language; you can enter valid Groovy code directly into the console
+- the most common method for performing ad hoc graph analysis, small to medium sized data loading projects and other exploratory functions.
 - common files (docker perspective) located in /opt/gremlin-console
   - bin/
     - gremlin.sh: start script
@@ -155,9 +168,12 @@
 :record # current session to file
 :grab # add a dependency to the shell env
 :set # or list preferences
-:un/install # a maven lib
 :submit # a gremlin script to a gremlin server
 :show imports
+
+# any maven lib, e.g. :install com.datastax.cassandra cassandra-driver-core 2.1.9
+# you should google to see whats available, theres bunches of plugins you can add to the console
+:un/install
 
 
 ### known classes
@@ -175,7 +191,12 @@ Gremlin
 :plugin use tinkerpop.tinkergraph
 
 ### create a new graph and load some data from a file
-graph = TinkerGraph.open()
+graph = TinkerGraph.open() # empty graph
+# ^ TinkerFactory can be used to create a non empty graph
+  # ^ .createClassic(): tinkerpop v2
+  # ^ .createModern(): tinkerpop v3
+  # ^ .createTheCrew() tinkerpop v3 latest (meta properties, multi properties, etc)
+  # ^ .createGratefulDead() v3 with alot of data
 graph.io(graphml()).readGraph('air-routes.graphml')
 
 ```
@@ -230,13 +251,19 @@ bin/gremlin-server.sh start
 - theres a million ways to do something in gremlin, pick the simplest/most efficient
 - examples copypastad from the book is useful for learning, perhaps not so much as production code
   - the author repeatedly states this!
+- iterators vs terminal steps
+  - iterators: dont execute the underlying traversal (unless in console magicland)
+    - e.g. `g.V()` returns an iterator, in typescript land you need to invoke something like `toList()`
+  - terminal steps: execute all steps within an iterator and return the results
 
 ```ts
 ////////////////// Graph object
+// holds a reference to the underlying data in a graph
 graph = TinkerGraph.open()
 graph
   .features() // what tinkerpop features are supported
   .toString() // basic stats about the graph
+  .createIndex('userId', Vertex.class) // index userId label on vertices
   .variables()
     .set('maintainer','Kelvin') // set a variable
     .keys() // retrieve all graph variables
@@ -278,10 +305,10 @@ json_mapper.writeValueAsString(lax)
 
 
 ////////////////// graph traversel source object
-// class: TraversalSource
-g = graph.traversal()
-  .V() // all vertices, or V(1234) or V(12,34,56) V(varContaingAPreviousResult)
-  .E() // all edges, can also limit by passing some 1/more ids
+// class: TraversalSource >
+// instantiate `g` once and reuse it
+g = traversal()
+    .withEmbedded(graph) // restricted to languages using a JVM
 
 
 
@@ -295,12 +322,12 @@ bothV() // vertices at both ends of an edge
 in() // Incoming adjacent vertices; need to invoke as __.in() within gremlin console
 inE() // Incoming incident edges.
 otherV() // vertex at the other end of an edge, relative to wherever you started
-out() // Outgoing adjacent vertices
-outE() // Outgoing incident edges
+out() // Outgoing adjacent vertices, when you dont care about the edge and just want the vertex
+outE() // Outgoing incident edges, when you need to inspect the edge
 
 // dont accept edge labels as filters
 outV() // Outgoing vertex.
-inV() // Incoming vertex.
+inV() // Incoming vertex. e.g. g.V(1).outE('knows').inV()
 
 
 ////////////////// filters: basic
@@ -311,6 +338,7 @@ hasLabel() // e.g. hasLabel('this', 'or', 'that')
 hasNext() // check if an edge exists between two vertices, eg.
 hasNot() // shorthand for not(has('prop'))
 hasValue()
+where()
 
 ////////////////// filters: predicates basic
 // all defined on the P class
@@ -331,7 +359,6 @@ and()
 not()
 or()
 is()
-where()
 test() // requires closures, dunno if supported in neptune, skipped
 
 
@@ -441,7 +468,7 @@ math() // run arbitrary calculations
 
 ////////////////// aggregates
 groupCount()
-by()
+by() // determines the axis to group on, e.g. g.V().group().by(label)
 group() // collect things into a map of key:value pairs
 union() // collect multiple traversal results
 
@@ -1075,6 +1102,13 @@ g.V('person1').hasLabel('Person')
 
 ```
 
+##### copypasta from docs
+
+```ts
+// the age of vadas and marko
+g.V().has("person", "name", within("vadas", "marko")).values("age");
+```
+
 #### groovy: just enough
 
 - just enough for debugging in the console
@@ -1169,7 +1203,7 @@ pkeys.each {
 ////////////////////////////////// bestfriends in typescript land
 // append to basically any example in this file and it should work
 hasNext(): Promise<boolean>;
-iterate(): Promise<void>;
+iterate(): Promise<void>; // execute a traversal for its side effects
 next(): Promise<IteratorResult<any>>;
 toList(): Promise<Traverser[]>;
 toString(): string;
@@ -1188,19 +1222,18 @@ order;
 pick;
 pop;
 scope;
-t; // e.g. id, key, label, value
+t; // enums that are available in the console, e.g. id, key, label, value, etc
 GraphTraversal;
 GraphTraversalSource;
-statics; // i.e. __, which contains out(), count(), etc and bunches of other traversal steps
+statics; // i.e. __, allows the cration of anonymous traversals, eg. contains out(), count(), etc and bunches of other traversal steps
 
 ```
 
 # bookmark
 
-- [console](https://tinkerpop.apache.org/docs/3.7.0/tutorials/the-gremlin-console/)
-  - abcd
 - [intro](https://tinkerpop.apache.org/docs/3.7.0/reference/#intro)
-- [language variants](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
+  - [bookmark](https://tinkerpop.apache.org/docs/3.7.0/reference/#graph-computing)
+- [recipes](https://tinkerpop.apache.org/docs/3.7.0/recipes/)
 - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
   - skipped: should eventually get to these one day
     - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
@@ -1210,7 +1243,7 @@ statics; // i.e. __, which contains out(), count(), etc and bunches of other tra
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
-  - we can probably skip these (for now) and focus on migrating from postgres to neptune
+  - we can probably skip these (for now) and focus on migrating from postgres to tinkerpop to neptune
     - chapter 5: misc queries
     - chapter 4: shiz we skipped
       - author said the API is lame and hasnt been updated
