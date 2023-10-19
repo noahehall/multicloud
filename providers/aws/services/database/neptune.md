@@ -9,7 +9,7 @@ s# neptune
 - bookmark
   - do these first first
     - [gremlin data format](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-format-gremlin.html)
-      - Gremlin Data Types
+      - Gremlin Example
     - [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
   - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
   - [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
@@ -41,6 +41,7 @@ s# neptune
 - [backup & restore](https://docs.aws.amazon.com/neptune/latest/userguide/backup-restore-overview.html)
 - [data: bulk load tutorial](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-IAM.html)
 - [data: bulk load user guide](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load.html)
+- [data: bulk load loader cmd](https://docs.aws.amazon.com/neptune/latest/userguide/load-api-reference-load.html)
 - [data: export](https://docs.aws.amazon.com/neptune/latest/userguide/machine-learning-data-export.html)
 - [db: clones](https://docs.aws.amazon.com/neptune/latest/userguide/manage-console-cloning.html)
 - [db: clusters](https://docs.aws.amazon.com/neptune/latest/userguide/feature-overview-db-clusters.html)
@@ -492,7 +493,7 @@ curl https://your-neptune-host:port/pg/statistics/summary?mode=detailed
 
 - ETL CSVs to an s3 bucket > import into a db cluster via Neptune Bulk Loader
 
-### gremlin
+#### gremlin
 
 - edges & vertices must be in different files
 - a single load job can import multiple files as long as they're in the same s3 bucket folder
@@ -506,19 +507,29 @@ curl https://your-neptune-host:port/pg/statistics/summary?mode=detailed
   - vertex files
     - ~id
     - ~label: mutli-label vertices use `;` separator
+      - case sensitive
   - edge files
     - ~id
     - ~from
     - ~to
     - ~label
+      - case sensitive
 - data types: case insensitive
-  - int
+  - int|byte|short|long|float|double
+  - bool|boolean
+    - anything other than `true` will be false
+  - string
+    - escape the quotation mark by using two in a row e.g. `"Hello ""World"""`
+    - an array of strings `"String one; String 2; String 3"`
+  - date
+    - ISO-8601: yyyy-MM-dd, yyyy-MM-ddTHH:mm, yyyy-MM-ddTHH:mm:ss, yyyy-MM-ddTHH:mm:ssZ
+- property columns format
+  - `propName:type(cardinality)[]`
   - [] signifies an array, e.g. int[]
     - string arrays containing semicolons must be escaped e.g. `\;`
   - (set|single) sets cardinality, set is default; e.g. int(single)
     - single throws an error if a previous value is already set/multiple values specified for a property
-- property columns
-  - format: `propName:type`
+      - unless overridden with one of the bulk loader options
 
 ```sh
 # vertex example
@@ -533,13 +544,13 @@ e1, v1, v2, created, 0.4
 # data types
 # name:type   –   the cardinality is set, and the content is single-valued.
 # name:type[]   –   the cardinality is set, and the content is multi-valued.
-# name:type(single)   –   the cardinality is single, and the content is single-valued.
 # name:type(set)   –   the cardinality is set, which is the same as the default, and the content is single-valued.
 # name:type(set)[]   –   the cardinality is set, and the content is multi-valued.
+# name:type(single)   –   the cardinality is single, and the content is single-valued.
 # name:type(single)[]   –   this is contradictory and causes an error to be thrown.
 ```
 
-### Bulk Loader
+#### Bulk Loader
 
 - abcd
 
