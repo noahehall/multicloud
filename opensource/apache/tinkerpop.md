@@ -46,7 +46,8 @@
 - [AAA: getting started tutorials](http://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
 - [AAA: recipes](https://tinkerpop.apache.org/docs/current/recipes/)
 - [AAA: tinkerpop javadocs](https://tinkerpop.apache.org/javadocs/current/full/)
-- [AAA: gremlin language variant](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
+- [AAA: language variants](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-drivers-variants)
+- [AAA: gremlin anatomy](https://tinkerpop.apache.org/docs/3.7.0/tutorials/gremlins-anatomy/)
 - [meta properties](https://kelvinlawrence.net/book/Gremlin-Graph-Guide.html#metaprop)
 - [server](https://tinkerpop.apache.org/docs/current/reference/#gremlin-server)
 - [sessions](https://tinkerpop.apache.org/docs/current/reference/#console-sessions)
@@ -74,6 +75,8 @@
 
 - a graph computing framework and top level project hosted by the Apache Software Foundation.
 - tinkerpop: a graph abstraction layer over different graph databases and different graph processors
+- TinkerPop-enabled: a graph provider that implements tinkerpop's core API
+  - enables consumers to code in an agnostic fashion and generally utilize any provider tinkerpop-enabled provider with minimal overhead
 
 ### common file formats
 
@@ -90,11 +93,45 @@
   - vertex csv: all vertex data
   - edge csv: all edge data
 
-### Data Model
+### Graph Computing
+
+- graph: a data structure composed of vertices and edges
+- property graph: a directed, binary, attributed multi-graph
+  - supports labels and properties on both vertices and edges
+
+#### Structure (graph) API
+
+- structure: the underlying verticies and edges, and the labels and properties applied to them
+  - the topology formed by the explicit references between its vertices, edges, and properties.
+  - generally relevant for graph providers, developers should use the traversal API
+- primary components
+  - Graph: e.g. `graph = TinkerGraph.open()`; maintains a set of vertices and edges, and access to database functions such as transactions.
+  - Element: maintains a collection of properties and a string label denoting the element type.
+    - Vertex: extends Element and maintains a set of incoming and outgoing edges.
+    - Edge: extends Element and maintains an incoming and outgoing vertex.
+  - Property<V>: a string key associated with a V value.
+  - VertexProperty<V>: a string key associated with a V value as well as a collection of Property<U> properties (vertices only)
+
+### process (traversal) API
+
+- traversal: the process of navigating the graph structure, i.e. querying the graph
+- primary components
+  - TraversalSource: e.g. `g = traversal().with(graph)`; a generator of traversals for a particular graph, domain specific language (DSL), and execution engine.
+    - Traversal<S,E>: a functional data flow process transforming objects of type S into object of type E.
+      - GraphTraversal: a traversal DSL that is oriented towards the semantics of the raw graph (i.e. vertices, edges, etc.).
+  - GraphComputer: a system that processes the graph in parallel and potentially, distributed over a multi-machine cluster.
+    - VertexProgram: code executed at all vertices in a logically parallel manner with intercommunication via message passing.
+    - MapReduce: a computation that analyzes all vertices in the graph in parallel and yields a single reduced result.
+
+#### Data Model
 
 - vertices: entity nodes
+  - A vertex is adjacent to another vertex if they share an incident edge
 - edges: relationships connecting nodes
+  - A vertex has incident edges
 - properties: represent and store data for both edges and vertices
+  - key/value pair, where the key is always a character String
+  - is attached to an element and an element has a set of properties
   - data types:
     - edges: String, Integer
     - vertices: edge types + Set, List
@@ -275,6 +312,7 @@ graph
   // better for ingesting large amounts of data back into tinkerpop
   .io(graphson()).writeGraph("my-graph.json") // persist as unwrapped json
 
+ ////////////////// data I/O
 // persist as wrapped json; i.e. wrapped adjacency list
 // all vertices and edges stored in a single large JSON oject inside of an enclosing vertices object.
 fos = new FileOutputStream("my-graph.json")
@@ -1232,7 +1270,8 @@ statics; // i.e. __, allows the cration of anonymous traversals, eg. contains ou
 # bookmark
 
 - docs/3.7.0/reference
-  - [bookmark](https://tinkerpop.apache.org/docs/3.7.0/reference/#graph-computing)
+  - [anatomy tutorial](https://tinkerpop.apache.org/docs/3.7.0/tutorials/gremlins-anatomy/)
+  - [the graph process](https://tinkerpop.apache.org/docs/3.7.0/reference/#the-graph-process)
   - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
     - skipped: should eventually get to these one day
       - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
@@ -1243,7 +1282,7 @@ statics; // i.e. __, allows the cration of anonymous traversals, eg. contains ou
   - chapter 3: basics
     - 3.27.3. Limiting the results at each depth
       - last section is 3.31
-  - we can probably skip these (for now) and focus on migrating from postgres to tinkerpop to neptune
+  - we can probably skip these (for now) and focus on migration
     - chapter 5: misc queries
     - chapter 4: shiz we skipped
       - author said the API is lame and hasnt been updated
