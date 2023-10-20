@@ -7,10 +7,7 @@ s# neptune
 - [w3c sparql RDF graph](./neptune-rdfGraph-w3cSparql.md)
 - [neptune local](./neptune-local.md)
 - bookmark
-  - do these first first
-    - [gremlin data format](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-tutorial-format-gremlin.html)
-      - Gremlin Example
-    - [slideshare: migrating to neptune](https://www.slideshare.net/AmazonWebServices/migrating-to-amazon-neptune-dat338-aws-reinvent-2018?qid=54cd934d-a746-48de-97a4-84321f6250f8)
+  - [gremlin load example](https://docs.aws.amazon.com/neptune/latest/userguide/bulk-load-data.html)
   - [logging and monitoring](https://docs.aws.amazon.com/neptune/latest/userguide/security-monitoring.html)
   - [graph notebooks](https://docs.aws.amazon.com/neptune/latest/userguide/graph-notebooks.html)
   - [setup](https://docs.aws.amazon.com/neptune/latest/userguide/neptune-setup.html)
@@ -552,7 +549,19 @@ e1, v1, v2, created, 0.4
 
 #### Bulk Loader
 
-- abcd
+- use cases
+  - optmized for large datasets
+  - append-only loads
+- requires a VPC endpoint for s3
+  - cluster & bucket must be in same region
+
+#### online endpoints
+
+- use cases
+  - ongoing replication
+  - ACID transactions
+- streaming changes: kinesis data stream > lambda > neptune
+- event driven batch import: s3 > lambda > neptune
 
 ### security
 
@@ -639,6 +648,13 @@ e1, v1, v2, created, 0.4
 ### Glue
 
 - getting data into neptune
+- catalog data sources & create jobs that ETL
+  - can load data into s3 or write directly to neptune
+
+### Athena
+
+- getting data into neptune
+- source files in s3 > glue crawls, discovers schema, query & and output reuslts back into s3 > bulk load into neptune
 
 ### OpenSearch
 
@@ -647,6 +663,9 @@ e1, v1, v2, created, 0.4
 ### DMS
 
 - migrating data to a neptune cluster
+- initial ETL vs ongoing replication
+  - etl: extract to s3 > format > bulk loader
+  - ongoing: DMS writes change data capture stream to s3 > lambda > kinesis data stream > lambda > neptune
 
 ### EC2
 
