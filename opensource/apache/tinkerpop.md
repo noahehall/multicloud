@@ -12,6 +12,7 @@
 
 - [landing page](https://tinkerpop.apache.org/)
 - [gremlin: tutorials](https://tinkerpop.apache.org/docs/current/tutorials/getting-started/)
+- [gremlin: anatomy tutorial (deck)](https://www.slideshare.net/StephenMallette/gremlins-anatomy-88713465)
 - [gremlin: console tutorial](https://tinkerpop.apache.org/docs/current/tutorials/the-gremlin-console/)
 - [tinkerpop providers](https://tinkerpop.apache.org/providers.html)
 - [gremlin query converter](https://www.gremlator.com/)
@@ -112,13 +113,22 @@
   - Property<V>: a string key associated with a V value.
   - VertexProperty<V>: a string key associated with a V value as well as a collection of Property<U> properties (vertices only)
 
-### process (traversal) API
+#### process (traversal) API
 
 - traversal: the process of navigating the graph structure, i.e. querying the graph
 - primary components
-  - TraversalSource: e.g. `g = traversal().with(graph)`; a generator of traversals for a particular graph, domain specific language (DSL), and execution engine.
+  - GraphTraversalSource: e.g. `g = traversal().with(graph)`; a generator of traversals for a particular graph, domain specific language (DSL), and execution engine.
+    - maintains the configuration options `e.g. g.withSomeConfig().startStep()`
+    - spawns GraphTraversals instances
     - Traversal<S,E>: a functional data flow process transforming objects of type S into object of type E.
       - GraphTraversal: a traversal DSL that is oriented towards the semantics of the raw graph (i.e. vertices, edges, etc.).
+        - GraphTraversal instances (e.g. `g.V()`) are created via start steps (i.e. the `V()`) and begin the traversal
+        - the instances contain the steps that make up the Gremlin language
+        - Each step returns a GraphTraversal so that the steps can be chained together in a fluent fashion
+        - Components: e.g. `has(), outE()` etc
+          - receives the output of the previous start step/component
+        - step modulators: e.g. `by()` are NOT STEPS!!! they modify the behavior of the previous step
+          - abc
   - GraphComputer: a system that processes the graph in parallel and potentially, distributed over a multi-machine cluster.
     - VertexProgram: code executed at all vertices in a logically parallel manner with intercommunication via message passing.
     - MapReduce: a computation that analyzes all vertices in the graph in parallel and yields a single reduced result.
@@ -342,12 +352,16 @@ lax = g.V().has('code','LAX').next()
 json_mapper.writeValueAsString(lax)
 
 
-////////////////// graph traversel source object
-// class: TraversalSource >
+////////////////// GraphTraversalSource
 // instantiate `g` once and reuse it
 g = traversal()
     .withEmbedded(graph) // restricted to languages using a JVM
-
+// set configuration options for a specific traversal
+// always g.withSomeConfigOption
+g.withStrategies(SubgraphStrategy.build().vertices(hasLabel('person')).create()).
+  V().has('name','marko').out().values('name')
+g.withSack(1.0f).V().sack()
+g.withComputer().V().pageRank()
 
 
 ////////////////// traversal steps;
@@ -1271,6 +1285,7 @@ statics; // i.e. __, allows the cration of anonymous traversals, eg. contains ou
 
 - docs/3.7.0/reference
   - [anatomy tutorial](https://tinkerpop.apache.org/docs/3.7.0/tutorials/gremlins-anatomy/)
+  - [anatomy tutorial deck](https://www.slideshare.net/StephenMallette/gremlins-anatomy-88713465)
   - [the graph process](https://tinkerpop.apache.org/docs/3.7.0/reference/#the-graph-process)
   - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
     - skipped: should eventually get to these one day
