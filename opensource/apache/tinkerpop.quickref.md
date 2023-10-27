@@ -21,6 +21,81 @@
 - path, simplePath and as steps can be memory intensive
   - prefer sack > as > simplePath > path
 
+## console
+
+```sh
+############### TLDR
+# console cmds, always prefixed with `:`
+
+############### quickies
+# connect to a gremlin server
+:remote connect tinkerpop.server conf/remote.yaml
+
+# toggle/stop remote/local mode
+:remote console # toggle
+:remote close # a remote connection
+
+# important
+:help # list or specific cmd
+:exit # the shell
+:cls # clear the screen
+:load # a file/url into buffer, e.g. a groovy startup script
+:record start toThisFile.log .... :record stop
+:history # of shiz u did
+:plugin # manage console plugins
+:remote # define a connection
+
+# others
+:quit # via :exit
+:clear # the buffer & reset prompt counter
+:inspect # var/last result in browser
+:purge # maybe everything
+:save # buffer to file
+:record # current session to file
+:grab # add a dependency to the shell env
+:set # or list preferences
+:submit # a gremlin script to a gremlin server
+:show imports
+
+# any maven lib, e.g. :install com.datastax.cassandra cassandra-driver-core 2.1.9
+# you should google to see whats available, theres bunches of plugins you can add to the console
+:un/install
+
+
+### known classes
+Gremlin
+  .version()
+```
+
+## tinkergraph
+
+```sh
+### enable tinkergraph if its not enabled
+:plugin use tinkerpop.tinkergraph
+
+### create a new graph and load some data from a file
+graph = TinkerGraph.open() # empty graph
+# ^ TinkerFactory can be used to create a non empty graph
+  # ^ .createClassic(): tinkerpop v2
+  # ^ .createModern(): tinkerpop v3
+  # ^ .createTheCrew() tinkerpop v3 latest (meta properties, multi properties, etc)
+  # ^ .createGratefulDead() v3 with alot of data
+graph.io(graphml()).readGraph('air-routes.graphml')
+
+```
+
+## server
+
+```sh
+# start the gremlin server passing in the conf file
+gremlin-server.sh conf/gremlin-server/gremlin-server.yaml
+# ^ or in the bg
+export GREMLIN_YAML='conf/gremlin-server/gremlin-server.yaml'
+bin/gremlin-server.sh start
+
+
+```
+
 ## gremlin cheatsheet
 
 - theres a million ways to do something in gremlin, pick the simplest/most efficient

@@ -1,6 +1,6 @@
 # TinkerPop
 
-- a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP).
+- a graph computing framework for both graph databases (OLTP) and graph analytic systems (OLAP)
 - [tinkerpop quickref with code](./tinkerpop.quickref.md)
 - TODO:
   - finish the bookmark section at the bottom
@@ -75,6 +75,32 @@
   - e.g. instead of `g.V().has(k,v)` use `g.V().has('this label only', k,v)`
 - always use indices: `g.V()` and etc has to iterate over all the vertices and edges
 
+### debugging gremlin
+
+- isolate for analysis:
+  - break apart a larger traversal statement into discreet parts that are easy to follow and understand
+  - use `inject()` start step to simulate a traversal from a specific known input
+- clarify results
+  - be sure to understand the input and output of each isolation
+  - use `valuesMap()` or `elementMap()` to review output
+  - temporarily promote an anonymous traversal to its parent if it yields better clarity into the result
+    - isolating an anonymous traversal may produce invalid results
+  - use `fold()` to temporarily replace other reducing steps e.g. `sum()` as it provides visibility into the computation
+- validate assumptions
+  - consider the traversal path, side effects, graph schema and other factors that may be hidden by a naive view of the traversal
+  - use `path()` to inspect what has been traversed
+  - inspect step labels with `select()`
+  - inspect contents of side effects with `cap()`
+    - e.g. cap will show you whats being saved in `store('a')`
+- repeat by expanding the isolated statement to include the next point of isolation
+- traversal patterns to identify
+  - methods of cycle-detetion
+  - step label access and collection manipulation
+  - overriding traversers with `by()` modulators
+  - creating indexed values
+  - using `sack()` for computation
+  - result construction with side effects
+
 ### IMO
 
 - a vertex should not have multiple adjacent vertices with the same incident edge
@@ -124,28 +150,30 @@
 #### process (traversal) API
 
 - traversal: the process of navigating the graph structure, i.e. querying the graph
-- primary components
-  - GraphTraversalSource: e.g. `g = traversal().with(graph)`; a generator of traversals for a particular graph, domain specific language (DSL), and execution engine.
-    - maintains the configuration options `e.g. g.withSomeConfig().startStep()`
-    - spawns GraphTraversals instances
-  - Traversal<S,E>: a functional data flow process transforming objects of type S into object of type E.
-    - GraphTraversal: a traversal DSL that is oriented towards the semantics of the raw graph (i.e. vertices, edges, etc.).
-      - i.e. the steps that make up the gremlin language
-      - GraphTraversal instances (e.g. `g.V()`) are created via start steps (i.e. the `V()`) and begin the traversal
-      - the instances contain the steps that make up the Gremlin language
-      - Each step returns a GraphTraversal so that the steps can be chained together in a fluent fashion
-      - Components: e.g. `has(), outE()` etc
-        - receives the output of the previous start step/component
-      - step modulators: e.g. `by()` are NOT STEPS!!! they modify the behavior of the previous step
-      - anonymous traversals: a traversal that is not bound to a GraphTraversalSource
-        - e.g. `g.V().groupCount().by(label())` label is not bound to g
-        - abcd
-      - terminal steps: return a result and DO NOT return a GraphTraversal instance
-      - expressions: anything thats not a step, step modulator or anonymous traversal
-        - e.g. predicates like `within()`, string tokens, enum values, and classes with static methods that might spawn certain required values.
-  - GraphComputer: a system that processes the graph in parallel and potentially, distributed over a multi-machine cluster.
-    - VertexProgram: code executed at all vertices in a logically parallel manner with intercommunication via message passing.
-    - MapReduce: a computation that analyzes all vertices in the graph in parallel and yields a single reduced result.
+
+##### primary components
+
+- GraphTraversalSource: e.g. `g = traversal().with(graph)`; a generator of traversals for a particular graph, domain specific language (DSL), and execution engine.
+  - maintains the configuration options `e.g. g.withSomeConfig().startStep()`
+  - spawns GraphTraversals instances
+- Traversal<S,E>: a functional data flow process transforming objects of type S into object of type E.
+- GraphTraversal: a traversal DSL that is oriented towards the semantics of the raw graph (i.e. vertices, edges, etc.).
+  - i.e. the steps that make up the gremlin language
+  - GraphTraversal instances (e.g. `g.V()`) are created via start steps (i.e. the `V()`) and begin the traversal
+  - Each step returns a GraphTraversal so that the steps can be chained together in a fluent fashion
+  - Components: e.g. `has(), outE()` etc
+    - receives the output of the previous start step/component
+  - step modulators: e.g. `by()` are NOT STEPS!!! they modify the behavior of the previous step
+  - anonymous traversals: a traversal that is not bound to a GraphTraversalSource
+    - e.g. `g.V().groupCount().by(label())` label is not bound to g
+  - terminal steps: return a result and DO NOT return a GraphTraversal instance
+    - e.g. `next()` and `toList()`
+  - expressions: anything thats not a step, step modulator or anonymous traversal
+    - e.g. predicates like `within()`, string tokens, enum values, and classes with static methods that might spawn certain required values.
+    - be aware of naming collisions with steps, e.g `P.not()` predicate vs `not()` step
+- GraphComputer: a system that processes the graph in parallel and potentially, distributed over a multi-machine cluster.
+  - VertexProgram: code executed at all vertices in a logically parallel manner with intercommunication via message passing.
+  - MapReduce: a computation that analyzes all vertices in the graph in parallel and yields a single reduced result.
 
 #### Data Model
 
@@ -198,70 +226,6 @@
   - ending a cmd with `;[]` hides the console output
   - end a line with period, comma, etc or backslash like in shell for continuation
 
-```sh
-############### TLDR
-# console cmds, always prefixed with `:`
-
-############### quickies
-# connect to a gremlin server
-:remote connect tinkerpop.server conf/remote.yaml
-
-# toggle/stop remote/local mode
-:remote console # toggle
-:remote close # a remote connection
-
-# important
-:help # list or specific cmd
-:exit # the shell
-:cls # clear the screen
-:load # a file/url into buffer, e.g. a groovy startup script
-:record start toThisFile.log .... :record stop
-:history # of shiz u did
-:plugin # manage console plugins
-:remote # define a connection
-
-# others
-:quit # via :exit
-:clear # the buffer & reset prompt counter
-:inspect # var/last result in browser
-:purge # maybe everything
-:save # buffer to file
-:record # current session to file
-:grab # add a dependency to the shell env
-:set # or list preferences
-:submit # a gremlin script to a gremlin server
-:show imports
-
-# any maven lib, e.g. :install com.datastax.cassandra cassandra-driver-core 2.1.9
-# you should google to see whats available, theres bunches of plugins you can add to the console
-:un/install
-
-
-### known classes
-Gremlin
-  .version()
-```
-
-### tinkergraph
-
-- in-memory (with optional persistence), non-transactional graph engine that provides both OLTP and OLAP functionality.
-- great for learning
-
-```sh
-### enable tinkergraph if its not enabled
-:plugin use tinkerpop.tinkergraph
-
-### create a new graph and load some data from a file
-graph = TinkerGraph.open() # empty graph
-# ^ TinkerFactory can be used to create a non empty graph
-  # ^ .createClassic(): tinkerpop v2
-  # ^ .createModern(): tinkerpop v3
-  # ^ .createTheCrew() tinkerpop v3 latest (meta properties, multi properties, etc)
-  # ^ .createGratefulDead() v3 with alot of data
-graph.io(graphml()).readGraph('air-routes.graphml')
-
-```
-
 ### server
 
 - Allows hosting of graphs remotely via an HTTP/Web Sockets connection.
@@ -274,15 +238,10 @@ graph.io(graphml()).readGraph('air-routes.graphml')
   - bunch of properties files
   - empty-sample.groovy: sample file that you should modify/copypasta
 
-```sh
-# start the gremlin server passing in the conf file
-gremlin-server.sh conf/gremlin-server/gremlin-server.yaml
-# ^ or in the bg
-export GREMLIN_YAML='conf/gremlin-server/gremlin-server.yaml'
-bin/gremlin-server.sh start
+### tinkergraph
 
-
-```
+- in-memory (with optional persistence), non-transactional graph engine that provides both OLTP and OLAP functionality.
+- great for learning
 
 # bookmark
 
