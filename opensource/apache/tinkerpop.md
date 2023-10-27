@@ -75,6 +75,15 @@
   - e.g. instead of `g.V().has(k,v)` use `g.V().has('this label only', k,v)`
 - always use indices: `g.V()` and etc has to iterate over all the vertices and edges
 
+### staying agnostic
+
+- data types: adhering to tinkergraph will generally enable you to port your graph to other graph providers (e.g. neo4j/neptune)
+- refrain form using the graph (structure) api
+  - stick with GraphTraversalSource (process) api
+- externalize logic related to these domains: they are usually graph provider specific
+  - schemas/indices
+  - extensions
+
 ### debugging gremlin
 
 - isolate for analysis:
@@ -157,6 +166,11 @@
   - maintains the configuration options `e.g. g.withSomeConfig().startStep()`
   - spawns GraphTraversals instances
 - Traversal<S,E>: a functional data flow process transforming objects of type S into object of type E.
+  - implements Iterater<E>; S === start, E === end
+  - Step<S,E>: function applied to S that yields E
+  - TraversalStrategy: interceptor methods that alter the execution of a traversal
+  - TraversalSideEffects: key/value pairs used to store information about a traversal
+  - Traverser<T>: the object propagating through traversals of type T
 - GraphTraversal: a traversal DSL that is oriented towards the semantics of the raw graph (i.e. vertices, edges, etc.).
   - i.e. the steps that make up the gremlin language
   - GraphTraversal instances (e.g. `g.V()`) are created via start steps (i.e. the `V()`) and begin the traversal
@@ -246,8 +260,19 @@
 # bookmark
 
 - docs/3.7.0/reference
-  - [anatomy tutorial deck](https://www.slideshare.net/StephenMallette/gremlins-anatomy-88713465)
-  - [the graph process](https://tinkerpop.apache.org/docs/3.7.0/reference/#the-graph-process)
+  - skipped: but definitely should swing back to these
+    - Connecting Gremlin (entire section)
+    - The Graph (entire section)
+    - Traversal Transactions (entire section)
+    - Configuration Steps (entire section)
+    - Graph Traversal Steps
+      - AddE
+      - AddV
+      - And
+      - Barrier
+      - Branch
+      - Call
+  - [cap](https://tinkerpop.apache.org/docs/3.7.0/reference/#cap-step)
   - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
     - skipped: should eventually get to these one day
       - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)
