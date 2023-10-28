@@ -272,7 +272,11 @@
       - Barrier
       - Branch
       - Call
-  - [cap](https://tinkerpop.apache.org/docs/3.7.0/reference/#cap-step)
+    - A Note on lambdas
+  - A Note On (do these first)
+    - [scopes](https://tinkerpop.apache.org/docs/3.7.0/reference/#a-note-on-scopes)
+  - current step
+    - choose
   - [typescript](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript)
     - skipped: should eventually get to these one day
       - [configuration](https://tinkerpop.apache.org/docs/3.7.0/reference/#gremlin-javascript-configuration)

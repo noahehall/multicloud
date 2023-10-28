@@ -10,8 +10,6 @@
 - Both aggregate and store can be followed by a by modulator to specify more precisely what should be collected
 - keys & values steps can be used with maps (duh!)
 - understanding the local keyword is crucial for ordering, counting and running calculations on collections
-- reducing barrier steps: steps that reduce the results of a query a single traversal, often just a value or a collection of some kind and from that point on you cannot refer back to things you did earlier in the query.
-  - max, min, sum, count, fold
 - pay attention to whats returned from a traversal
   - if its not a primitive (e.g. string, int, etc) you likely cant operate on it
   - use the UNFOLD step to extract things that are returned as a collection
@@ -20,6 +18,15 @@
 - Avoiding unnecessary use of closures is a Gremlin best practice.
 - path, simplePath and as steps can be memory intensive
   - prefer sack > as > simplePath > path
+- barrier steps: eagerly evaluates its traversers and outputs a result
+  - collecting barriers: outputs a collection
+    - order, sample, aggregate, barrier
+  - reducing barriers: outputs a single value; the path history leading up to a reducing barrier step is destroyed and cant be referred back to
+    - fold, count, sum, max, min
+  - supplying barriers: evaluates all traversers, and you supply which to emit
+    - cap
+  - TraverserVertexProgram (TODO)
+- scopes: either local or global
 
 ## console
 
@@ -125,6 +132,11 @@ graph
   // better for ingesting large amounts of data back into tinkerpop
   .io(graphson()).writeGraph("my-graph.json") // persist as unwrapped json
 
+
+// create via graph
+// ^  best practice to use the g object when adding, updating or deleting vertices and edges
+addVertex()
+addEdge()
  ////////////////// data I/O
 // persist as wrapped json; i.e. wrapped adjacency list
 // all vertices and edges stored in a single large JSON oject inside of an enclosing vertices object.
@@ -189,12 +201,52 @@ tryNext() // return an Optional and thus, is a composite of hasNext()/next()
 
 ////////////////// side effects
 // collect all the objects at a particular point of traversal into a Collection; can be passed to by modulator
-// (local, 'x') uses lazy evaluation
-// (global, 'x') === ('x') uses eager evaluation; use when the result is requird in full for the next step
+// ^ (local, 'x') uses lazy evaluation
+// ^ (global, 'x') === ('x') uses eager evaluation; use when the result is requird in full for the next step
 aggregate() // stores the collection in string you provide, e.g. aggregate('x')
 
 
-////////////////// CRUD: READ
+////////////////// predicates: P objects
+eq() // equal
+neq() // not equal
+within() // Must match at least one of the values provided. Can be a range or a list
+without() // Must not match any of the values provided. Can be a range or a list
+
+////////////////// predicates: P numbers
+lt()
+lte()
+gt()
+gte()
+between() // Between two values incl/excl e.g. hasId(between(1,6))
+inside() // Inside a lower and upper bound, neither bound is included.
+outside() // Outside a lower and upper bound, neither bound is included.
+
+
+////////////////// predicates: TextP strings
+startingWith()
+endingWith()
+containing()
+notStartingWith()
+notEndingWith()
+notContaining()
+regex()
+notRegex()
+
+////////////////// collections
+fold() // converts results to an array
+unfold() // unbundles a collection
+
+////////////////// maths
+mean()
+coin() // % of picking a value from a set, e.g. coin(.75)
+sample() // randomly pick exactly X form a set, e.g. sample(20)
+math() // run arbitrary calculations
+count() //
+max() // numbers/strings
+min() // numbers/strings
+sum() //
+
+////////////////// READ
 get() // the current traversed object
 loops() // number of times the traverser has been here
 bulk() // number of objects in the traverser
@@ -224,11 +276,7 @@ element() // retrieves the element
 graph() // retrieves the graph associated with a thing
 
 
-////////////////// CRUD: modification
-// via the graph object
-// ^  best practice to use the g object when adding, updating or deleting vertices and edges
-addVertex()
-addEdge()
+////////////////// UPDATE
 // also check start steps for other CRUD steps
 // FYI:
 // ^ vertex creation: appends unless single passed as first prop, e.g. property(Cardinality.single,'code','ABIA')
@@ -267,10 +315,6 @@ outV() // Outgoing vertex.
 inV() // Incoming vertex. e.g. g.V(1).outE('knows').inV()
 
 
-////////////////// find a classification for these
-fold() // converts results to an array
-unfold() // unbundles a collection
-
 ////////////////// filters: basic
 has() // e.g. has(['label',] 'prop', 'value')
 hasId() // shorthand for has(id,12345)
@@ -280,19 +324,6 @@ hasNot() // shorthand for not(has('prop'))
 hasValue()
 where()
 
-////////////////// filters: predicates
-// all defined on the P class
-eq() // equal
-neq() // not equal
-gt()
-gte()
-lt()
-lte()
-between() // Between two values incl/excl e.g. hasId(between(1,6))
-inside() // Inside a lower and upper bound, neither bound is included.
-outside() // Outside a lower and upper bound, neither bound is included.
-within() // Must match at least one of the values provided. Can be a range or a list
-without() // Must not match any of the values provided. Can be a range or a list
 
 ////////////////// filters: logical
 and()
@@ -326,10 +357,7 @@ dedup() // remove duplicates, aka unique?; can provide references to limit speci
 // provide a label to the current step for retrieving during a later step
 // used with select, match, etc
 as()
-// processed in a round robin fashion in cases where there are more elements that modulators specified
-// ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
-// ^ use a by modulator with no param if the element is not a vertex/edge
-cap() // emits a collection, dunno, check the docs and examples
+cap() // iterates and emits the sideEffect referenced by the provided key(s).
 // will only add things to its collection as they are seen
 store() // same as aggregate, but is lazy
 // will block and immediately gather up everything from the prior traversal
@@ -343,6 +371,9 @@ withSack() // initializes a sack variable
 // remember its passed into the previous step
 // used with bunches of steps, check the docs for how by is consumed which is not always apparent
 // if it doesnt produce a result, its deemed unproductive and is handled differently by each step
+// processed in a round robin fashion in cases where there are more elements that modulators specified
+// ^ e.g. if path() returns [el1, el2, el3] and you only specify 1 by(), its executed for each
+// ^ use a by modulator with no param if the element is not a vertex/edge
 by() // some steps only accept 1 by, others an arbitrary amount
 from()
 to()
@@ -354,16 +385,6 @@ simplePath() // shortest + unique path between two entities;
 local() // e.g. calculate the count before taking the avg local(out('edges').count()).mean()
 option() // combine with choose to create case statement; e.g. option(test, truthy), test can be a static/dynamic value
 
-
-////////////////// maths
-count()
-mean()
-sum()
-max() // numbers/strings
-min() // numbers/strings
-coin() // % of picking a value from a set, e.g. coin(.75)
-sample() // randomly pick exactly X form a set, e.g. sample(20)
-math() // run arbitrary calculations
 
 ////////////////// aggregates
 groupCount()
