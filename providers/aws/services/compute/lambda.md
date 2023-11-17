@@ -7,6 +7,11 @@
   - real-time data processing
   - event-driven, automated actions based on any event occuring in AWS
 
+## todos
+
+- [checkout lambda@edge](https://aws.amazon.com/lambda/edge/)
+  - technically part of cloudfront, but its fkn lambda
+
 ## my thoughts
 
 - think short quick i/o; else prefer ecs

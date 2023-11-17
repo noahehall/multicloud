@@ -1,5 +1,11 @@
 # quick ref
 
+## links
+
+- [withOptions](https://tinkerpop.apache.org/javadocs/current/full/org/apache/tinkerpop/gremlin/process/traversal/step/util/WithOptions.html)
+
+## FYI
+
 - tested with tinkergraph and the practical gremlin air routes data file
 - most steps
   - that accept 1 param, generally accept more than 1 param
@@ -27,6 +33,10 @@
     - cap
   - TraverserVertexProgram (TODO)
 - scopes: either local or global
+- watch out for barriers!
+  - generally moving the barrier step into a an anonymous traversals unblocks you
+- watch out for lists!
+  - if you need to work with a previous retrieved vertex/edge make sure you unfold it
 
 ## console
 
@@ -250,7 +260,8 @@ sum() //
 get() // the current traversed object
 loops() // number of times the traverser has been here
 bulk() // number of objects in the traverser
-sack() // local data structure of the traverser
+// initial a sack with runways: g.V().has('code','AUS').sack(assign).by('runways').
+sack() // local data structure of the traverser, use sack(sum|addAll|mult|minus|etc)
 sideEffects() // associated with the traverser
 value() // value of a property
 values() // for 0/more properties, e.g. values('a', 'b', ...)
@@ -265,6 +276,7 @@ label() // retrieves the label
 // the keywords are used in a query when as() is used to supply multiple labels to the same el
 // ^ e.g. g.V(1).as('a').V(2).as('a').select(first,'a')
 // ^ you often need to select when multiple references are created, else only the last is returned
+// ^ to select nested properties: select('outer').select('inner')
 select() // extract values/references; e.g. .select([first|last|all,]'propOrReferenceName')
 project() // shorthand for as and select steps; creates projection of results
 properties() // all or a specific set
@@ -350,7 +362,7 @@ tail() // last X results
 range() // between X and Y, start inclusiv, 0 indexed, e.g. range(0, 20) first 20, range(10, -1) until end
 skip() // the first X and return remaining, shorthand for range(X, -1)
 timeLimit() // limit query to X milliseconds, e.g. timeLinit(10)
-dedup() // remove duplicates, aka unique?; can provide references to limit specific steps
+dedup() // remove duplicates; can provide references to limit specific steps
 
 
 ////////////////// modulators: alter the behavior of the steps that they are associated with.
@@ -366,7 +378,7 @@ aggregate() // similar to store, but is greedy, tracks the results of some trave
 // ^ e.g. addition, multiplication, subtraction, division
 // ^ e.g. minimum or maximum value of a pair of values
 sack() // like aggregate & store, but way more powerful
-withSack() // initializes a sack variable
+withSack() // initializes a sack variable, initialize iwht something like [:] or []
 // determines the property to group on or fn to run
 // remember its passed into the previous step
 // used with bunches of steps, check the docs for how by is consumed which is not always apparent
